@@ -6,6 +6,9 @@ using System.Xml.Linq;
 using Word = Microsoft.Office.Interop.Word;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Word;
+using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
+using System.Windows.Forms;
 
 namespace PeriTAB
 {
@@ -13,6 +16,7 @@ namespace PeriTAB
     {
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
