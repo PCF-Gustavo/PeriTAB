@@ -100,7 +100,7 @@ namespace PeriTAB{
             this.button1.Label = "Confere numeração das legendas";
             this.button1.Name = "button1";
             this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
             // 
             // button2
             // 
@@ -109,7 +109,7 @@ namespace PeriTAB{
             this.button2.Label = "Alinha legenda";
             this.button2.Name = "button2";
             this.button2.ShowImage = true;
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
             // button3
             // 
@@ -118,7 +118,7 @@ namespace PeriTAB{
             this.button3.Label = "Renomeia documento";
             this.button3.Name = "button3";
             this.button3.ShowImage = true;
-            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
             // 
             // group2
             // 
@@ -135,7 +135,7 @@ namespace PeriTAB{
             this.button4.Label = "Alterna visualização dos campos";
             this.button4.Name = "button4";
             this.button4.ShowImage = true;
-            this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button4.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button4_Click);
             // 
             // button5
             // 
@@ -144,7 +144,7 @@ namespace PeriTAB{
             this.button5.Label = "Alterna destaque dos campos";
             this.button5.Name = "button5";
             this.button5.ShowImage = true;
-            this.button5.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button5.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button5_Click);
             // 
             // button6
             // 
@@ -153,7 +153,7 @@ namespace PeriTAB{
             this.button6.Label = "Atualiza todos os campos";
             this.button6.Name = "button6";
             this.button6.ShowImage = true;
-            this.button6.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button6.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button6_Click_1);
             // 
             // group3
             // 
@@ -169,7 +169,7 @@ namespace PeriTAB{
             this.button7.Label = "Moeda";
             this.button7.Name = "button7";
             this.button7.ShowImage = true;
-            this.button7.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button7.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button7_Click);
             // 
             // button8
             // 
@@ -178,7 +178,7 @@ namespace PeriTAB{
             this.button8.Label = "Número inteiro";
             this.button8.Name = "button8";
             this.button8.ShowImage = true;
-            this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button8_Click);
             // 
             // group4
             // 
@@ -194,7 +194,7 @@ namespace PeriTAB{
             this.button9.Label = "Importa estilos";
             this.button9.Name = "button9";
             this.button9.ShowImage = true;
-            this.button9.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button9.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button9_Click);
             // 
             // button10
             // 
@@ -203,7 +203,7 @@ namespace PeriTAB{
             this.button10.Label = "Limpa estilos";
             this.button10.Name = "button10";
             this.button10.ShowImage = true;
-            this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button10_Click);
             // 
             // group5
             // 
