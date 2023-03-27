@@ -30,7 +30,7 @@
     <DefineConstants>VSTO40</DefineConstants>
     <IsWebBootstrapper>False</IsWebBootstrapper>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>C:\Users\gustavo.gvs.PF\OneDrive - Polícia Federal\PCF Gustavo\Visual Studio\PeriTAB\publicacoes\</PublishUrl>
+    <PublishUrl>C:\Users\Gustavo\Desktop\testt1\</PublishUrl>
     <InstallUrl />
     <TargetCulture>pt-BR</TargetCulture>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
@@ -179,6 +179,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -196,7 +197,6 @@
       <DependentUpon>Ribbon1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="PeriTAB_1_TemporaryKey.pfx" />
     <None Include="PeriTAB_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,10 +262,10 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PeriTAB_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PeriTAB_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2D03FD8A9656143A75CD482D260FB0061115679D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>0BF9186AD6DFC2824572BB4DCA8758ABB2D92ADE</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

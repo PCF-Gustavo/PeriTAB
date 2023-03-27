@@ -47,6 +47,9 @@ namespace PeriTAB{
             this.button2 = this.Factory.CreateRibbonButton();
             this.button3 = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
+            this.menu1 = this.Factory.CreateRibbonMenu();
+            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
+            this.checkBox2 = this.Factory.CreateRibbonCheckBox();
             this.button4 = this.Factory.CreateRibbonButton();
             this.button5 = this.Factory.CreateRibbonButton();
             this.button6 = this.Factory.CreateRibbonButton();
@@ -122,11 +125,32 @@ namespace PeriTAB{
             // 
             // group2
             // 
+            this.group2.Items.Add(this.menu1);
             this.group2.Items.Add(this.button4);
             this.group2.Items.Add(this.button5);
             this.group2.Items.Add(this.button6);
             this.group2.Label = "Campos";
             this.group2.Name = "group2";
+            // 
+            // menu1
+            // 
+            this.menu1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.menu1.Items.Add(this.checkBox1);
+            this.menu1.Items.Add(this.checkBox2);
+            this.menu1.Label = "Campos";
+            this.menu1.Name = "menu1";
+            this.menu1.ShowImage = true;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.Label = "Destacar";
+            this.checkBox1.Name = "checkBox1";
+            // 
+            // checkBox2
+            // 
+            this.checkBox2.Label = "Ver código";
+            this.checkBox2.Name = "checkBox2";
+            this.checkBox2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
             // 
             // button4
             // 
@@ -215,7 +239,7 @@ namespace PeriTAB{
             // 
             // label1
             // 
-            this.label1.Label = "PeriTAB 1.0.0";
+            this.label1.Label = "PeriTAB";
             this.label1.Name = "label1";
             // 
             // label2
@@ -275,6 +299,9 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button7;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button10;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button9;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox2;
     }
 
     partial class ThisRibbonCollection
