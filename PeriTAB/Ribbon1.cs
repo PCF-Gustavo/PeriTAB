@@ -29,7 +29,7 @@ namespace PeriTAB
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {            
-            this.Evento_abre_cria_doc();
+            //this.Evento_abre_cria_doc();
             //System.Version publish_version = new System.Version("9.9.9");
             //if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
             //{
@@ -38,13 +38,34 @@ namespace PeriTAB
             //Globals.Ribbons.Ribbon1.label1.Label = "PeriTAB " + publish_version;
             System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
             Globals.Ribbons.Ribbon1.label1.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+
+            //Class1 var_Class1 = new Class1();
+            //var_Class1.Evento_DocumentOpen();
+            //var_Class1.Evento_NewDocument();
+            //var_Class1.Evento_DocumentBeforeClose();
+            ////var_Class1.Evento_DocumentChange();
+            //var_Class1.Evento_DocumentSync();
+            //var_Class1.Evento_ProtectedViewWindowActivate();
+            //var_Class1.Evento_WindowActivate();
+            //var_Class1.Evento_WindowBeforeDoubleClick();
+            //var_Class1.Evento_WindowBeforeRightClick();
+            //var_Class1.Evento_WindowDeactivate();
+            //var_Class1.Evento_WindowSelectionChange();
+            //var_Class1.Evento_WindowSize();
+            //var_Class1.Evento_SettingChanging();
+            //var_Class1.Evento_TabDisposed();
+            //var_Class1.Evento_Ribbon1Close();
+            //var_Class1.Evento_menu1ItemsLoading();
+            
         }
 
-        public void abre_cria_doc(Microsoft.Office.Interop.Word.Document Doc)
-        {
-            MessageBox.Show("abre_cria_doc");
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) checkBox2.Checked = true;
-        }
+        //public void abre_cria_doc(Microsoft.Office.Interop.Word.Document Doc)
+        //{
+        //    Class1 var_Class1 = new Class1();
+        //    var_Class1.Evento_ContentControlOnEnter();
+        //    MessageBox.Show("abre_cria_doc");
+        //    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) checkBox2.Checked = true;
+        //}
 
         private void Anybutton_Click(object sender, RibbonControlEventArgs e)
         {
@@ -97,10 +118,10 @@ namespace PeriTAB
             }
         }
 
-        public void Evento_abre_cria_doc()
-        {
-            Globals.ThisAddIn.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(abre_cria_doc);
-            ((Microsoft.Office.Interop.Word.ApplicationEvents4_Event)Globals.ThisAddIn.Application).NewDocument += new ApplicationEvents4_NewDocumentEventHandler(abre_cria_doc);
-        }
+        //public void Evento_abre_cria_doc()
+        //{
+        //    Globals.ThisAddIn.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(abre_cria_doc);
+        //    ((Microsoft.Office.Interop.Word.ApplicationEvents4_Event)Globals.ThisAddIn.Application).NewDocument += new ApplicationEvents4_NewDocumentEventHandler(abre_cria_doc);
+        //}
     }
 }
