@@ -6,6 +6,7 @@ Moeda e numero inteiro
 
 Renomeia doc
 - Não funciona quando está no drive
+- Erro de permissão negada (Gabriel)
 
 alinha legenda
 - erro quando está legenda está sozinha em célula de tabela

@@ -40,7 +40,7 @@ namespace PeriTAB{
         /// </summary>
         private void InitializeComponent()
         {
-            this.tab1 = this.Factory.CreateRibbonTab();
+            this.tab_default = this.Factory.CreateRibbonTab();
             this.tab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
             this.button1 = this.Factory.CreateRibbonButton();
@@ -60,7 +60,7 @@ namespace PeriTAB{
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
-            this.tab1.SuspendLayout();
+            this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group1.SuspendLayout();
             this.group2.SuspendLayout();
@@ -69,11 +69,11 @@ namespace PeriTAB{
             this.group5.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tab1
+            // tab_default
             // 
-            this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
-            this.tab1.Label = "TabAddIns";
-            this.tab1.Name = "tab1";
+            this.tab_default.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
+            this.tab_default.Label = "TabAddIns";
+            this.tab_default.Name = "tab_default";
             // 
             // tab
             // 
@@ -232,11 +232,11 @@ namespace PeriTAB{
             // 
             this.Name = "Ribbon1";
             this.RibbonType = "Microsoft.Word.Document";
-            this.Tabs.Add(this.tab1);
+            this.Tabs.Add(this.tab_default);
             this.Tabs.Add(this.tab);
             this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
-            this.tab1.ResumeLayout(false);
-            this.tab1.PerformLayout();
+            this.tab_default.ResumeLayout(false);
+            this.tab_default.PerformLayout();
             this.tab.ResumeLayout(false);
             this.tab.PerformLayout();
             this.group1.ResumeLayout(false);
@@ -255,7 +255,7 @@ namespace PeriTAB{
 
         #endregion
 
-        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonTab tab_default;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group1;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group2;
