@@ -2,6 +2,7 @@
 using Microsoft.Office.Tools.Ribbon;
 using PeriTAB.Properties;
 using System;
+using System.Windows;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,17 +11,39 @@ using System.Windows.Forms;
 using System.Deployment;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using System.Reflection.Emit;
+using System.Reflection;
+using System.Configuration;
+using System.ComponentModel.Design.Serialization;
+using System.ComponentModel.Design;
+using System.ComponentModel;
+using System.Runtime.InteropServices;
+using System.Drawing;
 
-    namespace PeriTAB
-{
-    
+namespace PeriTAB
+{    
     public partial class Ribbon1
     {
         private bool first_time = true;
         String caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
+        {            
+            this.Evento_abre_cria_doc();
+            //System.Version publish_version = new System.Version("9.9.9");
+            //if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            //{
+            //    publish_version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            //}
+            //Globals.Ribbons.Ribbon1.label1.Label = "PeriTAB " + publish_version;
+            System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
+            Globals.Ribbons.Ribbon1.label1.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+        }
+
+        public void abre_cria_doc(Microsoft.Office.Interop.Word.Document Doc)
         {
+            MessageBox.Show("abre_cria_doc");
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) checkBox2.Checked = true;
         }
 
         private void Anybutton_Click(object sender, RibbonControlEventArgs e)
@@ -72,6 +95,12 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
                 default:
                     break;
             }
+        }
+
+        public void Evento_abre_cria_doc()
+        {
+            Globals.ThisAddIn.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(abre_cria_doc);
+            ((Microsoft.Office.Interop.Word.ApplicationEvents4_Event)Globals.ThisAddIn.Application).NewDocument += new ApplicationEvents4_NewDocumentEventHandler(abre_cria_doc);
         }
     }
 }
