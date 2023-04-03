@@ -59,6 +59,7 @@ namespace PeriTAB{
             this.group4 = this.Factory.CreateRibbonGroup();
             this.button9 = this.Factory.CreateRibbonButton();
             this.button10 = this.Factory.CreateRibbonButton();
+            this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
@@ -208,6 +209,7 @@ namespace PeriTAB{
             // 
             this.group4.Items.Add(this.button9);
             this.group4.Items.Add(this.button10);
+            this.group4.Items.Add(this.toggleButton1);
             this.group4.Label = "Estilos";
             this.group4.Name = "group4";
             // 
@@ -228,6 +230,14 @@ namespace PeriTAB{
             this.button10.Name = "button10";
             this.button10.ShowImage = true;
             this.button10.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            // 
+            // toggleButton1
+            // 
+            this.toggleButton1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButton1.Label = "Painel de Estilos";
+            this.toggleButton1.Name = "toggleButton1";
+            this.toggleButton1.ShowImage = true;
+            this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_Click);
             // 
             // group5
             // 
@@ -302,6 +312,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox1;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox2;
+        internal Microsoft.Office.Tools.Ribbon.RibbonToggleButton toggleButton1;
     }
 
     partial class ThisRibbonCollection

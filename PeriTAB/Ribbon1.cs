@@ -1,24 +1,10 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
-using PeriTAB.Properties;
 using System;
-using System.Windows;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using System.Deployment;
-using static System.Net.Mime.MediaTypeNames;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
-using System.Reflection.Emit;
 using System.Reflection;
-using System.Configuration;
-using System.ComponentModel.Design.Serialization;
-using System.ComponentModel.Design;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.Drawing;
+using System.Windows.Forms;
+
 
 namespace PeriTAB
 {    
@@ -28,7 +14,8 @@ namespace PeriTAB
         String caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
-        {            
+        {
+            
             //this.Evento_abre_cria_doc();
             //System.Version publish_version = new System.Version("9.9.9");
             //if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
@@ -56,7 +43,8 @@ namespace PeriTAB
             //var_Class1.Evento_TabDisposed();
             //var_Class1.Evento_Ribbon1Close();
             //var_Class1.Evento_menu1ItemsLoading();
-            
+            //Globals.ThisAddIn.Application.WindowSelectionChange += Application_WindowSelectionChange;
+            Class_SelectionChange instace1 = new Class_SelectionChange(); instace1.Evento_WindowSelectionChange();
         }
 
         //public void abre_cria_doc(Microsoft.Office.Interop.Word.Document Doc)
@@ -66,6 +54,7 @@ namespace PeriTAB
         //    MessageBox.Show("abre_cria_doc");
         //    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) checkBox2.Checked = true;
         //}
+
 
         private void Anybutton_Click(object sender, RibbonControlEventArgs e)
         {
@@ -116,6 +105,13 @@ namespace PeriTAB
                 default:
                     break;
             }
+        }
+
+        private void toggleButton_Click(object sender, RibbonControlEventArgs e)
+        {
+            var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
+            if (botao_toggle.Checked == true) Globals.ThisAddIn.myCustomTaskPane.Visible = true;
+            if (botao_toggle.Checked == false) Globals.ThisAddIn.myCustomTaskPane.Visible = false;
         }
 
         //public void Evento_abre_cria_doc()
