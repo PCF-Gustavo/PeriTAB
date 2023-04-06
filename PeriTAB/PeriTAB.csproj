@@ -184,7 +184,12 @@
   -->
   <ItemGroup>
     <Compile Include="Class1.cs" />
-    <Compile Include="Class_SelectionChange.cs" />
+    <Compile Include="Class_Buttons.cs" />
+    <Compile Include="Class_DocSave_Event.cs" />
+    <Compile Include="Class_DocChange_Event.cs" />
+    <Compile Include="Class_WindowActivate_Event.cs" />
+    <Compile Include="Class_New_or_Open_Event.cs" />
+    <Compile Include="Class_SelectionChange_Event.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -229,7 +234,7 @@
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>
     </Compile>
-    <EmbeddedResource Include="Resources\Normal_copy.dotm" />
+    <EmbeddedResource Include="Resources\Normal.dotm" />
     <None Include="ThisAddIn.Designer.xml">
       <DependentUpon>ThisAddIn.cs</DependentUpon>
     </None>
@@ -268,6 +273,15 @@
   <ItemGroup>
     <None Include="Resources\download2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\download3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\seta3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\seta1.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -279,7 +293,7 @@
     <ManifestKeyFile>PeriTAB_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>F32878367E92CE33F03A515D3C95FB7F3D95C043</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2D03FD8A9656143A75CD482D260FB0061115679D</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

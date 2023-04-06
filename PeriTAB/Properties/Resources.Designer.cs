@@ -113,6 +113,16 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap download3 {
+            get {
+                object obj = ResourceManager.GetObject("download3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap esquadro {
             get {
                 object obj = ResourceManager.GetObject("esquadro", resourceCulture);
@@ -133,9 +143,9 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Byte[].
         /// </summary>
-        internal static byte[] Normal_copy {
+        internal static byte[] Normal {
             get {
-                object obj = ResourceManager.GetObject("Normal_copy", resourceCulture);
+                object obj = ResourceManager.GetObject("Normal", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -156,6 +166,26 @@ namespace PeriTAB.Properties {
         internal static System.Drawing.Bitmap radiografia {
             get {
                 object obj = ResourceManager.GetObject("radiografia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap seta1 {
+            get {
+                object obj = ResourceManager.GetObject("seta1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap seta3 {
+            get {
+                object obj = ResourceManager.GetObject("seta3", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

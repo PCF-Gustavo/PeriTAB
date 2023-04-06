@@ -43,27 +43,27 @@ namespace PeriTAB{
             this.tab_default = this.Factory.CreateRibbonTab();
             this.tab = this.Factory.CreateRibbonTab();
             this.group1 = this.Factory.CreateRibbonGroup();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
-            this.button3 = this.Factory.CreateRibbonButton();
             this.group2 = this.Factory.CreateRibbonGroup();
-            this.menu1 = this.Factory.CreateRibbonMenu();
-            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
-            this.checkBox2 = this.Factory.CreateRibbonCheckBox();
-            this.button4 = this.Factory.CreateRibbonButton();
-            this.button5 = this.Factory.CreateRibbonButton();
-            this.button6 = this.Factory.CreateRibbonButton();
             this.group3 = this.Factory.CreateRibbonGroup();
-            this.button7 = this.Factory.CreateRibbonButton();
-            this.button8 = this.Factory.CreateRibbonButton();
             this.group4 = this.Factory.CreateRibbonGroup();
-            this.button9 = this.Factory.CreateRibbonButton();
-            this.button10 = this.Factory.CreateRibbonButton();
-            this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
             this.group5 = this.Factory.CreateRibbonGroup();
             this.label1 = this.Factory.CreateRibbonLabel();
             this.label2 = this.Factory.CreateRibbonLabel();
             this.label3 = this.Factory.CreateRibbonLabel();
+            this.menu1 = this.Factory.CreateRibbonMenu();
+            this.checkBox1 = this.Factory.CreateRibbonCheckBox();
+            this.checkBox2 = this.Factory.CreateRibbonCheckBox();
+            this.button1 = this.Factory.CreateRibbonButton();
+            this.button2 = this.Factory.CreateRibbonButton();
+            this.button3 = this.Factory.CreateRibbonButton();
+            this.button4 = this.Factory.CreateRibbonButton();
+            this.button5 = this.Factory.CreateRibbonButton();
+            this.button6 = this.Factory.CreateRibbonButton();
+            this.button7 = this.Factory.CreateRibbonButton();
+            this.button8 = this.Factory.CreateRibbonButton();
+            this.button9 = this.Factory.CreateRibbonButton();
+            this.button10 = this.Factory.CreateRibbonButton();
+            this.toggleButton1 = this.Factory.CreateRibbonToggleButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group1.SuspendLayout();
@@ -97,33 +97,6 @@ namespace PeriTAB{
             this.group1.Label = "Macros";
             this.group1.Name = "group1";
             // 
-            // button1
-            // 
-            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button1.Image = global::PeriTAB.Properties.Resources.lupa;
-            this.button1.Label = "Confere numeração das legendas";
-            this.button1.Name = "button1";
-            this.button1.ShowImage = true;
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
-            // 
-            // button2
-            // 
-            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button2.Image = global::PeriTAB.Properties.Resources.esquadro;
-            this.button2.Label = "Alinha legenda";
-            this.button2.Name = "button2";
-            this.button2.ShowImage = true;
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
-            // 
-            // button3
-            // 
-            this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button3.Image = global::PeriTAB.Properties.Resources.abc;
-            this.button3.Label = "Renomeia documento";
-            this.button3.Name = "button3";
-            this.button3.ShowImage = true;
-            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
-            // 
             // group2
             // 
             this.group2.Items.Add(this.menu1);
@@ -132,6 +105,44 @@ namespace PeriTAB{
             this.group2.Items.Add(this.button6);
             this.group2.Label = "Campos";
             this.group2.Name = "group2";
+            // 
+            // group3
+            // 
+            this.group3.Items.Add(this.button7);
+            this.group3.Items.Add(this.button8);
+            this.group3.Label = "Por Extenso";
+            this.group3.Name = "group3";
+            // 
+            // group4
+            // 
+            this.group4.Items.Add(this.button9);
+            this.group4.Items.Add(this.button10);
+            this.group4.Items.Add(this.toggleButton1);
+            this.group4.Label = "Estilos";
+            this.group4.Name = "group4";
+            // 
+            // group5
+            // 
+            this.group5.Items.Add(this.label1);
+            this.group5.Items.Add(this.label2);
+            this.group5.Items.Add(this.label3);
+            this.group5.Label = "Sobre";
+            this.group5.Name = "group5";
+            // 
+            // label1
+            // 
+            this.label1.Label = "PeriTAB";
+            this.label1.Name = "label1";
+            // 
+            // label2
+            // 
+            this.label2.Label = "Criado por PCF Gustavo";
+            this.label2.Name = "label2";
+            // 
+            // label3
+            // 
+            this.label3.Label = "gustavo.gvs@pf.gov.br";
+            this.label3.Name = "label3";
             // 
             // menu1
             // 
@@ -152,6 +163,33 @@ namespace PeriTAB{
             this.checkBox2.Label = "Ver código";
             this.checkBox2.Name = "checkBox2";
             this.checkBox2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            // 
+            // button1
+            // 
+            this.button1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button1.Image = global::PeriTAB.Properties.Resources.lupa;
+            this.button1.Label = "Confere numeração das legendas";
+            this.button1.Name = "button1";
+            this.button1.ShowImage = true;
+            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            // 
+            // button2
+            // 
+            this.button2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button2.Image = global::PeriTAB.Properties.Resources.seta3;
+            this.button2.Label = "Alinha legenda";
+            this.button2.Name = "button2";
+            this.button2.ShowImage = true;
+            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
+            // 
+            // button3
+            // 
+            this.button3.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button3.Image = global::PeriTAB.Properties.Resources.abc;
+            this.button3.Label = "Renomeia documento";
+            this.button3.Name = "button3";
+            this.button3.ShowImage = true;
+            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
             // 
             // button4
             // 
@@ -180,13 +218,6 @@ namespace PeriTAB{
             this.button6.ShowImage = true;
             this.button6.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
             // 
-            // group3
-            // 
-            this.group3.Items.Add(this.button7);
-            this.group3.Items.Add(this.button8);
-            this.group3.Label = "Por Extenso";
-            this.group3.Name = "group3";
-            // 
             // button7
             // 
             this.button7.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
@@ -204,14 +235,6 @@ namespace PeriTAB{
             this.button8.Name = "button8";
             this.button8.ShowImage = true;
             this.button8.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Anybutton_Click);
-            // 
-            // group4
-            // 
-            this.group4.Items.Add(this.button9);
-            this.group4.Items.Add(this.button10);
-            this.group4.Items.Add(this.toggleButton1);
-            this.group4.Label = "Estilos";
-            this.group4.Name = "group4";
             // 
             // button9
             // 
@@ -234,33 +257,12 @@ namespace PeriTAB{
             // toggleButton1
             // 
             this.toggleButton1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButton1.Image = global::PeriTAB.Properties.Resources.download3;
             this.toggleButton1.Label = "Painel de Estilos";
             this.toggleButton1.Name = "toggleButton1";
             this.toggleButton1.ShowImage = true;
+            this.toggleButton1.SuperTip = "Abre Painel de Estilos";
             this.toggleButton1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_Click);
-            // 
-            // group5
-            // 
-            this.group5.Items.Add(this.label1);
-            this.group5.Items.Add(this.label2);
-            this.group5.Items.Add(this.label3);
-            this.group5.Label = "Sobre";
-            this.group5.Name = "group5";
-            // 
-            // label1
-            // 
-            this.label1.Label = "PeriTAB";
-            this.label1.Name = "label1";
-            // 
-            // label2
-            // 
-            this.label2.Label = "Criado por PCF Gustavo";
-            this.label2.Name = "label2";
-            // 
-            // label3
-            // 
-            this.label3.Label = "gustavo.gvs@pf.gov.br";
-            this.label3.Name = "label3";
             // 
             // Ribbon1
             // 
