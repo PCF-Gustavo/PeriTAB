@@ -26,6 +26,8 @@ namespace PeriTAB
             TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
             TaskPane1.Height = 90;
             TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+
+            Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
         }
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)

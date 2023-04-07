@@ -11,13 +11,19 @@ namespace PeriTAB
     public partial class Ribbon1
     {
         //private bool first_time = true;
-        String caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
+        //public String caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
+
+        public class Variables
+        {
+            private static string var = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
+            public static string caminho_template { get { return var; } set { var = value; } }
+        }
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
-            File.WriteAllBytes(caminho_template, Properties.Resources.Normal);
-            Globals.ThisAddIn.Application.AddIns.Add(caminho_template);
+            File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal);
+            Globals.ThisAddIn.Application.AddIns.Add(Variables.caminho_template);
 
             // Escreve o número da versão
             System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -65,7 +71,7 @@ namespace PeriTAB
                     string[] aStyles = { "01 - Sem Formatação (PeriTAB)", "02 - Corpo do Texto (PeriTAB)", "03 - Citações (PeriTAB)", "04 - Seções (PeriTAB)", "05 - Enumerações (PeriTAB)", "06 - Figuras (PeriTAB)", "07 - Legendas de Figuras (PeriTAB)", "08 - Legendas de Tabelas (PeriTAB)", "09 - Quesitos (PeriTAB)", "Normal", "Texto de nota de rodapé", "Legenda" };
                     for (int i = 0; i <= aStyles.Length - 1; i++)
                     {
-                        Globals.ThisAddIn.Application.OrganizerCopy(caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, aStyles[i], WdOrganizerObject.wdOrganizerObjectStyles);
+                        Globals.ThisAddIn.Application.OrganizerCopy(Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, aStyles[i], WdOrganizerObject.wdOrganizerObjectStyles);
                     }
                     break;
                 case "button10":

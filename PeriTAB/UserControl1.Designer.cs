@@ -126,9 +126,9 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(765, 5);
+            this.button9.Location = new System.Drawing.Point(759, 5);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(90, 40);
+            this.button9.Size = new System.Drawing.Size(60, 40);
             this.button9.TabIndex = 0;
             this.button9.Text = "Reinicia Lista";
             this.button9.UseVisualStyleBackColor = true;
@@ -136,7 +136,7 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(860, 5);
+            this.button10.Location = new System.Drawing.Point(824, 5);
             this.button10.Name = "button10";
             this.button10.Size = new System.Drawing.Size(90, 40);
             this.button10.TabIndex = 0;
@@ -146,7 +146,7 @@
             // 
             // button11
             // 
-            this.button11.Location = new System.Drawing.Point(955, 5);
+            this.button11.Location = new System.Drawing.Point(919, 5);
             this.button11.Name = "button11";
             this.button11.Size = new System.Drawing.Size(90, 40);
             this.button11.TabIndex = 0;
@@ -156,7 +156,7 @@
             // 
             // button12
             // 
-            this.button12.Location = new System.Drawing.Point(1050, 5);
+            this.button12.Location = new System.Drawing.Point(1014, 5);
             this.button12.Name = "button12";
             this.button12.Size = new System.Drawing.Size(90, 40);
             this.button12.TabIndex = 0;
@@ -166,7 +166,7 @@
             // 
             // button13
             // 
-            this.button13.Location = new System.Drawing.Point(1145, 5);
+            this.button13.Location = new System.Drawing.Point(1109, 5);
             this.button13.Name = "button13";
             this.button13.Size = new System.Drawing.Size(90, 40);
             this.button13.TabIndex = 0;

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Interop.Word;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,53 +16,61 @@ namespace PeriTAB
 
         public UserControl1()
         {
-            InitializeComponent();
+            InitializeComponent();            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "01 - Sem Formatação (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo1_Sem_Formatacao_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "01 - Sem Formatação (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button1(true, true); }
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "02 - Corpo do Texto (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo2_Corpo_do_Texto_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "02 - Corpo do Texto (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button2(true, true); }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "03 - Citações (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo3_Citacoes_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "03 - Citações (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button3(true, true); }
         }
 
         private void button4_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_1_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "04 - Seções (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button4(true, true); }
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_2_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "04 - Seções (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button5(true, true); }
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_3_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "04 - Seções (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button6(true, true); }
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_4_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "04 - Seções (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button7(true, true); }
         }
 
         private void button8_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "05 - Enumerações (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo5_Enumeracoes_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "05 - Enumerações (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button8(true, true); }
         }
@@ -74,24 +83,28 @@ namespace PeriTAB
 
         private void button10_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "06 - Figuras (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo6_Figuras_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "06 - Figuras (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button10(true, true); }
         }
 
         private void button11_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "07 - Legendas de Figuras (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo7_Legend_Figuras_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "07 - Legendas de Figuras (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button11(true, true); }
         }
 
         private void button12_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "08 - Legendas de Tabelas (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo8_Legend_Tabelas_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "08 - Legendas de Tabelas (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button12(true, true); }
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "09 - Quesitos (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo9_Quesitos_PeriTAB");
             if ((Globals.ThisAddIn.Application.Selection.Range.get_Style()).NameLocal == "09 - Quesitos (PeriTAB)") { Remove_Destaque_Botoes(); Habilita_Destaca_button13(true, true); }
         }            
