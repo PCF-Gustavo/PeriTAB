@@ -17,13 +17,15 @@ namespace PeriTAB
 
         private void Metodo_SelectionChange(Selection Sel)
         {
+            //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             Globals.ThisAddIn.iUserControl1.Habilita_button9(true);
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count>1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == 0 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iUserControl1.Habilita_button9(false); }
             
+            //Revisa o destaque dos botoes do TaskPane
             Globals.ThisAddIn.iUserControl1.Remove_Destaque_Botoes();
             foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
-                Microsoft.Office.Interop.Word.Style s = p.Range.get_Style();
+                try { Microsoft.Office.Interop.Word.Style s = p.Range.get_Style();     
                 if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button1(true, true);
                 if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button2(true, true);
                 if (s.NameLocal == "03 - Citações (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button3(true, true);               
@@ -35,7 +37,8 @@ namespace PeriTAB
                 if (s.NameLocal == "06 - Figuras (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button10(true, true);
                 if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button11(true, true);
                 if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button12(true, true);
-                if (s.NameLocal == "09 - Quesitos (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button13(true, true);                
+                if (s.NameLocal == "09 - Quesitos (PeriTAB)") Globals.ThisAddIn.iUserControl1.Habilita_Destaca_button13(true, true);
+                } catch { }
             }
 
         }        

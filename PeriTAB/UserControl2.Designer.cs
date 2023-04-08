@@ -179,7 +179,7 @@
             // 
             this.button_DockRight.BackgroundImage = global::PeriTAB.Properties.Resources.seta1;
             this.button_DockRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button_DockRight.Location = new System.Drawing.Point(1204, 5);
+            this.button_DockRight.Location = new System.Drawing.Point(1320, 5);
             this.button_DockRight.Name = "button_DockRight";
             this.button_DockRight.Size = new System.Drawing.Size(40, 40);
             this.button_DockRight.TabIndex = 0;
@@ -190,7 +190,7 @@
             // 
             this.button_DockBottom.BackgroundImage = global::PeriTAB.Properties.Resources.seta1;
             this.button_DockBottom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button_DockBottom.Location = new System.Drawing.Point(30, 568);
+            this.button_DockBottom.Location = new System.Drawing.Point(1320, 50);
             this.button_DockBottom.Name = "button_DockBottom";
             this.button_DockBottom.Size = new System.Drawing.Size(40, 40);
             this.button_DockBottom.TabIndex = 0;
@@ -221,7 +221,7 @@
             this.Controls.Add(this.button1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1383, 611);
+            this.Size = new System.Drawing.Size(1400, 100);
             this.ResumeLayout(false);
 
         }

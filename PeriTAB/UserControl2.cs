@@ -103,7 +103,6 @@ namespace PeriTAB
             Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNone;
             Globals.ThisAddIn.TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
             Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            //Globals.ThisAddIn.TaskPane1
             this.Size = new System.Drawing.Size(100, 900);
             //this.Width = 120;
             this.button_DockRight.Visible = false;
@@ -115,13 +114,12 @@ namespace PeriTAB
             this.button6.Location = new System.Drawing.Point(5, 230);
             this.button7.Location = new System.Drawing.Point(5, 275);
             this.button8.Location = new System.Drawing.Point(5, 320);
-            this.button9.Size = new System.Drawing.Size(90, 24);
-            this.button9.Location = new System.Drawing.Point(5, 359);
-            this.button10.Location = new System.Drawing.Point(5, 388);
-            this.button11.Location = new System.Drawing.Point(5, 433);
-            this.button12.Location = new System.Drawing.Point(5, 478);
-            this.button13.Location = new System.Drawing.Point(5, 523);
-            this.button_DockBottom.Location = new System.Drawing.Point(30, 568);
+            this.button9.Location = new System.Drawing.Point(5, 365);
+            this.button10.Location = new System.Drawing.Point(5, 410);
+            this.button11.Location = new System.Drawing.Point(5, 455);
+            this.button12.Location = new System.Drawing.Point(5, 500);
+            this.button13.Location = new System.Drawing.Point(5, 545);
+            this.button_DockBottom.Location = new System.Drawing.Point(55, 700);
             this.button_DockBottom.Visible = true;
             Globals.ThisAddIn.TaskPane1.Width = 120;
             this.Size = new System.Drawing.Size(100, 900);
@@ -129,31 +127,7 @@ namespace PeriTAB
 
         private void button_DockBottom_Click(object sender, EventArgs e)
         {
-            Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNone;
-            Globals.ThisAddIn.TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
-            Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            //Globals.ThisAddIn.TaskPane1
-            this.Size = new System.Drawing.Size(1400, 100);
-            //this.Width = 120;
-            this.button_DockBottom.Visible = false;
-            this.button_DockRight.Visible = true;
-            this.button_DockRight.Location = new System.Drawing.Point(1204, 5);
-            this.button1.Location = new System.Drawing.Point(5, 5);
-            this.button2.Location = new System.Drawing.Point(100, 5);
-            this.button3.Location = new System.Drawing.Point(195, 5);
-            this.button4.Location = new System.Drawing.Point(290, 5);
-            this.button5.Location = new System.Drawing.Point(385, 5);
-            this.button6.Location = new System.Drawing.Point(480, 5);
-            this.button7.Location = new System.Drawing.Point(575, 5);
-            this.button8.Location = new System.Drawing.Point(670, 5);
-            this.button9.Size = new System.Drawing.Size(60, 40);
-            this.button9.Location = new System.Drawing.Point(759, 5);
-            this.button10.Location = new System.Drawing.Point(824, 5);
-            this.button11.Location = new System.Drawing.Point(919, 5);
-            this.button12.Location = new System.Drawing.Point(1014, 5);
-            this.button13.Location = new System.Drawing.Point(1109, 5);                  
-            this.Size = new System.Drawing.Size(1400, 100);
-            Globals.ThisAddIn.TaskPane1.Height = 90;
+
         }
 
         public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
