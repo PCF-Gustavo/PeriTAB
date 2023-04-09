@@ -18,6 +18,10 @@ namespace PeriTAB
             button_inteiro_Default();
             button_importa_estilos_Default();
             button_limpa_estilos_Default();
+            checkBox_altura_Default();
+            checkBox_largura_Default();
+            editBox_largura_Default();
+            editBox_altura_Default();
         }
         public void button_confere_num_legenda_Default()
         {
@@ -66,7 +70,35 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon1.button_limpa_estilos.ScreenTip = "Macro limpa_estilos";
             Globals.Ribbons.Ribbon1.button_limpa_estilos.SuperTip = "Remove Estilos de parágrafos não utilizados.";
         }
-      
 
+        public void button_cola_figura_Default()
+        {
+            Globals.Ribbons.Ribbon1.button_cola_figura.Enabled = true;
         }
+
+        public void checkBox_largura_Default()
+        {
+            Globals.Ribbons.Ribbon1.checkBox_largura.Checked = true;
+        }
+        public void editBox_largura_Default()
+        {
+            Globals.Ribbons.Ribbon1.editBox_largura.Text = "10";
+            Globals.Ribbons.Ribbon1.editBox_largura.Enabled = true;
+        }
+
+        public void checkBox_altura_Default()
+        {
+            Globals.Ribbons.Ribbon1.checkBox_altura.Checked = false;
+        }
+
+        public void editBox_altura_Default()
+        {
+            Globals.Ribbons.Ribbon1.editBox_altura.Enabled = false;
+        }
+
+        
+
+            
+
+    }
 }

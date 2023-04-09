@@ -1,9 +1,15 @@
-﻿using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
+using System.Drawing;
 using System.IO;
+using System.Linq.Expressions;
 using System.Reflection;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Windows.Controls;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace PeriTAB
@@ -92,6 +98,205 @@ namespace PeriTAB
             if (botao_toggle.Checked == false) Globals.ThisAddIn.TaskPane1.Visible = false;
         }
 
+        private void button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
+        {           
 
+        }
+        public static byte[] ObjectToByteArray(Object obj)
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (var ms = new MemoryStream())
+            {
+                bf.Serialize(ms, obj);
+                return ms.ToArray();
+            }
+        }
+
+        private void dropDown1_SelectionChanged(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void button_cola_figura_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (System.Windows.Clipboard.ContainsData("FileDrop"))
+            {
+                object obj = System.Windows.Clipboard.GetData("FileDrop");
+                string[] pathfile = (string[])obj;
+                if (pathfile.Length == 1) //Se tem um arquivo no clipboard
+                {
+                    string extensao = pathfile[0].Substring(pathfile[0].Length - 4);
+                    if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif") //Se tem extensao de imagem
+                    {
+                        Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+
+                        if (checkBox_largura.Checked)
+                        {
+                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile[0]);
+                            
+
+                            MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                            imagem.LockAspectRatio = (MsoTriState)1;
+
+                            string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
+                            float.TryParse(larg_string, out float larg);
+                            imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                            imagem.LockAspectRatio = LockAspectRatio_i;
+                        }
+
+                        if (checkBox_altura.Checked)
+                        {
+                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile[0]);
+
+                            MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                            imagem.LockAspectRatio = (MsoTriState)1;
+                            string alt_string = Globals.Ribbons.Ribbon1.editBox_altura.Text;
+                            float.TryParse(alt_string, out float alt);
+                            imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+
+                            imagem.LockAspectRatio = LockAspectRatio_i;
+                        }
+
+
+
+                        Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    }
+                }
+            }
+
+            
+
+            //Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint
+
+
+
+            //if (System.Windows.Clipboard.ContainsImage()) Globals.ThisAddIn.Application.Selection.Paste();
+            //try
+            //{
+            //    System.Windows.IDataObject Clipboard_content = System.Windows.Clipboard.GetDataObject();
+            //    string[] Clipboard_content_formats = Clipboard_content.GetFormats();
+
+            //    //foreach (string str in Clipboard_content_formats)
+            //    //{
+            //    //    MessageBox.Show(str);
+            //    //}
+
+            //    for (int i = 0; i <= Clipboard_content_formats.Length - 1; i++)
+            //    {
+            //        if (System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i])) MessageBox.Show("Contém dados do tipo '" + Clipboard_content_formats[i] + "' = " + System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]).ToString() + Environment.NewLine + Environment.NewLine + System.Windows.Clipboard.GetData(Clipboard_content_formats[i]).ToString()); 
+            //        else MessageBox.Show("Contém dados do tipo '" + Clipboard_content_formats[i] + "' = " + System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]).ToString());
+
+            //        if (System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]) & System.Windows.Clipboard.GetData(Clipboard_content_formats[i]).ToString() == "System.String[]")
+            //        {
+            //            object obj = System.Windows.Clipboard.GetData(Clipboard_content_formats[i]);
+            //            string[] stringArray = (string[])obj;
+            //            foreach (string str in stringArray)
+            //            {
+            //                MessageBox.Show(str);
+            //            }
+            //        }
+
+            //    }
+
+            //if (System.Windows.Clipboard.ContainsData("FileDrop")) 
+            //{
+            //    object obj = System.Windows.Clipboard.GetData("FileDrop");
+            //    string[] stringArray = (string[])obj;
+
+
+
+            //} 
+
+
+            //    //MessageBox.Show(System.Windows.Clipboard.GetData("Bitmap").GetType().ToString());
+            //    string[] a = System.Windows.Clipboard.GetDataObject().GetFormats();
+
+
+
+
+            ////MessageBox.Show(w.ToString());
+            //string[] b = w.GetFormats();
+            //foreach (string oo in b)
+            //{
+            //    MessageBox.Show(oo);
+            //}
+
+
+
+            //MessageBox.Show(w.GetFormats().ToString());
+
+            //for (int i = 0; i <= a.Length - 1; i++)
+            //{
+            //    MessageBox.Show("Contém dados do tipo '" + a[i] + "' = " + System.Windows.Clipboard.ContainsData(a[i]).ToString());
+            //    if (System.Windows.Clipboard.ContainsData(a[i])) MessageBox.Show(System.Windows.Clipboard.GetData(a[i]).ToString());
+
+
+
+
+            //if (System.Windows.Clipboard.GetData(a[i]).ToString() == "System.String[]") 
+            //{
+            //    System.String dd = System.Windows.Clipboard.GetData(a[i]).ToString();
+            //foreach (string value in System.Windows.Clipboard.GetData(a[i]).ToString())
+            //{
+            //    MessageBox.Show(value.ToString());
+            //}
+
+            //MessageBox.Show(System.Windows.Clipboard.GetData(a[i]));
+            //object rr = System.Windows.Clipboard.GetData(a[i]);
+            //byte[] bb = ObjectToByteArray(rr);
+            //MessageBox.Show(bb.ToString());
+            //System.Runtime.Serialization.Formatters.Binary.BinaryFormatter edd = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+            //System.String[] a = System.String[];
+            //}
+            //MessageBox.Show(System.Windows.Clipboard.ContainsData(a[i]).ToString());
+            //MessageBox.Show(a[i] + " = " + System.Windows.Clipboard.GetDataObject().GetData(a[i]));
+
+
+
+            //}
+
+
+            //}
+            //catch 
+            //{
+            //    MessageBox.Show("null");
+            //}
+
+
+
+        }
+
+        private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (checkBox_largura.Checked)
+            {
+                checkBox_altura.Checked = false;
+                editBox_altura.Enabled = false;
+                editBox_altura.Text = "";
+                editBox_largura.Enabled = true;
+                editBox_largura.Text = "10";
+            }
+            else
+            {
+                checkBox_largura.Checked = true;
+            }
+        }
+
+        private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (checkBox_altura.Checked)
+            {
+                checkBox_largura.Checked = false;
+                editBox_largura.Enabled= false;
+                editBox_largura.Text = "";
+                editBox_altura.Enabled = true;
+                editBox_altura.Text = "10";
+            }
+        else
+        {
+                checkBox_altura.Checked = true;
+            }
+}
     }
 }

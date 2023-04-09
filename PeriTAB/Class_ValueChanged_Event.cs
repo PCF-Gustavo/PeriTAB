@@ -13,6 +13,7 @@ namespace PeriTAB
 {
     public class Class_ValueChanged_Event
     {
+
         public void FieldShading()
         {
             new Thread(() =>
@@ -21,6 +22,7 @@ namespace PeriTAB
                 while (true)
                 {
                     Thread.Sleep(1000);
+
                     if (var != Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading) break;
                 }
                 Metodo_FieldShading();
@@ -29,7 +31,7 @@ namespace PeriTAB
         private void Metodo_FieldShading()
         {
             if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true;
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false;
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false;   
             FieldShading();
         }
 
