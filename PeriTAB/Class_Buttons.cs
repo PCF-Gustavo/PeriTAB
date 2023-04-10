@@ -71,9 +71,11 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon1.button_limpa_estilos.SuperTip = "Remove Estilos de parágrafos não utilizados.";
         }
 
-        public void button_cola_figura_Default()
+        public void button_cola_imagem_Default()
         {
-            Globals.Ribbons.Ribbon1.button_cola_figura.Enabled = true;
+            Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = true;
+            Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "";
+            Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Cola imagem do Clipboard.";
         }
 
         public void checkBox_largura_Default()

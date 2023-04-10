@@ -54,8 +54,8 @@ namespace PeriTAB{
             this.group_porextenso = this.Factory.CreateRibbonGroup();
             this.group_estilos = this.Factory.CreateRibbonGroup();
             this.group_cola_figura = this.Factory.CreateRibbonGroup();
-            this.checkBox_altura = this.Factory.CreateRibbonCheckBox();
             this.checkBox_largura = this.Factory.CreateRibbonCheckBox();
+            this.checkBox_altura = this.Factory.CreateRibbonCheckBox();
             this.dropDown1 = this.Factory.CreateRibbonDropDown();
             this.editBox_largura = this.Factory.CreateRibbonEditBox();
             this.editBox_altura = this.Factory.CreateRibbonEditBox();
@@ -77,8 +77,8 @@ namespace PeriTAB{
             this.button_importa_estilos = this.Factory.CreateRibbonButton();
             this.button_limpa_estilos = this.Factory.CreateRibbonButton();
             this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
-            this.button_cola_figura = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
+            this.button_cola_imagem = this.Factory.CreateRibbonButton();
+            this.button_separador1 = this.Factory.CreateRibbonButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group_macros.SuspendLayout();
@@ -139,27 +139,27 @@ namespace PeriTAB{
             // 
             // group_cola_figura
             // 
-            this.group_cola_figura.Items.Add(this.button_cola_figura);
-            this.group_cola_figura.Items.Add(this.button1);
+            this.group_cola_figura.Items.Add(this.button_cola_imagem);
+            this.group_cola_figura.Items.Add(this.button_separador1);
             this.group_cola_figura.Items.Add(this.checkBox_largura);
             this.group_cola_figura.Items.Add(this.checkBox_altura);
             this.group_cola_figura.Items.Add(this.dropDown1);
             this.group_cola_figura.Items.Add(this.editBox_largura);
             this.group_cola_figura.Items.Add(this.editBox_altura);
-            this.group_cola_figura.Label = "Assistente Figura";
+            this.group_cola_figura.Label = "Assistente de colagem";
             this.group_cola_figura.Name = "group_cola_figura";
-            // 
-            // checkBox_altura
-            // 
-            this.checkBox_altura.Label = "";
-            this.checkBox_altura.Name = "checkBox_altura";
-            this.checkBox_altura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_altura_Click);
             // 
             // checkBox_largura
             // 
             this.checkBox_largura.Label = "";
             this.checkBox_largura.Name = "checkBox_largura";
             this.checkBox_largura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_largura_Click);
+            // 
+            // checkBox_altura
+            // 
+            this.checkBox_altura.Label = "";
+            this.checkBox_altura.Name = "checkBox_altura";
+            this.checkBox_altura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_altura_Click);
             // 
             // dropDown1
             // 
@@ -179,13 +179,13 @@ namespace PeriTAB{
             this.dropDown1.Items.Add(ribbonDropDownItemImpl7);
             this.dropDown1.Label = "Resolução";
             this.dropDown1.Name = "dropDown1";
-            this.dropDown1.SelectionChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.dropDown1_SelectionChanged);
             // 
             // editBox_largura
             // 
             this.editBox_largura.Label = "Largura (cm)";
             this.editBox_largura.Name = "editBox_largura";
             this.editBox_largura.Tag = "";
+            this.editBox_largura.Text = null;
             // 
             // editBox_altura
             // 
@@ -334,19 +334,20 @@ namespace PeriTAB{
             this.toggleButton_estilos.SuperTip = "Abre Painel de Estilos";
             this.toggleButton_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_estilos_Click);
             // 
-            // button_cola_figura
+            // button_cola_imagem
             // 
-            this.button_cola_figura.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_cola_figura.Image = global::PeriTAB.Properties.Resources.image_icon;
-            this.button_cola_figura.Label = "Cola Figura";
-            this.button_cola_figura.Name = "button_cola_figura";
-            this.button_cola_figura.ShowImage = true;
-            this.button_cola_figura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_figura_Click);
+            this.button_cola_imagem.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_cola_imagem.Image = global::PeriTAB.Properties.Resources.image_icon;
+            this.button_cola_imagem.Label = "Cola Imagem";
+            this.button_cola_imagem.Name = "button_cola_imagem";
+            this.button_cola_imagem.ShowImage = true;
+            this.button_cola_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_imagem_Click);
             // 
-            // button1
+            // button_separador1
             // 
-            this.button1.Label = " ";
-            this.button1.Name = "button1";
+            this.button_separador1.Label = "separador";
+            this.button_separador1.Name = "button_separador1";
+            this.button_separador1.ShowLabel = false;
             // 
             // Ribbon1
             // 
@@ -402,13 +403,13 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_atualiza_campos;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_campos;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_cola_figura;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_cola_figura;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_cola_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_largura;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown1;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox editBox_largura;
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox editBox_altura;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_altura;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador1;
     }
 
     partial class ThisRibbonCollection

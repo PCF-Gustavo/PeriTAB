@@ -117,7 +117,9 @@ namespace PeriTAB
 
         }
 
-        private void button_cola_figura_Click(object sender, RibbonControlEventArgs e)
+
+
+        private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             if (System.Windows.Clipboard.ContainsData("FileDrop"))
             {
@@ -131,10 +133,32 @@ namespace PeriTAB
                         Globals.ThisAddIn.Application.ScreenUpdating = false;
 
 
+
+                        //Globals.ThisAddIn.Application.Options.save
+
+                        //Globals.ThisAddIn.Application.Selection.Paste();
+                        ////Clipboard.Clear(); 
+                        ////Globals.ThisAddIn.Application.Selection.Paste();
+
+
+                        //System.Drawing.Image img = System.Drawing.Image.FromFile(pathfile[0]);
+                        //MessageBox.Show(img.HorizontalResolution.ToString());
+                        //MessageBox.Show(img.VerticalResolution.ToString());
+                        //Bitmap img_bitmap = new Bitmap(img);
+                        //img_bitmap.SetResolution(20.0F, 20.0F);
+
+
+                        //Clipboard.SetImage(img_bitmap.GetThumbnailImage(20,20, gethum as, callbackData));
+
+
+                        //Globals.ThisAddIn.Application.Selection.Co
+
+                        //Globals.ThisAddIn.Application.Selection.Paste();
+
                         if (checkBox_largura.Checked)
                         {
                             InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile[0]);
-                            
+
 
                             MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
                             imagem.LockAspectRatio = (MsoTriState)1;
@@ -165,7 +189,7 @@ namespace PeriTAB
                 }
             }
 
-            
+
 
             //Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint
 
@@ -265,7 +289,7 @@ namespace PeriTAB
 
 
 
-        }
+        }      
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
