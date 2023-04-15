@@ -15,6 +15,8 @@ using Spire.Doc;
 using Spire.Doc.Documents;
 using Spire.Doc.Fields;
 using System.Windows.Media.TextFormatting;
+using System.Configuration;
+using System.Collections.Specialized;
 
 namespace PeriTAB
 {    
@@ -24,8 +26,12 @@ namespace PeriTAB
         {                     
             private static string var1 = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
             private static string var2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
+            private static string var3 = "";
+            private static string var4 = "";
             public static string caminho_template { get { return var1; } set { } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return var2; } set { } }
+            public static string editBox_largura_Text { get { return var3; } set { var3 = value; } }
+            public static string editBox_altura_Text { get { return var4; } set { var4 = value; } }
         }
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
@@ -37,7 +43,8 @@ namespace PeriTAB
             // Escreve o número da versão
             System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
             Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
-                        
+
+
         }
 
         private void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
@@ -195,17 +202,20 @@ namespace PeriTAB
                 }
                 else MessageBox.Show("Imagem não encontrada.");
             }
+            else MessageBox.Show("Imagem não encontrada.");
         }      
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
+            if (Variables.editBox_largura_Text == "") { Variables.editBox_largura_Text = Class_Buttons.preferences.largura; }
+
             if (checkBox_largura.Checked)
             {
                 checkBox_altura.Checked = false;
                 editBox_altura.Enabled = false;
                 editBox_altura.Text = "";
                 editBox_largura.Enabled = true;
-                editBox_largura.Text = "10";
+                editBox_largura.Text = Variables.editBox_largura_Text;
             }
             else
             {
@@ -215,13 +225,15 @@ namespace PeriTAB
 
         private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
         {
+            if (Variables.editBox_altura_Text == "") { Variables.editBox_altura_Text = Class_Buttons.preferences.altura; }
+
             if (checkBox_altura.Checked)
             {
                 checkBox_largura.Checked = false;
                 editBox_largura.Enabled= false;
                 editBox_largura.Text = "";
                 editBox_altura.Enabled = true;
-                editBox_altura.Text = "10";
+                editBox_altura.Text = Variables.editBox_altura_Text;
             }
         else
         {
@@ -293,13 +305,45 @@ namespace PeriTAB
         {
             if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB)) { Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB); } //Cria a pasta AppData/Roaming/PeriTAB caso não exista
 
-            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences.txt");
+            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences");
 
-            string preferences = "teste";
+            string preferences = "";
+
+            if (Globals.Ribbons.Ribbon1.editBox_largura.Text != ""){ preferences += "<largura>" + Globals.Ribbons.Ribbon1.editBox_largura.Text + "</largura>" + System.Environment.NewLine; } else if (Variables.editBox_largura_Text != "") { preferences += "<largura>" + Variables.editBox_largura_Text + "</largura>" + System.Environment.NewLine;} else { preferences += "<largura>" + Class_Buttons.preferences.largura + "</largura>" + System.Environment.NewLine; }
+            if (Globals.Ribbons.Ribbon1.editBox_altura.Text != "") { preferences += "<altura>" + Globals.Ribbons.Ribbon1.editBox_altura.Text + "</altura>" + System.Environment.NewLine; } else if (Variables.editBox_altura_Text != "") { preferences += "<altura>" + Variables.editBox_altura_Text + "</altura>" + System.Environment.NewLine; } else { preferences += "<altura>" + Class_Buttons.preferences.altura + "</altura>" + System.Environment.NewLine; }
+            preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
+            preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
+            preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
 
             File.WriteAllText(preferences_path, preferences);
+        }
 
+        private void editBox_largura_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            if (Variables.editBox_largura_Text == "") { Variables.editBox_largura_Text = Class_Buttons.preferences.largura; }
 
+            if (float.TryParse(editBox_largura.Text, out float alt) & alt.ToString() == editBox_largura.Text)
+            {
+                Variables.editBox_largura_Text = editBox_largura.Text;
+            }
+            else 
+            {
+                editBox_largura.Text = Variables.editBox_largura_Text;
+            }            
+        }
+
+        private void editBox_altura_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            if (Variables.editBox_altura_Text == "") { Variables.editBox_altura_Text = Class_Buttons.preferences.altura; }
+
+            if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text)
+            {
+                Variables.editBox_altura_Text = editBox_altura.Text;
+            }
+            else
+            {
+                editBox_altura.Text = Variables.editBox_altura_Text;
+            }
         }
     }
 }

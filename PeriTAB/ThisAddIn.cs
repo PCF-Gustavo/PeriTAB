@@ -20,6 +20,8 @@ namespace PeriTAB
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            le_preferencias();
+
             //Configura o Task Pane
             iUserControl1 = new UserControl1();
             TaskPane1 = Globals.ThisAddIn.CustomTaskPanes.Add(iUserControl1, "Estilos (PeriTAB)");
@@ -37,6 +39,7 @@ namespace PeriTAB
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
             Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event(); iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
+
         }
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
@@ -45,31 +48,56 @@ namespace PeriTAB
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {            
-            // Atualiza preferências
-            //string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences.txt");
+        {
+            escreve_preferencias();
+        }
 
-            //File.WriteAllText(preferences_path, "teste1");
+        private void escreve_preferencias()
+        {
+            if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB)) { Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB); } //Cria a pasta AppData/Roaming/PeriTAB caso não exista
 
-            //try
-            //{
-            //    Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(tmpsave);
-            //}
-            //catch
-            //{
-            //    System.IO.Directory.CreateDirectory(Variables.caminho_tmp);
-            //    Globals.ThisAddIn.Application.ActiveDocument.SaveAs2("tmpsave.docx");
-            //}
+            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences");
 
+            string preferences = "";
+            
+            if (Globals.Ribbons.Ribbon1.editBox_largura.Text != "") { preferences += "<largura>" + Globals.Ribbons.Ribbon1.editBox_largura.Text + "</largura>" + System.Environment.NewLine; } else if (Ribbon1.Variables.editBox_largura_Text != "") { preferences += "<largura>" + Ribbon1.Variables.editBox_largura_Text + "</largura>" + System.Environment.NewLine; } else { preferences += "<largura>" + Class_Buttons.preferences.largura + "</largura>" + System.Environment.NewLine; }
+            if (Globals.Ribbons.Ribbon1.editBox_altura.Text != "") { preferences += "<altura>" + Globals.Ribbons.Ribbon1.editBox_altura.Text + "</altura>" + System.Environment.NewLine; } else if (Ribbon1.Variables.editBox_altura_Text != "") { preferences += "<altura>" + Ribbon1.Variables.editBox_altura_Text + "</altura>" + System.Environment.NewLine; } else { preferences += "<altura>" + Class_Buttons.preferences.altura + "</altura>" + System.Environment.NewLine; }
+            preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
+            preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
+            preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
 
-            //            // Create a file to write to.
-            //string createText = "Hello and Welcome" + Environment.NewLine;
-            //File.WriteAllText(path, createText);
+            File.WriteAllText(preferences_path, preferences);
+        }
 
-            //...
+        private void le_preferencias()
+        {
+            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences");
 
-            //// Open the file to read from.
-            //string readText = File.ReadAllText(path);
+            if (File.Exists(preferences_path))
+            {
+                string preferences_text = File.ReadAllText(preferences_path);
+
+                Class_Buttons.preferences.largura = procura(preferences_text, "largura");
+                Class_Buttons.preferences.altura = procura(preferences_text, "altura");
+                Class_Buttons.preferences.largura_checked = bool.Parse(procura(preferences_text, "largura_checked"));
+                Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
+                Class_Buttons.preferences.separador = procura(preferences_text, "separador");
+            }
+            else
+            {
+                Class_Buttons.preferences.largura = "10";
+                Class_Buttons.preferences.altura = "10";
+                Class_Buttons.preferences.largura_checked = true;
+                Class_Buttons.preferences.ordem = "Alfabética";
+                Class_Buttons.preferences.separador = "Nenhum";
+            }
+        }
+
+        private string procura(string texto, string valor) 
+        {
+            string str1 = "<" + valor + ">";
+            string str2 = "</" + valor + ">";
+            return texto.Substring((texto.IndexOf(str1) + (str1).Length), texto.IndexOf(str2) - (texto.IndexOf(str1) + (str1).Length));
         }
 
         #region Código gerado por VSTO

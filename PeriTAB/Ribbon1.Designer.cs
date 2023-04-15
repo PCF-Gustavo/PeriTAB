@@ -52,16 +52,21 @@ namespace PeriTAB{
             this.group_porextenso = this.Factory.CreateRibbonGroup();
             this.group_estilos = this.Factory.CreateRibbonGroup();
             this.group_cola_figura = this.Factory.CreateRibbonGroup();
-            this.checkBox_largura = this.Factory.CreateRibbonCheckBox();
-            this.checkBox_altura = this.Factory.CreateRibbonCheckBox();
             this.checkBox_referencia = this.Factory.CreateRibbonCheckBox();
+            this.box1 = this.Factory.CreateRibbonBox();
+            this.checkBox_largura = this.Factory.CreateRibbonCheckBox();
             this.editBox_largura = this.Factory.CreateRibbonEditBox();
+            this.box2 = this.Factory.CreateRibbonBox();
+            this.checkBox_altura = this.Factory.CreateRibbonCheckBox();
             this.editBox_altura = this.Factory.CreateRibbonEditBox();
+            this.separator1 = this.Factory.CreateRibbonSeparator();
+            this.label_multiplas_imagens = this.Factory.CreateRibbonLabel();
+            this.dropDown_ordem = this.Factory.CreateRibbonDropDown();
+            this.dropDown_separador = this.Factory.CreateRibbonDropDown();
             this.group_sobre = this.Factory.CreateRibbonGroup();
             this.label_nome = this.Factory.CreateRibbonLabel();
             this.label_criado = this.Factory.CreateRibbonLabel();
             this.label_email = this.Factory.CreateRibbonLabel();
-            this.dropDown_ordem = this.Factory.CreateRibbonDropDown();
             this.button_confere_num_legenda = this.Factory.CreateRibbonButton();
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
             this.button_renomeia_documento = this.Factory.CreateRibbonButton();
@@ -79,11 +84,6 @@ namespace PeriTAB{
             this.button_cola_imagem = this.Factory.CreateRibbonButton();
             this.button1 = this.Factory.CreateRibbonButton();
             this.button2 = this.Factory.CreateRibbonButton();
-            this.dropDown_separador = this.Factory.CreateRibbonDropDown();
-            this.separator1 = this.Factory.CreateRibbonSeparator();
-            this.label_multiplas_imagens = this.Factory.CreateRibbonLabel();
-            this.box1 = this.Factory.CreateRibbonBox();
-            this.box2 = this.Factory.CreateRibbonBox();
             this.button3 = this.Factory.CreateRibbonButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
@@ -92,9 +92,9 @@ namespace PeriTAB{
             this.group_porextenso.SuspendLayout();
             this.group_estilos.SuspendLayout();
             this.group_cola_figura.SuspendLayout();
-            this.group_sobre.SuspendLayout();
             this.box1.SuspendLayout();
             this.box2.SuspendLayout();
+            this.group_sobre.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab_default
@@ -158,18 +158,6 @@ namespace PeriTAB{
             this.group_cola_figura.Label = "Assistente de colagem";
             this.group_cola_figura.Name = "group_cola_figura";
             // 
-            // checkBox_largura
-            // 
-            this.checkBox_largura.Label = "";
-            this.checkBox_largura.Name = "checkBox_largura";
-            this.checkBox_largura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_largura_Click);
-            // 
-            // checkBox_altura
-            // 
-            this.checkBox_altura.Label = "";
-            this.checkBox_altura.Name = "checkBox_altura";
-            this.checkBox_altura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_altura_Click);
-            // 
             // checkBox_referencia
             // 
             this.checkBox_referencia.Label = "Referência";
@@ -177,18 +165,73 @@ namespace PeriTAB{
             this.checkBox_referencia.SuperTip = "Cola imagem como mera referência ao arquivo original.";
             this.checkBox_referencia.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_referencia_Click);
             // 
+            // box1
+            // 
+            this.box1.Items.Add(this.checkBox_largura);
+            this.box1.Items.Add(this.editBox_largura);
+            this.box1.Name = "box1";
+            // 
+            // checkBox_largura
+            // 
+            this.checkBox_largura.Label = "";
+            this.checkBox_largura.Name = "checkBox_largura";
+            this.checkBox_largura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_largura_Click);
+            // 
             // editBox_largura
             // 
             this.editBox_largura.Label = "Largura (cm)";
             this.editBox_largura.Name = "editBox_largura";
             this.editBox_largura.Tag = "";
             this.editBox_largura.Text = null;
+            this.editBox_largura.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.editBox_largura_TextChanged);
+            // 
+            // box2
+            // 
+            this.box2.Items.Add(this.checkBox_altura);
+            this.box2.Items.Add(this.editBox_altura);
+            this.box2.Name = "box2";
+            // 
+            // checkBox_altura
+            // 
+            this.checkBox_altura.Label = "";
+            this.checkBox_altura.Name = "checkBox_altura";
+            this.checkBox_altura.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_altura_Click);
             // 
             // editBox_altura
             // 
             this.editBox_altura.Label = "Altura (cm)";
             this.editBox_altura.Name = "editBox_altura";
             this.editBox_altura.Text = null;
+            this.editBox_altura.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.editBox_altura_TextChanged);
+            // 
+            // separator1
+            // 
+            this.separator1.Name = "separator1";
+            // 
+            // label_multiplas_imagens
+            // 
+            this.label_multiplas_imagens.Label = "Múltiplas Imagens";
+            this.label_multiplas_imagens.Name = "label_multiplas_imagens";
+            // 
+            // dropDown_ordem
+            // 
+            ribbonDropDownItemImpl1.Label = "Alfabética";
+            ribbonDropDownItemImpl2.Label = "Seleção";
+            this.dropDown_ordem.Items.Add(ribbonDropDownItemImpl1);
+            this.dropDown_ordem.Items.Add(ribbonDropDownItemImpl2);
+            this.dropDown_ordem.Label = "Ordem";
+            this.dropDown_ordem.Name = "dropDown_ordem";
+            // 
+            // dropDown_separador
+            // 
+            ribbonDropDownItemImpl3.Label = "Nenhum";
+            ribbonDropDownItemImpl4.Label = "Espaço";
+            ribbonDropDownItemImpl5.Label = "Parágrafo";
+            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl3);
+            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl4);
+            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl5);
+            this.dropDown_separador.Label = "Separador";
+            this.dropDown_separador.Name = "dropDown_separador";
             // 
             // group_sobre
             // 
@@ -215,15 +258,6 @@ namespace PeriTAB{
             // 
             this.label_email.Label = "gustavo.gvs@pf.gov.br";
             this.label_email.Name = "label_email";
-            // 
-            // dropDown_ordem
-            // 
-            ribbonDropDownItemImpl1.Label = "Alfabética";
-            ribbonDropDownItemImpl2.Label = "Seleção";
-            this.dropDown_ordem.Items.Add(ribbonDropDownItemImpl1);
-            this.dropDown_ordem.Items.Add(ribbonDropDownItemImpl2);
-            this.dropDown_ordem.Label = "Ordem";
-            this.dropDown_ordem.Name = "dropDown_ordem";
             // 
             // button_confere_num_legenda
             // 
@@ -364,38 +398,6 @@ namespace PeriTAB{
             this.button2.Name = "button2";
             this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
             // 
-            // dropDown_separador
-            // 
-            ribbonDropDownItemImpl3.Label = "Nenhum";
-            ribbonDropDownItemImpl4.Label = "Espaço";
-            ribbonDropDownItemImpl5.Label = "Parágrafo";
-            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl3);
-            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl4);
-            this.dropDown_separador.Items.Add(ribbonDropDownItemImpl5);
-            this.dropDown_separador.Label = "Separador";
-            this.dropDown_separador.Name = "dropDown_separador";
-            // 
-            // separator1
-            // 
-            this.separator1.Name = "separator1";
-            // 
-            // label_multiplas_imagens
-            // 
-            this.label_multiplas_imagens.Label = "Múltiplas Imagens";
-            this.label_multiplas_imagens.Name = "label_multiplas_imagens";
-            // 
-            // box1
-            // 
-            this.box1.Items.Add(this.checkBox_largura);
-            this.box1.Items.Add(this.editBox_largura);
-            this.box1.Name = "box1";
-            // 
-            // box2
-            // 
-            this.box2.Items.Add(this.checkBox_altura);
-            this.box2.Items.Add(this.editBox_altura);
-            this.box2.Name = "box2";
-            // 
             // button3
             // 
             this.button3.Label = "button3";
@@ -423,12 +425,12 @@ namespace PeriTAB{
             this.group_estilos.PerformLayout();
             this.group_cola_figura.ResumeLayout(false);
             this.group_cola_figura.PerformLayout();
-            this.group_sobre.ResumeLayout(false);
-            this.group_sobre.PerformLayout();
             this.box1.ResumeLayout(false);
             this.box1.PerformLayout();
             this.box2.ResumeLayout(false);
             this.box2.PerformLayout();
+            this.group_sobre.ResumeLayout(false);
+            this.group_sobre.PerformLayout();
             this.ResumeLayout(false);
 
         }

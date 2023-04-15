@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Office.Tools.Ribbon;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,10 +19,13 @@ namespace PeriTAB
             button_inteiro_Default();
             button_importa_estilos_Default();
             button_limpa_estilos_Default();
+            button_cola_imagem_Default();
             checkBox_altura_Default();
             checkBox_largura_Default();
             editBox_largura_Default();
             editBox_altura_Default();
+            dropDown_ordem_Default();
+            dropDown_separador_Default();
         }
         public void button_confere_num_legenda_Default()
         {
@@ -80,27 +84,54 @@ namespace PeriTAB
 
         public void checkBox_largura_Default()
         {
-            Globals.Ribbons.Ribbon1.checkBox_largura.Checked = true;
+            Globals.Ribbons.Ribbon1.checkBox_largura.Checked = preferences.largura_checked;
         }
         public void editBox_largura_Default()
         {
-            Globals.Ribbons.Ribbon1.editBox_largura.Text = "10";
-            Globals.Ribbons.Ribbon1.editBox_largura.Enabled = true;
+            Globals.Ribbons.Ribbon1.editBox_largura.Enabled = preferences.largura_checked;
+            if (Globals.Ribbons.Ribbon1.editBox_largura.Enabled) { Globals.Ribbons.Ribbon1.editBox_largura.Text = preferences.largura; }            
         }
 
         public void checkBox_altura_Default()
         {
-            Globals.Ribbons.Ribbon1.checkBox_altura.Checked = false;
+            Globals.Ribbons.Ribbon1.checkBox_altura.Checked = !preferences.largura_checked;
         }
 
         public void editBox_altura_Default()
         {
-            Globals.Ribbons.Ribbon1.editBox_altura.Enabled = false;
+            Globals.Ribbons.Ribbon1.editBox_altura.Enabled = !preferences.largura_checked;
+            if (Globals.Ribbons.Ribbon1.checkBox_altura.Checked) { Globals.Ribbons.Ribbon1.editBox_altura.Text = preferences.altura; }
         }
 
-        
+        public void dropDown_ordem_Default()
+        {
+            int index = -1;
+            if (preferences.ordem == "Alfabética") { index = 0; }
+            if (preferences.ordem == "Seleção") { index = 1; }
+            Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItemIndex = index;
+        }
 
-            
+        public void dropDown_separador_Default()
+        {
+            int index = -1;
+            if (preferences.separador == "Nenhum") { index = 0; }
+            if (preferences.separador == "Espaço") { index = 1; }
+            if (preferences.separador == "Parágrafo") { index = 2; }
+            Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItemIndex = index;
+        }
+
+        public class preferences
+        {
+            private static string var1, var2, var4, var5;
+            private static bool var3;
+
+            public static string largura { get { return var1; } set { var1 = value; } }
+            public static string altura { get { return var2; } set { var2 = value; } }
+            public static bool largura_checked { get { return var3; } set { var3 = value; } }
+            public static string ordem { get { return var4; } set { var4 = value; } }
+            public static string separador { get { return var5; } set { var5 = value; } }
+        }
+
 
     }
 }
