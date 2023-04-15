@@ -2,24 +2,30 @@
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows.Controls;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
-
+using System.Windows.Markup;
+using System.Xml.Linq;
+using Spire.Doc;
+using Spire.Doc.Documents;
+using Spire.Doc.Fields;
+using System.Windows.Media.TextFormatting;
 
 namespace PeriTAB
 {    
     public partial class Ribbon1
     {
         public class Variables
-        {
-            private static string var = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
-            public static string caminho_template { get { return var; } set { var = value; } }
+        {                     
+            private static string var1 = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
+            private static string var2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
+            public static string caminho_template { get { return var1; } set { } }
+            public static string caminho_AppData_Roaming_PeriTAB { get { return var2; } set { } }
         }
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
@@ -30,7 +36,7 @@ namespace PeriTAB
 
             // Escreve o número da versão
             System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
-            Globals.Ribbons.Ribbon1.label1.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+            Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
                         
         }
 
@@ -99,17 +105,8 @@ namespace PeriTAB
         }
 
         private void button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
-        {           
-
-        }
-        public static byte[] ObjectToByteArray(Object obj)
         {
-            BinaryFormatter bf = new BinaryFormatter();
-            using (var ms = new MemoryStream())
-            {
-                bf.Serialize(ms, obj);
-                return ms.ToArray();
-            }
+
         }
 
         private void dropDown1_SelectionChanged(object sender, RibbonControlEventArgs e)
@@ -117,61 +114,57 @@ namespace PeriTAB
 
         }
 
-
-
         private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
+
             if (System.Windows.Clipboard.ContainsData("FileDrop"))
             {
                 object obj = System.Windows.Clipboard.GetData("FileDrop");
                 string[] pathfile = (string[])obj;
-                if (pathfile.Length == 1) //Se tem um arquivo no clipboard
+
+                string[] pathfile2 = { "" };
+                int n = 0;
+                for (int i = 0; i <= pathfile.Length - 1; i++)
                 {
-                    string extensao = pathfile[0].Substring(pathfile[0].Length - 4);
-                    if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif") //Se tem extensao de imagem
+                    if (File.Exists(pathfile[i]))
+                    {
+                        string extensao = pathfile[i].Substring(pathfile[i].Length - 4);
+                        if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif" | extensao == "tiff") //Se tem extensao de imagem
+                        {
+                            Array.Resize(ref pathfile2, n+1);
+                            pathfile2[n] = pathfile[i];
+                            n++;
+                        }
+                    }
+                }
+
+                if (pathfile2[0] != "")                 
+                {
+                    if (dropDown_ordem.SelectedItem.Label == "Alfabética") { Array.Sort(pathfile2); } //Ordem alfabética               
+
+                    for (int i = 0; i <= pathfile2.Length - 1; i++)
                     {
                         Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-
-
-                        //Globals.ThisAddIn.Application.Options.save
-
-                        //Globals.ThisAddIn.Application.Selection.Paste();
-                        ////Clipboard.Clear(); 
-                        ////Globals.ThisAddIn.Application.Selection.Paste();
-
-
-                        //System.Drawing.Image img = System.Drawing.Image.FromFile(pathfile[0]);
-                        //MessageBox.Show(img.HorizontalResolution.ToString());
-                        //MessageBox.Show(img.VerticalResolution.ToString());
-                        //Bitmap img_bitmap = new Bitmap(img);
-                        //img_bitmap.SetResolution(20.0F, 20.0F);
-
-
-                        //Clipboard.SetImage(img_bitmap.GetThumbnailImage(20,20, gethum as, callbackData));
-
-
-                        //Globals.ThisAddIn.Application.Selection.Co
-
-                        //Globals.ThisAddIn.Application.Selection.Paste();
+                        bool link = false; bool save = true;
+                        if (Globals.Ribbons.Ribbon1.checkBox_referencia.Checked == true) { link = true; save = false; }
 
                         if (checkBox_largura.Checked)
                         {
-                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile[0]);
-
+                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
 
                             MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
                             imagem.LockAspectRatio = (MsoTriState)1;
-
                             string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
                             float.TryParse(larg_string, out float larg);
                             imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+
                             imagem.LockAspectRatio = LockAspectRatio_i;
                         }
 
                         if (checkBox_altura.Checked)
                         {
-                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile[0]);
+                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
 
                             MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
                             imagem.LockAspectRatio = (MsoTriState)1;
@@ -182,113 +175,26 @@ namespace PeriTAB
                             imagem.LockAspectRatio = LockAspectRatio_i;
                         }
 
+                        if (i != pathfile2.Length -1) //Exceto última imagem
+                        {
 
-
+                            switch (dropDown_separador.SelectedItem.Label) //Insere separador
+                            {
+                                case "Espaço":
+                                    Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                                    Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                    break;
+                                case "Parágrafo":
+                                    Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
+                                    Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                    break;
+                            }
+                        }
                         Globals.ThisAddIn.Application.ScreenUpdating = true;
                     }
                 }
+                else MessageBox.Show("Imagem não encontrada.");
             }
-
-
-
-            //Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint
-
-
-
-            //if (System.Windows.Clipboard.ContainsImage()) Globals.ThisAddIn.Application.Selection.Paste();
-            //try
-            //{
-            //    System.Windows.IDataObject Clipboard_content = System.Windows.Clipboard.GetDataObject();
-            //    string[] Clipboard_content_formats = Clipboard_content.GetFormats();
-
-            //    //foreach (string str in Clipboard_content_formats)
-            //    //{
-            //    //    MessageBox.Show(str);
-            //    //}
-
-            //    for (int i = 0; i <= Clipboard_content_formats.Length - 1; i++)
-            //    {
-            //        if (System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i])) MessageBox.Show("Contém dados do tipo '" + Clipboard_content_formats[i] + "' = " + System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]).ToString() + Environment.NewLine + Environment.NewLine + System.Windows.Clipboard.GetData(Clipboard_content_formats[i]).ToString()); 
-            //        else MessageBox.Show("Contém dados do tipo '" + Clipboard_content_formats[i] + "' = " + System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]).ToString());
-
-            //        if (System.Windows.Clipboard.ContainsData(Clipboard_content_formats[i]) & System.Windows.Clipboard.GetData(Clipboard_content_formats[i]).ToString() == "System.String[]")
-            //        {
-            //            object obj = System.Windows.Clipboard.GetData(Clipboard_content_formats[i]);
-            //            string[] stringArray = (string[])obj;
-            //            foreach (string str in stringArray)
-            //            {
-            //                MessageBox.Show(str);
-            //            }
-            //        }
-
-            //    }
-
-            //if (System.Windows.Clipboard.ContainsData("FileDrop")) 
-            //{
-            //    object obj = System.Windows.Clipboard.GetData("FileDrop");
-            //    string[] stringArray = (string[])obj;
-
-
-
-            //} 
-
-
-            //    //MessageBox.Show(System.Windows.Clipboard.GetData("Bitmap").GetType().ToString());
-            //    string[] a = System.Windows.Clipboard.GetDataObject().GetFormats();
-
-
-
-
-            ////MessageBox.Show(w.ToString());
-            //string[] b = w.GetFormats();
-            //foreach (string oo in b)
-            //{
-            //    MessageBox.Show(oo);
-            //}
-
-
-
-            //MessageBox.Show(w.GetFormats().ToString());
-
-            //for (int i = 0; i <= a.Length - 1; i++)
-            //{
-            //    MessageBox.Show("Contém dados do tipo '" + a[i] + "' = " + System.Windows.Clipboard.ContainsData(a[i]).ToString());
-            //    if (System.Windows.Clipboard.ContainsData(a[i])) MessageBox.Show(System.Windows.Clipboard.GetData(a[i]).ToString());
-
-
-
-
-            //if (System.Windows.Clipboard.GetData(a[i]).ToString() == "System.String[]") 
-            //{
-            //    System.String dd = System.Windows.Clipboard.GetData(a[i]).ToString();
-            //foreach (string value in System.Windows.Clipboard.GetData(a[i]).ToString())
-            //{
-            //    MessageBox.Show(value.ToString());
-            //}
-
-            //MessageBox.Show(System.Windows.Clipboard.GetData(a[i]));
-            //object rr = System.Windows.Clipboard.GetData(a[i]);
-            //byte[] bb = ObjectToByteArray(rr);
-            //MessageBox.Show(bb.ToString());
-            //System.Runtime.Serialization.Formatters.Binary.BinaryFormatter edd = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-            //System.String[] a = System.String[];
-            //}
-            //MessageBox.Show(System.Windows.Clipboard.ContainsData(a[i]).ToString());
-            //MessageBox.Show(a[i] + " = " + System.Windows.Clipboard.GetDataObject().GetData(a[i]));
-
-
-
-            //}
-
-
-            //}
-            //catch 
-            //{
-            //    MessageBox.Show("null");
-            //}
-
-
-
         }      
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
@@ -322,5 +228,78 @@ namespace PeriTAB
                 checkBox_altura.Checked = true;
             }
 }
+
+        private void checkBox_referencia_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (checkBox_referencia.Checked) {
+                System.Windows.Forms.MessageBox.Show("Cuidado! Excluir/mover/renomear o arquivo da imagem causará perda de referência.");
+            }
+        }
+       
+
+        private void button1_Click(object sender, RibbonControlEventArgs e)
+        {
+            foreach (InlineShape s in Globals.ThisAddIn.Application.ActiveDocument.InlineShapes)
+            {
+                if (s.Type == WdInlineShapeType.wdInlineShapePicture | s.Type == WdInlineShapeType.wdInlineShapeLinkedPicture)
+                {
+                    string str1 = "pkg:name=" + "\"" + "/word/media/";
+                    string str2 = "\"" + " pkg:contentType=";
+
+                    string xml1 = s.Range.WordOpenXML;
+
+                    int index1 = xml1.IndexOf(str1);
+                    int index2 = xml1.Substring(index1, 100).IndexOf(str2);
+
+                    string pathimage = xml1.Substring(index1 + 10, index2 - 10);
+
+
+                    string fullname = Globals.ThisAddIn.Application.ActiveDocument.FullName;
+
+                    MessageBox.Show(fullname + pathimage.Replace("/", @"\"));
+                }
+
+            }
+            string xml = Globals.ThisAddIn.Application.ActiveDocument.WordOpenXML;
+            long compress = xml.IndexOf("<w:doNotAutoCompressPictures/>");
+
+            if (compress.ToString() == "-1")
+            {
+                //Comprime
+            }
+        }
+
+        private void button2_Click(object sender, RibbonControlEventArgs e)
+        {
+            Spire.Doc.Document document = new Spire.Doc.Document(@"C:\Users\Gustavo\Desktop\FFFF.docx");
+
+            foreach (Spire.Doc.Section section in document.Sections)
+            {
+                foreach (Spire.Doc.Documents.Paragraph paragraph in section.Paragraphs)
+                {
+                    foreach (Spire.Doc.DocumentObject docObject in paragraph.ChildObjects)
+                    {
+                        if (docObject.DocumentObjectType == DocumentObjectType.Picture)
+                        {
+                            DocPicture pic = docObject as DocPicture;
+                            MessageBox.Show(pic.Image.HorizontalResolution.ToString());
+                        }
+                    }
+                }
+            }
+        }
+
+        private void button3_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB)) { Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB); } //Cria a pasta AppData/Roaming/PeriTAB caso não exista
+
+            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences.txt");
+
+            string preferences = "teste";
+
+            File.WriteAllText(preferences_path, preferences);
+
+
+        }
     }
 }

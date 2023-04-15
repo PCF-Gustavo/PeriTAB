@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,7 +28,7 @@ namespace PeriTAB
             TaskPane1.Height = 90;
             TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
 
-            //Inicia Eventos
+            //Inicia Eventos            
             Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Evento_New_or_Open();
             Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
             Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.DefaultAll();
@@ -35,6 +36,7 @@ namespace PeriTAB
             Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event(); iClass_DocSave_Event.Evento_DocSave();            
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
+            Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event(); iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
         }
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
@@ -43,7 +45,31 @@ namespace PeriTAB
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
-        {
+        {            
+            // Atualiza preferências
+            //string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences.txt");
+
+            //File.WriteAllText(preferences_path, "teste1");
+
+            //try
+            //{
+            //    Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(tmpsave);
+            //}
+            //catch
+            //{
+            //    System.IO.Directory.CreateDirectory(Variables.caminho_tmp);
+            //    Globals.ThisAddIn.Application.ActiveDocument.SaveAs2("tmpsave.docx");
+            //}
+
+
+            //            // Create a file to write to.
+            //string createText = "Hello and Welcome" + Environment.NewLine;
+            //File.WriteAllText(path, createText);
+
+            //...
+
+            //// Open the file to read from.
+            //string readText = File.ReadAllText(path);
         }
 
         #region Código gerado por VSTO
