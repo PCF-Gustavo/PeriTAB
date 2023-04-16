@@ -29,18 +29,18 @@
         private void InitializeComponent()
         {
             this.button_sem_formatacao = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.button_corpo_do_texto = new System.Windows.Forms.Button();
+            this.button_citacoes = new System.Windows.Forms.Button();
+            this.button_secao_1 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
-            this.button11 = new System.Windows.Forms.Button();
-            this.button12 = new System.Windows.Forms.Button();
-            this.button13 = new System.Windows.Forms.Button();
+            this.button_enumeracao = new System.Windows.Forms.Button();
+            this.button_reinicia_lista = new System.Windows.Forms.Button();
+            this.button_figuras = new System.Windows.Forms.Button();
+            this.button_legendas_de_figuras = new System.Windows.Forms.Button();
+            this.button_legendas_de_tabelas = new System.Windows.Forms.Button();
+            this.button_quesitos = new System.Windows.Forms.Button();
             this.button_DockRight = new System.Windows.Forms.Button();
             this.button_DockBottom = new System.Windows.Forms.Button();
             this.SuspendLayout();
@@ -55,35 +55,35 @@
             this.button_sem_formatacao.UseVisualStyleBackColor = true;
             this.button_sem_formatacao.Click += new System.EventHandler(this.button_sem_formatacao_Click);
             // 
-            // button2
+            // button_corpo_do_texto
             // 
-            this.button2.Location = new System.Drawing.Point(100, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(90, 40);
-            this.button2.TabIndex = 0;
-            this.button2.Text = "Corpo do Texto";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.button_corpo_do_texto.Location = new System.Drawing.Point(100, 5);
+            this.button_corpo_do_texto.Name = "button_corpo_do_texto";
+            this.button_corpo_do_texto.Size = new System.Drawing.Size(90, 40);
+            this.button_corpo_do_texto.TabIndex = 0;
+            this.button_corpo_do_texto.Text = "Corpo do Texto";
+            this.button_corpo_do_texto.UseVisualStyleBackColor = true;
+            this.button_corpo_do_texto.Click += new System.EventHandler(this.button_corpo_do_texto_Click);
             // 
-            // button3
+            // button_citacoes
             // 
-            this.button3.Location = new System.Drawing.Point(195, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(90, 40);
-            this.button3.TabIndex = 0;
-            this.button3.Text = "Citações";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.button_citacoes.Location = new System.Drawing.Point(195, 5);
+            this.button_citacoes.Name = "button_citacoes";
+            this.button_citacoes.Size = new System.Drawing.Size(90, 40);
+            this.button_citacoes.TabIndex = 0;
+            this.button_citacoes.Text = "Citações";
+            this.button_citacoes.UseVisualStyleBackColor = true;
+            this.button_citacoes.Click += new System.EventHandler(this.button_citacoes_Click);
             // 
-            // button4
+            // button_secao_1
             // 
-            this.button4.Location = new System.Drawing.Point(290, 5);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(90, 40);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "Seção Primária";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.button_secao_1.Location = new System.Drawing.Point(290, 5);
+            this.button_secao_1.Name = "button_secao_1";
+            this.button_secao_1.Size = new System.Drawing.Size(90, 40);
+            this.button_secao_1.TabIndex = 0;
+            this.button_secao_1.Text = "Seção Primária";
+            this.button_secao_1.UseVisualStyleBackColor = true;
+            this.button_secao_1.Click += new System.EventHandler(this.button_secao_1_Click);
             // 
             // button5
             // 
@@ -115,65 +115,65 @@
             this.button7.UseVisualStyleBackColor = true;
             this.button7.Click += new System.EventHandler(this.button7_Click);
             // 
-            // button8
+            // button_enumeracao
             // 
-            this.button8.Location = new System.Drawing.Point(670, 5);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(90, 40);
-            this.button8.TabIndex = 0;
-            this.button8.Text = "Enumeração";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.button_enumeracao.Location = new System.Drawing.Point(670, 5);
+            this.button_enumeracao.Name = "button_enumeracao";
+            this.button_enumeracao.Size = new System.Drawing.Size(90, 40);
+            this.button_enumeracao.TabIndex = 0;
+            this.button_enumeracao.Text = "Enumeração";
+            this.button_enumeracao.UseVisualStyleBackColor = true;
+            this.button_enumeracao.Click += new System.EventHandler(this.button_enumeracao_Click);
             // 
-            // button9
+            // button_reinicia_lista
             // 
-            this.button9.Location = new System.Drawing.Point(759, 5);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(60, 40);
-            this.button9.TabIndex = 0;
-            this.button9.Text = "Reinicia Lista";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.button_reinicia_lista.Location = new System.Drawing.Point(759, 5);
+            this.button_reinicia_lista.Name = "button_reinicia_lista";
+            this.button_reinicia_lista.Size = new System.Drawing.Size(60, 40);
+            this.button_reinicia_lista.TabIndex = 0;
+            this.button_reinicia_lista.Text = "Reinicia Lista";
+            this.button_reinicia_lista.UseVisualStyleBackColor = true;
+            this.button_reinicia_lista.Click += new System.EventHandler(this.button_reinicia_lista_Click);
             // 
-            // button10
+            // button_figuras
             // 
-            this.button10.Location = new System.Drawing.Point(824, 5);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(90, 40);
-            this.button10.TabIndex = 0;
-            this.button10.Text = "Figuras";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
+            this.button_figuras.Location = new System.Drawing.Point(824, 5);
+            this.button_figuras.Name = "button_figuras";
+            this.button_figuras.Size = new System.Drawing.Size(90, 40);
+            this.button_figuras.TabIndex = 0;
+            this.button_figuras.Text = "Figuras";
+            this.button_figuras.UseVisualStyleBackColor = true;
+            this.button_figuras.Click += new System.EventHandler(this.button_figuras_Click);
             // 
-            // button11
+            // button_legendas_de_figuras
             // 
-            this.button11.Location = new System.Drawing.Point(919, 5);
-            this.button11.Name = "button11";
-            this.button11.Size = new System.Drawing.Size(90, 40);
-            this.button11.TabIndex = 0;
-            this.button11.Text = "Legendas de Figuras";
-            this.button11.UseVisualStyleBackColor = true;
-            this.button11.Click += new System.EventHandler(this.button11_Click);
+            this.button_legendas_de_figuras.Location = new System.Drawing.Point(919, 5);
+            this.button_legendas_de_figuras.Name = "button_legendas_de_figuras";
+            this.button_legendas_de_figuras.Size = new System.Drawing.Size(90, 40);
+            this.button_legendas_de_figuras.TabIndex = 0;
+            this.button_legendas_de_figuras.Text = "Legendas de Figuras";
+            this.button_legendas_de_figuras.UseVisualStyleBackColor = true;
+            this.button_legendas_de_figuras.Click += new System.EventHandler(this.button_legendas_de_figuras_Click);
             // 
-            // button12
+            // button_legendas_de_tabelas
             // 
-            this.button12.Location = new System.Drawing.Point(1014, 5);
-            this.button12.Name = "button12";
-            this.button12.Size = new System.Drawing.Size(90, 40);
-            this.button12.TabIndex = 0;
-            this.button12.Text = "Legendas de Tabelas";
-            this.button12.UseVisualStyleBackColor = true;
-            this.button12.Click += new System.EventHandler(this.button12_Click);
+            this.button_legendas_de_tabelas.Location = new System.Drawing.Point(1014, 5);
+            this.button_legendas_de_tabelas.Name = "button_legendas_de_tabelas";
+            this.button_legendas_de_tabelas.Size = new System.Drawing.Size(90, 40);
+            this.button_legendas_de_tabelas.TabIndex = 0;
+            this.button_legendas_de_tabelas.Text = "Legendas de Tabelas";
+            this.button_legendas_de_tabelas.UseVisualStyleBackColor = true;
+            this.button_legendas_de_tabelas.Click += new System.EventHandler(this.button_legendas_de_tabelas_Click);
             // 
-            // button13
+            // button_quesitos
             // 
-            this.button13.Location = new System.Drawing.Point(1109, 5);
-            this.button13.Name = "button13";
-            this.button13.Size = new System.Drawing.Size(90, 40);
-            this.button13.TabIndex = 0;
-            this.button13.Text = "Quesitos";
-            this.button13.UseVisualStyleBackColor = true;
-            this.button13.Click += new System.EventHandler(this.button13_Click);
+            this.button_quesitos.Location = new System.Drawing.Point(1109, 5);
+            this.button_quesitos.Name = "button_quesitos";
+            this.button_quesitos.Size = new System.Drawing.Size(90, 40);
+            this.button_quesitos.TabIndex = 0;
+            this.button_quesitos.Text = "Quesitos";
+            this.button_quesitos.UseVisualStyleBackColor = true;
+            this.button_quesitos.Click += new System.EventHandler(this.button_quesitos_Click);
             // 
             // button_DockRight
             // 
@@ -206,22 +206,22 @@
             this.AutoSize = true;
             this.Controls.Add(this.button_DockBottom);
             this.Controls.Add(this.button_DockRight);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button13);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button12);
+            this.Controls.Add(this.button_reinicia_lista);
+            this.Controls.Add(this.button_quesitos);
+            this.Controls.Add(this.button_enumeracao);
+            this.Controls.Add(this.button_legendas_de_tabelas);
             this.Controls.Add(this.button7);
-            this.Controls.Add(this.button11);
+            this.Controls.Add(this.button_legendas_de_figuras);
             this.Controls.Add(this.button6);
-            this.Controls.Add(this.button10);
+            this.Controls.Add(this.button_figuras);
             this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.button_secao_1);
+            this.Controls.Add(this.button_citacoes);
+            this.Controls.Add(this.button_corpo_do_texto);
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1366, 611);
+            this.Size = new System.Drawing.Size(1349, 611);
             this.ResumeLayout(false);
 
         }
@@ -229,18 +229,18 @@
         #endregion
 
         private System.Windows.Forms.Button button_sem_formatacao;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button_corpo_do_texto;
+        private System.Windows.Forms.Button button_citacoes;
+        private System.Windows.Forms.Button button_secao_1;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
-        private System.Windows.Forms.Button button11;
-        private System.Windows.Forms.Button button12;
-        private System.Windows.Forms.Button button13;
+        private System.Windows.Forms.Button button_enumeracao;
+        private System.Windows.Forms.Button button_reinicia_lista;
+        private System.Windows.Forms.Button button_figuras;
+        private System.Windows.Forms.Button button_legendas_de_figuras;
+        private System.Windows.Forms.Button button_legendas_de_tabelas;
+        private System.Windows.Forms.Button button_quesitos;
         private System.Windows.Forms.Button button_DockRight;
         private System.Windows.Forms.Button button_DockBottom;
     }
