@@ -2,21 +2,10 @@
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
-using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
-using System.Windows.Markup;
-using System.Xml.Linq;
-using Spire.Doc;
-using Spire.Doc.Documents;
-using Spire.Doc.Fields;
-using System.Windows.Media.TextFormatting;
-using System.Configuration;
-using System.Collections.Specialized;
+
 
 namespace PeriTAB
 {    
@@ -34,6 +23,9 @@ namespace PeriTAB
             public static string editBox_altura_Text { get { return var4; } set { var4 = value; } }
         }
 
+        const string quote = "\"";
+        const string slash = @"\";
+
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
@@ -43,8 +35,6 @@ namespace PeriTAB
             // Escreve o número da versão
             System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
             Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
-
-
         }
 
         private void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
@@ -113,13 +103,19 @@ namespace PeriTAB
 
         private void button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
         {
-
+            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "04 - Seções (PeriTAB);1" + quote, false);
         }
 
-        private void dropDown1_SelectionChanged(object sender, RibbonControlEventArgs e)
+        private void button_inserir_pagina_Click(object sender, RibbonControlEventArgs e)
         {
-
+            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "PAGE", false);
         }
+
+        private void button_inserir_pagina_extenso_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldPage, slash + "* Cardtext " + slash + "* Lower", false);
+        }
+
 
         private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
@@ -135,7 +131,7 @@ namespace PeriTAB
                 {
                     if (File.Exists(pathfile[i]))
                     {
-                        string extensao = pathfile[i].Substring(pathfile[i].Length - 4);
+                        string extensao = (pathfile[i].Substring(pathfile[i].Length - 4)).ToLower();
                         if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif" | extensao == "tiff") //Se tem extensao de imagem
                         {
                             Array.Resize(ref pathfile2, n+1);
@@ -246,83 +242,14 @@ namespace PeriTAB
             if (checkBox_referencia.Checked) {
                 System.Windows.Forms.MessageBox.Show("Cuidado! Excluir/mover/renomear o arquivo da imagem causará perda de referência.");
             }
-        }
-       
-
-        private void button1_Click(object sender, RibbonControlEventArgs e)
-        {
-            foreach (InlineShape s in Globals.ThisAddIn.Application.ActiveDocument.InlineShapes)
-            {
-                if (s.Type == WdInlineShapeType.wdInlineShapePicture | s.Type == WdInlineShapeType.wdInlineShapeLinkedPicture)
-                {
-                    string str1 = "pkg:name=" + "\"" + "/word/media/";
-                    string str2 = "\"" + " pkg:contentType=";
-
-                    string xml1 = s.Range.WordOpenXML;
-
-                    int index1 = xml1.IndexOf(str1);
-                    int index2 = xml1.Substring(index1, 100).IndexOf(str2);
-
-                    string pathimage = xml1.Substring(index1 + 10, index2 - 10);
-
-
-                    string fullname = Globals.ThisAddIn.Application.ActiveDocument.FullName;
-
-                    MessageBox.Show(fullname + pathimage.Replace("/", @"\"));
-                }
-
-            }
-            string xml = Globals.ThisAddIn.Application.ActiveDocument.WordOpenXML;
-            long compress = xml.IndexOf("<w:doNotAutoCompressPictures/>");
-
-            if (compress.ToString() == "-1")
-            {
-                //Comprime
-            }
-        }
-
-        private void button2_Click(object sender, RibbonControlEventArgs e)
-        {
-            Spire.Doc.Document document = new Spire.Doc.Document(@"C:\Users\Gustavo\Desktop\FFFF.docx");
-
-            foreach (Spire.Doc.Section section in document.Sections)
-            {
-                foreach (Spire.Doc.Documents.Paragraph paragraph in section.Paragraphs)
-                {
-                    foreach (Spire.Doc.DocumentObject docObject in paragraph.ChildObjects)
-                    {
-                        if (docObject.DocumentObjectType == DocumentObjectType.Picture)
-                        {
-                            DocPicture pic = docObject as DocPicture;
-                            MessageBox.Show(pic.Image.HorizontalResolution.ToString());
-                        }
-                    }
-                }
-            }
-        }
-
-        private void button3_Click(object sender, RibbonControlEventArgs e)
-        {
-            if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB)) { Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB); } //Cria a pasta AppData/Roaming/PeriTAB caso não exista
-
-            string preferences_path = Path.Combine(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB, "preferences");
-
-            string preferences = "";
-
-            if (Globals.Ribbons.Ribbon1.editBox_largura.Text != ""){ preferences += "<largura>" + Globals.Ribbons.Ribbon1.editBox_largura.Text + "</largura>" + System.Environment.NewLine; } else if (Variables.editBox_largura_Text != "") { preferences += "<largura>" + Variables.editBox_largura_Text + "</largura>" + System.Environment.NewLine;} else { preferences += "<largura>" + Class_Buttons.preferences.largura + "</largura>" + System.Environment.NewLine; }
-            if (Globals.Ribbons.Ribbon1.editBox_altura.Text != "") { preferences += "<altura>" + Globals.Ribbons.Ribbon1.editBox_altura.Text + "</altura>" + System.Environment.NewLine; } else if (Variables.editBox_altura_Text != "") { preferences += "<altura>" + Variables.editBox_altura_Text + "</altura>" + System.Environment.NewLine; } else { preferences += "<altura>" + Class_Buttons.preferences.altura + "</altura>" + System.Environment.NewLine; }
-            preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
-            preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
-            preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
-
-            File.WriteAllText(preferences_path, preferences);
-        }
+        }      
+     
 
         private void editBox_largura_TextChanged(object sender, RibbonControlEventArgs e)
         {
             if (Variables.editBox_largura_Text == "") { Variables.editBox_largura_Text = Class_Buttons.preferences.largura; }
 
-            if (float.TryParse(editBox_largura.Text, out float alt) & alt.ToString() == editBox_largura.Text)
+            if (float.TryParse(editBox_largura.Text, out float larg) & larg.ToString() == editBox_largura.Text & larg >= 0.1 & larg < 100)
             {
                 Variables.editBox_largura_Text = editBox_largura.Text;
             }
@@ -336,7 +263,7 @@ namespace PeriTAB
         {
             if (Variables.editBox_altura_Text == "") { Variables.editBox_altura_Text = Class_Buttons.preferences.altura; }
 
-            if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text)
+            if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text & alt >= 0.1 & alt < 100)
             {
                 Variables.editBox_altura_Text = editBox_altura.Text;
             }
@@ -345,5 +272,7 @@ namespace PeriTAB
                 editBox_altura.Text = Variables.editBox_altura_Text;
             }
         }
+
+
     }
 }

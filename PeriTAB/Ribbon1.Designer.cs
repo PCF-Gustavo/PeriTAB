@@ -82,9 +82,8 @@ namespace PeriTAB{
             this.button_limpa_estilos = this.Factory.CreateRibbonButton();
             this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
             this.button_cola_imagem = this.Factory.CreateRibbonButton();
-            this.button1 = this.Factory.CreateRibbonButton();
-            this.button2 = this.Factory.CreateRibbonButton();
-            this.button3 = this.Factory.CreateRibbonButton();
+            this.button_inserir_pagina = this.Factory.CreateRibbonButton();
+            this.button_inserir_pagina_extenso = this.Factory.CreateRibbonButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group_macros.SuspendLayout();
@@ -181,6 +180,7 @@ namespace PeriTAB{
             // 
             this.editBox_largura.Label = "Largura (cm)";
             this.editBox_largura.Name = "editBox_largura";
+            this.editBox_largura.SizeString = "00,00";
             this.editBox_largura.Tag = "";
             this.editBox_largura.Text = null;
             this.editBox_largura.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.editBox_largura_TextChanged);
@@ -201,6 +201,7 @@ namespace PeriTAB{
             // 
             this.editBox_altura.Label = "Altura (cm)";
             this.editBox_altura.Name = "editBox_altura";
+            this.editBox_altura.SizeString = "00,00";
             this.editBox_altura.Text = null;
             this.editBox_altura.TextChanged += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.editBox_altura_TextChanged);
             // 
@@ -238,9 +239,6 @@ namespace PeriTAB{
             this.group_sobre.Items.Add(this.label_nome);
             this.group_sobre.Items.Add(this.label_criado);
             this.group_sobre.Items.Add(this.label_email);
-            this.group_sobre.Items.Add(this.button1);
-            this.group_sobre.Items.Add(this.button2);
-            this.group_sobre.Items.Add(this.button3);
             this.group_sobre.Label = "Sobre";
             this.group_sobre.Name = "group_sobre";
             // 
@@ -290,6 +288,8 @@ namespace PeriTAB{
             // 
             this.menu2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
             this.menu2.Items.Add(this.button_inserir_sumario);
+            this.menu2.Items.Add(this.button_inserir_pagina);
+            this.menu2.Items.Add(this.button_inserir_pagina_extenso);
             this.menu2.Label = "Inserir";
             this.menu2.Name = "menu2";
             this.menu2.ShowImage = true;
@@ -386,23 +386,19 @@ namespace PeriTAB{
             this.button_cola_imagem.ShowImage = true;
             this.button_cola_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_imagem_Click);
             // 
-            // button1
+            // button_inserir_pagina
             // 
-            this.button1.Label = "button1";
-            this.button1.Name = "button1";
-            this.button1.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button1_Click);
+            this.button_inserir_pagina.Label = "Página";
+            this.button_inserir_pagina.Name = "button_inserir_pagina";
+            this.button_inserir_pagina.ShowImage = true;
+            this.button_inserir_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_Click);
             // 
-            // button2
+            // button_inserir_pagina_extenso
             // 
-            this.button2.Label = "button2";
-            this.button2.Name = "button2";
-            this.button2.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Label = "button3";
-            this.button3.Name = "button3";
-            this.button3.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button3_Click);
+            this.button_inserir_pagina_extenso.Label = "Página (extenso)";
+            this.button_inserir_pagina_extenso.Name = "button_inserir_pagina_extenso";
+            this.button_inserir_pagina_extenso.ShowImage = true;
+            this.button_inserir_pagina_extenso.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_extenso_Click);
             // 
             // Ribbon1
             // 
@@ -469,14 +465,13 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonEditBox editBox_altura;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_altura;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_referencia;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button1;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button2;
         internal Microsoft.Office.Tools.Ribbon.RibbonSeparator separator1;
         internal Microsoft.Office.Tools.Ribbon.RibbonLabel label_multiplas_imagens;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown_separador;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box1;
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button3;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_pagina;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_pagina_extenso;
     }
 
     partial class ThisRibbonCollection

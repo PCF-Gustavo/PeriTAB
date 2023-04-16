@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.button1 = new System.Windows.Forms.Button();
+            this.button_sem_formatacao = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -45,15 +45,15 @@
             this.button_DockBottom = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // button1
+            // button_sem_formatacao
             // 
-            this.button1.Location = new System.Drawing.Point(5, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(90, 40);
-            this.button1.TabIndex = 0;
-            this.button1.Text = "Sem Formatação";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.button_sem_formatacao.Location = new System.Drawing.Point(5, 5);
+            this.button_sem_formatacao.Name = "button_sem_formatacao";
+            this.button_sem_formatacao.Size = new System.Drawing.Size(90, 40);
+            this.button_sem_formatacao.TabIndex = 0;
+            this.button_sem_formatacao.Text = "Sem Formatação";
+            this.button_sem_formatacao.UseVisualStyleBackColor = true;
+            this.button_sem_formatacao.Click += new System.EventHandler(this.button_sem_formatacao_Click);
             // 
             // button2
             // 
@@ -218,17 +218,17 @@
             this.Controls.Add(this.button4);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1383, 611);
+            this.Size = new System.Drawing.Size(1366, 611);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button button_sem_formatacao;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;

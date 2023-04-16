@@ -79,15 +79,15 @@ namespace PeriTAB
 
                 Class_Buttons.preferences.largura = procura(preferences_text, "largura");
                 Class_Buttons.preferences.altura = procura(preferences_text, "altura");
-                Class_Buttons.preferences.largura_checked = bool.Parse(procura(preferences_text, "largura_checked"));
+                Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
                 Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
                 Class_Buttons.preferences.separador = procura(preferences_text, "separador");
             }
             else
-            {
+            { // Preferências iniciais
                 Class_Buttons.preferences.largura = "10";
                 Class_Buttons.preferences.altura = "10";
-                Class_Buttons.preferences.largura_checked = true;
+                Class_Buttons.preferences.largura_checked = "true";
                 Class_Buttons.preferences.ordem = "Alfabética";
                 Class_Buttons.preferences.separador = "Nenhum";
             }

@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace PeriTAB
 {
@@ -19,11 +20,16 @@ namespace PeriTAB
         {
             InitializeComponent();            
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void button_sem_formatacao_Click(object sender, EventArgs e)
         {
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "01 - Sem Formatação (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.Run("estilo1_Sem_Formatacao_PeriTAB");
+            string estilo_nome = "01 - Sem Formatação (PeriTAB)";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -42,24 +48,32 @@ namespace PeriTAB
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_1_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_2_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_3_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "04 - Seções (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo4_Secoes_4_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -78,6 +92,8 @@ namespace PeriTAB
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "06 - Figuras (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.Run("estilo6_Figuras_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button11_Click(object sender, EventArgs e)
@@ -89,13 +105,17 @@ namespace PeriTAB
         private void button12_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "08 - Legendas de Tabelas (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.Run("estilo8_Legend_Tabelas_PeriTAB");            
+            Globals.ThisAddIn.Application.Run("estilo8_Legend_Tabelas_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button13_Click(object sender, EventArgs e)
         {
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "09 - Quesitos (PeriTAB)", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.Run("estilo9_Quesitos_PeriTAB");            
+            Globals.ThisAddIn.Application.Run("estilo9_Quesitos_PeriTAB");
+
+            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         }
 
         private void button_DockRight_Click(object sender, EventArgs e)
@@ -107,7 +127,7 @@ namespace PeriTAB
             this.Size = new System.Drawing.Size(100, 900);
             //this.Width = 120;
             this.button_DockRight.Visible = false;
-            this.button1.Location = new System.Drawing.Point(5, 5);
+            this.button_sem_formatacao.Location = new System.Drawing.Point(5, 5);
             this.button2.Location = new System.Drawing.Point(5, 50);
             this.button3.Location = new System.Drawing.Point(5, 95);
             this.button4.Location = new System.Drawing.Point(5, 140);
@@ -138,7 +158,7 @@ namespace PeriTAB
             this.button_DockBottom.Visible = false;
             this.button_DockRight.Visible = true;
             this.button_DockRight.Location = new System.Drawing.Point(1204, 5);
-            this.button1.Location = new System.Drawing.Point(5, 5);
+            this.button_sem_formatacao.Location = new System.Drawing.Point(5, 5);
             this.button2.Location = new System.Drawing.Point(100, 5);
             this.button3.Location = new System.Drawing.Point(195, 5);
             this.button4.Location = new System.Drawing.Point(290, 5);
@@ -158,8 +178,8 @@ namespace PeriTAB
 
         public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
         {
-            button1.Enabled = habilita;
-            if (destaca){button1.BackColor = SystemColors.Highlight;button1.ForeColor = SystemColors.HighlightText;}
+            button_sem_formatacao.Enabled = habilita;
+            if (destaca){button_sem_formatacao.BackColor = SystemColors.Highlight;button_sem_formatacao.ForeColor = SystemColors.HighlightText;}
         }
         public void Habilita_Destaca_button2(bool habilita, bool destaca = false)
         {

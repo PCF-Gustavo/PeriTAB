@@ -20,7 +20,7 @@ namespace PeriTAB
         {
             //Declara instacias das classes
             Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.button_renomeia_documento_Default();
-            Class_ValueChanged_Event iClass_ValueChanged_Event = new Class_ValueChanged_Event();
+            //Class_ValueChanged_Event iClass_ValueChanged_Event = new Class_ValueChanged_Event();
 
             //Revisa a habilitação do botao "Renomeia Documento" do Ribbon            
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
@@ -28,9 +28,13 @@ namespace PeriTAB
 
             //Revisa a habilitação do CheckBox "Destacar" do Ribbon            
             //iClass_ValueChanged_Event.FieldShading(); *** Não está funcinando bem. A call "var = Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading;" impede a inserção de formas
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true;
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false;
 
             //Revisa a habilitação do CheckBox "Ver código" do Ribbon
-            iClass_ValueChanged_Event.ShowFieldCodes();
+            //iClass_ValueChanged_Event.ShowFieldCodes();
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = true;
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = false;
 
             ////Revisa a habilitação do botao "Cola Figura" do Ribbon
             //iClass_Buttons.button_cola_imagem_Default();
@@ -40,6 +44,7 @@ namespace PeriTAB
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             Globals.ThisAddIn.iUserControl1.Habilita_button9(true);
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == 0 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iUserControl1.Habilita_button9(false); }
+
         }
     }
 }
