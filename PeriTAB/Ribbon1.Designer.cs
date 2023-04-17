@@ -47,28 +47,11 @@ namespace PeriTAB{
             Microsoft.Office.Tools.Ribbon.RibbonDropDownItem ribbonDropDownItemImpl5 = this.Factory.CreateRibbonDropDownItem();
             this.tab_default = this.Factory.CreateRibbonTab();
             this.tab = this.Factory.CreateRibbonTab();
-            this.group_macros = this.Factory.CreateRibbonGroup();
-            this.button_confere_num_legenda = this.Factory.CreateRibbonButton();
-            this.button_alinha_legenda = this.Factory.CreateRibbonButton();
-            this.button_renomeia_documento = this.Factory.CreateRibbonButton();
+            this.group_conferencia = this.Factory.CreateRibbonGroup();
             this.group_campos = this.Factory.CreateRibbonGroup();
-            this.menu2 = this.Factory.CreateRibbonMenu();
-            this.button_inserir_sumario = this.Factory.CreateRibbonButton();
-            this.button_inserir_pagina = this.Factory.CreateRibbonButton();
-            this.button_inserir_pagina_extenso = this.Factory.CreateRibbonButton();
-            this.button_atualiza_campos = this.Factory.CreateRibbonButton();
-            this.menu1 = this.Factory.CreateRibbonMenu();
-            this.checkBox_destaca_campos = this.Factory.CreateRibbonCheckBox();
-            this.checkBox_vercodigo_campos = this.Factory.CreateRibbonCheckBox();
             this.group_porextenso = this.Factory.CreateRibbonGroup();
-            this.button_moeda = this.Factory.CreateRibbonButton();
-            this.button_inteiro = this.Factory.CreateRibbonButton();
             this.group_estilos = this.Factory.CreateRibbonGroup();
-            this.button_importa_estilos = this.Factory.CreateRibbonButton();
-            this.button_limpa_estilos = this.Factory.CreateRibbonButton();
-            this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
             this.group_cola_figura = this.Factory.CreateRibbonGroup();
-            this.button_cola_imagem = this.Factory.CreateRibbonButton();
             this.checkBox_referencia = this.Factory.CreateRibbonCheckBox();
             this.box1 = this.Factory.CreateRibbonBox();
             this.checkBox_largura = this.Factory.CreateRibbonCheckBox();
@@ -84,9 +67,29 @@ namespace PeriTAB{
             this.label_nome = this.Factory.CreateRibbonLabel();
             this.label_criado = this.Factory.CreateRibbonLabel();
             this.label_email = this.Factory.CreateRibbonLabel();
+            this.menu2 = this.Factory.CreateRibbonMenu();
+            this.button_inserir_sumario = this.Factory.CreateRibbonButton();
+            this.button_inserir_pagina = this.Factory.CreateRibbonButton();
+            this.button_inserir_pagina_extenso = this.Factory.CreateRibbonButton();
+            this.menu1 = this.Factory.CreateRibbonMenu();
+            this.checkBox_destaca_campos = this.Factory.CreateRibbonCheckBox();
+            this.checkBox_vercodigo_campos = this.Factory.CreateRibbonCheckBox();
+            this.group_entrega = this.Factory.CreateRibbonGroup();
+            this.button_confere_num_legenda = this.Factory.CreateRibbonButton();
+            this.button_alinha_legenda = this.Factory.CreateRibbonButton();
+            this.button_atualiza_campos = this.Factory.CreateRibbonButton();
+            this.button_moeda = this.Factory.CreateRibbonButton();
+            this.button_inteiro = this.Factory.CreateRibbonButton();
+            this.button_cola_imagem = this.Factory.CreateRibbonButton();
+            this.button_importa_estilos = this.Factory.CreateRibbonButton();
+            this.button_limpa_estilos = this.Factory.CreateRibbonButton();
+            this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
+            this.button_renomeia_documento = this.Factory.CreateRibbonButton();
+            this.button_gera_pdf = this.Factory.CreateRibbonButton();
+            this.group_formatacao = this.Factory.CreateRibbonGroup();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
-            this.group_macros.SuspendLayout();
+            this.group_conferencia.SuspendLayout();
             this.group_campos.SuspendLayout();
             this.group_porextenso.SuspendLayout();
             this.group_estilos.SuspendLayout();
@@ -94,6 +97,8 @@ namespace PeriTAB{
             this.box1.SuspendLayout();
             this.box2.SuspendLayout();
             this.group_sobre.SuspendLayout();
+            this.group_entrega.SuspendLayout();
+            this.group_formatacao.SuspendLayout();
             this.SuspendLayout();
             // 
             // tab_default
@@ -104,49 +109,22 @@ namespace PeriTAB{
             // 
             // tab
             // 
-            this.tab.Groups.Add(this.group_macros);
-            this.tab.Groups.Add(this.group_campos);
             this.tab.Groups.Add(this.group_porextenso);
+            this.tab.Groups.Add(this.group_formatacao);
             this.tab.Groups.Add(this.group_estilos);
+            this.tab.Groups.Add(this.group_campos);
             this.tab.Groups.Add(this.group_cola_figura);
+            this.tab.Groups.Add(this.group_conferencia);
+            this.tab.Groups.Add(this.group_entrega);
             this.tab.Groups.Add(this.group_sobre);
             this.tab.Label = "PeriTAB";
             this.tab.Name = "tab";
             // 
-            // group_macros
+            // group_conferencia
             // 
-            this.group_macros.Items.Add(this.button_confere_num_legenda);
-            this.group_macros.Items.Add(this.button_alinha_legenda);
-            this.group_macros.Items.Add(this.button_renomeia_documento);
-            this.group_macros.Label = "Macros";
-            this.group_macros.Name = "group_macros";
-            // 
-            // button_confere_num_legenda
-            // 
-            this.button_confere_num_legenda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_confere_num_legenda.Image = global::PeriTAB.Properties.Resources.lupa;
-            this.button_confere_num_legenda.Label = "Confere numeração das legendas";
-            this.button_confere_num_legenda.Name = "button_confere_num_legenda";
-            this.button_confere_num_legenda.ShowImage = true;
-            this.button_confere_num_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_confere_num_legenda_Click);
-            // 
-            // button_alinha_legenda
-            // 
-            this.button_alinha_legenda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_alinha_legenda.Image = global::PeriTAB.Properties.Resources.seta3;
-            this.button_alinha_legenda.Label = "Alinha legenda";
-            this.button_alinha_legenda.Name = "button_alinha_legenda";
-            this.button_alinha_legenda.ShowImage = true;
-            this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
-            // 
-            // button_renomeia_documento
-            // 
-            this.button_renomeia_documento.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_renomeia_documento.Image = global::PeriTAB.Properties.Resources.abc;
-            this.button_renomeia_documento.Label = "Renomeia documento";
-            this.button_renomeia_documento.Name = "button_renomeia_documento";
-            this.button_renomeia_documento.ShowImage = true;
-            this.button_renomeia_documento.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_renomeia_documento_Click);
+            this.group_conferencia.Items.Add(this.button_confere_num_legenda);
+            this.group_conferencia.Label = "Conferência";
+            this.group_conferencia.Name = "group_conferencia";
             // 
             // group_campos
             // 
@@ -156,91 +134,12 @@ namespace PeriTAB{
             this.group_campos.Label = "Campos";
             this.group_campos.Name = "group_campos";
             // 
-            // menu2
-            // 
-            this.menu2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.menu2.Items.Add(this.button_inserir_sumario);
-            this.menu2.Items.Add(this.button_inserir_pagina);
-            this.menu2.Items.Add(this.button_inserir_pagina_extenso);
-            this.menu2.Label = "Inserir";
-            this.menu2.Name = "menu2";
-            this.menu2.ShowImage = true;
-            // 
-            // button_inserir_sumario
-            // 
-            this.button_inserir_sumario.Label = "Sumário";
-            this.button_inserir_sumario.Name = "button_inserir_sumario";
-            this.button_inserir_sumario.ShowImage = true;
-            this.button_inserir_sumario.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_sumario_Click);
-            // 
-            // button_inserir_pagina
-            // 
-            this.button_inserir_pagina.Label = "Página";
-            this.button_inserir_pagina.Name = "button_inserir_pagina";
-            this.button_inserir_pagina.ShowImage = true;
-            this.button_inserir_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_Click);
-            // 
-            // button_inserir_pagina_extenso
-            // 
-            this.button_inserir_pagina_extenso.Label = "Página (extenso)";
-            this.button_inserir_pagina_extenso.Name = "button_inserir_pagina_extenso";
-            this.button_inserir_pagina_extenso.ShowImage = true;
-            this.button_inserir_pagina_extenso.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_extenso_Click);
-            // 
-            // button_atualiza_campos
-            // 
-            this.button_atualiza_campos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_atualiza_campos.Image = global::PeriTAB.Properties.Resources.atualizar;
-            this.button_atualiza_campos.Label = "Atualiza todos os Campos";
-            this.button_atualiza_campos.Name = "button_atualiza_campos";
-            this.button_atualiza_campos.ShowImage = true;
-            this.button_atualiza_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_atualiza_campos_Click);
-            // 
-            // menu1
-            // 
-            this.menu1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.menu1.Items.Add(this.checkBox_destaca_campos);
-            this.menu1.Items.Add(this.checkBox_vercodigo_campos);
-            this.menu1.Label = " ";
-            this.menu1.Name = "menu1";
-            this.menu1.ShowImage = true;
-            // 
-            // checkBox_destaca_campos
-            // 
-            this.checkBox_destaca_campos.Label = "Destacar";
-            this.checkBox_destaca_campos.Name = "checkBox_destaca_campos";
-            this.checkBox_destaca_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_destaca_campos_Click);
-            // 
-            // checkBox_vercodigo_campos
-            // 
-            this.checkBox_vercodigo_campos.Label = "Ver código";
-            this.checkBox_vercodigo_campos.Name = "checkBox_vercodigo_campos";
-            this.checkBox_vercodigo_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_vercodigo_campos_Click);
-            // 
             // group_porextenso
             // 
             this.group_porextenso.Items.Add(this.button_moeda);
             this.group_porextenso.Items.Add(this.button_inteiro);
             this.group_porextenso.Label = "Por Extenso";
             this.group_porextenso.Name = "group_porextenso";
-            // 
-            // button_moeda
-            // 
-            this.button_moeda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_moeda.Image = global::PeriTAB.Properties.Resources.dinheiro;
-            this.button_moeda.Label = "Moeda";
-            this.button_moeda.Name = "button_moeda";
-            this.button_moeda.ShowImage = true;
-            this.button_moeda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_moeda_Click);
-            // 
-            // button_inteiro
-            // 
-            this.button_inteiro.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_inteiro.Image = global::PeriTAB.Properties.Resources.numero;
-            this.button_inteiro.Label = "Número inteiro";
-            this.button_inteiro.Name = "button_inteiro";
-            this.button_inteiro.ShowImage = true;
-            this.button_inteiro.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inteiro_Click);
             // 
             // group_estilos
             // 
@@ -249,34 +148,6 @@ namespace PeriTAB{
             this.group_estilos.Items.Add(this.toggleButton_estilos);
             this.group_estilos.Label = "Estilos";
             this.group_estilos.Name = "group_estilos";
-            // 
-            // button_importa_estilos
-            // 
-            this.button_importa_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_importa_estilos.Image = global::PeriTAB.Properties.Resources.download2;
-            this.button_importa_estilos.Label = "Importa estilos";
-            this.button_importa_estilos.Name = "button_importa_estilos";
-            this.button_importa_estilos.ShowImage = true;
-            this.button_importa_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_importa_estilos_Click);
-            // 
-            // button_limpa_estilos
-            // 
-            this.button_limpa_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_limpa_estilos.Image = global::PeriTAB.Properties.Resources.vassoura;
-            this.button_limpa_estilos.Label = "Limpa estilos";
-            this.button_limpa_estilos.Name = "button_limpa_estilos";
-            this.button_limpa_estilos.ShowImage = true;
-            this.button_limpa_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_limpa_estilos_Click);
-            // 
-            // toggleButton_estilos
-            // 
-            this.toggleButton_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.toggleButton_estilos.Image = global::PeriTAB.Properties.Resources.download3;
-            this.toggleButton_estilos.Label = "Painel de Estilos";
-            this.toggleButton_estilos.Name = "toggleButton_estilos";
-            this.toggleButton_estilos.ShowImage = true;
-            this.toggleButton_estilos.SuperTip = "Abre Painel de Estilos";
-            this.toggleButton_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_estilos_Click);
             // 
             // group_cola_figura
             // 
@@ -290,15 +161,6 @@ namespace PeriTAB{
             this.group_cola_figura.Items.Add(this.dropDown_separador);
             this.group_cola_figura.Label = "Assistente de colagem";
             this.group_cola_figura.Name = "group_cola_figura";
-            // 
-            // button_cola_imagem
-            // 
-            this.button_cola_imagem.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_cola_imagem.Image = global::PeriTAB.Properties.Resources.image_icon;
-            this.button_cola_imagem.Label = "Cola Imagem";
-            this.button_cola_imagem.Name = "button_cola_imagem";
-            this.button_cola_imagem.ShowImage = true;
-            this.button_cola_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_imagem_Click);
             // 
             // checkBox_referencia
             // 
@@ -400,6 +262,171 @@ namespace PeriTAB{
             this.label_email.Label = "gustavo.gvs@pf.gov.br";
             this.label_email.Name = "label_email";
             // 
+            // menu2
+            // 
+            this.menu2.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.menu2.Items.Add(this.button_inserir_sumario);
+            this.menu2.Items.Add(this.button_inserir_pagina);
+            this.menu2.Items.Add(this.button_inserir_pagina_extenso);
+            this.menu2.Label = "Inserir";
+            this.menu2.Name = "menu2";
+            this.menu2.ShowImage = true;
+            // 
+            // button_inserir_sumario
+            // 
+            this.button_inserir_sumario.Label = "Sumário";
+            this.button_inserir_sumario.Name = "button_inserir_sumario";
+            this.button_inserir_sumario.ShowImage = true;
+            this.button_inserir_sumario.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_sumario_Click);
+            // 
+            // button_inserir_pagina
+            // 
+            this.button_inserir_pagina.Label = "Página";
+            this.button_inserir_pagina.Name = "button_inserir_pagina";
+            this.button_inserir_pagina.ShowImage = true;
+            this.button_inserir_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_Click);
+            // 
+            // button_inserir_pagina_extenso
+            // 
+            this.button_inserir_pagina_extenso.Label = "Página (extenso)";
+            this.button_inserir_pagina_extenso.Name = "button_inserir_pagina_extenso";
+            this.button_inserir_pagina_extenso.ShowImage = true;
+            this.button_inserir_pagina_extenso.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_extenso_Click);
+            // 
+            // menu1
+            // 
+            this.menu1.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.menu1.Items.Add(this.checkBox_destaca_campos);
+            this.menu1.Items.Add(this.checkBox_vercodigo_campos);
+            this.menu1.Label = " ";
+            this.menu1.Name = "menu1";
+            this.menu1.ShowImage = true;
+            // 
+            // checkBox_destaca_campos
+            // 
+            this.checkBox_destaca_campos.Label = "Destacar";
+            this.checkBox_destaca_campos.Name = "checkBox_destaca_campos";
+            this.checkBox_destaca_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_destaca_campos_Click);
+            // 
+            // checkBox_vercodigo_campos
+            // 
+            this.checkBox_vercodigo_campos.Label = "Ver código";
+            this.checkBox_vercodigo_campos.Name = "checkBox_vercodigo_campos";
+            this.checkBox_vercodigo_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.checkBox_vercodigo_campos_Click);
+            // 
+            // group_entrega
+            // 
+            this.group_entrega.Items.Add(this.button_renomeia_documento);
+            this.group_entrega.Items.Add(this.button_gera_pdf);
+            this.group_entrega.Label = "Entrega";
+            this.group_entrega.Name = "group_entrega";
+            // 
+            // button_confere_num_legenda
+            // 
+            this.button_confere_num_legenda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_confere_num_legenda.Image = global::PeriTAB.Properties.Resources.lupa;
+            this.button_confere_num_legenda.Label = "Confere numeração das legendas";
+            this.button_confere_num_legenda.Name = "button_confere_num_legenda";
+            this.button_confere_num_legenda.ShowImage = true;
+            this.button_confere_num_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_confere_num_legenda_Click);
+            // 
+            // button_alinha_legenda
+            // 
+            this.button_alinha_legenda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_alinha_legenda.Image = global::PeriTAB.Properties.Resources.seta3;
+            this.button_alinha_legenda.Label = "Alinha legenda";
+            this.button_alinha_legenda.Name = "button_alinha_legenda";
+            this.button_alinha_legenda.ShowImage = true;
+            this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
+            // 
+            // button_atualiza_campos
+            // 
+            this.button_atualiza_campos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_atualiza_campos.Image = global::PeriTAB.Properties.Resources.atualizar;
+            this.button_atualiza_campos.Label = "Atualiza todos os Campos";
+            this.button_atualiza_campos.Name = "button_atualiza_campos";
+            this.button_atualiza_campos.ShowImage = true;
+            this.button_atualiza_campos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_atualiza_campos_Click);
+            // 
+            // button_moeda
+            // 
+            this.button_moeda.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_moeda.Image = global::PeriTAB.Properties.Resources.dinheiro;
+            this.button_moeda.Label = "Moeda";
+            this.button_moeda.Name = "button_moeda";
+            this.button_moeda.ShowImage = true;
+            this.button_moeda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_moeda_Click);
+            // 
+            // button_inteiro
+            // 
+            this.button_inteiro.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_inteiro.Image = global::PeriTAB.Properties.Resources.numero;
+            this.button_inteiro.Label = "Número inteiro";
+            this.button_inteiro.Name = "button_inteiro";
+            this.button_inteiro.ShowImage = true;
+            this.button_inteiro.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inteiro_Click);
+            // 
+            // button_cola_imagem
+            // 
+            this.button_cola_imagem.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_cola_imagem.Image = global::PeriTAB.Properties.Resources.image_icon;
+            this.button_cola_imagem.Label = "Cola Imagem";
+            this.button_cola_imagem.Name = "button_cola_imagem";
+            this.button_cola_imagem.ShowImage = true;
+            this.button_cola_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_imagem_Click);
+            // 
+            // button_importa_estilos
+            // 
+            this.button_importa_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_importa_estilos.Image = global::PeriTAB.Properties.Resources.download2;
+            this.button_importa_estilos.Label = "Importa estilos";
+            this.button_importa_estilos.Name = "button_importa_estilos";
+            this.button_importa_estilos.ShowImage = true;
+            this.button_importa_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_importa_estilos_Click);
+            // 
+            // button_limpa_estilos
+            // 
+            this.button_limpa_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_limpa_estilos.Image = global::PeriTAB.Properties.Resources.vassoura;
+            this.button_limpa_estilos.Label = "Limpa estilos";
+            this.button_limpa_estilos.Name = "button_limpa_estilos";
+            this.button_limpa_estilos.ShowImage = true;
+            this.button_limpa_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_limpa_estilos_Click);
+            // 
+            // toggleButton_estilos
+            // 
+            this.toggleButton_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButton_estilos.Image = global::PeriTAB.Properties.Resources.download3;
+            this.toggleButton_estilos.Label = "Painel de Estilos";
+            this.toggleButton_estilos.Name = "toggleButton_estilos";
+            this.toggleButton_estilos.ShowImage = true;
+            this.toggleButton_estilos.SuperTip = "Abre Painel de Estilos";
+            this.toggleButton_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_estilos_Click);
+            // 
+            // button_renomeia_documento
+            // 
+            this.button_renomeia_documento.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_renomeia_documento.Image = global::PeriTAB.Properties.Resources.abc;
+            this.button_renomeia_documento.Label = "Renomeia documento";
+            this.button_renomeia_documento.Name = "button_renomeia_documento";
+            this.button_renomeia_documento.ShowImage = true;
+            this.button_renomeia_documento.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_renomeia_documento_Click);
+            // 
+            // button_gera_pdf
+            // 
+            this.button_gera_pdf.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_gera_pdf.Image = global::PeriTAB.Properties.Resources.icone_pdf2;
+            this.button_gera_pdf.Label = "Gera PDF";
+            this.button_gera_pdf.Name = "button_gera_pdf";
+            this.button_gera_pdf.ShowImage = true;
+            this.button_gera_pdf.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_gerar_pdf_Click);
+            // 
+            // group_formatacao
+            // 
+            this.group_formatacao.Items.Add(this.button_alinha_legenda);
+            this.group_formatacao.Label = "Formatação";
+            this.group_formatacao.Name = "group_formatacao";
+            // 
             // Ribbon1
             // 
             this.Name = "Ribbon1";
@@ -411,8 +438,8 @@ namespace PeriTAB{
             this.tab_default.PerformLayout();
             this.tab.ResumeLayout(false);
             this.tab.PerformLayout();
-            this.group_macros.ResumeLayout(false);
-            this.group_macros.PerformLayout();
+            this.group_conferencia.ResumeLayout(false);
+            this.group_conferencia.PerformLayout();
             this.group_campos.ResumeLayout(false);
             this.group_campos.PerformLayout();
             this.group_porextenso.ResumeLayout(false);
@@ -427,6 +454,10 @@ namespace PeriTAB{
             this.box2.PerformLayout();
             this.group_sobre.ResumeLayout(false);
             this.group_sobre.PerformLayout();
+            this.group_entrega.ResumeLayout(false);
+            this.group_entrega.PerformLayout();
+            this.group_formatacao.ResumeLayout(false);
+            this.group_formatacao.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -435,7 +466,7 @@ namespace PeriTAB{
 
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab_default;
         internal Microsoft.Office.Tools.Ribbon.RibbonTab tab;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_macros;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_conferencia;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_porextenso;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_estilos;
         internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_sobre;
@@ -472,6 +503,9 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonBox box2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_pagina;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_pagina_extenso;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_entrega;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_gera_pdf;
+        internal Microsoft.Office.Tools.Ribbon.RibbonGroup group_formatacao;
     }
 
     partial class ThisRibbonCollection

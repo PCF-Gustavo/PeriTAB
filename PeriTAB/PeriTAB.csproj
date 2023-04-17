@@ -299,6 +299,15 @@
       <Version>10.8.1</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone_pdf.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone_pdfa.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone_pdf2.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

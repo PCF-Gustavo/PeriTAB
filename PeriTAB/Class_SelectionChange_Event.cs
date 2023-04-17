@@ -36,7 +36,7 @@ namespace PeriTAB
 
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             Globals.ThisAddIn.iUserControl1.Habilita_button9(true);
-            if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count>1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == 0 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iUserControl1.Habilita_button9(false); }
+            if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count>1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iUserControl1.Habilita_button9(false); }
 
             //Revisa o destaque dos botoes do TaskPane
             Globals.ThisAddIn.iUserControl1.Remove_Destaque_Botoes();

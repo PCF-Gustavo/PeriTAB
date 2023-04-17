@@ -273,6 +273,14 @@ namespace PeriTAB
             }
         }
 
-
+        private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
+        {
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path != "")
+            {
+                string path = (Globals.ThisAddIn.Application.ActiveDocument.FullName).Substring(0, (Globals.ThisAddIn.Application.ActiveDocument.FullName).IndexOf("."));
+                Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(path, WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
+            }
+            else { MessageBox.Show("Salve o documento antes de gerar o PDF."); }
+        }
     }
 }

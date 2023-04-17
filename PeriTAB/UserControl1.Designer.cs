@@ -32,9 +32,9 @@
             this.button_corpo_do_texto = new System.Windows.Forms.Button();
             this.button_citacoes = new System.Windows.Forms.Button();
             this.button_secao_1 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.button_secao_2 = new System.Windows.Forms.Button();
+            this.button_secao_3 = new System.Windows.Forms.Button();
+            this.button_secao_4 = new System.Windows.Forms.Button();
             this.button_enumeracao = new System.Windows.Forms.Button();
             this.button_reinicia_lista = new System.Windows.Forms.Button();
             this.button_figuras = new System.Windows.Forms.Button();
@@ -85,35 +85,35 @@
             this.button_secao_1.UseVisualStyleBackColor = true;
             this.button_secao_1.Click += new System.EventHandler(this.button_secao_1_Click);
             // 
-            // button5
+            // button_secao_2
             // 
-            this.button5.Location = new System.Drawing.Point(385, 5);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(90, 40);
-            this.button5.TabIndex = 0;
-            this.button5.Text = "Seção Secundária";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.button_secao_2.Location = new System.Drawing.Point(385, 5);
+            this.button_secao_2.Name = "button_secao_2";
+            this.button_secao_2.Size = new System.Drawing.Size(90, 40);
+            this.button_secao_2.TabIndex = 0;
+            this.button_secao_2.Text = "Seção Secundária";
+            this.button_secao_2.UseVisualStyleBackColor = true;
+            this.button_secao_2.Click += new System.EventHandler(this.button_secao_2_Click);
             // 
-            // button6
+            // button_secao_3
             // 
-            this.button6.Location = new System.Drawing.Point(480, 5);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(90, 40);
-            this.button6.TabIndex = 0;
-            this.button6.Text = "Seção Terciária";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.button_secao_3.Location = new System.Drawing.Point(480, 5);
+            this.button_secao_3.Name = "button_secao_3";
+            this.button_secao_3.Size = new System.Drawing.Size(90, 40);
+            this.button_secao_3.TabIndex = 0;
+            this.button_secao_3.Text = "Seção Terciária";
+            this.button_secao_3.UseVisualStyleBackColor = true;
+            this.button_secao_3.Click += new System.EventHandler(this.button_secao_3_Click);
             // 
-            // button7
+            // button_secao_4
             // 
-            this.button7.Location = new System.Drawing.Point(575, 5);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(90, 40);
-            this.button7.TabIndex = 0;
-            this.button7.Text = "Seção Quaternária";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.button_secao_4.Location = new System.Drawing.Point(575, 5);
+            this.button_secao_4.Name = "button_secao_4";
+            this.button_secao_4.Size = new System.Drawing.Size(90, 40);
+            this.button_secao_4.TabIndex = 0;
+            this.button_secao_4.Text = "Seção Quaternária";
+            this.button_secao_4.UseVisualStyleBackColor = true;
+            this.button_secao_4.Click += new System.EventHandler(this.button_secao_4_Click);
             // 
             // button_enumeracao
             // 
@@ -210,18 +210,18 @@
             this.Controls.Add(this.button_quesitos);
             this.Controls.Add(this.button_enumeracao);
             this.Controls.Add(this.button_legendas_de_tabelas);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.button_secao_4);
             this.Controls.Add(this.button_legendas_de_figuras);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.button_secao_3);
             this.Controls.Add(this.button_figuras);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.button_secao_2);
             this.Controls.Add(this.button_secao_1);
             this.Controls.Add(this.button_citacoes);
             this.Controls.Add(this.button_corpo_do_texto);
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1349, 611);
+            this.Size = new System.Drawing.Size(1332, 611);
             this.ResumeLayout(false);
 
         }
@@ -232,9 +232,9 @@
         private System.Windows.Forms.Button button_corpo_do_texto;
         private System.Windows.Forms.Button button_citacoes;
         private System.Windows.Forms.Button button_secao_1;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button button_secao_2;
+        private System.Windows.Forms.Button button_secao_3;
+        private System.Windows.Forms.Button button_secao_4;
         private System.Windows.Forms.Button button_enumeracao;
         private System.Windows.Forms.Button button_reinicia_lista;
         private System.Windows.Forms.Button button_figuras;

@@ -24,7 +24,7 @@ namespace PeriTAB
 
             //Configura o Task Pane
             iUserControl1 = new UserControl1();
-            TaskPane1 = Globals.ThisAddIn.CustomTaskPanes.Add(iUserControl1, "Estilos (PeriTAB)");
+            TaskPane1 = Globals.ThisAddIn.CustomTaskPanes.Add(iUserControl1, "Painel de Estilos (PeriTAB)");
             TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
             TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
             TaskPane1.Height = 90;
@@ -65,6 +65,7 @@ namespace PeriTAB
             preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
             preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
             preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
+            preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
 
             File.WriteAllText(preferences_path, preferences);
         }
@@ -82,6 +83,7 @@ namespace PeriTAB
                 Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
                 Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
                 Class_Buttons.preferences.separador = procura(preferences_text, "separador");
+                Class_Buttons.preferences.painel_de_estilos = procura(preferences_text, "painel_de_estilos");
             }
             else
             { // Preferências iniciais
@@ -90,6 +92,7 @@ namespace PeriTAB
                 Class_Buttons.preferences.largura_checked = "true";
                 Class_Buttons.preferences.ordem = "Alfabética";
                 Class_Buttons.preferences.separador = "Nenhum";
+                Class_Buttons.preferences.painel_de_estilos = "false";
             }
         }
 
