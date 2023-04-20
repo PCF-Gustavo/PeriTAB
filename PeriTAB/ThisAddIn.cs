@@ -30,11 +30,11 @@ namespace PeriTAB
             TaskPane1.Height = 90;
             TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
 
+
             //Inicia Eventos            
             Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Evento_New_or_Open();
             Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
             Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.DefaultAll();
-            Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
             Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event(); iClass_DocSave_Event.Evento_DocSave();            
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
@@ -44,7 +44,7 @@ namespace PeriTAB
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.TaskPane1.Visible == false & Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked == true) Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked = false;
+            if (Globals.ThisAddIn.TaskPane1.Visible == false & Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked == true) { Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked = false; }
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

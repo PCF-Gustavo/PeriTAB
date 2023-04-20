@@ -19,6 +19,8 @@ namespace PeriTAB
         }
         private void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc)
         {
+            //MessageBox.Show("new or open");
+            Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
         }
     }
 }

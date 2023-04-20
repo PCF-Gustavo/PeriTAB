@@ -188,7 +188,7 @@
             // 
             // button_DockBottom
             // 
-            this.button_DockBottom.BackgroundImage = global::PeriTAB.Properties.Resources.seta1;
+            this.button_DockBottom.BackgroundImage = global::PeriTAB.Properties.Resources.seta2;
             this.button_DockBottom.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
             this.button_DockBottom.Location = new System.Drawing.Point(30, 568);
             this.button_DockBottom.Name = "button_DockBottom";
@@ -221,7 +221,7 @@
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1332, 611);
+            this.Size = new System.Drawing.Size(1311, 611);
             this.ResumeLayout(false);
 
         }

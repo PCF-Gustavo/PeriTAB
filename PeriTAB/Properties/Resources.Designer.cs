@@ -123,39 +123,9 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap esquadro {
-            get {
-                object obj = ResourceManager.GetObject("esquadro", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icone_pdf {
-            get {
-                object obj = ResourceManager.GetObject("icone_pdf", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icone_pdf2 {
             get {
                 object obj = ResourceManager.GetObject("icone_pdf2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icone_pdfa {
-            get {
-                object obj = ResourceManager.GetObject("icone_pdfa", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -216,6 +186,16 @@ namespace PeriTAB.Properties {
         internal static System.Drawing.Bitmap seta1 {
             get {
                 object obj = ResourceManager.GetObject("seta1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap seta2 {
+            get {
+                object obj = ResourceManager.GetObject("seta2", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

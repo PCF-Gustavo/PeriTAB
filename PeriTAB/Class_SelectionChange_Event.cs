@@ -27,12 +27,16 @@ namespace PeriTAB
             //if (Globals.ThisAddIn.Application.Language != MsoLanguageID.msoLanguageIDBrazilianPortuguese) { Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = false; Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Este botão apenas funciona no Word em Português Brasileiro."; }
 
             //Revisa a habilitação do CheckBox "Destacar" do Ribbon            
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true;
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false;
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false; }
 
             //Revisa a habilitação do CheckBox "Ver código" do Ribbon
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = true;
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = false;
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = false; }
+
+            //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
 
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             Globals.ThisAddIn.iUserControl1.Habilita_button9(true);

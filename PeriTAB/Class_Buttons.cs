@@ -125,12 +125,13 @@ namespace PeriTAB
         public void button_renomeia_documento_Default()
         {
             Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = true;
-            Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Macro renomeia_documento";
+            Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "";
             Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Renomeia o documento atual.";
         }
         public void button_gera_pdf_Default()
         {
             Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = true;
+            Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "";
             Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";
         }
 

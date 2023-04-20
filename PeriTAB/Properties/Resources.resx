@@ -118,9 +118,6 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="esquadro" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\esquadro.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="seta3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\seta3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -129,6 +126,9 @@
   </data>
   <data name="download2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\download2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="icone_pdf2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icone_pdf2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Normal.dotm;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -139,11 +139,8 @@
   <data name="aquarela" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\aquarela.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icone_pdfa" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icone_pdfa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icone_pdf" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icone_pdf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="numero" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\numero.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="atualizar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\atualizar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -166,10 +163,7 @@
   <data name="image_icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\image_icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="numero" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\numero.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="icone_pdf2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icone_pdf2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="seta2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\seta2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
