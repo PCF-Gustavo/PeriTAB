@@ -93,6 +93,16 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap checklist2 {
+            get {
+                object obj = ResourceManager.GetObject("checklist2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap dinheiro {
             get {
                 object obj = ResourceManager.GetObject("dinheiro", resourceCulture);
@@ -116,6 +126,26 @@ namespace PeriTAB.Properties {
         internal static System.Drawing.Bitmap download3 {
             get {
                 object obj = ResourceManager.GetObject("download3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap engrenagem {
+            get {
+                object obj = ResourceManager.GetObject("engrenagem", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap formatacao {
+            get {
+                object obj = ResourceManager.GetObject("formatacao", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -151,12 +181,32 @@ namespace PeriTAB.Properties {
         }
         
         /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap marcador2 {
+            get {
+                object obj = ResourceManager.GetObject("marcador2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Consulta um recurso localizado do tipo System.Byte[].
         /// </summary>
         internal static byte[] Normal {
             get {
                 object obj = ResourceManager.GetObject("Normal", resourceCulture);
                 return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap numerar {
+            get {
+                object obj = ResourceManager.GetObject("numerar", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -176,6 +226,16 @@ namespace PeriTAB.Properties {
         internal static System.Drawing.Bitmap radiografia {
             get {
                 object obj = ResourceManager.GetObject("radiografia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redimensionar {
+            get {
+                object obj = ResourceManager.GetObject("redimensionar", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

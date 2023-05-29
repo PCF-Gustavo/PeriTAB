@@ -129,6 +129,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.IdentityModel" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Security" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
@@ -303,6 +304,9 @@
     <PackageReference Include="iTextSharp">
       <Version>5.5.13.3</Version>
     </PackageReference>
+    <PackageReference Include="Thinktecture.IdentityModel.Client">
+      <Version>4.0.1</Version>
+    </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icone_pdf.png" />
@@ -315,6 +319,30 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\seta2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\redimensionar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\engrenagem.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checklist.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\checklist2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\numerar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\formatacao.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\marcador.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\marcador2.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -91,8 +91,20 @@ namespace PeriTAB
             string estilo_nome = "04a - Seção_1 (PeriTAB)";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
+            {
+                p.Range.set_Style((object)estilo_nome); 
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+
+                //if ((p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) != -1)
+                //{
+                //    for (int i = 0; i <= (p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) - 1; i++)
+                //    {
+                //        MessageBox.Show(p.Range.Characters[i].ToString());
+                //        p.Range.Characters[i].Delete();
+                //    }
+                //}
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
@@ -101,8 +113,11 @@ namespace PeriTAB
             string estilo_nome = "04b - Seção_2 (PeriTAB)";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
@@ -111,8 +126,11 @@ namespace PeriTAB
             string estilo_nome = "04c - Seção_3 (PeriTAB)";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
@@ -121,8 +139,11 @@ namespace PeriTAB
             string estilo_nome = "04d - Seção_4 (PeriTAB)";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
