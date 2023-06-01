@@ -31,6 +31,7 @@ using System.Windows.Controls;
 using System.Net.Security;
 using Org.BouncyCastle.Crypto.Tls;
 using System.Security.Authentication;
+using System.Runtime.InteropServices;
 
 namespace PeriTAB
 {
@@ -317,12 +318,25 @@ namespace PeriTAB
 
         private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
         {
+            PdfReader inputPdf = null;
+            bool inputPdf_open = false;
             string path = Globals.ThisAddIn.Application.ActiveDocument.FullName;
             string localpath = GetLocalPath(path);
-            if (localpath == "") { MessageBox.Show("Não foi possível gerar o PDF."); return; }
-            Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
-
+            if (localpath == null) { MessageBox.Show("Não foi possível gerar o PDF."); return; }
             string path_pdf = localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf";
+            //Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
+
+            //try { Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true); } catch (COMException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); return; }
+            Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(Path.Combine(Path.GetTempPath(),"tmp_pdf_PeriTAB"), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
+
+
+            //if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
+            //{
+            //    File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
+            //    return;
+            //}
+            //else { MessageBox.Show("Não foi possível gerar o PDF."); return; }
+
             if (Globals.Ribbons.Ribbon1.checkBox_assinar.Checked)
             {
                 string path_pdf_assinado = localpath.Substring(0, localpath.LastIndexOf(".")) + "_assinado.pdf";
@@ -341,7 +355,7 @@ namespace PeriTAB
                 {
                     case 0:
                         MessageBox.Show("Nenhum certificado válido encontrado.");
-                        return;
+                        goto del_temp;
                     case 1:
                         certClient = st.Certificates[0];
                         break;
@@ -354,7 +368,7 @@ namespace PeriTAB
                         else
                         {
                             MessageBox.Show("Nenhum certificado foi selecionado.");
-                            return;
+                            goto del_temp;
                         }
                         break;
                 }
@@ -372,9 +386,13 @@ namespace PeriTAB
                     chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
                 }
 
-                PdfReader inputPdf = new PdfReader(path_pdf);
+                //PdfReader inputPdf = new PdfReader(path_pdf);
+                //PdfReader inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
+                inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
+                inputPdf_open = true;
 
-                FileStream signedPdf = new FileStream(path_pdf_assinado, FileMode.Create);
+                FileStream signedPdf = null;
+                try { signedPdf = new FileStream(path_pdf_assinado, FileMode.Create); } catch (IOException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; }
 
                 PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
 
@@ -398,15 +416,20 @@ namespace PeriTAB
 
                 (new RSACryptoServiceProvider()).PersistKeyInCsp = true; //Define chave persistente. Só pede a senha da primeira vez.
 
-
-                try { MakeSignature.SignDetached(signatureAppearance, externalSignature, chain, null, null, null, 0, CryptoStandard.CMS); } catch (CryptographicException ex) { return; }
-                inputPdf.Close();
+                try { MakeSignature.SignDetached(signatureAppearance, externalSignature, chain, null, null, null, 0, CryptoStandard.CMS); } catch (CryptographicException ex)
+                {
+                    //Cancelamento da senha do token
+                    signedPdf.Close();
+                    File.Delete(path_pdf_assinado);
+                    goto del_temp; 
+                }
+                //inputPdf.Close();
                 pdfStamper.Close();
 
                 if (File.Exists(path_pdf_assinado))
                 {
                     Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
-                    if (File.Exists(path_pdf)) { File.Delete(path_pdf); }
+                    //if (File.Exists(path_pdf)) { File.Delete(path_pdf); }
                     if (Globals.Ribbons.Ribbon1.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf_assinado); }
                 }
                 else
@@ -416,16 +439,22 @@ namespace PeriTAB
             }
             else
             {
-                if (File.Exists(path_pdf))
+                if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
                 {
+                    if (File.Exists(path_pdf)) { try { File.Delete(path_pdf); } catch (IOException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; } }
+                    File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
                     Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
                     if (Globals.Ribbons.Ribbon1.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf); }
                 }
                 else
-                {
-                    Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "A geração do PDF falhou.";
+                { 
+                    MessageBox.Show("Não foi possível gerar o PDF.");
                 }
+
             }
+        del_temp:
+            if (inputPdf_open) inputPdf.Close();
+            if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"))) { File.Delete(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")); } //Deleta tmp.pdf
         }
 
         private string GetLocalPath(string path)
@@ -450,12 +479,12 @@ namespace PeriTAB
                     {
                         onedrive_subpasta = path.Substring(path.IndexOf("/Documents/") + ("/Documents/").Length, path.Length - (path.IndexOf("/Documents/") + ("/Documents/").Length));
                     }
-                    else { return ""; }
+                    else { return null; }
                     localpath = path_onedrive + slash + onedrive_subpasta.Replace("/", slash);
                 }
                 else
                 {
-                    return "";
+                    return null;
                 }
             }
             return localpath;
