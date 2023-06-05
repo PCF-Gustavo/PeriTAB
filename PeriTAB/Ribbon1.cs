@@ -133,6 +133,10 @@ namespace PeriTAB
 
         private void button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
         {
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 1", WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 2", WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 3", WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 4", WdOrganizerObject.wdOrganizerObjectStyles);
             //Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "04 - Seções (PeriTAB);1" + quote, false);
             Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "04A - SEÇÃO_1 (PERITAB);1;04B - SEÇÃO_2 (PERITAB);2;04C - SEÇÃO_3 (PERITAB);3;04D - SEÇÃO_4 (PERITAB);4" + quote, false);
             //Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "04A - SEÇÃO_1 (PERITAB);1;04B - SEÇÃO_2 (PERITAB);2;04C - SEÇÃO_3 (PERITAB);3;04D - SEÇÃO_4 (PERITAB);4" + quote + " " + slash + "c " + quote + "Figura" + quote + " " + slash + "c " + quote + "Tabela" + quote, false);
@@ -524,7 +528,8 @@ namespace PeriTAB
         {
             if (inicio == null & fim == null) { return null; }
 
-            try{
+            try
+            {
                 if (inicio == null)
                 {
                     return texto.Substring(0, texto.IndexOf(fim));
@@ -533,7 +538,8 @@ namespace PeriTAB
                 {
                     return texto.Substring(texto.IndexOf(inicio) + inicio.Length);
                 }
-                return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio))).IndexOf(fim) - inicio.Length);
+                //return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio))).IndexOf(fim) - inicio.Length);
+                return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio) + inicio.Length)).IndexOf(fim));
             }
             catch { return null; }
         }
@@ -605,7 +611,7 @@ namespace PeriTAB
             }
             else
             {
-                DialogResult resultado = MessageBox.Show("Arquivo ASAP não encontrado. Gostaria de baixá-lo?", "", MessageBoxButtons.YesNo);
+                DialogResult resultado = MessageBox.Show("Arquivo ASAP não encontrado. Gostaria de baixá-lo?" + System.Environment.NewLine + "(Certificado/Token é necessário)", "", MessageBoxButtons.YesNo);
                 if (resultado == System.Windows.Forms.DialogResult.Yes)
                 {
                     System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=");
@@ -758,8 +764,8 @@ namespace PeriTAB
             string ano = data.Substring(6, 4);
             string perito1 = get_text(asap, "PERITO1=", "\n");
             string perito2 = get_text(asap, "PERITO2=", "\n");
-            string num_ipl = get_text(asap, "NUMERO_IPL=", "\n");
-            string documento = get_text(asap, "DOCUMENTO=", "\n");
+            string num_ipl = get_text(asap, "NUMERO_IPL=", "\n").Replace("IPL", "Inquérito Policial nº").Replace("RDF","Registro de Fato nº").Replace("RE", "Registro Especial nº");
+            string documento = get_text(asap, "DOCUMENTO=", "\n").Replace("Of" + (char)65533 + "cio","Ofício nº"); //caracter desconhecido: losando com interrogação
             string data_documento = get_text(asap, "DATA_DOCUMENTO=", "\n");
             string num_sei = get_text(asap, "NUMERO_SIAPRO=", "\n");
             string registro = get_text(asap, "NUMERO_CRIMINALISTICA=", "\n");
@@ -785,12 +791,30 @@ namespace PeriTAB
             //MessageBox.Show(preambulo);
             //string nome_unidade = "Superintendência Regional de Polícia Federal no Maranhão";
             string nome_unidade = unidade_extenso(get_text(unidade,"/"));
-            MessageBox.Show("nome da unidade = " + nome_unidade);
+            //MessageBox.Show("nome da unidade = " + nome_unidade);
             //string nome_setor_criminalistica = "SETOR TÉCNICO-CIENTÍFICO";
-            string cargo_chefe = "Chefe do " + nome_unidade;
             string ao_sexo_chefe = "o";
+            string ao_documento = "o";
             string ao_sexo_perito1 = "o";
             string ao_sexo_perito2 = "o";
+            string cargo_chefe;
+            if (unidade == "INC/DITEC/PF")
+            {
+                if (ao_sexo_chefe == "o")
+                {
+                    cargo_chefe = "Diretor do INSTITUTO NACIONAL DE CRIMINALÍSTICA da Diretoria Técnico-Científica";
+                }
+                else
+                {
+                    cargo_chefe = "Diretora do INSTITUTO NACIONAL DE CRIMINALÍSTICA da Diretoria Técnico-Científica";
+                }
+            }
+            else 
+            {
+                cargo_chefe = "Chefe do " + nome_unidade;
+            }
+            
+
             string ao_sexo_peritos;
             string nome_perito1 = get_text(perito1, inicio: null, " (");
             string nome_perito2 = get_text(perito2, inicio: null, " (").Replace("()","");
@@ -820,10 +844,12 @@ namespace PeriTAB
                 }
             }
 
+            
+
             //string dia = "10";
             //string mes = "abril";
             //string ano = "3333";
-            string ao_documento = "o";
+            
 
             string preambulo_modelo1 = "Em " + dia + " de " + mes + " de " + ano + ", designad" + ao_sexo_peritos + s_peritos + " pel" + ao_sexo_chefe + " " + cargo_chefe + ", o" + s_peritos + " Perit" + ao_sexo_peritos + s_peritos + " Crimina" + is_criminais + " Federa" + is_criminais + " " + nome_perito1 + nome_perito2 + " elab" + Elaboraram_oraram + " o presente Laudo de Perícia Criminal Federal, no interesse do " + num_ipl + ", a fim de atender ao contido n" + ao_documento + " " + documento + " de " + data_documento + ", protocolado no SEI sob o nº " + num_sei + " e registrado no SISCRIM sob o nº " + registro + ", em " + data_registro + ", descrevendo com verdade e com todas as circunstâncias tudo quanto possa interessar à Justiça e respondendo aos quesitos formulados, abaixo transcritos:";
             string preambulo_modelo2 = preambulo_modelo1.Replace("respondendo aos quesitos formulados, abaixo transcritos", "atendendo ao abaixo transcrito");
@@ -838,11 +864,9 @@ namespace PeriTAB
         {
             string estado;
             string cidade;
-            MessageBox.Show(get_text(un, inicio: null, "/"));
+            //MessageBox.Show(get_text(un, inicio: null, "/"));
             switch (get_text(un, inicio: null, "/"))
             {
-                case "INC":
-                    return "INSTITUTO NACIONAL DE CRIMINALÍSTICA da Diretoria Técnico-Científica";
                 case "SR":
                     switch (un.Substring(un.Length - 2))
                     {
@@ -932,301 +956,306 @@ namespace PeriTAB
                             break;
                     }
                     return "SETOR TÉCNICO-CIENTÍFICO da Superintendência Regional de Polícia Federal " + estado;
-                case "NUTEC":
+                case "DPF":
+                    //MessageBox.Show(get_text(un, "DPF/", "/") + " opa " + un);
+
                     switch (get_text(un, "DPF/","/"))
                     {
-                        case "AGA":
-                            cidade = "";
-                            break;
-                        case "ANS":
-                            cidade = "";
-                            break;
-                        case "AQA":
-                            cidade = "";
-                            break;
-                        case "ARS":
-                            cidade = "";
-                            break;
+                        //case "AGA":
+                        //    cidade = "";
+                        //    break;
+                        //case "ANS":
+                        //    cidade = "";
+                        //    break;
+                        //case "AQA":
+                        //    cidade = "";
+                        //    break;
+                        //case "ARS":
+                        //    cidade = "";
+                        //    break;
                         case "ARU":
-                            cidade = "";
+                            cidade = "em Araçatuba";
                             break;
-                        case "ATM":
-                            cidade = "";
-                            break;
-                        case "BGE":
-                            cidade = "";
-                            break;
-                        case "BRA":
-                            cidade = "";
-                            break;
-                        case "BRG":
-                            cidade = "";
-                            break;
-                        case "BRU":
-                            cidade = "";
-                            break;
-                        case "CAC":
-                            cidade = "";
-                            break;
-                        case "CAE":
-                            cidade = "";
-                            break;
+                        //case "ATM":
+                        //    cidade = "";
+                        //    break;
+                        //case "BGE":
+                        //    cidade = "";
+                        //    break;
+                        //case "BRA":
+                        //    cidade = "";
+                        //    break;
+                        //case "BRG":
+                        //    cidade = "";
+                        //    break;
+                        //case "BRU":
+                        //    cidade = "";
+                        //    break;
+                        //case "CAC":
+                        //    cidade = "";
+                        //    break;
+                        //case "CAE":
+                        //    cidade = "";
+                        //    break;
                         case "CAS":
-                            cidade = "";
+                            cidade = "em Campinas";
                             break;
-                        case "CCM":
-                            cidade = "";
-                            break;
-                        case "CGE":
-                            cidade = "";
-                            break;
-                        case "CHI":
-                            cidade = "";
-                            break;
-                        case "CIT":
-                            cidade = "";
-                            break;
-                        case "CRA":
-                            cidade = "";
-                            break;
-                        case "CRU":
-                            cidade = "";
-                            break;
-                        case "CXA":
-                            cidade = "";
-                            break;
-                        case "CXS":
-                            cidade = "";
-                            break;
-                        case "CZO":
-                            cidade = "";
-                            break;
-                        case "CZS":
-                            cidade = "";
-                            break;
-                        case "DCQ":
-                            cidade = "";
-                            break;
+                        //case "CCM":
+                        //    cidade = "";
+                        //    break;
+                        //case "CGE":
+                        //    cidade = "";
+                        //    break;
+                        //case "CHI":
+                        //    cidade = "";
+                        //    break;
+                        //case "CIT":
+                        //    cidade = "";
+                        //    break;
+                        //case "CRA":
+                        //    cidade = "";
+                        //    break;
+                        //case "CRU":
+                        //    cidade = "";
+                        //    break;
+                        //case "CXA":
+                        //    cidade = "";
+                        //    break;
+                        //case "CXS":
+                        //    cidade = "";
+                        //    break;
+                        //case "CZO":
+                        //    cidade = "";
+                        //    break;
+                        //case "CZS":
+                        //    cidade = "";
+                        //    break;
+                        //case "DCQ":
+                        //    cidade = "";
+                        //    break;
                         case "DRS":
-                            cidade = "";
+                            cidade = "em Dourados";
                             break;
-                        case "DVS":
-                            cidade = "";
-                            break;
-                        case "EPA":
-                            cidade = "";
-                            break;
+                        //case "DVS":
+                        //    cidade = "";
+                        //    break;
+                        //case "EPA":
+                        //    cidade = "";
+                        //    break;
                         case "FIG":
-                            cidade = "";
+                            cidade = "em Foz do Iguaçu";
                             break;
-                        case "GMI":
-                            cidade = "";
-                            break;
-                        case "GOY":
-                            cidade = "";
-                            break;
-                        case "GPB":
-                            cidade = "";
-                            break;
+                        //case "GMI":
+                        //    cidade = "";
+                        //    break;
+                        //case "GOY":
+                        //    cidade = "";
+                        //    break;
+                        //case "GPB":
+                        //    cidade = "";
+                        //    break;
                         case "GRA":
-                            cidade = "";
+                            cidade = "em Guaíra";
                             break;
-                        case "GVS":
-                            cidade = "";
-                            break;
-                        case "IJI":
-                            cidade = "";
-                            break;
-                        case "ILS":
-                            cidade = "";
-                            break;
-                        case "IPN":
-                            cidade = "";
-                            break;
-                        case "ITZ":
-                            cidade = "";
-                            break;
+                        //case "GVS":
+                        //    cidade = "";
+                        //    break;
+                        //case "IJI":
+                        //    cidade = "";
+                        //    break;
+                        //case "ILS":
+                        //    cidade = "";
+                        //    break;
+                        //case "IPN":
+                        //    cidade = "";
+                        //    break;
+                        //case "ITZ":
+                        //    cidade = "";
+                        //    break;
                         case "JFA":
-                            cidade = "";
+                            cidade = " em Juiz de Fora";
                             break;
-                        case "JGO":
-                            cidade = "";
-                            break;
-                        case "JLS":
-                            cidade = "";
-                            break;
+                        //case "JGO":
+                        //    cidade = "";
+                        //    break;
+                        //case "JLS":
+                        //    cidade = "";
+                        //    break;
                         case "JNE":
-                            cidade = "";
+                            cidade = "em Juazeiro do Norte";
                             break;
-                        case "JPN":
-                            cidade = "";
-                            break;
-                        case "JTI":
-                            cidade = "";
-                            break;
-                        case "JVE":
-                            cidade = "";
-                            break;
+                        //case "JPN":
+                        //    cidade = "";
+                        //    break;
+                        //case "JTI":
+                        //    cidade = "";
+                        //    break;
+                        //case "JVE":
+                        //    cidade = "";
+                        //    break;
                         case "JZO":
-                            cidade = "";
+                            cidade = "em Juazeiro";
                             break;
                         case "LDA":
-                            cidade = "";
+                            cidade = "em Londrina";
                             break;
-                        case "LGE":
-                            cidade = "";
-                            break;
-                        case "LIV":
-                            cidade = "";
-                            break;
-                        case "MBA":
-                            cidade = "";
-                            break;
-                        case "MCE":
-                            cidade = "";
-                            break;
-                        case "MGA":
-                            cidade = "";
-                            break;
+                        //case "LGE":
+                        //    cidade = "";
+                        //    break;
+                        //case "LIV":
+                        //    cidade = "";
+                        //    break;
+                        //case "MBA":
+                        //    cidade = "";
+                        //    break;
+                        //case "MCE":
+                        //    cidade = "";
+                        //    break;
+                        //case "MGA":
+                        //    cidade = "";
+                        //    break;
                         case "MII":
-                            cidade = "";
+                            cidade = "em Marília";
                             break;
-                        case "MOC":
-                            cidade = "";
-                            break;
-                        case "MOS":
-                            cidade = "";
-                            break;
-                        case "NIG":
-                            cidade = "";
-                            break;
-                        case "NRI":
-                            cidade = "";
-                            break;
-                        case "NVI":
-                            cidade = "";
-                            break;
-                        case "OPE":
-                            cidade = "";
-                            break;
-                        case "PAC":
-                            cidade = "";
-                            break;
-                        case "PAT":
-                            cidade = "";
-                            break;
-                        case "PCA":
-                            cidade = "";
-                            break;
+                        //case "MOC":
+                        //    cidade = "";
+                        //    break;
+                        //case "MOS":
+                        //    cidade = "";
+                        //    break;
+                        //case "NIG":
+                        //    cidade = "";
+                        //    break;
+                        //case "NRI":
+                        //    cidade = "";
+                        //    break;
+                        //case "NVI":
+                        //    cidade = "";
+                        //    break;
+                        //case "OPE":
+                        //    cidade = "";
+                        //    break;
+                        //case "PAC":
+                        //    cidade = "";
+                        //    break;
+                        //case "PAT":
+                        //    cidade = "";
+                        //    break;
+                        //case "PCA":
+                        //    cidade = "";
+                        //    break;
                         case "PDE":
-                            cidade = "";
+                            cidade = "em Presidente Prudente";
                             break;
                         case "PFO":
-                            cidade = "";
+                            cidade = "em Passo Fundo";
                             break;
-                        case "PGZ":
-                            cidade = "";
-                            break;
-                        case "PHB":
-                            cidade = "";
-                            break;
-                        case "PNG":
-                            cidade = "";
-                            break;
-                        case "PPA":
-                            cidade = "";
-                            break;
-                        case "PSO":
-                            cidade = "";
-                            break;
+                        //case "PGZ":
+                        //    cidade = "";
+                        //    break;
+                        //case "PHB":
+                        //    cidade = "";
+                        //    break;
+                        //case "PNG":
+                        //    cidade = "";
+                        //    break;
+                        //case "PPA":
+                        //    cidade = "";
+                        //    break;
+                        //case "PSO":
+                        //    cidade = "";
+                        //    break;
                         case "PTS":
-                            cidade = "";
+                            cidade = "em Pelotas";
                             break;
-                        case "RDO":
-                            cidade = "";
+                        //case "RDO":
+                        //    cidade = "";
+                        //    break;
+                        //case "RGE":
+                        //    cidade = "";
+                        //    break;
+                        //case "ROO":
+                        //    cidade = "";
+                        //    break;
+                        case "RPO":
+                            cidade = "em Ribeirão Preto";
                             break;
-                        case "RGE":
-                            cidade = "";
-                            break;
-                        case "ROO":
-                            cidade = "";
-                            break;
-                        case "SAG":
-                            cidade = "";
-                            break;
-                        case "SBA":
-                            cidade = "";
-                            break;
-                        case "SCS":
-                            cidade = "";
-                            break;
-                        case "SGO":
-                            cidade = "";
-                            break;
+                        //case "SAG":
+                        //    cidade = "";
+                        //    break;
+                        //case "SBA":
+                        //    cidade = "";
+                        //    break;
+                        //case "SCS":
+                        //    cidade = "";
+                        //    break;
+                        //case "SGO":
+                        //    cidade = "";
+                        //    break;
                         case "SIC":
-                            cidade = "";
+                            cidade = "em Sinop";
                             break;
-                        case "SJE":
-                            cidade = "";
-                            break;
+                        //case "SJE":
+                        //    cidade = "";
+                        //    break;
                         case "SJK":
-                            cidade = "";
+                            cidade = "em São José dos Campos";
                             break;
                         case "SMA":
-                            cidade = "";
+                            cidade = "em Santa Maria";
                             break;
-                        case "SMT":
-                            cidade = "";
-                            break;
+                        //case "SMT":
+                        //    cidade = "";
+                        //    break;
                         case "SNM":
-                            cidade = "";
+                            cidade = "em Santarém";
                             break;
                         case "SOD":
-                            cidade = "";
+                            cidade = "em Sorocaba";
                             break;
-                        case "SSB":
-                            cidade = "";
-                            break;
+                        //case "SSB":
+                        //    cidade = "";
+                        //    break;
                         case "STS":
-                            cidade = "";
+                            cidade = "em Santos";
                             break;
-                        case "TBA":
-                            cidade = "";
-                            break;
-                        case "TLS":
-                            cidade = "";
-                            break;
+                        //case "TBA":
+                        //    cidade = "";
+                        //    break;
+                        //case "TLS":
+                        //    cidade = "";
+                        //    break;
                         case "UDI":
-                            cidade = "";
+                            cidade = "em Uberlândia";
                             break;
-                        case "UGA":
-                            cidade = "";
-                            break;
-                        case "URA":
-                            cidade = "";
-                            break;
-                        case "VAG":
-                            cidade = "";
-                            break;
-                        case "VDC":
-                            cidade = "";
-                            break;
+                        //case "UGA":
+                        //    cidade = "";
+                        //    break;
+                        //case "URA":
+                        //    cidade = "";
+                        //    break;
+                        //case "VAG":
+                        //    cidade = "";
+                        //    break;
+                        //case "VDC":
+                        //    cidade = "";
+                        //    break;
                         case "VLA":
-                            cidade = "";
+                            cidade = "em Vilhena";
                             break;
-                        case "VRA":
-                            cidade = "";
-                            break;
-                        case "XAP":
-                            cidade = "";
-                            break;
+                        //case "VRA":
+                        //    cidade = "";
+                        //    break;
+                        //case "XAP":
+                        //    cidade = "";
+                        //    break;
                         default:
                             cidade = null;
                             break;
                     }
                     return "NÚCLEO TÉCNICO-CIENTÍFICO da Delegacia de Polícia Federal " + cidade;
                 default:
-                    MessageBox.Show("hum");
+                    //MessageBox.Show("hum");
                     return null;
             }
 
@@ -1269,6 +1298,36 @@ namespace PeriTAB
         {
 
         }
+
+        private void button_confere_formatacao_Click(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+
+
+        //private string get_text2(string texto, string inicio = null, string fim = null) //Retona a primeira ocorrência de string entre os strings 'inicio' e 'fim' no string 'texto'.
+        //{
+        //    if (inicio == null & fim == null) { return null; }
+
+        //    //try
+        //    //{
+        //        if (inicio == null)
+        //        {
+        //            return texto.Substring(0, texto.IndexOf(fim));
+        //        }
+        //        if (fim == null)
+        //        {
+        //            return texto.Substring(texto.IndexOf(inicio) + inicio.Length);
+        //        }
+        //    string a1 = (texto.Substring(texto.IndexOf(inicio)));
+        //    int a2 = inicio.Length;
+        //    int a3 = (texto.Substring(texto.IndexOf(inicio) + inicio.Length)).IndexOf(fim);
+        //    return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio) + inicio.Length)).IndexOf(fim));
+        //    //}
+        //    //catch { return null; }
+        //}
+
     }
 }
 

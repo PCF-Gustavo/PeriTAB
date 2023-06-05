@@ -97,15 +97,60 @@ namespace PeriTAB
             string estilo_nome_baseado = "04 - Seções (PeriTAB)";
             string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
             string estilo_nome = "04a - Seção_1 (PeriTAB)";
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
             {
+
+
                 p.Range.set_Style((object)estilo_nome); 
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
 
+                int s;
+                if (p.Range.Text.Length >= 7) { s = 7; } else { s = p.Range.Text.Length; }
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
+                {
+                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    {
+                        //MessageBox.Show(a);
+                        int loc_hifen = a.IndexOf("-");
+                        //MessageBox.Show(loc_hifen.ToString());
+                        for (int i = 1; i <= loc_hifen; i++)
+                        {
+                            //MessageBox.Show(p.Range.Characters[1].Text);
+                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                            p.Range.Characters[1].Delete();
+                        }
+                        //break;
+                    }
+                }
+                
+
+                ////string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-").Replace(".", "").Replace("0", "").Replace("1", "").Replace("2", "").Replace("3", "").Replace("4", "").Replace("5", "").Replace("6", "").Replace("7", "").Replace("8", "").Replace("9", "");
+                //int loc_hifen = a.IndexOf("-");
+                //MessageBox.Show(a);
+                //for (int i = 1; i <= loc_hifen; i++)
+                //{
+                //    MessageBox.Show(p.Range.Characters[1].Text);
+                //    p.Range.Characters[1].Delete();
+                //}
+                //if (loc_hifen != -1)
+                //{
+                //    //MessageBox.Show(a.Substring(0, 2).Replace(" ", ""));
+                //    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Substring(0, 2) == "II" | a.Substring(0, 2) == "IV" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Substring(0, 2) == "VI")
+                //    {
+                //        for (int i = 1; i <= loc_hifen; i++)
+                //        {
+                //            //MessageBox.Show(p.Range.Characters[1].Text);
+                //            p.Range.Characters[1].Delete();
+                //        }
+                //    }
+                //}
+                //Replace(((char)8211).ToString(), "-")
                 //if ((p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) != -1)
                 //{
                 //    for (int i = 0; i <= (p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) - 1; i++)
@@ -123,19 +168,36 @@ namespace PeriTAB
             string estilo_nome_baseado = "04 - Seções (PeriTAB)";
             string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
             string estilo_nome = "04b - Seção_2 (PeriTAB)";
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
-                if (r != null)
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
                     {
                         p.Range.ParagraphFormat.SpaceBefore = 0;
+                    }
+                }
+
+                int s;
+                if (p.Range.Text.Length >= 9) { s = 9; } else { s = p.Range.Text.Length; }
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    {
+                        int loc_hifen = a.IndexOf("-");
+                        for (int i = 1; i <= loc_hifen; i++)
+                        {
+                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                            p.Range.Characters[1].Delete();
+                        }
                     }
                 }
             }
@@ -147,19 +209,36 @@ namespace PeriTAB
             string estilo_nome_baseado = "04 - Seções (PeriTAB)";
             string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
             string estilo_nome = "04c - Seção_3 (PeriTAB)";
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
-                if (r != null)
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
                     {
                         p.Range.ParagraphFormat.SpaceBefore = 0;
+                    }
+                }
+
+                int s;
+                if (p.Range.Text.Length >= 11) { s = 11; } else { s = p.Range.Text.Length; }
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    {
+                        int loc_hifen = a.IndexOf("-");
+                        for (int i = 1; i <= loc_hifen; i++)
+                        {
+                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                            p.Range.Characters[1].Delete();
+                        }
                     }
                 }
             }
@@ -171,19 +250,36 @@ namespace PeriTAB
             string estilo_nome_baseado = "04 - Seções (PeriTAB)";
             string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
             string estilo_nome = "04d - Seção_4 (PeriTAB)";
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
-                if (r != null)
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
                     {
                         p.Range.ParagraphFormat.SpaceBefore = 0;
+                    }
+                }
+
+                int s;
+                if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    {
+                        int loc_hifen = a.IndexOf("-");
+                        for (int i = 1; i <= loc_hifen; i++)
+                        {
+                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                            p.Range.Characters[1].Delete();
+                        }
                     }
                 }
             }
