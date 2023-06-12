@@ -580,7 +580,7 @@ namespace PeriTAB
             for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
             {
                 string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
-                string t_mod = t.ToLower().Replace(" ", "").Replace(((char)160).ToString(), "").Replace(((char)9).ToString(), "").Replace(((char)8211).ToString(), "-").Replace(((char)176).ToString(), "º"); //elimina espaços, espaços inquebráveis e tabs. Ainda troca en-dash por hifen e grau por 'o' sobrescrito.
+                string t_mod = t.ToLower().Replace(" ", "").Replace(((char)160).ToString(), "").Replace(((char)9).ToString(), "").Replace(((char)8211).ToString(), "-").Replace(((char)176).ToString(), "*").Replace("º", "*").Replace("laudono", "laudon*"); //elimina espaços, espaços inquebráveis e tabs. Ainda troca en-dash por hifen e grau por 'o' sobrescrito.
                 //MessageBox.Show(t_mod);
                 //if (t_mod == ((char)13).ToString()) { continue; } //
 
@@ -592,7 +592,7 @@ namespace PeriTAB
                 {
                     if ((t_mod.Substring(0, 6)).ToLower() == "laudon")
                     {
-                        num_laudo = get_text(t_mod, "nº", "/");
+                        num_laudo = get_text(t_mod, "n*", "/");
                         ano_laudo = get_text(t_mod, "/", "-");
                         unidade_laudo = get_text(t_mod, "-");
                         break;
