@@ -614,7 +614,7 @@ namespace PeriTAB
 
             if (File.Exists(asap_path))
             {
-                string ASAP = File.ReadAllText(asap_path);
+                string ASAP = File.ReadAllText(asap_path, Encoding.Default);
                 //string preambulo = pega_preambulo_laudo();
                 //if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
                 int paragrafo_do_preambulo = pega_paragrafo_do_preambulo();
@@ -794,7 +794,8 @@ namespace PeriTAB
             string perito1 = get_text(asap, "PERITO1=", "\n");
             string perito2 = get_text(asap, "PERITO2=", "\n");
             string num_ipl = get_text(asap, "NUMERO_IPL=", "\n").Replace("IPL", "Inquérito Policial nº").Replace("RDF","Registro de Fato nº").Replace("RE", "Registro Especial nº");
-            string documento = get_text(asap, "DOCUMENTO=", "\n").Replace("Of" + (char)65533 + "cio","Ofício nº"); //caracter desconhecido: losando com interrogação
+            //string documento = get_text(asap, "DOCUMENTO=", "\n").Replace("Of" + (char)65533 + "cio", "Ofício nº"); //caracter desconhecido: losando com interrogação
+            string documento = get_text(asap, "DOCUMENTO=", "\n");
             string data_documento = get_text(asap, "DATA_DOCUMENTO=", "\n");
             string num_sei = get_text(asap, "NUMERO_SIAPRO=", "\n");
             string registro = get_text(asap, "NUMERO_CRIMINALISTICA=", "\n");
