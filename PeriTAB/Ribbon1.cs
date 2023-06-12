@@ -32,6 +32,7 @@ using System.Net.Security;
 using Org.BouncyCastle.Crypto.Tls;
 using System.Security.Authentication;
 using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace PeriTAB
 {
@@ -244,7 +245,11 @@ namespace PeriTAB
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
-            if (Variables.editBox_largura_Text == null) { Variables.editBox_largura_Text = Class_Buttons.preferences.largura; }
+            if (Variables.editBox_largura_Text == null)
+            {
+                if (Class_Buttons.preferences.largura == "") { Class_Buttons.preferences.largura = "10"; }
+                Variables.editBox_largura_Text = Class_Buttons.preferences.largura; 
+            }
 
             if (checkBox_largura.Checked)
             {
@@ -262,7 +267,11 @@ namespace PeriTAB
 
         private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
         {
-            if (Variables.editBox_altura_Text == null) { Variables.editBox_altura_Text = Class_Buttons.preferences.altura; }
+            if (Variables.editBox_altura_Text == null) 
+            {
+                if (Class_Buttons.preferences.altura == "") { Class_Buttons.preferences.altura = "10"; }
+                Variables.editBox_altura_Text = Class_Buttons.preferences.altura; 
+            }
 
             if (checkBox_altura.Checked)
             {
@@ -380,7 +389,7 @@ namespace PeriTAB
                 Variables.cert = certClient;
 
                 st.Close();
-
+                //Debug.WriteLine("1");
                 //Get Cert Chain
                 IList<X509Certificate> chain = new List<X509Certificate>();
                 X509Chain x509Chain = new X509Chain();
@@ -389,7 +398,7 @@ namespace PeriTAB
                 {
                     chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
                 }
-
+                //Debug.WriteLine("2");
                 //PdfReader inputPdf = new PdfReader(path_pdf);
                 //PdfReader inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
                 inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
@@ -399,7 +408,7 @@ namespace PeriTAB
                 try { signedPdf = new FileStream(path_pdf_assinado, FileMode.Create); } catch (IOException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; }
 
                 PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
-
+                //Debug.WriteLine("3");
                 IExternalSignature externalSignature = new X509Certificate2Signature(certClient, "SHA-256");
 
                 PdfSignatureAppearance signatureAppearance = pdfStamper.SignatureAppearance;
@@ -407,7 +416,7 @@ namespace PeriTAB
                 //signatureAppearance.SignatureGraphic = Image.GetInstance(pathToSignatureImage);
                 //signatureAppearance.SetVisibleSignature(new iTextSharp.text.Rectangle(0, 00, 250, 150), inputPdf.NumberOfPages, "Signature");
                 signatureAppearance.SignatureRenderingMode = PdfSignatureAppearance.RenderingMode.DESCRIPTION;
-
+                //Debug.WriteLine("4");
 
                 //RSACryptoServiceProvider rsa = new RSACryptoServiceProvider();
                 //CspParameters cspp = new CspParameters();
@@ -429,7 +438,6 @@ namespace PeriTAB
                 }
                 //inputPdf.Close();
                 pdfStamper.Close();
-
                 if (File.Exists(path_pdf_assinado))
                 {
                     Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
@@ -607,7 +615,14 @@ namespace PeriTAB
             if (File.Exists(asap_path))
             {
                 string ASAP = File.ReadAllText(asap_path);
-                confere_preambulo(ASAP);
+                //string preambulo = pega_preambulo_laudo();
+                //if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
+                int paragrafo_do_preambulo = pega_paragrafo_do_preambulo();
+                if (paragrafo_do_preambulo == 0) { MessageBox.Show("preambulo não encontrado."); return; }
+                //string preambulo = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text;
+                string preambulo_padrao = faz_preambulo_padrao(ASAP);
+                //MessageBox.Show(preambulo);
+                compara_preambulo(preambulo_padrao, paragrafo_do_preambulo);
             }
             else
             {
@@ -619,124 +634,139 @@ namespace PeriTAB
                 }
             }
 
+        }
 
-
-
-
-
-
-            //string url1 = "https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=";
-            ////url1 = "http://google.com";
-
-            //// Create a web request that points to our SSL-enabled client certificate required web site
-            //HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url1);
-            //ServicePointManager.Expect100Continue = true;
-            //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-            //ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(AlwaysGoodCertificate);
-
-            //// Use the X509Store class to get a handle to the local certificate stores. "My" is the "Personal" store.
-            //X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
-
-            //// Open the store to be able to read from it.
-            //store.Open(OpenFlags.ReadOnly);
-
-            //// Use the X509Certificate2Collection class to get a list of certificates that match our criteria (in this case, we should only pull back one).
-            //X509Certificate2Collection collection = store.Certificates.Find(X509FindType.FindBySubjectName, "MyClientCert", true);
-
-            //// Associate the certificates with the request
-            //request.ClientCertificates = collection;
-
-            //// Make the web request
-            //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-            //// Output the stream to a file.
-            ////Stream stream = response.GetResponseStream();
-            //string resp = "";
-            //if (response.StatusCode == HttpStatusCode.OK)
-            //{
-            //    Stream receiveStream = response.GetResponseStream();
-            //    StreamReader readStream = null;
-            //    if (response.CharacterSet == null)
-            //        readStream = new StreamReader(receiveStream);
-            //    else
-            //        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-            //    resp = readStream.ReadToEnd();
-            //    MessageBox.Show(resp);
-            //}
-
-
-
-
-
-
-
-
-
-
-
-
-
-                //string url1 = "https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=";
-                ////url1 = "http://google.com";
-
-                //ServicePointManager.Expect100Continue = true;
-                //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
-
-
-
-                //X509Store st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
-                //st.Open(OpenFlags.MaxAllowed);
-                //X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
-
-                ////Get Cert Chain
-
-                //X509Certificate2 certClient = collection[0];
-                //IList<X509Certificate> chain = new List<X509Certificate>();
-                //X509Chain x509Chain = new X509Chain();
-                //x509Chain.Build(certClient);
-                //foreach (X509ChainElement x509ChainElement in x509Chain.ChainElements)
-                //{
-                //    chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
-                //}
-
-
-
-                ////ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
-
-                //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url1);
-                //request.ClientCertificates = collection;
-
-
-
-
-                ////HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                ////string resp = "";
-                ////if (response.StatusCode == HttpStatusCode.OK)
-                ////{
-                ////    Stream receiveStream = response.GetResponseStream();
-                ////    StreamReader readStream = null;
-                ////    if (response.CharacterSet == null)
-                ////        readStream = new StreamReader(receiveStream);
-                ////    else
-                ////        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-                ////    resp = readStream.ReadToEnd();
-                ////    response.Close();
-                ////    readStream.Close();
-                ////}
-
-
-
-
-                //HttpClient httpClient = new HttpClient();
-                //HttpResponseMessage result = httpClient.GetAsync(url1).Result;
-                //string str = result.Content.ReadAsStringAsync().Result;
-                //MessageBox.Show(str);
-
-                ////MessageBox.Show(resp);
-
-
-
+        private int pega_paragrafo_do_preambulo()
+        {
+            int paragrafo_do_preambulo = 0;
+            for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+            {
+                string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
+                string t_trim = t.Trim();
+                if (t_trim.Length > 200)
+                {
+                    if ((t_trim.Substring(0, 2)).ToLower() == "em")
+                    {
+                        paragrafo_do_preambulo = i;
+                        break;
+                    }
+                }
             }
+            return paragrafo_do_preambulo;
+        }
+
+        //private string pega_preambulo_laudo()
+        //{
+        //    string preambulo = null;
+        //    for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+        //    {
+        //        string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
+        //        string t_trim = t.Trim();
+        //        if (t_trim.Length > 200)
+        //        {
+        //            if ((t_trim.Substring(0, 2)).ToLower() == "em")
+        //            {
+        //                preambulo = t;
+        //                break;
+        //            }
+        //        }
+        //    }
+        //    return preambulo;
+        //}
+
+
+        //string url1 = "https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=";
+        ////url1 = "http://google.com";
+
+        //// Create a web request that points to our SSL-enabled client certificate required web site
+        //HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url1);
+        //ServicePointManager.Expect100Continue = true;
+        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+        //ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(AlwaysGoodCertificate);
+
+        //// Use the X509Store class to get a handle to the local certificate stores. "My" is the "Personal" store.
+        //X509Store store = new X509Store(StoreName.My, StoreLocation.LocalMachine);
+
+        //// Open the store to be able to read from it.
+        //store.Open(OpenFlags.ReadOnly);
+
+        //// Use the X509Certificate2Collection class to get a list of certificates that match our criteria (in this case, we should only pull back one).
+        //X509Certificate2Collection collection = store.Certificates.Find(X509FindType.FindBySubjectName, "MyClientCert", true);
+
+        //// Associate the certificates with the request
+        //request.ClientCertificates = collection;
+
+        //// Make the web request
+        //HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+
+        //// Output the stream to a file.
+        ////Stream stream = response.GetResponseStream();
+        //string resp = "";
+        //if (response.StatusCode == HttpStatusCode.OK)
+        //{
+        //    Stream receiveStream = response.GetResponseStream();
+        //    StreamReader readStream = null;
+        //    if (response.CharacterSet == null)
+        //        readStream = new StreamReader(receiveStream);
+        //    else
+        //        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+        //    resp = readStream.ReadToEnd();
+        //    MessageBox.Show(resp);
+        //}
+
+        //string url1 = "https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=";
+        ////url1 = "http://google.com";
+
+        //ServicePointManager.Expect100Continue = true;
+        //ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+
+
+
+        //X509Store st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+        //st.Open(OpenFlags.MaxAllowed);
+        //X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
+
+        ////Get Cert Chain
+
+        //X509Certificate2 certClient = collection[0];
+        //IList<X509Certificate> chain = new List<X509Certificate>();
+        //X509Chain x509Chain = new X509Chain();
+        //x509Chain.Build(certClient);
+        //foreach (X509ChainElement x509ChainElement in x509Chain.ChainElements)
+        //{
+        //    chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
+        //}
+
+
+
+        ////ServicePointManager.ServerCertificateValidationCallback += new RemoteCertificateValidationCallback(ValidateRemoteCertificate);
+
+        //HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url1);
+        //request.ClientCertificates = collection;
+
+
+        ////HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+        ////string resp = "";
+        ////if (response.StatusCode == HttpStatusCode.OK)
+        ////{
+        ////    Stream receiveStream = response.GetResponseStream();
+        ////    StreamReader readStream = null;
+        ////    if (response.CharacterSet == null)
+        ////        readStream = new StreamReader(receiveStream);
+        ////    else
+        ////        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
+        ////    resp = readStream.ReadToEnd();
+        ////    response.Close();
+        ////    readStream.Close();
+        ////}
+
+        //HttpClient httpClient = new HttpClient();
+        //HttpResponseMessage result = httpClient.GetAsync(url1).Result;
+        //string str = result.Content.ReadAsStringAsync().Result;
+        //MessageBox.Show(str);
+
+        ////MessageBox.Show(resp);
+
 
         //      private static bool ValidateRemoteCertificate(
         //object sender,
@@ -747,13 +777,12 @@ namespace PeriTAB
         //          return true;
         //      }
 
-
         //private static bool AlwaysGoodCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors policyErrors)
         //{
         //    return true;
         //}
 
-        private void confere_preambulo(string asap)
+        private string faz_preambulo_padrao(string asap)
         {
             string subtitulo = get_text(asap, "SUBTITULO=", "\n");
             string unidade = get_text(asap, "UNIDADE=", "\n");
@@ -770,24 +799,22 @@ namespace PeriTAB
             string num_sei = get_text(asap, "NUMERO_SIAPRO=", "\n");
             string registro = get_text(asap, "NUMERO_CRIMINALISTICA=", "\n");
             string data_registro = get_text(asap, "DATA_CRIMINALISTICA=", "\n");
-
-            MessageBox.Show(subtitulo + " " + unidade + " " + data + " " + perito1 + " " + perito2 + " " + num_ipl + " " + documento + " " + data_documento + " " + num_sei + " " + registro + " " + data_registro);
-
-            string preambulo = null;
-            for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
-            {
-                string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
-                string t_trim = t.Trim();
-                if (t_trim.Length > 200)
-                {
-                    if ((t_trim.Substring(0, 2)).ToLower() == "em")
-                    {
-                        preambulo = t;
-                        break;
-                    }
-                }
-            }
-            if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
+            //MessageBox.Show(subtitulo + " " + unidade + " " + data + " " + perito1 + " " + perito2 + " " + num_ipl + " " + documento + " " + data_documento + " " + num_sei + " " + registro + " " + data_registro);
+            //string preambulo = null;
+            //for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+            //{
+            //    string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
+            //    string t_trim = t.Trim();
+            //    if (t_trim.Length > 200)
+            //    {
+            //        if ((t_trim.Substring(0, 2)).ToLower() == "em")
+            //        {
+            //            preambulo = t;
+            //            break;
+            //        }
+            //    }
+            //}
+            //if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
             //MessageBox.Show(preambulo);
             //string nome_unidade = "Superintendência Regional de Polícia Federal no Maranhão";
             string nome_unidade = unidade_extenso(get_text(unidade,"/"));
@@ -844,20 +871,66 @@ namespace PeriTAB
                 }
             }
 
+
+            string preambulo_modelo1 = "Em " + dia + " de " + mes + " de " + ano + ", designad" + ao_sexo_peritos + s_peritos + " pel" + ao_sexo_chefe + " " + cargo_chefe + ", o" + s_peritos + " Perit" + ao_sexo_peritos + s_peritos + " Crimina" + is_criminais + " Federa" + is_criminais + " " + nome_perito1 + nome_perito2 + " elab" + Elaboraram_oraram + " o presente Laudo de Perícia Criminal Federal, no interesse do " + num_ipl + ", a fim de atender ao contido n" + ao_documento + " " + documento + " de " + data_documento + ", protocolado no SEI sob o nº " + num_sei + " e registrado no SISCRIM sob o nº " + registro + ", em " + data_registro + ", descrevendo com verdade e com todas as circunstâncias tudo quanto possa interessar à Justiça e respondendo aos quesitos formulados, abaixo transcritos:" + (char)13;
+            //string preambulo_modelo2 = preambulo_modelo1.Replace("respondendo aos quesitos formulados, abaixo transcritos", "atendendo ao abaixo transcrito");
+            return preambulo_modelo1;
+
+        }
+
+        private void compara_preambulo(string preambulo_padrao, int paragrafo_do_preambulo)
+        {
+            string preambulo = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text;
+
+            Globals.ThisAddIn.Application.ActiveDocument.Application.ScreenUpdating = false;
+            Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions = true;
+            if (preambulo.Replace(" ", "").ToLower().IndexOf("quesito") != -1)
+            {
+                if (preambulo == preambulo_padrao)
+                {
+                    MessageBox.Show("Nenhum erro foi encontrado.");
+                }
+                else
+                {
+                    //MessageBox.Show("1 OK");
+                    //MessageBox.Show(preambulo + System.Environment.NewLine + System.Environment.NewLine + preambulo_padrao);
+                    ////MessageBox.Show(preambulo.Length.ToString() + System.Environment.NewLine + System.Environment.NewLine + preambulo_padrao.Length.ToString());
+                    //if (preambulo.Replace(((char)176).ToString(), "º").Substring(0, 664) == preambulo_padrao.Substring(0, 664)) { MessageBox.Show("opa"); } //.Replace(((char)176).ToString(), "º")
+                    //if (preambulo.Substring(665) == "\n") { MessageBox.Show("eh barra n"); }
+                    //string result = "";
+                    //foreach (char c in preambulo_padrao.Substring(664)) { result += (int)c + " "; }
+                    //MessageBox.Show(result);
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.InsertBefore("\n");
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text = preambulo_padrao;
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Next().Range.Text = "";
+                }
+            }
+            else
+            {
+                if (preambulo == preambulo_padrao.Replace("respondendo aos quesitos formulados, abaixo transcritos", "atendendo ao abaixo transcrito"))
+                {
+                    MessageBox.Show("Nenhum erro foi encontrado.");
+                }
+                else
+                {
+                    //MessageBox.Show("2 OK");
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.InsertBefore("\n");
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text = preambulo_padrao.Replace("respondendo aos quesitos formulados, abaixo transcritos", "atendendo ao abaixo transcrito");
+                    Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Next().Range.Text = "";
+                }
+            }
             
+            Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions = false;
+            Globals.ThisAddIn.Application.ActiveDocument.Application.ScreenUpdating = true;
+            //preambulo_padrao = "Gustavo Vieira";
+            //Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text = "Otavio";
+            //string preambulo = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text;
 
-            //string dia = "10";
-            //string mes = "abril";
-            //string ano = "3333";
-            
-
-            string preambulo_modelo1 = "Em " + dia + " de " + mes + " de " + ano + ", designad" + ao_sexo_peritos + s_peritos + " pel" + ao_sexo_chefe + " " + cargo_chefe + ", o" + s_peritos + " Perit" + ao_sexo_peritos + s_peritos + " Crimina" + is_criminais + " Federa" + is_criminais + " " + nome_perito1 + nome_perito2 + " elab" + Elaboraram_oraram + " o presente Laudo de Perícia Criminal Federal, no interesse do " + num_ipl + ", a fim de atender ao contido n" + ao_documento + " " + documento + " de " + data_documento + ", protocolado no SEI sob o nº " + num_sei + " e registrado no SISCRIM sob o nº " + registro + ", em " + data_registro + ", descrevendo com verdade e com todas as circunstâncias tudo quanto possa interessar à Justiça e respondendo aos quesitos formulados, abaixo transcritos:";
-            string preambulo_modelo2 = preambulo_modelo1.Replace("respondendo aos quesitos formulados, abaixo transcritos", "atendendo ao abaixo transcrito");
-            MessageBox.Show(preambulo_modelo2);
+            //string result = preambulo;
 
 
 
-
+            //MessageBox.Show(result);
         }
 
         private string unidade_extenso(string un)

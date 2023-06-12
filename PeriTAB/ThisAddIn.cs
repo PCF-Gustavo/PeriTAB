@@ -60,14 +60,45 @@ namespace PeriTAB
 
             string preferences = "";
             
-            if (Globals.Ribbons.Ribbon1.editBox_largura.Text != "") { preferences += "<largura>" + Globals.Ribbons.Ribbon1.editBox_largura.Text + "</largura>" + System.Environment.NewLine; } else if (Ribbon1.Variables.editBox_largura_Text != "") { preferences += "<largura>" + Ribbon1.Variables.editBox_largura_Text + "</largura>" + System.Environment.NewLine; } else { preferences += "<largura>" + Class_Buttons.preferences.largura + "</largura>" + System.Environment.NewLine; }
-            if (Globals.Ribbons.Ribbon1.editBox_altura.Text != "") { preferences += "<altura>" + Globals.Ribbons.Ribbon1.editBox_altura.Text + "</altura>" + System.Environment.NewLine; } else if (Ribbon1.Variables.editBox_altura_Text != "") { preferences += "<altura>" + Ribbon1.Variables.editBox_altura_Text + "</altura>" + System.Environment.NewLine; } else { preferences += "<altura>" + Class_Buttons.preferences.altura + "</altura>" + System.Environment.NewLine; }
+            if (Globals.Ribbons.Ribbon1.editBox_largura.Text != "" & Globals.Ribbons.Ribbon1.editBox_largura.Text != null) 
+            { 
+                preferences += "<largura>" + Globals.Ribbons.Ribbon1.editBox_largura.Text + "</largura>" + System.Environment.NewLine;
+                //MessageBox.Show("1L");
+            } 
+            else if (Ribbon1.Variables.editBox_largura_Text != "" & Ribbon1.Variables.editBox_largura_Text != null) 
+            { 
+                preferences += "<largura>" + Ribbon1.Variables.editBox_largura_Text + "</largura>" + System.Environment.NewLine;
+                //MessageBox.Show("2L");
+            } 
+            else 
+            { 
+                preferences += "<largura>" + Class_Buttons.preferences.largura + "</largura>" + System.Environment.NewLine;
+                //MessageBox.Show("3L");
+            }
+
+            if (Globals.Ribbons.Ribbon1.editBox_altura.Text != "" & Globals.Ribbons.Ribbon1.editBox_altura.Text != null)
+            { 
+                preferences += "<altura>" + Globals.Ribbons.Ribbon1.editBox_altura.Text + "</altura>" + System.Environment.NewLine;
+                //MessageBox.Show("1A");
+            } 
+            else if (Ribbon1.Variables.editBox_altura_Text != "" & Ribbon1.Variables.editBox_altura_Text != null) 
+            {
+                preferences += "<altura>" + Ribbon1.Variables.editBox_altura_Text + "</altura>" + System.Environment.NewLine;
+                //MessageBox.Show("2A");
+            } 
+            else 
+            {
+                preferences += "<altura>" + Class_Buttons.preferences.altura + "</altura>" + System.Environment.NewLine;
+                //MessageBox.Show("3A");
+            }
+            
             preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
             preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
             preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
             preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
 
             File.WriteAllText(preferences_path, preferences);
+            //MessageBox.Show(preferences);
         }
 
         private void le_preferencias()
