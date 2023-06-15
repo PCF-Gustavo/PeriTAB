@@ -54,10 +54,10 @@ namespace PeriTAB{
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
             this.button_destaca_imagem = this.Factory.CreateRibbonButton();
             this.button_numera_paragrafos = this.Factory.CreateRibbonButton();
+            this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
             this.group_estilos = this.Factory.CreateRibbonGroup();
             this.button_importa_estilos = this.Factory.CreateRibbonButton();
             this.button_limpa_estilos = this.Factory.CreateRibbonButton();
-            this.toggleButton_estilos = this.Factory.CreateRibbonToggleButton();
             this.group_campos = this.Factory.CreateRibbonGroup();
             this.menu2 = this.Factory.CreateRibbonMenu();
             this.button_inserir_sumario = this.Factory.CreateRibbonButton();
@@ -162,6 +162,7 @@ namespace PeriTAB{
             this.group_formatacao.Items.Add(this.button_alinha_legenda);
             this.group_formatacao.Items.Add(this.button_destaca_imagem);
             this.group_formatacao.Items.Add(this.button_numera_paragrafos);
+            this.group_formatacao.Items.Add(this.toggleButton_estilos);
             this.group_formatacao.Label = "Formatação";
             this.group_formatacao.Name = "group_formatacao";
             // 
@@ -193,11 +194,20 @@ namespace PeriTAB{
             this.button_numera_paragrafos.Visible = false;
             this.button_numera_paragrafos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_numera_paragrafos_Click);
             // 
+            // toggleButton_estilos
+            // 
+            this.toggleButton_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.toggleButton_estilos.Image = global::PeriTAB.Properties.Resources.download3;
+            this.toggleButton_estilos.Label = "Painel de Estilos";
+            this.toggleButton_estilos.Name = "toggleButton_estilos";
+            this.toggleButton_estilos.ShowImage = true;
+            this.toggleButton_estilos.SuperTip = "Abre Painel de Estilos";
+            this.toggleButton_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_estilos_Click);
+            // 
             // group_estilos
             // 
             this.group_estilos.Items.Add(this.button_importa_estilos);
             this.group_estilos.Items.Add(this.button_limpa_estilos);
-            this.group_estilos.Items.Add(this.toggleButton_estilos);
             this.group_estilos.Label = "Estilos";
             this.group_estilos.Name = "group_estilos";
             // 
@@ -220,16 +230,6 @@ namespace PeriTAB{
             this.button_limpa_estilos.ShowImage = true;
             this.button_limpa_estilos.Visible = false;
             this.button_limpa_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_limpa_estilos_Click);
-            // 
-            // toggleButton_estilos
-            // 
-            this.toggleButton_estilos.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.toggleButton_estilos.Image = global::PeriTAB.Properties.Resources.download3;
-            this.toggleButton_estilos.Label = "Painel de Estilos";
-            this.toggleButton_estilos.Name = "toggleButton_estilos";
-            this.toggleButton_estilos.ShowImage = true;
-            this.toggleButton_estilos.SuperTip = "Abre Painel de Estilos";
-            this.toggleButton_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_estilos_Click);
             // 
             // group_campos
             // 
