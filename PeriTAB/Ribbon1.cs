@@ -202,8 +202,9 @@ namespace PeriTAB
                         if (Globals.Ribbons.Ribbon1.checkBox_referencia.Checked == true) { link = true; save = false; }
 
                         InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
-                        MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
-                        imagem.LockAspectRatio = (MsoTriState)1;
+                        imagem.LockAspectRatio = MsoTriState.msoTrue;
+                        //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                        //imagem.LockAspectRatio = (MsoTriState)1;
                         if (checkBox_largura.Checked)
                         {
                             string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
@@ -217,7 +218,8 @@ namespace PeriTAB
                             float.TryParse(alt_string, out float alt);
                             imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
                         }
-                        imagem.LockAspectRatio = LockAspectRatio_i;
+                        //imagem.LockAspectRatio = LockAspectRatio_i;
+                        
 
                         if (i != pathfile2.Length - 1) //Exceto última imagem
                         {
@@ -334,7 +336,6 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-
                 PdfReader inputPdf = null;
                 bool inputPdf_open = false;
                 string path = Globals.ThisAddIn.Application.ActiveDocument.FullName;
@@ -346,13 +347,12 @@ namespace PeriTAB
             //try { Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true); } catch (COMException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); return; }
                 Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(Path.Combine(Path.GetTempPath(),"tmp_pdf_PeriTAB"), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
 
-
-            //if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
-            //{
-            //    File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
-            //    return;
-            //}
-            //else { MessageBox.Show("Não foi possível gerar o PDF."); return; }
+                //if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
+                //{
+                //    File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
+                //    return;
+                //}
+                //else { MessageBox.Show("Não foi possível gerar o PDF."); return; }
 
                 if (Globals.Ribbons.Ribbon1.checkBox_assinar.Checked)
                 {
@@ -551,9 +551,10 @@ namespace PeriTAB
                 if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
                 {
                     InlineShape imagem = ishape;
+                    imagem.LockAspectRatio = MsoTriState.msoTrue;
 
-                    MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
-                    imagem.LockAspectRatio = (MsoTriState)1;
+                    //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                    //imagem.LockAspectRatio = (MsoTriState)1;
                     if (checkBox_largura.Checked)
                     {
                         string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
@@ -567,7 +568,8 @@ namespace PeriTAB
                         float.TryParse(alt_string, out float alt);
                         imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
                     }
-                    imagem.LockAspectRatio = LockAspectRatio_i;
+                    //imagem.LockAspectRatio = LockAspectRatio_i;
+                    
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -836,7 +838,7 @@ namespace PeriTAB
             string perito2 = get_text(asap, "PERITO2=", "\n");
             string num_ipl = get_text(asap, "NUMERO_IPL=", "\n").Replace("IPL", "Inquérito Policial nº").Replace("RDF","Registro de Fato nº").Replace("RE", "Registro Especial nº");
             //string documento = get_text(asap, "DOCUMENTO=", "\n").Replace("Of" + (char)65533 + "cio", "Ofício nº"); //caracter desconhecido: losando com interrogação
-            string documento = get_text(asap, "DOCUMENTO=", "\n");
+            string documento = get_text(asap, "DOCUMENTO=", "\n").Replace("Ofício", "Ofício nº").Replace("Despacho", "Despacho nº");
             string data_documento = get_text(asap, "DATA_DOCUMENTO=", "\n");
             string num_sei = get_text(asap, "NUMERO_SIAPRO=", "\n");
             string registro = get_text(asap, "NUMERO_CRIMINALISTICA=", "\n");
