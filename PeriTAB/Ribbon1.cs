@@ -59,8 +59,10 @@ namespace PeriTAB
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
+            //MessageBox.Show("load");
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
-            try { File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal); } catch (IOException ex) { MessageBox.Show("PeriTAB_Template_tmp.dotm em uso"); Globals.ThisAddIn.Application.Quit(); return; }
+            //try { File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal); } catch (IOException ex) { MessageBox.Show("PeriTAB_Template_tmp.dotm em uso"); Globals.ThisAddIn.Application.Quit(); return; }
+            File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal);
             Globals.ThisAddIn.Application.AddIns.Add(Variables.caminho_template);
 
             // Escreve o número da versão

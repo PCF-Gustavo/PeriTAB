@@ -20,6 +20,7 @@ namespace PeriTAB
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            //MessageBox.Show("Startup");
             le_preferencias();
 
             //Configura o Task Pane
@@ -49,6 +50,12 @@ namespace PeriTAB
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
+            if (File.Exists(Ribbon1.Variables.caminho_template))
+            {
+                Globals.ThisAddIn.Application.AddIns.Unload(true);
+                File.Delete(Ribbon1.Variables.caminho_template);
+            }
+            //Variables.caminho_template
             escreve_preferencias();
         }
 
