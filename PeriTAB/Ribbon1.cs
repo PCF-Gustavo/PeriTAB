@@ -175,7 +175,7 @@ namespace PeriTAB
             {
                 object obj = System.Windows.Clipboard.GetData("FileDrop");
                 string[] pathfile = (string[])obj;
-
+                //for (int i = 0; i <= pathfile.Length - 1; i++) MessageBox.Show(pathfile[i]);
                 string[] pathfile2 = { "" };
                 int n = 0;
                 for (int i = 0; i <= pathfile.Length - 1; i++)
@@ -194,11 +194,15 @@ namespace PeriTAB
 
                 if (pathfile2[0] != "")
                 {
+                    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+
                     if (dropDown_ordem.SelectedItem.Label == "Alfabética") { Array.Sort(pathfile2); } //Ordem alfabética               
+
+                    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
 
                     for (int i = 0; i <= pathfile2.Length - 1; i++)
                     {
-                        Globals.ThisAddIn.Application.ScreenUpdating = false;
+                        //Globals.ThisAddIn.Application.ScreenUpdating = false;
 
                         bool link = false; bool save = true;
                         if (Globals.Ribbons.Ribbon1.checkBox_referencia.Checked == true) { link = true; save = false; }
@@ -238,6 +242,7 @@ namespace PeriTAB
                                     break;
                             }
                         }
+
                         Globals.ThisAddIn.Application.ScreenUpdating = true;
                     }
                 }
@@ -597,7 +602,52 @@ namespace PeriTAB
             catch { return null; }
         }
 
-        private void button_destaca_imagem_Click(object sender, RibbonControlEventArgs e)
+        private void button_remove_formatacao_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            {
+                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    //ishape.Line.Visible = MsoTriState.msoFalse;
+                    ishape.Reset();
+                    ishape.AlternativeText = "";
+                }
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+        private void button_insere_borda_preta_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            {
+                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    ishape.Line.Visible = MsoTriState.msoTrue;
+                    ishape.Line.Weight = (float)0.5;
+                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+                }
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+        private void button_insere_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            {
+                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    ishape.Line.Visible = MsoTriState.msoTrue;
+                    ishape.Line.Weight = 2;
+                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
+                }
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+        private void button_insere_borda_amarela_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -1422,6 +1472,112 @@ namespace PeriTAB
         {
 
         }
+
+        private void dropDown1_SelectionChanged(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void dropDown1_ButtonClick(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void comboBox1_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+
+        }
+
+        private void comboBox_insere_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            switch (comboBox_insere.Text)
+            {
+                case "Borda preta 0,5 pt":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.Line.Visible = MsoTriState.msoTrue;
+                            ishape.Line.Weight = (float)0.5;
+                            ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;
+                case "Borda vermelha 2 pt":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.Line.Visible = MsoTriState.msoTrue;
+                            ishape.Line.Weight = 2;
+                            ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;
+                case "Borda amarela 3 pt":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.Line.Visible = MsoTriState.msoTrue;
+                            ishape.Line.Weight = 3;
+                            ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;                    
+            }
+        }
+
+        private void comboBox_remove_TextChanged(object sender, RibbonControlEventArgs e)
+        {
+            switch (comboBox_remove.Text)
+            {
+                case "Borda":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.Line.Visible = MsoTriState.msoFalse;
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;
+                case "Formatação":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.Reset();
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;
+                case "Texto Alt":
+                    Globals.ThisAddIn.Application.ScreenUpdating = false;
+                    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                    {
+                        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            ishape.AlternativeText = "";
+                        }
+                    }
+                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    break;
+            }
+        }
+
+
+
+
+
 
 
 

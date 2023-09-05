@@ -1,3 +1,0 @@
-Estilos
-- add 18 pts antes de seções, figura
-- add 18 pts depois de legenda

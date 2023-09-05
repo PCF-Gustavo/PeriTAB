@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -111,24 +112,29 @@ namespace PeriTAB
 
                 int s;
                 if (p.Range.Text.Length >= 7) { s = 7; } else { s = p.Range.Text.Length; }
+                if (s == 0) break;
                 if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
                 {
                     string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    try
                     {
-                        //MessageBox.Show(a);
-                        int loc_hifen = a.IndexOf("-");
-                        //MessageBox.Show(loc_hifen.ToString());
-                        for (int i = 1; i <= loc_hifen; i++)
+                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
                         {
-                            //MessageBox.Show(p.Range.Characters[1].Text);
-                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                            p.Range.Characters[1].Delete();
+                            //MessageBox.Show(a);
+                            int loc_hifen = a.IndexOf("-");
+                            //MessageBox.Show(loc_hifen.ToString());
+                            for (int i = 1; i <= loc_hifen; i++)
+                            {
+                                //MessageBox.Show(p.Range.Characters[1].Text);
+                                if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                                p.Range.Characters[1].Delete();
+                            }
+                            //break;
                         }
-                        //break;
                     }
+                    catch (System.ArgumentOutOfRangeException ex) { }
                 }
-                
+
 
                 ////string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-").Replace(".", "").Replace("0", "").Replace("1", "").Replace("2", "").Replace("3", "").Replace("4", "").Replace("5", "").Replace("6", "").Replace("7", "").Replace("8", "").Replace("9", "");
                 //int loc_hifen = a.IndexOf("-");
@@ -190,7 +196,9 @@ namespace PeriTAB
                 if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                    try
+                    {
+                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
                     {
                         int loc_hifen = a.IndexOf("-");
                         for (int i = 1; i <= loc_hifen; i++)
@@ -199,6 +207,8 @@ namespace PeriTAB
                             p.Range.Characters[1].Delete();
                         }
                     }
+                    }
+                    catch (System.ArgumentOutOfRangeException ex) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -231,7 +241,9 @@ namespace PeriTAB
                 if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                        try
+                        {
+                            if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
                     {
                         int loc_hifen = a.IndexOf("-");
                         for (int i = 1; i <= loc_hifen; i++)
@@ -240,6 +252,8 @@ namespace PeriTAB
                             p.Range.Characters[1].Delete();
                         }
                     }
+                    }
+                    catch (System.ArgumentOutOfRangeException ex) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -272,7 +286,9 @@ namespace PeriTAB
                 if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
                     string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                            try
+                            {
+                                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
                     {
                         int loc_hifen = a.IndexOf("-");
                         for (int i = 1; i <= loc_hifen; i++)
@@ -281,6 +297,8 @@ namespace PeriTAB
                             p.Range.Characters[1].Delete();
                         }
                     }
+                    }
+                    catch (System.ArgumentOutOfRangeException ex) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
