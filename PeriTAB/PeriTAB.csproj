@@ -33,7 +33,7 @@
     <PublishUrl>C:\Users\gustavo.gvs.PF\OneDrive - Polícia Federal\PCF Gustavo\Visual Studio\PeriTAB\publicacoes\</PublishUrl>
     <InstallUrl />
     <TargetCulture>pt-BR</TargetCulture>
-    <ApplicationVersion>1.1.6.0</ApplicationVersion>
+    <ApplicationVersion>1.1.7.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -198,6 +198,7 @@
     <Compile Include="Class_DocSave_Event.cs" />
     <Compile Include="Class_DocChange_Event.cs" />
     <Compile Include="Class_ValueChanged_Event.cs" />
+    <Compile Include="Class_DocumentBeforeClose_Event .cs" />
     <Compile Include="Class_WindowDeactivate_Event .cs" />
     <Compile Include="Class_WindowActivate_Event.cs" />
     <Compile Include="Class_New_or_Open_Event.cs" />
@@ -210,11 +211,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserControl1.cs">
+    <Compile Include="MyUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControl1.Designer.cs">
-      <DependentUpon>UserControl1.cs</DependentUpon>
+    <Compile Include="MyUserControl.Designer.cs">
+      <DependentUpon>MyUserControl.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -225,8 +226,8 @@
       <DependentUpon>Ribbon1.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControl1.resx">
-      <DependentUpon>UserControl1.cs</DependentUpon>
+    <EmbeddedResource Include="MyUserControl.resx">
+      <DependentUpon>MyUserControl.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
@@ -334,6 +335,33 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\marcador2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\+.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\x.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\preto.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vermelho.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\amarelo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cego.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\quadrado.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subir1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\subir2.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

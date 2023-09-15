@@ -52,8 +52,21 @@ namespace PeriTAB
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            Globals.ThisAddIn.iUserControl1.Habilita_button9(true);
-            if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iUserControl1.Habilita_button9(false); }
+
+            if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            {
+                Globals.ThisAddIn.iMyUserControl.Habilita_button9(true);
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_button9(false); }
+            }
+
+            //if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc) == false) 
+            //{
+            //    Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Metodo_New_or_Open(null);
+
+
+
+
+            //}
 
         }
     }

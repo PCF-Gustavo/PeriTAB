@@ -74,8 +74,8 @@ namespace PeriTAB
 
         public void toggleButton_estilos_Default()
         {            
-            Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked = bool.Parse(preferences.painel_de_estilos);
-            Globals.ThisAddIn.TaskPane1.Visible = bool.Parse(preferences.painel_de_estilos);
+            Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos_velho.Checked = bool.Parse(preferences.painel_de_estilos);
+            //Globals.ThisAddIn.TaskPane1.Visible = bool.Parse(preferences.painel_de_estilos);
         }
 
         public void button_cola_imagem_Default()

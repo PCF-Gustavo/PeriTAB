@@ -1,6 +1,6 @@
 ﻿namespace PeriTAB
 {
-    partial class UserControl1
+    partial class MyUserControl
     {
         /// <summary> 
         /// Variável de designer necessária.
@@ -184,6 +184,7 @@
             this.button_DockRight.Size = new System.Drawing.Size(40, 40);
             this.button_DockRight.TabIndex = 0;
             this.button_DockRight.UseVisualStyleBackColor = true;
+            this.button_DockRight.Visible = false;
             this.button_DockRight.Click += new System.EventHandler(this.button_DockRight_Click);
             // 
             // button_DockBottom
@@ -198,7 +199,7 @@
             this.button_DockBottom.Visible = false;
             this.button_DockBottom.Click += new System.EventHandler(this.button_DockBottom_Click);
             // 
-            // UserControl1
+            // MyUserControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.AutoScroll = true;
@@ -220,8 +221,8 @@
             this.Controls.Add(this.button_corpo_do_texto);
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.Name = "UserControl1";
-            this.Size = new System.Drawing.Size(1311, 611);
+            this.Name = "MyUserControl";
+            this.Size = new System.Drawing.Size(1290, 611);
             this.ResumeLayout(false);
 
         }

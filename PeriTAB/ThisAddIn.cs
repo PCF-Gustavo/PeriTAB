@@ -15,8 +15,12 @@ namespace PeriTAB
 {
     public partial class ThisAddIn
     {
-        public UserControl1 iUserControl1;
-        public Microsoft.Office.Tools.CustomTaskPane TaskPane1;
+        public MyUserControl iMyUserControl;
+        public Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl> Dicionario_Doc_e_UserControl = new Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl>();
+        //public Microsoft.Office.Tools.CustomTaskPane TaskPane1;
+
+        //Class_New_or_Open_Event iClass_New_or_Open_Event;
+
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
@@ -24,28 +28,42 @@ namespace PeriTAB
             le_preferencias();
 
             //Configura o Task Pane
-            iUserControl1 = new UserControl1();
-            TaskPane1 = Globals.ThisAddIn.CustomTaskPanes.Add(iUserControl1, "Painel de Estilos (PeriTAB)");
-            TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
-            TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            TaskPane1.Height = 90;
-            TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+            //iMyUserControl = new MyUserControl();
+            //TaskPane1 = Globals.ThisAddIn.CustomTaskPanes.Add(iMyUserControl, "Painel de Estilos (PeriTAB)");
+            //TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
+            //TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
+            //TaskPane1.Height = 90;
+            //TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
 
 
-            //Inicia Eventos            
+
+            //Inicia Eventos
+            //iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Evento_New_or_Open();
             Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Evento_New_or_Open();
-            Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
+            //MessageBox.Show(Globals.ThisAddIn.CustomTaskPanes.Count.ToString());
+            //MessageBox.Show(Globals.ThisAddIn.Application.Documents.Count.ToString());
+            if (Globals.ThisAddIn.Application.Documents.Count == 1) { /*MessageBox.Show("sss");*/ iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument); }
+            Class_DocumentBeforeClose_Event iClass_DocumentBeforeClose_Event = new Class_DocumentBeforeClose_Event(); iClass_DocumentBeforeClose_Event.Evento_DocumentBeforeClose();
+            //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
             Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.DefaultAll();
             Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event(); iClass_DocSave_Event.Evento_DocSave();            
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
             Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event(); iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
 
+            //iClass_New_or_Open_Event.Metodo_TaskPane2_Visible(true);
+
+            //Configura o primeiro Task Pane
+            //iClass_New_or_Open_Event.Metodo_New_or_Open(null);
+
+            //if (Globals.ThisAddIn.Application.Documents.Count == 1) { /*MessageBox.Show("sss");*/ iClass_New_or_Open_Event.Metodo_New_or_Open(null); }
         }
+
+
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            if (Globals.ThisAddIn.TaskPane1.Visible == false & Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked == true) { Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked = false; }
+            //if (Globals.ThisAddIn.TaskPane1.Visible == false & Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked == true) { Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked = false; }
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -102,7 +120,7 @@ namespace PeriTAB
             preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
             preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
             preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
-            preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_estilos.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
+            preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos_velho.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
 
             File.WriteAllText(preferences_path, preferences);
             //MessageBox.Show(preferences);
