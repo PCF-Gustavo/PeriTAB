@@ -32,6 +32,8 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
 using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
+using Spire.Doc.Interface;
+//using iTextSharp.text.pdf.parser;
 
 namespace PeriTAB
 {
@@ -367,6 +369,53 @@ namespace PeriTAB
             }
         }
 
+        private void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            string estilo_nome_baseado = "Legenda";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+
+            List<Table> list_Table = new List<Table>();
+            foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
+            {
+                list_Table.Add(itable);
+            }
+            foreach (Table itable in list_Table)
+            {
+                itable.Select();
+                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Tabela", Title: "", TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionAbove, ExcludeLabel: 0);
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+        private void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
+            {
+                itable.Range.Cells.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                itable.Rows.Alignment = WdRowAlignment.wdAlignRowCenter;
+                foreach (Paragraph iParagraph in itable.Range.Paragraphs)
+                {
+                    iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                }
+            }
+            //foreach (Cell icell in Globals.ThisAddIn.Application.Selection.Cells)
+            //{
+            //    icell.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+            //}
+            //foreach (Paragraph iParagraph in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            //{
+            //    if (iParagraph.Range.Information[WdInformation.wdWithInTable]) 
+            //    {
+            //        iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+            //    }
+            //}
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
         private void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.Run("renomeia_documento");
@@ -694,6 +743,32 @@ namespace PeriTAB
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
+
+        private void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            string estilo_nome_baseado = "Legenda";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+
+            List<InlineShape> list_InlineShape = new List<InlineShape>();
+
+            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            {
+                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    list_InlineShape.Add(ishape);
+                }
+            }
+            foreach (InlineShape ishape in list_InlineShape) 
+            {
+                ishape.Select();
+                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: "", TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+
 
         private void button_confere_preambulo_Click(object sender, RibbonControlEventArgs e)
         {
@@ -1763,6 +1838,12 @@ namespace PeriTAB
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
+
+
+
+
+
+
 
 
 

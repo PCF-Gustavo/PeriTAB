@@ -43,7 +43,7 @@ namespace PeriTAB
         }
         public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc)
         {
-            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return;
+            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
             //MessageBox.Show("new or open");
             Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
 
@@ -74,6 +74,7 @@ namespace PeriTAB
 
             Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
             iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+            if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) TaskPane_1.Visible = true;
 
             //list_TaskPane.Add(TaskPane_1);
             //Dicionario_Doc_e_TaskPane.Add(Globals.ThisAddIn.Application.ActiveDocument, TaskPane_1);
