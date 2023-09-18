@@ -363,6 +363,9 @@
   <ItemGroup>
     <None Include="Resources\subir2.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\formatacao2.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
@@ -374,7 +377,7 @@
     <ManifestKeyFile>PeriTAB_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>2D03FD8A9656143A75CD482D260FB0061115679D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F32878367E92CE33F03A515D3C95FB7F3D95C043</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

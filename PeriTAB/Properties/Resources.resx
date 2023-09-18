@@ -184,6 +184,9 @@
   <data name="Normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Normal.dotm;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
+  <data name="subir2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\subir2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="marcador2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\marcador2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -208,7 +211,7 @@
   <data name="vassoura" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vassoura.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="subir2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\subir2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="formatacao2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\formatacao2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>
