@@ -318,7 +318,9 @@ namespace PeriTAB
         private void button_reinicia_lista_Click(object sender, EventArgs e)
         {                
             Globals.ThisAddIn.Application.Selection.Range.ListFormat.ApplyListTemplate(Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListTemplate,(object)false);
-            if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_button9(false); }
+            //if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_button_reinicia_lista(false); }
+            if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_Destaca(MyButton("button_reinicia_lista"), false); }
+            
         }
 
         private void button_figuras_Click(object sender, EventArgs e)
@@ -330,8 +332,11 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
         private void button_legendas_de_figuras_Click(object sender, EventArgs e)
@@ -343,8 +348,11 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Next(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo seguinte em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) { Globals.ThisAddIn.Application.Run("alinha_legenda"); }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
@@ -357,8 +365,11 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
-            Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
+            { 
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            }
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) { Globals.ThisAddIn.Application.Run("alinha_legenda"); }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }        
@@ -370,8 +381,34 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
+                    {
+                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                    }
+                }
+            }
             //Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+        private void button_fecho_Click(object sender, EventArgs e)
+        {
+            string estilo_nome_baseado = "02 - Corpo do Texto (PeriTAB)";
+            string estilo_nome = "10 - Fecho (PeriTAB)";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
@@ -429,71 +466,20 @@ namespace PeriTAB
             //    Globals.ThisAddIn.TaskPane1.Height = 90;
         }
 
-    public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
+        public Button MyButton(string nome_botao)
         {
-            button_sem_formatacao.Enabled = habilita;
-            if (destaca){button_sem_formatacao.BackColor = SystemColors.Highlight;button_sem_formatacao.ForeColor = SystemColors.HighlightText;}
-        }
-        public void Habilita_Destaca_button2(bool habilita, bool destaca = false)
-        {
-            button_corpo_do_texto.Enabled = habilita;
-            if (destaca) { button_corpo_do_texto.BackColor = SystemColors.Highlight; button_corpo_do_texto.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button3(bool habilita, bool destaca = false)
-        {
-            button_citacoes.Enabled = habilita;
-            if (destaca) { button_citacoes.BackColor = SystemColors.Highlight; button_citacoes.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button4(bool habilita, bool destaca = false)
-        {
-            button_secao_1.Enabled = habilita;
-            if (destaca) { button_secao_1.BackColor = SystemColors.Highlight; button_secao_1.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button5(bool habilita, bool destaca = false)
-        {
-            button_secao_2.Enabled = habilita;
-            if (destaca) { button_secao_2.BackColor = SystemColors.Highlight; button_secao_2.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button6(bool habilita, bool destaca = false)
-        {
-            button_secao_3.Enabled = habilita;
-            if (destaca) { button_secao_3.BackColor = SystemColors.Highlight; button_secao_3.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button7(bool habilita, bool destaca = false)
-        {
-            button_secao_4.Enabled = habilita;
-            if (destaca) { button_secao_4.BackColor = SystemColors.Highlight; button_secao_4.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button8(bool habilita, bool destaca = false)
-        {
-            button_enumeracao.Enabled = habilita;
-            if (destaca) { button_enumeracao.BackColor = SystemColors.Highlight; button_enumeracao.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_button9(bool habilita)
-        {
-            button_reinicia_lista.Enabled = habilita;            
-        }
-        public void Habilita_Destaca_button10(bool habilita, bool destaca = false)
-        {
-            button_figuras.Enabled = habilita;
-            if (destaca) { button_figuras.BackColor = SystemColors.Highlight; button_figuras.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button11(bool habilita, bool destaca = false)
-        {
-            button_legendas_de_figuras.Enabled = habilita;
-            if (destaca) { button_legendas_de_figuras.BackColor = SystemColors.Highlight; button_legendas_de_figuras.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button12(bool habilita, bool destaca = false)
-        {
-            button_legendas_de_tabelas.Enabled = habilita;
-            if (destaca) { button_legendas_de_tabelas.BackColor = SystemColors.Highlight; button_legendas_de_tabelas.ForeColor = SystemColors.HighlightText; }
-        }
-        public void Habilita_Destaca_button13(bool habilita, bool destaca = false)
-        {
-            button_quesitos.Enabled = habilita;
-            if (destaca) { button_quesitos.BackColor = SystemColors.Highlight; button_quesitos.ForeColor = SystemColors.HighlightText; }
+            foreach (Button botao in Controls)
+            {
+                if (botao.Name == nome_botao) return botao;
+            }
+            return null;
         }
 
+        public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
+        {
+            b.Enabled = habilita;
+            if (destaca) { b.BackColor = SystemColors.Highlight; b.ForeColor = SystemColors.HighlightText; }
+        }
         internal void Remove_Destaque_Botoes(MyUserControl UCs)
         {
             foreach (Button b in UCs.Controls)
@@ -506,6 +492,83 @@ namespace PeriTAB
 
             }
         }
+
+        //public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
+        //{
+        //    button_sem_formatacao.Enabled = habilita;
+        //    if (destaca){button_sem_formatacao.BackColor = SystemColors.Highlight;button_sem_formatacao.ForeColor = SystemColors.HighlightText;}
+        //}
+        //public void Habilita_Destaca_button2(bool habilita, bool destaca = false)
+        //{
+        //    button_corpo_do_texto.Enabled = habilita;
+        //    if (destaca) { button_corpo_do_texto.BackColor = SystemColors.Highlight; button_corpo_do_texto.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button3(bool habilita, bool destaca = false)
+        //{
+        //    button_citacoes.Enabled = habilita;
+        //    if (destaca) { button_citacoes.BackColor = SystemColors.Highlight; button_citacoes.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button4(bool habilita, bool destaca = false)
+        //{
+        //    button_secao_1.Enabled = habilita;
+        //    if (destaca) { button_secao_1.BackColor = SystemColors.Highlight; button_secao_1.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button5(bool habilita, bool destaca = false)
+        //{
+        //    button_secao_2.Enabled = habilita;
+        //    if (destaca) { button_secao_2.BackColor = SystemColors.Highlight; button_secao_2.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button6(bool habilita, bool destaca = false)
+        //{
+        //    button_secao_3.Enabled = habilita;
+        //    if (destaca) { button_secao_3.BackColor = SystemColors.Highlight; button_secao_3.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button7(bool habilita, bool destaca = false)
+        //{
+        //    button_secao_4.Enabled = habilita;
+        //    if (destaca) { button_secao_4.BackColor = SystemColors.Highlight; button_secao_4.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button8(bool habilita, bool destaca = false)
+        //{
+        //    button_enumeracao.Enabled = habilita;
+        //    if (destaca) { button_enumeracao.BackColor = SystemColors.Highlight; button_enumeracao.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_button9(bool habilita)
+        //{
+        //    button_reinicia_lista.Enabled = habilita;
+        //}
+        //public void Habilita_Destaca_button10(bool habilita, bool destaca = false)
+        //{
+        //    button_figuras.Enabled = habilita;
+        //    if (destaca) { button_figuras.BackColor = SystemColors.Highlight; button_figuras.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button11(bool habilita, bool destaca = false)
+        //{
+        //    button_legendas_de_figuras.Enabled = habilita;
+        //    if (destaca) { button_legendas_de_figuras.BackColor = SystemColors.Highlight; button_legendas_de_figuras.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button12(bool habilita, bool destaca = false)
+        //{
+        //    button_legendas_de_tabelas.Enabled = habilita;
+        //    if (destaca) { button_legendas_de_tabelas.BackColor = SystemColors.Highlight; button_legendas_de_tabelas.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button13(bool habilita, bool destaca = false)
+        //{
+        //    button_quesitos.Enabled = habilita;
+        //    if (destaca) { button_quesitos.BackColor = SystemColors.Highlight; button_quesitos.ForeColor = SystemColors.HighlightText; }
+        //}
+        //public void Habilita_Destaca_button14(bool habilita, bool destaca = false)
+        //{
+        //    button_fecho.Enabled = habilita;
+        //    if (destaca) { button_fecho.BackColor = SystemColors.Highlight; button_fecho.ForeColor = SystemColors.HighlightText; }
+        //}
+
+        //public void Habilita_button_reinicia_lista(bool habilita)
+        //{
+        //    button_reinicia_lista.Enabled = habilita;
+        //}
+
+
 
 
     }

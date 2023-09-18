@@ -45,8 +45,9 @@ namespace PeriTAB
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             {
-                Globals.ThisAddIn.iMyUserControl.Habilita_button9(true);
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_button9(false); }
+                //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
+                Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
             }
 
             //Revisa o destaque dos botoes do TaskPane
@@ -61,18 +62,32 @@ namespace PeriTAB
                     try { s = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException ex) { }
                     if (s != null)
                     {
-                        if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") MUC.Habilita_Destaca_button1(true, true);
-                        if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") MUC.Habilita_Destaca_button2(true, true);
-                        if (s.NameLocal == "03 - Citações (PeriTAB)") MUC.Habilita_Destaca_button3(true, true);
-                        if (s.NameLocal == "04a - Seção_1 (PeriTAB)") MUC.Habilita_Destaca_button4(true, true);
-                        if (s.NameLocal == "04b - Seção_2 (PeriTAB)") MUC.Habilita_Destaca_button5(true, true);
-                        if (s.NameLocal == "04c - Seção_3 (PeriTAB)") MUC.Habilita_Destaca_button6(true, true);
-                        if (s.NameLocal == "04d - Seção_4 (PeriTAB)") MUC.Habilita_Destaca_button7(true, true);
-                        if (s.NameLocal == "05 - Enumerações (PeriTAB)") MUC.Habilita_Destaca_button8(true, true);
-                        if (s.NameLocal == "06 - Figuras (PeriTAB)") MUC.Habilita_Destaca_button10(true, true);
-                        if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") MUC.Habilita_Destaca_button11(true, true);
-                        if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") MUC.Habilita_Destaca_button12(true, true);
-                        if (s.NameLocal == "09 - Quesitos (PeriTAB)") MUC.Habilita_Destaca_button13(true, true);
+                        if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_sem_formatacao"), true, true);
+                        if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_corpo_do_texto"), true, true);
+                        if (s.NameLocal == "03 - Citações (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_citacoes"), true, true);
+                        if (s.NameLocal == "04a - Seção_1 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_1"), true, true);
+                        if (s.NameLocal == "04b - Seção_2 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_2"), true, true);
+                        if (s.NameLocal == "04c - Seção_3 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_3"), true, true);
+                        if (s.NameLocal == "04d - Seção_4 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_4"), true, true);
+                        if (s.NameLocal == "05 - Enumerações (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_enumeracao"), true, true);
+                        if (s.NameLocal == "06 - Figuras (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_figuras"), true, true);
+                        if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_legendas_de_figuras"), true, true);
+                        if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_legendas_de_tabelas"), true, true);
+                        if (s.NameLocal == "09 - Quesitos (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_quesitos"), true, true);
+                        if (s.NameLocal == "10 - Fecho (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_fecho"), true, true);
+                        //if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") MUC.Habilita_Destaca_button1(true, true);
+                        //if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") MUC.Habilita_Destaca_button2(true, true);
+                        //if (s.NameLocal == "03 - Citações (PeriTAB)") MUC.Habilita_Destaca_button3(true, true);
+                        //if (s.NameLocal == "04a - Seção_1 (PeriTAB)") MUC.Habilita_Destaca_button4(true, true);
+                        //if (s.NameLocal == "04b - Seção_2 (PeriTAB)") MUC.Habilita_Destaca_button5(true, true);
+                        //if (s.NameLocal == "04c - Seção_3 (PeriTAB)") MUC.Habilita_Destaca_button6(true, true);
+                        //if (s.NameLocal == "04d - Seção_4 (PeriTAB)") MUC.Habilita_Destaca_button7(true, true);
+                        //if (s.NameLocal == "05 - Enumerações (PeriTAB)") MUC.Habilita_Destaca_button8(true, true);
+                        //if (s.NameLocal == "06 - Figuras (PeriTAB)") MUC.Habilita_Destaca_button10(true, true);
+                        //if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") MUC.Habilita_Destaca_button11(true, true);
+                        //if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") MUC.Habilita_Destaca_button12(true, true);
+                        //if (s.NameLocal == "09 - Quesitos (PeriTAB)") MUC.Habilita_Destaca_button13(true, true);
+                        //if (s.NameLocal == "10 - Fecho (PeriTAB)") MUC.Habilita_Destaca_button14(true, true);
                         //if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button1(true, true);
                         //if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button2(true, true);
                         //if (s.NameLocal == "03 - Citações (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button3(true, true);

@@ -43,6 +43,7 @@
             this.button_quesitos = new System.Windows.Forms.Button();
             this.button_DockRight = new System.Windows.Forms.Button();
             this.button_DockBottom = new System.Windows.Forms.Button();
+            this.button_fecho = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_sem_formatacao
@@ -179,7 +180,7 @@
             // 
             this.button_DockRight.BackgroundImage = global::PeriTAB.Properties.Resources.seta1;
             this.button_DockRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button_DockRight.Location = new System.Drawing.Point(1204, 5);
+            this.button_DockRight.Location = new System.Drawing.Point(1299, 5);
             this.button_DockRight.Name = "button_DockRight";
             this.button_DockRight.Size = new System.Drawing.Size(40, 40);
             this.button_DockRight.TabIndex = 0;
@@ -199,6 +200,16 @@
             this.button_DockBottom.Visible = false;
             this.button_DockBottom.Click += new System.EventHandler(this.button_DockBottom_Click);
             // 
+            // button_fecho
+            // 
+            this.button_fecho.Location = new System.Drawing.Point(1204, 5);
+            this.button_fecho.Name = "button_fecho";
+            this.button_fecho.Size = new System.Drawing.Size(90, 40);
+            this.button_fecho.TabIndex = 0;
+            this.button_fecho.Text = "Fecho";
+            this.button_fecho.UseVisualStyleBackColor = true;
+            this.button_fecho.Click += new System.EventHandler(this.button_fecho_Click);
+            // 
             // MyUserControl
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -208,6 +219,7 @@
             this.Controls.Add(this.button_DockBottom);
             this.Controls.Add(this.button_DockRight);
             this.Controls.Add(this.button_reinicia_lista);
+            this.Controls.Add(this.button_fecho);
             this.Controls.Add(this.button_quesitos);
             this.Controls.Add(this.button_enumeracao);
             this.Controls.Add(this.button_legendas_de_tabelas);
@@ -222,7 +234,7 @@
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MyUserControl";
-            this.Size = new System.Drawing.Size(1290, 611);
+            this.Size = new System.Drawing.Size(1321, 590);
             this.ResumeLayout(false);
 
         }
@@ -244,5 +256,6 @@
         private System.Windows.Forms.Button button_quesitos;
         private System.Windows.Forms.Button button_DockRight;
         private System.Windows.Forms.Button button_DockBottom;
+        private System.Windows.Forms.Button button_fecho;
     }
 }

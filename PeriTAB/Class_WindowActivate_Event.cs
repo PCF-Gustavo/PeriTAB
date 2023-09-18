@@ -55,8 +55,9 @@ namespace PeriTAB
 
             if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             {
-                Globals.ThisAddIn.iMyUserControl.Habilita_button9(true);
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_button9(false); }
+                //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
+                Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
             }
 
             //if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc) == false) 
