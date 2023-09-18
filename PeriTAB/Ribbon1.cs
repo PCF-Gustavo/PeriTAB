@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
 using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
-using Spire.Doc.Interface;
+//using Spire.Doc.Interface;
 //using iTextSharp.text.pdf.parser;
 
 namespace PeriTAB
