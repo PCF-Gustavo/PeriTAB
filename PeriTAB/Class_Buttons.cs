@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -134,6 +135,39 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "";
             Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";
         }
+
+        //public void button_gera_pdf_image(bool load)
+        //{
+        //    if (load) Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.load_icon_png_7969;
+        //    else Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf2;
+        //}
+        public void muda_imagem(string botao, System.Drawing.Bitmap imagem)
+        {
+            switch (botao)
+            {
+                case "button_atualiza_campos":
+                    Globals.Ribbons.Ribbon1.button_atualiza_campos.Image = imagem;
+                    break;
+                case "button_redimensiona_imagem":
+                    Globals.Ribbons.Ribbon1.button_redimensiona_imagem.Image = imagem;
+                    break;
+                case "button_cola_imagem":
+                    Globals.Ribbons.Ribbon1.button_cola_imagem.Image = imagem;
+                    break;
+                case "button_confere_preambulo":
+                    Globals.Ribbons.Ribbon1.button_confere_preambulo.Image = imagem;
+                    break;
+                case "button_confere_num_legenda":
+                    Globals.Ribbons.Ribbon1.button_confere_num_legenda.Image = imagem;
+                    break;
+                case "button_gera_pdf":
+                    Globals.Ribbons.Ribbon1.button_gera_pdf.Image = imagem;
+                    break;
+                //default:
+                //    break;
+            }
+        }
+
 
         public class preferences
         {

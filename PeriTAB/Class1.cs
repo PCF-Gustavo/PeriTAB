@@ -163,7 +163,7 @@ namespace PeriTAB
         }
         public void Evento_menu1ItemsLoading()
         {
-            Globals.Ribbons.Ribbon1.menu1.ItemsLoading += new RibbonControlEventHandler(Metodo_menu1ItemsLoading);
+            Globals.Ribbons.Ribbon1.menu_campos.ItemsLoading += new RibbonControlEventHandler(Metodo_menu1ItemsLoading);
         }
         public void Evento_ContentControlOnEnter()
         {

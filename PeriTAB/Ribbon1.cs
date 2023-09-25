@@ -34,11 +34,13 @@ using System.Threading;
 using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
 //using Spire.Doc.Interface;
 //using iTextSharp.text.pdf.parser;
+using System.Linq;
 
 namespace PeriTAB
 {
     public partial class Ribbon1
     {
+        Class_Buttons iClass_Buttons = new Class_Buttons();
 
         public class Variables
         {
@@ -78,7 +80,11 @@ namespace PeriTAB
 
         private void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
+                iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.lupa);
+            }).Start();
         }
 
         private void button_alinha_legenda_Click(object sender, RibbonControlEventArgs e)
@@ -88,7 +94,12 @@ namespace PeriTAB
 
         private void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_atualiza_campos", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
+                Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
+                iClass_Buttons.muda_imagem("button_atualiza_campos", Properties.Resources.atualizar);
+            }).Start();
         }
         private void checkBox_destaca_campos_Click(object sender, RibbonControlEventArgs e)
         {
@@ -189,11 +200,16 @@ namespace PeriTAB
 
         private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
+            object obj = System.Windows.Clipboard.GetData("FileDrop");
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.load_icon_png_7969);
+
+
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             if (System.Windows.Clipboard.ContainsData("FileDrop"))
             {
-                object obj = System.Windows.Clipboard.GetData("FileDrop");
+                //object obj = System.Windows.Clipboard.GetData("FileDrop");
                 string[] pathfile = (string[])obj;
                 //for (int i = 0; i <= pathfile.Length - 1; i++) MessageBox.Show(pathfile[i]);
                 string[] pathfile2 = { "" };
@@ -246,7 +262,6 @@ namespace PeriTAB
                         }
                         //imagem.LockAspectRatio = LockAspectRatio_i;
                         
-
                         if (i != pathfile2.Length - 1) //Exceto última imagem
                         {
 
@@ -262,9 +277,6 @@ namespace PeriTAB
                                     break;
                             }
                         }
-
-                        
-                        //Globals.ThisAddIn.Application.ScreenUpdating = true;
                     }
                     // Seleção das imagens ao final da colagem
                     if (dropDown_separador.SelectedItem.Label == "Nenhum")
@@ -279,13 +291,15 @@ namespace PeriTAB
                         Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2*L-1));
                         Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
                     }
-                    Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    //Globals.ThisAddIn.Application.ScreenUpdating = true;
                 }
                 else MessageBox.Show("Imagem não encontrada.");
             }
             else MessageBox.Show("Imagem não encontrada.");
 
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.image_icon);
+            }).Start();
         }
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
@@ -372,6 +386,7 @@ namespace PeriTAB
         private void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Range r = Globals.ThisAddIn.Application.Selection.Range;
 
             string estilo_nome_baseado = "Legenda";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
@@ -384,8 +399,25 @@ namespace PeriTAB
             foreach (Table itable in list_Table)
             {
                 itable.Select();
-                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Tabela", Title: "", TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionAbove, ExcludeLabel: 0);
+                //MessageBox.Show(itable.Range.Text);
+                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text);
+
+                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Characters.Count >= 7)
+                    {
+                        if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text.Substring(0, 7) == "Tabela ")
+                        {
+                            //r.Select();
+                            //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                            //return;
+                            continue;
+                        }
+                    }
+
+                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Tabela", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionAbove, ExcludeLabel: 0);
+                Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                Globals.ThisAddIn.Application.Run("alinha_legenda");
             }
+            r.Select();
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
         private void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
@@ -419,17 +451,20 @@ namespace PeriTAB
         private void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.Run("renomeia_documento");
+            //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Documento renomeado com sucesso.";
         }
 
         private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
         {
             new Thread(() =>
             {
+                //iClass_Buttons.button_gera_pdf_image(load: true);
+                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.load_icon_png_7969);
                 PdfReader inputPdf = null;
                 bool inputPdf_open = false;
                 string path = Globals.ThisAddIn.Application.ActiveDocument.FullName;
                 string localpath = GetLocalPath(path);
-                if (localpath == null) { MessageBox.Show("Não foi possível gerar o PDF."); return; }
+                if (localpath == null) { iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2); MessageBox.Show("Não foi possível gerar o PDF."); return; }
                 string path_pdf = localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf";
             //Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
 
@@ -533,7 +568,7 @@ namespace PeriTAB
                     inputPdf_open = true;
 
                     FileStream signedPdf = null;
-                    try { signedPdf = new FileStream(path_pdf_assinado, FileMode.Create); } catch (IOException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; }
+                    try { signedPdf = new FileStream(path_pdf_assinado, FileMode.Create); } catch (IOException ex) { iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2); MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; }
 
                     PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
                 //Debug.WriteLine("3");
@@ -569,12 +604,14 @@ namespace PeriTAB
                     pdfStamper.Close();
                     if (File.Exists(path_pdf_assinado))
                     {
-                        Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
-                    //if (File.Exists(path_pdf)) { File.Delete(path_pdf); }
+                        iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
+                        Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso."; 
+                        //if (File.Exists(path_pdf)) { File.Delete(path_pdf); }
                         if (Globals.Ribbons.Ribbon1.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf_assinado); }
                     }
                     else
                     {
+                        iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
                         Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "A geração do PDF falhou.";
                     }
                 }
@@ -584,11 +621,13 @@ namespace PeriTAB
                     {
                         if (File.Exists(path_pdf)) { try { File.Delete(path_pdf); } catch (IOException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); goto del_temp; } }
                         File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
+                        iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
                         Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
                         if (Globals.Ribbons.Ribbon1.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf); }
                     }
                     else
-                    { 
+                    {
+                        iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
                         MessageBox.Show("Não foi possível gerar o PDF.");
                     }
 
@@ -596,6 +635,7 @@ namespace PeriTAB
             del_temp:
                 if (inputPdf_open) inputPdf.Close();
                 if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"))) { File.Delete(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")); } //Deleta tmp.pdf
+                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
             }).Start();
         }
 
@@ -634,6 +674,9 @@ namespace PeriTAB
 
         private void button_redimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.load_icon_png_7969);
+
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
             {
@@ -661,7 +704,9 @@ namespace PeriTAB
                     
                 }
             }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar);
+            }).Start();
         }
 
         private string get_text(string texto, string inicio = null, string fim = null ) //Retona a primeira ocorrência de string entre os strings 'inicio' e 'fim' no string 'texto'.
@@ -684,69 +729,70 @@ namespace PeriTAB
             catch { return null; }
         }
 
-        private void button_remove_formatacao_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
-                {
-                    //ishape.Line.Visible = MsoTriState.msoFalse;
-                    ishape.Reset();
-                    ishape.AlternativeText = "";
-                }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //private void button_remove_formatacao_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+        //    {
+        //        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+        //        {
+        //            //ishape.Line.Visible = MsoTriState.msoFalse;
+        //            ishape.Reset();
+        //            ishape.AlternativeText = "";
+        //        }
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
-        private void button_insere_borda_preta_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
-                {
-                    ishape.Line.Visible = MsoTriState.msoTrue;
-                    ishape.Line.Weight = (float)0.5;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
-                }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //private void button_insere_borda_preta_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+        //    {
+        //        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+        //        {
+        //            ishape.Line.Visible = MsoTriState.msoTrue;
+        //            ishape.Line.Weight = (float)0.5;
+        //            ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+        //        }
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
-        private void button_insere_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
-                {
-                    ishape.Line.Visible = MsoTriState.msoTrue;
-                    ishape.Line.Weight = 2;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
-                }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //private void button_insere_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+        //    {
+        //        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+        //        {
+        //            ishape.Line.Visible = MsoTriState.msoTrue;
+        //            ishape.Line.Weight = 2;
+        //            ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
+        //        }
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
-        private void button_insere_borda_amarela_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
-                {
-                    ishape.Line.Visible= MsoTriState.msoTrue;
-                    ishape.Line.Weight = 3;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0,255,255).ToArgb();
-                }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //private void button_insere_borda_amarela_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+        //    {
+        //        if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+        //        {
+        //            ishape.Line.Visible= MsoTriState.msoTrue;
+        //            ishape.Line.Weight = 3;
+        //            ishape.Line.ForeColor.RGB = Color.FromArgb(0,255,255).ToArgb();
+        //        }
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
         private void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Range r = Globals.ThisAddIn.Application.Selection.Range;
 
             string estilo_nome_baseado = "Legenda";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
@@ -763,15 +809,67 @@ namespace PeriTAB
             foreach (InlineShape ishape in list_InlineShape) 
             {
                 ishape.Select();
-                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: "", TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count.ToString());
+                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0,7));
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count >= 7) {
+                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0,7) == "Figura ") 
+                    {
+                        //r.Select();
+                        //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                        //return;
+                        continue;
+                    }
+                }
+                //if (ishape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
+                //{
+                //    //MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes.Count.ToString());
+                //    ////MessageBox.Show(ishape.Range.Text);
+                //    ////MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes[1].Range.Text);
+                //    //MessageBox.Show(ishape.Equals(ishape.Range.Paragraphs[1].Range.ShapeRange[2]).ToString());
+                //    //if (ishape.Range.Paragraphs[1].Range.InlineShapes[1] == ishape.Range.Paragraphs[1].Range.InlineShapes[1])
+                //    //{
+                //    //    MessageBox.Show("opoppaaa");
+                //    //    //r.Select();
+                //    //    //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                //    //    continue;
+                //    //}
+
+                //    continue;
+                //}
+                if (IsLastShapeInParagraph(ishape))
+                {
+                    Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+                    Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                    Globals.ThisAddIn.Application.Run("alinha_legenda");
+                }
             }
+            r.Select();
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
-
+        private bool IsLastShapeInParagraph(InlineShape ishape)
+        {
+            InlineShape lastShape = null;
+            foreach (InlineShape inlineShape in ishape.Range.Paragraphs[1].Range.InlineShapes)
+            {
+                if (inlineShape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    lastShape = inlineShape;
+                }
+            }
+            if (lastShape != null && ishape.Range.Information[WdInformation.wdHorizontalPositionRelativeToTextBoundary] >= lastShape.Range.Information[WdInformation.wdHorizontalPositionRelativeToTextBoundary] && ishape.Range.Information[WdInformation.wdVerticalPositionRelativeToTextBoundary] >= lastShape.Range.Information[WdInformation.wdVerticalPositionRelativeToTextBoundary])
+            {
+                return true;
+            }
+            return false;
+        }
 
         private void button_confere_preambulo_Click(object sender, RibbonControlEventArgs e)
         {
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.load_icon_png_7969);
+
+
             string localpath = GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.Path);
             string download_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 
@@ -836,7 +934,8 @@ namespace PeriTAB
                     //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br/sistemas/criminalistica/documento.php?acao=localizar_registro&tipo_busca=numero_laudo&numero_busca=" + num_laudo + "/" + ano_laudo);
                 }
             }
-
+                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
+            }).Start();
         }
 
         private int pega_paragrafo_do_preambulo()
