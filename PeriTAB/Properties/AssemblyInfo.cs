@@ -32,7 +32,8 @@ using System.Security;
 //
 // É possível especificar todos os valores ou usar como padrão os Números da Versão e da Revisão 
 // utilizando o "*" como mostrado abaixo:
-// [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.1.10.*")]
+[assembly: AssemblyVersion("1.0.*")]
+
+//[assembly: AssemblyVersion("1.1.10.*")]
 //[assembly: AssemblyFileVersion("1.0.0.0")]
 

@@ -356,6 +356,30 @@ namespace PeriTAB
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) { Globals.ThisAddIn.Application.Run("alinha_legenda"); }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
+
+        private void button_textos_de_figuras_Click(object sender, EventArgs e)
+        {
+            string estilo_nome_baseado = "07 - Legendas de Figuras (PeriTAB)";
+            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            string estilo_nome = "08a - Texto de Figuras (PeriTAB)";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+
+                if ((((Microsoft.Office.Interop.Word.Style)p.Previous().get_Style()).NameLocal.ToString()) == "07 - Legendas de Figuras (PeriTAB)")
+                {
+                    p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
+                    p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
+                    p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
+                }
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
         private void button_legendas_de_tabelas_Click(object sender, EventArgs e)
         {
             string estilo_nome_baseado = "Legenda";
@@ -492,6 +516,8 @@ namespace PeriTAB
 
             }
         }
+
+
 
         //public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
         //{

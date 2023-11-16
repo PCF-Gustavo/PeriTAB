@@ -35,6 +35,13 @@ using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
 //using Spire.Doc.Interface;
 //using iTextSharp.text.pdf.parser;
 using System.Linq;
+using System.Runtime.InteropServices.ComTypes;
+using System.Security.Policy;
+using Microsoft.VisualBasic.Devices;
+using iTextSharp.text.pdf.codec.wmf;
+//using System.Windows;
+//using Microsoft.VisualBasic;
+
 
 namespace PeriTAB
 {
@@ -69,8 +76,18 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.AddIns.Add(Variables.caminho_template);
 
             // Escreve o número da versão
-            System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
-            Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+            //System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
+            //Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+            //Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
+
+            if (versao() != null)
+            {
+                Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + versao().Major + "." + versao().Minor + "." + versao().Build;
+            }
+            else 
+            {
+                Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB Debugging";
+            }
         }
 
         //public void Add_Button(object sender)
@@ -78,10 +95,26 @@ namespace PeriTAB
         //    Globals.Ribbons.Ribbon1.group_formatacao.Items.Add((RibbonControl)sender);
         //}
 
+        public System.Version versao()
+        {
+            System.Version publish_version = null;
+            if (System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed)
+            {
+                publish_version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
+            }
+            //else
+            //{
+            //    publish_version = Assembly.GetExecutingAssembly().GetName().Version;
+            //}
+            return publish_version;
+        }
+
         private void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
         {
-            new Thread(() => {
+            new Thread(() =>
+            {
                 iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.Run("atualiza_todos_campos"); //****************
                 Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
                 iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.lupa);
             }).Start();
@@ -94,7 +127,8 @@ namespace PeriTAB
 
         private void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
-            new Thread(() => {
+            new Thread(() =>
+            {
                 iClass_Buttons.muda_imagem("button_atualiza_campos", Properties.Resources.load_icon_png_7969);
                 Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
                 Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
@@ -106,6 +140,12 @@ namespace PeriTAB
             var Botao_checkBox = (Microsoft.Office.Tools.Ribbon.RibbonCheckBox)sender;
             if (Botao_checkBox.Checked == true) Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading = (WdFieldShading)1;
             if (Botao_checkBox.Checked == false) Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading = (WdFieldShading)2;
+        }
+        private void checkBox_mostra_indicadores_Click(object sender, RibbonControlEventArgs e)
+        {
+            var Botao_checkBox = (Microsoft.Office.Tools.Ribbon.RibbonCheckBox)sender;
+            if (Botao_checkBox.Checked == true) Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks = true;
+            if (Botao_checkBox.Checked == false) Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks = false;
         }
 
         private void checkBox_vercodigo_campos_Click(object sender, RibbonControlEventArgs e)
@@ -201,105 +241,170 @@ namespace PeriTAB
         private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             object obj = System.Windows.Clipboard.GetData("FileDrop");
-            new Thread(() => {
+            new Thread(() =>
+            {
                 iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.load_icon_png_7969);
 
 
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            if (System.Windows.Clipboard.ContainsData("FileDrop"))
-            {
-                //object obj = System.Windows.Clipboard.GetData("FileDrop");
-                string[] pathfile = (string[])obj;
-                //for (int i = 0; i <= pathfile.Length - 1; i++) MessageBox.Show(pathfile[i]);
-                string[] pathfile2 = { "" };
-                int n = 0;
-                for (int i = 0; i <= pathfile.Length - 1; i++)
+                if (System.Windows.Clipboard.ContainsData("FileDrop"))
                 {
-                    if (File.Exists(pathfile[i]))
+                    //object obj = System.Windows.Clipboard.GetData("FileDrop");
+                    string[] pathfile = (string[])obj;
+                    //for (int i = 0; i <= pathfile.Length - 1; i++) MessageBox.Show(pathfile[i]);
+                    string[] pathfile2 = { "" };
+                    string[] pathfile3 = { "" };
+                    int n = 0;
+                    for (int i = 0; i <= pathfile.Length - 1; i++)
                     {
-                        string extensao = (pathfile[i].Substring(pathfile[i].Length - 4)).ToLower();
-                        if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif" | extensao == "tiff") //Se tem extensao de imagem
+                        if (File.Exists(pathfile[i]))
                         {
-                            Array.Resize(ref pathfile2, n + 1);
-                            pathfile2[n] = pathfile[i];
-                            n++;
-                        }
-                    }
-                }
-
-                if (pathfile2[0] != "")
-                {
-                    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
-
-                    if (dropDown_ordem.SelectedItem.Label == "Alfabética") { Array.Sort(pathfile2); } //Ordem alfabética               
-
-                    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
-
-                    for (int i = 0; i <= pathfile2.Length - 1; i++)
-                    {
-                        //Globals.ThisAddIn.Application.ScreenUpdating = false;
-
-                        bool link = false; bool save = true;
-                        if (Globals.Ribbons.Ribbon1.checkBox_referencia.Checked == true) { link = true; save = false; }
-
-                        InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
-                        imagem.LockAspectRatio = MsoTriState.msoTrue;
-                        //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
-                        //imagem.LockAspectRatio = (MsoTriState)1;
-                        if (checkBox_largura.Checked)
-                        {
-                            string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
-                            float.TryParse(larg_string, out float larg);
-                            imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
-                        }
-
-                        if (checkBox_altura.Checked)
-                        {
-                            string alt_string = Globals.Ribbons.Ribbon1.editBox_altura.Text;
-                            float.TryParse(alt_string, out float alt);
-                            imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
-                        }
-                        //imagem.LockAspectRatio = LockAspectRatio_i;
-                        
-                        if (i != pathfile2.Length - 1) //Exceto última imagem
-                        {
-
-                            switch (dropDown_separador.SelectedItem.Label) //Insere separador
+                            string extensao = (pathfile[i].Substring(pathfile[i].Length - 4)).ToLower();
+                            if (extensao == ".jpg" | extensao == "jpeg" | extensao == ".png" | extensao == ".bmp" | extensao == ".gif" | extensao == "tiff") //Se tem extensao de imagem
                             {
-                                case "Espaço":
-                                    Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                                    Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
-                                    break;
-                                case "Parágrafo":
-                                    Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
-                                    Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
-                                    break;
+                                Array.Resize(ref pathfile2, n + 1);
+                                //Array.Resize(ref pathfile3, n + 1);
+                                pathfile2[n] = pathfile[i];
+                                //pathfile3[n] = pathfile[i];
+                                n++;
                             }
                         }
                     }
-                    // Seleção das imagens ao final da colagem
-                    if (dropDown_separador.SelectedItem.Label == "Nenhum")
+
+                    if (pathfile2[0] != "")
                     {
-                        int L = pathfile2.Length;
-                        Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -L);
-                        Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
+                        //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+                        //string[] pathfile3 = null;
+                        //for (int i = 0; i <= pathfile2.Length - 1; i++) pathfile3[i] = pathfile2[i];
+                        //if (testa_igualdade(pathfile2,pathfile3))
+                        //{
+                        //    MessageBox.Show("igual");
+                        //}
+
+
+                        //Array.Sort(pathfile3);
+
+                        if (dropDown_ordem.SelectedItem.Label == "Alfabética") { Array.Sort(pathfile2); } //Ordem alfabética        
+                        if (dropDown_ordem.SelectedItem.Label == "Seleção")
+                        {
+                            if (pathfile2.Length == 2)
+                            {
+                                string temp = pathfile2[0];
+                                pathfile2[0] = pathfile2[1];
+                                pathfile2[1] = temp;
+                            }
+                            else
+                            {
+                                MessageBox.Show("A opção ORDEM: SELEÇÃO só funciona para 2 imagens.");
+                                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                                iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.image_icon);
+                                return;
+                            }
+                        }
+                        //    //Array.Sort(pathfile2);
+                        //    for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+                        //    //for (int i = 0; i <= pathfile3.Length - 1; i++) MessageBox.Show(pathfile3[i]);
+
+                        //    //if (!testa_igualdade(pathfile2, pathfile3))
+                        //    //{
+                        //    //MessageBox.Show("diferente");
+
+                        //    string first = pathfile2[0];
+                        //    for (int i = 0; i <= pathfile2.Length - 2; i++)
+                        //    {
+                        //        //if (i != pathfile2.Length - 1) 
+                        //        //{
+                        //        pathfile2[i] = pathfile2[i + 1];
+                        //        //}
+                        //        //pathfile2[pathfile2.Length - 1] = first;
+                        //    }
+                        //    pathfile2[pathfile2.Length - 1] = first;
+                        //    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+                        //    //}
+                        //    //else
+                        //    //{
+                        //    //    pathfile2 = pathfile3;
+                        //    //}
+                        //    //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+                        //}
+                        //for (int i = 0; i <= pathfile2.Length - 1; i++) MessageBox.Show(pathfile2[i]);
+
+                        for (int i = 0; i <= pathfile2.Length - 1; i++)
+                        {
+                            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+                            bool link = false; bool save = true;
+                            if (Globals.Ribbons.Ribbon1.checkBox_referencia.Checked == true) { link = true; save = false; }
+
+                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
+                            imagem.LockAspectRatio = MsoTriState.msoTrue;
+                            //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                            //imagem.LockAspectRatio = (MsoTriState)1;
+                            if (checkBox_largura.Checked)
+                            {
+                                string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
+                                float.TryParse(larg_string, out float larg);
+                                imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                            }
+
+                            if (checkBox_altura.Checked)
+                            {
+                                string alt_string = Globals.Ribbons.Ribbon1.editBox_altura.Text;
+                                float.TryParse(alt_string, out float alt);
+                                imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                            }
+                            //imagem.LockAspectRatio = LockAspectRatio_i;
+
+                            if (i != pathfile2.Length - 1) //Exceto última imagem
+                            {
+
+                                switch (dropDown_separador.SelectedItem.Label) //Insere separador
+                                {
+                                    case "Espaço":
+                                        Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                                        Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                        break;
+                                    case "Parágrafo":
+                                        Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
+                                        Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                        break;
+                                }
+                            }
+                        }
+                        // Seleção das imagens ao final da colagem
+                        if (dropDown_separador.SelectedItem.Label == "Nenhum")
+                        {
+                            int L = pathfile2.Length;
+                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -L);
+                            Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
+                        }
+                        else
+                        {
+                            int L = pathfile2.Length;
+                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2 * L - 1));
+                            Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
+                        }
+                        //Globals.ThisAddIn.Application.ScreenUpdating = true;
                     }
-                    else 
-                    {
-                        int L = pathfile2.Length;
-                        Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2*L-1));
-                        Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
-                    }
-                    //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    else MessageBox.Show("Imagem não encontrada.");
                 }
                 else MessageBox.Show("Imagem não encontrada.");
-            }
-            else MessageBox.Show("Imagem não encontrada.");
 
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
                 iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.image_icon);
             }).Start();
+        }
+
+        private bool testa_igualdade(string[] a, string[] b)
+        {
+            if (a.Length != b.Length) return false;
+
+            for (int i = 0; i <= a.Length - 1; i++)
+            {
+                if (a[i] != b[i]) return false;
+            }
+            return true;
         }
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
@@ -307,7 +412,7 @@ namespace PeriTAB
             if (Variables.editBox_largura_Text == null)
             {
                 if (Class_Buttons.preferences.largura == "") { Class_Buttons.preferences.largura = "10"; }
-                Variables.editBox_largura_Text = Class_Buttons.preferences.largura; 
+                Variables.editBox_largura_Text = Class_Buttons.preferences.largura;
             }
 
             if (checkBox_largura.Checked)
@@ -326,10 +431,10 @@ namespace PeriTAB
 
         private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
         {
-            if (Variables.editBox_altura_Text == null) 
+            if (Variables.editBox_altura_Text == null)
             {
                 if (Class_Buttons.preferences.altura == "") { Class_Buttons.preferences.altura = "10"; }
-                Variables.editBox_altura_Text = Class_Buttons.preferences.altura; 
+                Variables.editBox_altura_Text = Class_Buttons.preferences.altura;
             }
 
             if (checkBox_altura.Checked)
@@ -383,78 +488,57 @@ namespace PeriTAB
             }
         }
 
-        private void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            Range r = Globals.ThisAddIn.Application.Selection.Range;
 
-            string estilo_nome_baseado = "Legenda";
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-
-            List<Table> list_Table = new List<Table>();
-            foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
-            {
-                list_Table.Add(itable);
-            }
-            foreach (Table itable in list_Table)
-            {
-                itable.Select();
-                //MessageBox.Show(itable.Range.Text);
-                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text);
-
-                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Characters.Count >= 7)
-                    {
-                        if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text.Substring(0, 7) == "Tabela ")
-                        {
-                            //r.Select();
-                            //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                            //return;
-                            continue;
-                        }
-                    }
-
-                Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Tabela", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionAbove, ExcludeLabel: 0);
-                Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                Globals.ThisAddIn.Application.Run("alinha_legenda");
-            }
-            r.Select();
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
-        private void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-
-            foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
-            {
-                itable.Range.Cells.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-                itable.Rows.Alignment = WdRowAlignment.wdAlignRowCenter;
-                foreach (Paragraph iParagraph in itable.Range.Paragraphs)
-                {
-                    iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-                }
-            }
-            //foreach (Cell icell in Globals.ThisAddIn.Application.Selection.Cells)
-            //{
-            //    icell.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
-            //}
-            //foreach (Paragraph iParagraph in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            //{
-            //    if (iParagraph.Range.Information[WdInformation.wdWithInTable]) 
-            //    {
-            //        iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
-            //    }
-            //}
-
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
 
         private void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("renomeia_documento");
-            //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Documento renomeado com sucesso.";
-        }
 
-        private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
+            
+            //Globals.ThisAddIn.Application.Run("renomeia_documento");
+            //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Documento renomeado com sucesso.";
+
+            string nome_doc_completo = Globals.ThisAddIn.Application.ActiveDocument.FullName;
+            string caminho_doc = Globals.ThisAddIn.Application.ActiveDocument.Path;
+            string nome_doc_antigo = Globals.ThisAddIn.Application.ActiveDocument.Name;
+            string nome_doc = null;
+
+            //MessageBox.Show(nome_doc_completo);
+            //MessageBox.Show(caminho_doc);
+            //MessageBox.Show(nome_doc_antigo);
+
+            nome_doc_completo = GetLocalPath(nome_doc_completo);
+            //if (nome_doc_completo.StartsWith("http"))
+            //{
+            //    MessageBox.Show("Este documento está armazenado na internet, o que impossibilita o uso dessa Macro. Caso esteja usando o Microsoft Onedrive, você pode resolver esse problema desmarcando a opção 'Usar os aplicativos do Office para sincronizar os arquivos do Office que eu abri', localizada na aba 'Office' nas configurações do Microsoft OneDrive.");
+            //    return;
+            //}
+
+            //if (caminho_doc == "")
+            //{
+            //    MessageBox.Show("Documentos que ainda não foram salvos não podem ser renomeados.");
+            //    return;
+            //}
+
+            nome_doc = Microsoft.VisualBasic.Interaction.InputBox("Novo nome do documento:", "", nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf(".")));
+
+            if (nome_doc == null || nome_doc == "" || nome_doc == nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf("."))) 
+            {
+                //MessageBox.Show("ok");
+                return;
+            }
+
+
+            Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(FileName: Path.Combine(caminho_doc, nome_doc + ".docx"), FileFormat: WdSaveFormat.wdFormatDocumentDefault);
+
+            //GC.Collect();
+            //GC.WaitForPendingFinalizers();
+            //System.Runtime.InteropServices.Marshal.FinalReleaseComObject((object)nome_doc_completo);
+            try { File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo."); }
+
+        }
+    
+
+    private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
         {
             new Thread(() =>
             {
@@ -635,11 +719,22 @@ namespace PeriTAB
             del_temp:
                 if (inputPdf_open) inputPdf.Close();
                 if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"))) { File.Delete(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")); } //Deleta tmp.pdf
+
+
+                ////Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
+                //iClass_Buttons.button_abre_SISCRIM_Default();
+                //string localpath2 = Globals.Ribbons.Ribbon1.GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.FullName);
+                //if (File.Exists(localpath.Substring(0, localpath2.LastIndexOf(".")) + ".pdf") | File.Exists(localpath2.Substring(0, localpath2.LastIndexOf(".")) + "_assinado.pdf"))
+                //{
+                //    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = true; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = ""; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Abre SISCRIM na página do Laudo.";
+                //}
+
+
                 iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
             }).Start();
         }
 
-        private string GetLocalPath(string path)
+        public string GetLocalPath(string path)
         {
             string localpath;
             if ((path.Substring(0, 4)).ToLower() != "http") //Verifica se está armazenado online
@@ -789,63 +884,7 @@ namespace PeriTAB
         //    Globals.ThisAddIn.Application.ScreenUpdating = true;
         //}
 
-        private void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            Range r = Globals.ThisAddIn.Application.Selection.Range;
 
-            string estilo_nome_baseado = "Legenda";
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-
-            List<InlineShape> list_InlineShape = new List<InlineShape>();
-
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
-                {
-                    list_InlineShape.Add(ishape);
-                }
-            }
-            foreach (InlineShape ishape in list_InlineShape) 
-            {
-                ishape.Select();
-                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count.ToString());
-                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0,7));
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count >= 7) {
-                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0,7) == "Figura ") 
-                    {
-                        //r.Select();
-                        //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                        //return;
-                        continue;
-                    }
-                }
-                //if (ishape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
-                //{
-                //    //MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes.Count.ToString());
-                //    ////MessageBox.Show(ishape.Range.Text);
-                //    ////MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes[1].Range.Text);
-                //    //MessageBox.Show(ishape.Equals(ishape.Range.Paragraphs[1].Range.ShapeRange[2]).ToString());
-                //    //if (ishape.Range.Paragraphs[1].Range.InlineShapes[1] == ishape.Range.Paragraphs[1].Range.InlineShapes[1])
-                //    //{
-                //    //    MessageBox.Show("opoppaaa");
-                //    //    //r.Select();
-                //    //    //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                //    //    continue;
-                //    //}
-
-                //    continue;
-                //}
-                if (IsLastShapeInParagraph(ishape))
-                {
-                    Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
-                    Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                    Globals.ThisAddIn.Application.Run("alinha_legenda");
-                }
-            }
-            r.Select();
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
 
         private bool IsLastShapeInParagraph(InlineShape ishape)
         {
@@ -866,29 +905,98 @@ namespace PeriTAB
 
         private void button_confere_preambulo_Click(object sender, RibbonControlEventArgs e)
         {
-            new Thread(() => {
+            new Thread(() =>
+            {
                 iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.load_icon_png_7969);
 
 
-            string localpath = GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.Path);
-            string download_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
+                string localpath = GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.Path);
+                string download_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
 
+                string[] identificadores_laudo = pega_identificadores_laudo();
+
+                string num_laudo = identificadores_laudo[0];
+                string ano_laudo = identificadores_laudo[1];
+                string unidade_laudo = identificadores_laudo[2];
+
+                if (num_laudo == null | ano_laudo == null | unidade_laudo == null) 
+                {
+                    MessageBox.Show("Referência do laudo não encontrada.");
+                    iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
+                    return;
+                }
+
+                //for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+                //{
+                //    string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
+                //    string t_mod = t.ToLower().Replace(" ", "").Replace(((char)160).ToString(), "").Replace(((char)9).ToString(), "").Replace(((char)8211).ToString(), "-").Replace(((char)176).ToString(), "*").Replace("º", "*").Replace("laudono", "laudon*"); //elimina espaços, espaços inquebráveis e tabs. Ainda troca en-dash por hifen e grau por 'o' sobrescrito.
+                //                                                                                                                                                                                                                                                  //MessageBox.Show(t_mod);
+                //                                                                                                                                                                                                                                                  //if (t_mod == ((char)13).ToString()) { continue; } //
+
+                //    //string result = "";
+                //    //foreach (char c in t_trim) { result += (int)c + " "; }
+                //    //MessageBox.Show(result);
+
+                //    if (t_mod.Length > 10)
+                //    {
+                //        if ((t_mod.Substring(0, 6)).ToLower() == "laudon")
+                //        {
+                //            num_laudo = get_text(t_mod, "n*", "/");
+                //            ano_laudo = get_text(t_mod, "/", "-");
+                //            unidade_laudo = get_text(t_mod, "-");
+                //            break;
+                //            //try { unidade_laudo = t_trim.ToLower().Substring(t_trim.ToLower().IndexOf("- ") + 2); } catch { unidade_laudo = null; }
+                //        }
+                //    }
+                //}
+                ////MessageBox.Show(num_laudo + " " + ano_laudo + " " + unidade_laudo);
+                //if (num_laudo == null | ano_laudo == null | unidade_laudo == null) { MessageBox.Show("Referência do laudo não encontrada."); return; }
+
+                string asap_path = Path.Combine(localpath, "AsAP_Laudo_" + num_laudo + "-" + ano_laudo + ".asap");
+                string asap_downloads_path = Path.Combine(download_path, "AsAP_Laudo_" + num_laudo + "-" + ano_laudo + ".asap");
+
+                // Move o arquivo ASAP de downloads.
+                if (File.Exists(asap_downloads_path) & !File.Exists(asap_path))
+                {
+                    File.Move(asap_downloads_path, asap_path);
+                }
+
+                if (File.Exists(asap_path))
+                {
+                    string ASAP = File.ReadAllText(asap_path, Encoding.Default);
+                    //string preambulo = pega_preambulo_laudo();
+                    //if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
+                    int paragrafo_do_preambulo = pega_paragrafo_do_preambulo();
+                    if (paragrafo_do_preambulo == 0) { MessageBox.Show("preambulo não encontrado."); return; }
+                    //string preambulo = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text;
+                    string preambulo_padrao = faz_preambulo_padrao(ASAP);
+                    //MessageBox.Show(preambulo);
+                    compara_preambulo(preambulo_padrao, paragrafo_do_preambulo);
+                }
+                else
+                {
+                    DialogResult resultado = MessageBox.Show("Arquivo ASAP não encontrado. Gostaria de baixá-lo?" + System.Environment.NewLine + "(Certificado/Token é necessário)", "", MessageBoxButtons.YesNo);
+                    if (resultado == System.Windows.Forms.DialogResult.Yes)
+                    {
+                        System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=");
+                        //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br/sistemas/criminalistica/documento.php?acao=localizar_registro&tipo_busca=numero_laudo&numero_busca=" + num_laudo + "/" + ano_laudo);
+                    }
+                }
+                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
+            }).Start();
+        }
+
+        private string[] pega_identificadores_laudo()
+        {
             string num_laudo = null;
             string ano_laudo = null;
             string unidade_laudo = null;
-
 
             for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
             {
                 string t = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Text;
                 string t_mod = t.ToLower().Replace(" ", "").Replace(((char)160).ToString(), "").Replace(((char)9).ToString(), "").Replace(((char)8211).ToString(), "-").Replace(((char)176).ToString(), "*").Replace("º", "*").Replace("laudono", "laudon*"); //elimina espaços, espaços inquebráveis e tabs. Ainda troca en-dash por hifen e grau por 'o' sobrescrito.
-                //MessageBox.Show(t_mod);
-                //if (t_mod == ((char)13).ToString()) { continue; } //
-
-                //string result = "";
-                //foreach (char c in t_trim) { result += (int)c + " "; }
-                //MessageBox.Show(result);
-
+                                                                                                                                                                                                                                                              //MessageBox.Show(t_mod);
                 if (t_mod.Length > 10)
                 {
                     if ((t_mod.Substring(0, 6)).ToLower() == "laudon")
@@ -896,49 +1004,16 @@ namespace PeriTAB
                         num_laudo = get_text(t_mod, "n*", "/");
                         ano_laudo = get_text(t_mod, "/", "-");
                         unidade_laudo = get_text(t_mod, "-");
-                        break;
-                        //try { unidade_laudo = t_trim.ToLower().Substring(t_trim.ToLower().IndexOf("- ") + 2); } catch { unidade_laudo = null; }
+                        return new string[] {num_laudo, ano_laudo, unidade_laudo};
                     }
                 }
             }
-            //MessageBox.Show(num_laudo + " " + ano_laudo + " " + unidade_laudo);
-            if (num_laudo == null | ano_laudo == null | unidade_laudo == null) { MessageBox.Show("Referência do laudo não encontrada."); return; }
-
-            string asap_path = Path.Combine(localpath, "AsAP_Laudo_" + num_laudo + "-" + ano_laudo + ".asap");
-            string asap_downloads_path = Path.Combine(download_path, "AsAP_Laudo_" + num_laudo + "-" + ano_laudo + ".asap");
-
-            // Move o arquivo ASAP de downloads.
-            if (File.Exists(asap_downloads_path) & !File.Exists(asap_path))
-            {
-                File.Move(asap_downloads_path, asap_path);
-            }
-
-            if (File.Exists(asap_path))
-            {
-                string ASAP = File.ReadAllText(asap_path, Encoding.Default);
-                //string preambulo = pega_preambulo_laudo();
-                //if (preambulo == null) { MessageBox.Show("preambulo não encontrado."); return; }
-                int paragrafo_do_preambulo = pega_paragrafo_do_preambulo();
-                if (paragrafo_do_preambulo == 0) { MessageBox.Show("preambulo não encontrado."); return; }
-                //string preambulo = Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[paragrafo_do_preambulo].Range.Text;
-                string preambulo_padrao = faz_preambulo_padrao(ASAP);
-                //MessageBox.Show(preambulo);
-                compara_preambulo(preambulo_padrao, paragrafo_do_preambulo);
-            }
-            else
-            {
-                DialogResult resultado = MessageBox.Show("Arquivo ASAP não encontrado. Gostaria de baixá-lo?" + System.Environment.NewLine + "(Certificado/Token é necessário)", "", MessageBoxButtons.YesNo);
-                if (resultado == System.Windows.Forms.DialogResult.Yes)
-                {
-                    System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=");
-                    //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br/sistemas/criminalistica/documento.php?acao=localizar_registro&tipo_busca=numero_laudo&numero_busca=" + num_laudo + "/" + ano_laudo);
-                }
-            }
-                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
-            }).Start();
+            //if (num_laudo == null | ano_laudo == null | unidade_laudo == null) { return null; }
+            //else return null;
+            return new string[] { null, null, null }; ;
         }
 
-        private int pega_paragrafo_do_preambulo()
+private int pega_paragrafo_do_preambulo()
         {
             int paragrafo_do_preambulo = 0;
             for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
@@ -1677,7 +1752,7 @@ namespace PeriTAB
 
         private void button_confere_formatacao_Click(object sender, RibbonControlEventArgs e)
         {
-
+            
         }
 
         private void dropDown1_SelectionChanged(object sender, RibbonControlEventArgs e)
@@ -1802,147 +1877,557 @@ namespace PeriTAB
 
         private void button_borda_preta_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //string selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
-            //int L1 = selectedText.Split('\r').Length;
-            //MessageBox.Show(L1.ToString());
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                //string selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
+                //int L1 = selectedText.Split('\r').Length;
+                //MessageBox.Show(L1.ToString());
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.Line.Visible = MsoTriState.msoTrue;
-                    ishape.Line.Weight = (float)0.5;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.Line.Visible = MsoTriState.msoTrue;
+                        ishape.Line.Weight = (float)0.5;
+                        ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+                    }
                 }
-            }
-            //selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
-            //int L2 = selectedText.Split('\r').Length;
-            //MessageBox.Show(L2.ToString());
-            //if (L2 > L1) 
-            //{
-            //    MessageBox.Show("opa");
-            //}
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                //selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
+                //int L2 = selectedText.Split('\r').Length;
+                //MessageBox.Show(L2.ToString());
+                //if (L2 > L1) 
+                //{
+                //    MessageBox.Show("opa");
+                //}
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+            }).Start();
+
         }
 
         private void button_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.Line.Visible = MsoTriState.msoTrue;
-                    ishape.Line.Weight = 2;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.Line.Visible = MsoTriState.msoTrue;
+                        ishape.Line.Weight = 2;
+                        ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
+                    }
                 }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+            }).Start();
         }
 
         private void button_borda_amarela_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.Line.Visible = MsoTriState.msoTrue;
-                    ishape.Line.Weight = 3;
-                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.Line.Visible = MsoTriState.msoTrue;
+                        ishape.Line.Weight = 3;
+                        ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
+                    }
                 }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+            }).Start();
+    }
 
-        private void button2_Click(object sender, RibbonControlEventArgs e)
+        private void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
         {
+            new Thread(() =>
+            {
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                Range r = Globals.ThisAddIn.Application.Selection.Range;
 
+                string estilo_nome_baseado = "Legenda";
+                Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+
+                List<InlineShape> list_InlineShape = new List<InlineShape>();
+
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                {
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        list_InlineShape.Add(ishape);
+                    }
+                }
+                foreach (InlineShape ishape in list_InlineShape)
+                {
+                    ishape.Select();
+                    //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count.ToString());
+                    //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0,7));
+                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count >= 7)
+                    {
+                        if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0, 7) == "Figura ")
+                        {
+                            //r.Select();
+                            //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                            //return;
+                            continue;
+                        }
+                    }
+                    //if (ishape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
+                    //{
+                    //    //MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes.Count.ToString());
+                    //    ////MessageBox.Show(ishape.Range.Text);
+                    //    ////MessageBox.Show(ishape.Range.Paragraphs[1].Range.InlineShapes[1].Range.Text);
+                    //    //MessageBox.Show(ishape.Equals(ishape.Range.Paragraphs[1].Range.ShapeRange[2]).ToString());
+                    //    //if (ishape.Range.Paragraphs[1].Range.InlineShapes[1] == ishape.Range.Paragraphs[1].Range.InlineShapes[1])
+                    //    //{
+                    //    //    MessageBox.Show("opoppaaa");
+                    //    //    //r.Select();
+                    //    //    //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                    //    //    continue;
+                    //    //}
+
+                    //    continue;
+                    //}
+                    if (IsLastShapeInParagraph(ishape))
+                    {
+                        Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+                        Globals.ThisAddIn.Application.Selection.set_Style((object)"07 - Legendas de Figuras (PeriTAB)");
+                        Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                        Globals.ThisAddIn.Application.Run("alinha_legenda");
+                    }
+                }
+                r.Select();
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+            }).Start();
         }
 
         private void button_remove_borda_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.Line.Visible = MsoTriState.msoFalse;
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.Line.Visible = MsoTriState.msoFalse;
+                    }
                 }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+            }).Start();
         }
 
         private void button_remove_formatacao_Click_1(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.Reset();
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.Reset();
+                    }
                 }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+            }).Start();
         }
 
         private void button_remove_forma_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //MessageBox.Show(Globals.ThisAddIn.Application.Selection.ShapeRange.Count.ToString());
-            //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Range.ShapeRange.Count.ToString());
-            List<Microsoft.Office.Interop.Word.Shape> listaShapes = new List<Microsoft.Office.Interop.Word.Shape>();
-            foreach (Microsoft.Office.Interop.Word.Shape ishape in Globals.ThisAddIn.Application.Selection.Range.ShapeRange)
+            new Thread(() =>
             {
-                //MessageBox.Show(ishape.Type.ToString());
-                if (ishape.Type == MsoShapeType.msoAutoShape | ishape.Type == MsoShapeType.msoFreeform)
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.ShapeRange.Count.ToString());
+                //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Range.ShapeRange.Count.ToString());
+                List<Microsoft.Office.Interop.Word.Shape> listaShapes = new List<Microsoft.Office.Interop.Word.Shape>();
+                foreach (Microsoft.Office.Interop.Word.Shape ishape in Globals.ThisAddIn.Application.Selection.Range.ShapeRange)
                 {
-                    listaShapes.Add(ishape);
+                    //MessageBox.Show(ishape.Type.ToString());
+                    if (ishape.Type == MsoShapeType.msoAutoShape | ishape.Type == MsoShapeType.msoFreeform)
+                    {
+                        listaShapes.Add(ishape);
+                    }
                 }
-            }
-            foreach (Microsoft.Office.Interop.Word.Shape ishape in listaShapes)
-            {
-                ishape.Delete();
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                foreach (Microsoft.Office.Interop.Word.Shape ishape in listaShapes)
+                {
+                    ishape.Delete();
+                }
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+            }).Start();
         }
 
         private void button_remove_texto_alt_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    ishape.AlternativeText = "";
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        ishape.AlternativeText = "";
+                    }
                 }
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+            }).Start();
         }
 
         private void button_remove_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
-            List<InlineShape> listaShapes = new List<InlineShape>();
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+            new Thread(() =>
             {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                List<InlineShape> listaShapes = new List<InlineShape>();
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    listaShapes.Add(ishape);
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    {
+                        listaShapes.Add(ishape);
+                    }
                 }
-            }
-            foreach (InlineShape ishape in listaShapes)
-            {
-                ishape.Delete();
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+                foreach (InlineShape ishape in listaShapes)
+                {
+                    ishape.Delete();
+                }
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+            }).Start();
         }
 
+        private void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Thread(() =>
+            {
+                iClass_Buttons.muda_imagem("menu_inserir_tabela", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                Range r = Globals.ThisAddIn.Application.Selection.Range;
 
+                string estilo_nome_baseado = "Legenda";
+                Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
 
+                List<Table> list_Table = new List<Table>();
+                foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
+                {
+                    list_Table.Add(itable);
+                }
+                foreach (Table itable in list_Table)
+                {
+                    itable.Select();
+                    //MessageBox.Show(itable.Range.Text);
+                    //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text);
 
+                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Characters.Count >= 7)
+                    {
+                        if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Previous().Range.Text.Substring(0, 7) == "Tabela ")
+                        {
+                            //r.Select();
+                            //Globals.ThisAddIn.Application.ScreenUpdating = true;
+                            //return;
+                            continue;
+                        }
+                    }
 
+                    Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Tabela", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionAbove, ExcludeLabel: 0);
+                    Globals.ThisAddIn.Application.Selection.set_Style((object)"08 - Legendas de Tabelas (PeriTAB)");
+                    Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                    Globals.ThisAddIn.Application.Run("alinha_legenda");
+                }
+                r.Select();
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_inserir_tabela", Properties.Resources._);
+            }).Start();
+        }
+        private void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Thread(() =>
+            {
+                iClass_Buttons.muda_imagem("menu_formatacao_tabela", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+                foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
+                {
+                    itable.Range.Cells.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                    itable.Rows.Alignment = WdRowAlignment.wdAlignRowCenter;
+                    foreach (Paragraph iParagraph in itable.Range.Paragraphs)
+                    {
+                        iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                    }
+                }
+                //foreach (Cell icell in Globals.ThisAddIn.Application.Selection.Cells)
+                //{
+                //    icell.VerticalAlignment = WdCellVerticalAlignment.wdCellAlignVerticalCenter;
+                //}
+                //foreach (Paragraph iParagraph in Globals.ThisAddIn.Application.Selection.Paragraphs)
+                //{
+                //    if (iParagraph.Range.Information[WdInformation.wdWithInTable]) 
+                //    {
+                //        iParagraph.Range.ParagraphFormat.Alignment = WdParagraphAlignment.wdAlignParagraphCenter;
+                //    }
+                //}
+
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_formatacao_tabela", Properties.Resources.formatacao2);
+            }).Start();
+        }
+
+        private void button_minuscula_campos_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Thread(() =>
+            {
+                iClass_Buttons.muda_imagem("menu_formatacao_campos", Properties.Resources.load_icon_png_7969);
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+                //if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
+                //{
+                //    Globals.ThisAddIn.Application.Selection.Paragraphs[1].Range.Select();
+                //}
+
+                foreach (Field f in Globals.ThisAddIn.Application.Selection.Fields)
+                {
+                    //MessageBox.Show(f.Code.Text);
+                    string texto_campo = f.Code.Text;
+
+                    if (texto_campo.IndexOf(slash + "* Upper ") != -1) 
+                    {
+                        //MessageBox.Show("1");
+                        f.Code.Text = texto_campo.Replace(slash + "* Upper ", slash + "* Lower ");
+                        f.Update();
+                        continue;
+                    }
+                    if (texto_campo.IndexOf(slash + "* FirstCap ") != -1) 
+                    {
+                        //MessageBox.Show("2");
+                        f.Code.Text = texto_campo.Replace(slash + "* FirstCap ", slash + "* Lower ");
+                        f.Update();
+                        continue;
+                    }
+                    if (texto_campo.IndexOf(slash + "* Caps ") != -1)
+                    {
+                        //MessageBox.Show("3");
+                        f.Code.Text = texto_campo.Replace(slash + "* Caps ", slash + "* Lower ");
+                        f.Update();
+                        continue;
+                    }
+
+                    if (texto_campo.Replace(" ","").IndexOf(slash + "*Lower") == -1)
+                    {
+                        //MessageBox.Show("4");
+                        f.Code.Text = texto_campo + " " + slash + "* Lower ";
+                        f.Update();
+                    }
+
+                }
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("menu_formatacao_campos", Properties.Resources.formatacao2);
+        }).Start();
+    }
+
+        private void button_abre_SISCRIM_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Thread(() => {
+                iClass_Buttons.muda_imagem("button_Subir_SISCRIM", Properties.Resources.load_icon_png_7969);
+
+                string[] identificadores_laudo = pega_identificadores_laudo();
+
+                string num_laudo = identificadores_laudo[0];
+                string ano_laudo = identificadores_laudo[1];
+                string unidade_laudo = identificadores_laudo[2];
+
+                string localpath = Globals.Ribbons.Ribbon1.GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.FullName);
+
+                if (File.Exists(localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf") | File.Exists(localpath.Substring(0, localpath.LastIndexOf(".")) + "_assinado.pdf"))
+                {
+                    if (num_laudo == null | ano_laudo == null | unidade_laudo == null)
+                    {
+                        MessageBox.Show("Referência do laudo não encontrada.");
+                    }
+                    else
+                    {
+                        System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=2704&d-numero_documento=" + num_laudo + "&d-ano_documento=" + ano_laudo + "&d-sigla_orgao_emissor-ilike=" + unidade_laudo + "&codigo_unidade_registro_pesquisa=");
+                    }
+                }
+                else
+                {
+                    string identificadores_requisicao = null;
+                    if (ano_laudo != null & unidade_laudo != null)
+                    {
+                        identificadores_requisicao = Microsoft.VisualBasic.Interaction.InputBox("O PDF do laudo ainda não foi gerado. Digite o número do registro da requisição:", "", "REGISTRO Nº xxx / " + ano_laudo + " - " + unidade_laudo.ToUpper());
+                    }
+                    else
+                    {
+                        identificadores_requisicao = Microsoft.VisualBasic.Interaction.InputBox("O PDF do laudo ainda não foi gerado. Digite o número do registro da requisição:", "", "REGISTRO Nº numero / ano - unidade");
+                    }
+
+                    if (identificadores_requisicao != "")
+                    {
+                        string num_registro = null;
+                        string ano_registro = null;
+                        string unidade_registro = null;
+                        string identificadores_requisicao_mod = identificadores_requisicao.ToLower().Replace(" ", "");
+
+                        num_registro = get_text(identificadores_requisicao_mod, "nº", "/");
+                        ano_registro = get_text(identificadores_requisicao_mod, "/", "-");
+                        unidade_registro = get_text(identificadores_requisicao_mod, "-");
+                        //MessageBox.Show(unidade_registro);
+                        int codigo_registro = pega_codigo_registro(unidade_registro);
+                        //MessageBox.Show(codigo_registro.ToString());
+
+                        if (num_registro == null | ano_registro == null | unidade_registro == null | !int.TryParse(num_registro, out _) | !int.TryParse(ano_registro, out _) | codigo_registro == 0)
+                        {
+                            MessageBox.Show("Número do registro da requisição inválido.");
+                        }
+                        else
+                        {
+                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-numero_registro=" + num_registro + "&d-ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + 3347 + "&comando=Procurar"/*unidade_registro + "&codigo_unidade_registro_pesquisa="*/);
+                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=&d-numero_documento=&d-ano_documento=&d-sigla_orgao_emissor-ilike=&d-codigo_subtipo_documento=&p-codigo_tipo_procedimento=&p-numero_procedimento-ilike=&p-sigla_orgao-ilike=&sa-nome_signatario-ilike=&sa-funcao_signatario-ilike=&d-data_emissao-ge=&d-data_emissao-le=&d-numero_siapro=&d-numero_registro_epol=&d-assunto-ilike=&d-operacao-ilike=&dds-nome-ilike=&dc-codigo_tipo_documento_citacao=&dc-nome-ilike=&dc-cpf=&dc-cnpj=&dc-observacao-ilike=&d-marcador-ilike=&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&d-data_protocolo-ge=&d-data_protocolo-le=&d-excluido=&d-recebido=&tl-nome-ilike=&sl-nome-ilike=&dm-nome-ilike=&d-nome_sujeito-ilike=&d-codigo_finalidade_documento=&d-codigo_situacao_documento=&soe-codigo_tipo_sujeito=&soe-sigla_uf=&soe-nome-ilike=&codigo_unidade_registro_pesquisa=" + "3347" + "&d-usuario_criacao-ilike=&d-ignorar_registros_adicionais=0&d-codigo_area_exame=&d-urgencia=&d-motivo_urgencia-ilike=&d-data_limite-ge=&d-data_limite-le=&d-sigiloso=&d-observacao-ilike=&d-conteudo-ilike=&oac-indice-tsquery=&d-publicado=N%C3%A3o&d-naopublicado=N%C3%A3o&dcae-codigo_tipo_material=&dcae-medida=&dcae-codigo_unidade_medida=&dccv-renavam-ilike=&dccv-marca-ilike=&dccv-modelo-ilike=&dccv-placa-ilike=&dccv-chassi-ilike=&dccv-ano_fabricacao-ilike=&dccv-ano_modelo-ilike=&dccv-cor-ilike=&dccv-observacoes-ilike=&dcad-data=&dcad-sigla_uf_municipio=&dcad-codigo_municipio=&dcad-codigo_categoria_droga=&dcad-codigo_droga=&dcad-massa=&dcad-codigo_unidade_medida_massa=&dcad-volume=&dcad-codigo_unidade_medida_volume=&dcad-numero_itens=&dcad-massa_media_unitaria=&dcad-codigo_unidade_medida_massa_media_unitaria=&comando=Procurar");
+                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + "3347" + "&d-ignorar_registros_adicionais=0" + "&comando=Procurar");
+
+                            System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + codigo_registro + "&d-ignorar_registros_adicionais=0");
+                        }
+                    }
+                }
+                iClass_Buttons.muda_imagem("button_Subir_SISCRIM", Properties.Resources.subir2);
+            }).Start();
+        }
+
+        private int pega_codigo_registro(string unidade_registro)
+        {
+            switch (unidade_registro.ToUpper().Trim())
+            {
+                case "DITEC/PF":
+                    return 3014;
+                case "INC/DITEC/PF":
+                    return 3015;
+                case "NUTEC/DPF/ARU/SP":
+                    return 4597948;
+                case "NUTEC/DPF/CAS/SP":
+                    return 4598011;
+                case "NUTEC/DPF/DRS/MS":
+                    return 1064321;
+                case "NUTEC/DPF/FIG/PR":
+                    return 3571;
+                case "NUTEC/DPF/GRA/PR":
+                    return 4606718;
+                case "NUTEC/DPF/JFA/MG":
+                    return 3423927;
+                case "NUTEC/DPF/JNE/CE":
+                    return 4542507;
+                case "NUTEC/DPF/JZO/BA":
+                    return 4580096;
+                case "NUTEC/DPF/LDA/PR":
+                    return 1064330;
+                case "NUTEC/DPF/MII/SP":
+                    return 4597132;
+                case "NUTEC/DPF/PDE/SP":
+                    return 4598053;
+                case "NUTEC/DPF/PFO/RS":
+                    return 6323156;
+                case "NUTEC/DPF/PTS/RS":
+                    return 6797076;
+                case "NUTEC/DPF/RPO/SP":
+                    return 1064363;
+                case "NUTEC/DPF/SIC/MT":
+                    return 4398092;
+                case "NUTEC/DPF/SJK/SP":
+                    return 6434234;
+                case "NUTEC/DPF/SMA/RS":
+                    return 3398735;
+                case "NUTEC/DPF/SNM/PA":
+                    return 4683087;
+                case "NUTEC/DPF/SOD/SP":
+                    return 4597984;
+                case "NUTEC/DPF/STS/SP":
+                    return 3849;
+                case "NUTEC/DPF/UDI/MG":
+                    return 1064366;
+                case "NUTEC/DPF/VLA/RO":
+                    return 4084597;
+                case "SETEC/SR/PF/AC":
+                    return 3118;
+                case "SETEC/SR/PF/AL":
+                    return 3143;
+                case "SETEC/SR/PF/AM":
+                    return 3168;
+                case "SETEC/SR/PF/AP":
+                    return 3194;
+                case "SETEC/SR/PF/BA":
+                    return 3219;
+                case "SETEC/SR/PF/CE":
+                    return 3244;
+                case "SETEC/SR/PF/DF":
+                    return 3269;
+                case "SETEC/SR/PF/ES":
+                    return 3297;
+                case "SETEC/SR/PF/GO":
+                    return 3322;
+                case "SETEC/SR/PF/MA":
+                    return 3347;
+                case "SETEC/SR/PF/MG":
+                    return 3372;
+                case "SETEC/SR/PF/MS":
+                    return 3397;
+                case "SETEC/SR/PF/MT":
+                    return 3422;
+                case "SETEC/SR/PF/PA":
+                    return 3447;
+                case "SETEC/SR/PF/PB":
+                    return 3472;
+                case "SETEC/SR/PF/PE":
+                    return 3497;
+                case "SETEC/SR/PF/PI":
+                    return 3522;
+                case "SETEC/SR/PF/PR":
+                    return 3547;
+                case "SETEC/SR/PF/RJ":
+                    return 3587;
+                case "SETEC/SR/PF/RN":
+                    return 3641;
+                case "SETEC/SR/PF/RO":
+                    return 3666;
+                case "SETEC/SR/PF/RR":
+                    return 3691;
+                case "SETEC/SR/PF/RS":
+                    return 3716;
+                case "SETEC/SR/PF/SC":
+                    return 3743;
+                case "SETEC/SR/PF/SE":
+                    return 3768;
+                case "SETEC/SR/PF/SP":
+                    return 3797;
+                case "SETEC/SR/PF/TO":
+                    return 3859;
+                case "UTEC/DPF/ITZ/MA":
+                    return 4803309;
+                case "UTEC/DPF/MBA/PA":
+                    return 4682890;
+                case "UTEC/DPF/ROO/MT":
+                    return 4398074;
+                case "UTEC/DPF/SGO/PE":
+                    return 7154495;
+                default:
+                    return 0;
+            }
+        }
 
 
 

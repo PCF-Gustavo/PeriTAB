@@ -41,8 +41,10 @@ namespace PeriTAB
             ((Microsoft.Office.Interop.Word.ApplicationEvents4_Event)Globals.ThisAddIn.Application).NewDocument += new ApplicationEvents4_NewDocumentEventHandler(Metodo_New_or_Open);
             Globals.ThisAddIn.Application.DocumentOpen += new ApplicationEvents4_DocumentOpenEventHandler(Metodo_New_or_Open);
         }
-        public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc)
+        public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc) 
         {
+            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Metodo_TaskPanes_Visible(true);
+                
             if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
             //MessageBox.Show("new or open");
             Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();

@@ -120,7 +120,7 @@ namespace PeriTAB
             preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
             preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
             preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
-            preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos_velho.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
+            preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
 
             File.WriteAllText(preferences_path, preferences);
             //MessageBox.Show(preferences);

@@ -29,6 +29,7 @@ namespace PeriTAB
             dropDown_separador_Default();
             button_renomeia_documento_Default();
             button_gera_pdf_Default();
+            button_abre_SISCRIM_Default();
         }
         public void button_confere_num_legenda_Default()
         {
@@ -75,7 +76,7 @@ namespace PeriTAB
 
         public void toggleButton_estilos_Default()
         {            
-            Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos_velho.Checked = bool.Parse(preferences.painel_de_estilos);
+            Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked = bool.Parse(preferences.painel_de_estilos);
             //Globals.ThisAddIn.TaskPane1.Visible = bool.Parse(preferences.painel_de_estilos);
         }
 
@@ -135,6 +136,15 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "";
             Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";
         }
+        public void button_abre_SISCRIM_Default()
+        {
+            Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = true;
+            Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "";
+            Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Abre SISCRIM na página do Laudo ou da Requisição.";
+            //Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = false; 
+            //Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "Desabilitado"; 
+            //Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "O PDF do laudo ainda não foi gerado.";
+        }
 
         //public void button_gera_pdf_image(bool load)
         //{
@@ -163,8 +173,32 @@ namespace PeriTAB
                 case "button_gera_pdf":
                     Globals.Ribbons.Ribbon1.button_gera_pdf.Image = imagem;
                     break;
-                //default:
-                //    break;
+                case "menu_inserir_imagem":
+                    Globals.Ribbons.Ribbon1.menu_inserir_imagem.Image = imagem;
+                    break;
+                case "menu_remover_imagem":
+                    Globals.Ribbons.Ribbon1.menu_remover_imagem.Image = imagem;
+                    break;
+                case "menu_formatacao_imagem":
+                    Globals.Ribbons.Ribbon1.menu_formatacao_imagem.Image = imagem;
+                    break;
+                case "menu_inserir_tabela":
+                    Globals.Ribbons.Ribbon1.menu_inserir_tabela.Image = imagem;
+                    break;
+                case "menu_remover_tabela":
+                    Globals.Ribbons.Ribbon1.menu_remover_tabela.Image = imagem;
+                    break;
+                case "menu_formatacao_tabela":
+                    Globals.Ribbons.Ribbon1.menu_formatacao_tabela.Image = imagem;
+                    break;
+                case "menu_formatacao_campos":
+                    Globals.Ribbons.Ribbon1.menu_formatacao_campos.Image = imagem;
+                    break;
+                case "button_Subir_SISCRIM":
+                    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Image = imagem;
+                    break;
+                    //default:
+                    //    break;
             }
         }
 
