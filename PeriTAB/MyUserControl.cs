@@ -42,6 +42,16 @@ namespace PeriTAB
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
+        private void button_paragrafo_numerado_Click(object sender, EventArgs e)
+        {
+            string estilo_nome_baseado = "Normal";
+            string estilo_nome = "11 - Parágrafo Numerado (PeriTAB)";
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
         private void button_citacoes_Click(object sender, EventArgs e)
         {
             string estilo_nome_baseado = "Normal";
@@ -132,7 +142,7 @@ namespace PeriTAB
                             //break;
                         }
                     }
-                    catch (System.ArgumentOutOfRangeException ex) { }
+                    catch (System.ArgumentOutOfRangeException) { }
                 }
 
 
@@ -208,7 +218,7 @@ namespace PeriTAB
                         }
                     }
                     }
-                    catch (System.ArgumentOutOfRangeException ex) { }
+                    catch (System.ArgumentOutOfRangeException) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -253,7 +263,7 @@ namespace PeriTAB
                         }
                     }
                     }
-                    catch (System.ArgumentOutOfRangeException ex) { }
+                    catch (System.ArgumentOutOfRangeException) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -298,7 +308,7 @@ namespace PeriTAB
                         }
                     }
                     }
-                    catch (System.ArgumentOutOfRangeException ex) { }
+                    catch (System.ArgumentOutOfRangeException) { }
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -516,6 +526,8 @@ namespace PeriTAB
 
             }
         }
+
+
 
 
 

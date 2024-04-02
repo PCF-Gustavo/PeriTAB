@@ -45,6 +45,7 @@
             this.button_DockBottom = new System.Windows.Forms.Button();
             this.button_fecho = new System.Windows.Forms.Button();
             this.button_textos_de_figuras = new System.Windows.Forms.Button();
+            this.button_paragrafo_numerado = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button_sem_formatacao
@@ -69,7 +70,7 @@
             // 
             // button_citacoes
             // 
-            this.button_citacoes.Location = new System.Drawing.Point(195, 5);
+            this.button_citacoes.Location = new System.Drawing.Point(290, 5);
             this.button_citacoes.Name = "button_citacoes";
             this.button_citacoes.Size = new System.Drawing.Size(90, 40);
             this.button_citacoes.TabIndex = 0;
@@ -79,7 +80,7 @@
             // 
             // button_secao_1
             // 
-            this.button_secao_1.Location = new System.Drawing.Point(290, 5);
+            this.button_secao_1.Location = new System.Drawing.Point(385, 5);
             this.button_secao_1.Name = "button_secao_1";
             this.button_secao_1.Size = new System.Drawing.Size(90, 40);
             this.button_secao_1.TabIndex = 0;
@@ -89,7 +90,7 @@
             // 
             // button_secao_2
             // 
-            this.button_secao_2.Location = new System.Drawing.Point(385, 5);
+            this.button_secao_2.Location = new System.Drawing.Point(480, 5);
             this.button_secao_2.Name = "button_secao_2";
             this.button_secao_2.Size = new System.Drawing.Size(90, 40);
             this.button_secao_2.TabIndex = 0;
@@ -99,7 +100,7 @@
             // 
             // button_secao_3
             // 
-            this.button_secao_3.Location = new System.Drawing.Point(480, 5);
+            this.button_secao_3.Location = new System.Drawing.Point(575, 5);
             this.button_secao_3.Name = "button_secao_3";
             this.button_secao_3.Size = new System.Drawing.Size(90, 40);
             this.button_secao_3.TabIndex = 0;
@@ -109,7 +110,7 @@
             // 
             // button_secao_4
             // 
-            this.button_secao_4.Location = new System.Drawing.Point(575, 5);
+            this.button_secao_4.Location = new System.Drawing.Point(670, 5);
             this.button_secao_4.Name = "button_secao_4";
             this.button_secao_4.Size = new System.Drawing.Size(90, 40);
             this.button_secao_4.TabIndex = 0;
@@ -119,7 +120,7 @@
             // 
             // button_enumeracao
             // 
-            this.button_enumeracao.Location = new System.Drawing.Point(670, 5);
+            this.button_enumeracao.Location = new System.Drawing.Point(765, 5);
             this.button_enumeracao.Name = "button_enumeracao";
             this.button_enumeracao.Size = new System.Drawing.Size(90, 40);
             this.button_enumeracao.TabIndex = 0;
@@ -129,7 +130,7 @@
             // 
             // button_reinicia_lista
             // 
-            this.button_reinicia_lista.Location = new System.Drawing.Point(759, 5);
+            this.button_reinicia_lista.Location = new System.Drawing.Point(854, 5);
             this.button_reinicia_lista.Name = "button_reinicia_lista";
             this.button_reinicia_lista.Size = new System.Drawing.Size(60, 40);
             this.button_reinicia_lista.TabIndex = 0;
@@ -139,7 +140,7 @@
             // 
             // button_figuras
             // 
-            this.button_figuras.Location = new System.Drawing.Point(824, 5);
+            this.button_figuras.Location = new System.Drawing.Point(919, 5);
             this.button_figuras.Name = "button_figuras";
             this.button_figuras.Size = new System.Drawing.Size(90, 40);
             this.button_figuras.TabIndex = 0;
@@ -149,7 +150,7 @@
             // 
             // button_legendas_de_figuras
             // 
-            this.button_legendas_de_figuras.Location = new System.Drawing.Point(919, 5);
+            this.button_legendas_de_figuras.Location = new System.Drawing.Point(1014, 5);
             this.button_legendas_de_figuras.Name = "button_legendas_de_figuras";
             this.button_legendas_de_figuras.Size = new System.Drawing.Size(90, 40);
             this.button_legendas_de_figuras.TabIndex = 0;
@@ -159,7 +160,7 @@
             // 
             // button_legendas_de_tabelas
             // 
-            this.button_legendas_de_tabelas.Location = new System.Drawing.Point(1109, 5);
+            this.button_legendas_de_tabelas.Location = new System.Drawing.Point(1204, 5);
             this.button_legendas_de_tabelas.Name = "button_legendas_de_tabelas";
             this.button_legendas_de_tabelas.Size = new System.Drawing.Size(90, 40);
             this.button_legendas_de_tabelas.TabIndex = 0;
@@ -169,7 +170,7 @@
             // 
             // button_quesitos
             // 
-            this.button_quesitos.Location = new System.Drawing.Point(1204, 5);
+            this.button_quesitos.Location = new System.Drawing.Point(1299, 5);
             this.button_quesitos.Name = "button_quesitos";
             this.button_quesitos.Size = new System.Drawing.Size(90, 40);
             this.button_quesitos.TabIndex = 0;
@@ -181,7 +182,7 @@
             // 
             this.button_DockRight.BackgroundImage = global::PeriTAB.Properties.Resources.seta1;
             this.button_DockRight.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.button_DockRight.Location = new System.Drawing.Point(1394, 5);
+            this.button_DockRight.Location = new System.Drawing.Point(1489, 5);
             this.button_DockRight.Name = "button_DockRight";
             this.button_DockRight.Size = new System.Drawing.Size(40, 40);
             this.button_DockRight.TabIndex = 0;
@@ -203,7 +204,7 @@
             // 
             // button_fecho
             // 
-            this.button_fecho.Location = new System.Drawing.Point(1299, 5);
+            this.button_fecho.Location = new System.Drawing.Point(1394, 5);
             this.button_fecho.Name = "button_fecho";
             this.button_fecho.Size = new System.Drawing.Size(90, 40);
             this.button_fecho.TabIndex = 0;
@@ -213,13 +214,23 @@
             // 
             // button_textos_de_figuras
             // 
-            this.button_textos_de_figuras.Location = new System.Drawing.Point(1014, 5);
+            this.button_textos_de_figuras.Location = new System.Drawing.Point(1109, 5);
             this.button_textos_de_figuras.Name = "button_textos_de_figuras";
             this.button_textos_de_figuras.Size = new System.Drawing.Size(90, 40);
             this.button_textos_de_figuras.TabIndex = 0;
             this.button_textos_de_figuras.Text = "Textos de Figuras";
             this.button_textos_de_figuras.UseVisualStyleBackColor = true;
             this.button_textos_de_figuras.Click += new System.EventHandler(this.button_textos_de_figuras_Click);
+            // 
+            // button_paragrafo_numerado
+            // 
+            this.button_paragrafo_numerado.Location = new System.Drawing.Point(195, 5);
+            this.button_paragrafo_numerado.Name = "button_paragrafo_numerado";
+            this.button_paragrafo_numerado.Size = new System.Drawing.Size(90, 40);
+            this.button_paragrafo_numerado.TabIndex = 0;
+            this.button_paragrafo_numerado.Text = "Parágrafo Numerado";
+            this.button_paragrafo_numerado.UseVisualStyleBackColor = true;
+            this.button_paragrafo_numerado.Click += new System.EventHandler(this.button_paragrafo_numerado_Click);
             // 
             // MyUserControl
             // 
@@ -241,12 +252,13 @@
             this.Controls.Add(this.button_figuras);
             this.Controls.Add(this.button_secao_2);
             this.Controls.Add(this.button_secao_1);
+            this.Controls.Add(this.button_paragrafo_numerado);
             this.Controls.Add(this.button_citacoes);
             this.Controls.Add(this.button_corpo_do_texto);
             this.Controls.Add(this.button_sem_formatacao);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "MyUserControl";
-            this.Size = new System.Drawing.Size(1460, 611);
+            this.Size = new System.Drawing.Size(1636, 611);
             this.ResumeLayout(false);
 
         }
@@ -270,5 +282,6 @@
         private System.Windows.Forms.Button button_DockBottom;
         private System.Windows.Forms.Button button_fecho;
         private System.Windows.Forms.Button button_textos_de_figuras;
+        private System.Windows.Forms.Button button_paragrafo_numerado;
     }
 }

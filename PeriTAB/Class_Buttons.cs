@@ -25,8 +25,10 @@ namespace PeriTAB
             checkBox_largura_Default();
             editBox_largura_Default();
             editBox_altura_Default();
-            dropDown_ordem_Default();
+            //dropDown_ordem_Default();
             dropDown_separador_Default();
+            checkBox_assinar_Default();
+            checkBox_abrir_Default();
             button_renomeia_documento_Default();
             button_gera_pdf_Default();
             button_abre_SISCRIM_Default();
@@ -84,7 +86,7 @@ namespace PeriTAB
         {
             Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = true;
             Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "";
-            Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Cola imagem do Clipboard.";
+            Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Cola imagens do Clipboard em ordem alfabética.";
         }
 
         public void checkBox_largura_Default()
@@ -108,13 +110,13 @@ namespace PeriTAB
             if (Globals.Ribbons.Ribbon1.checkBox_altura.Checked) { Globals.Ribbons.Ribbon1.editBox_altura.Text = preferences.altura; }
         }
 
-        public void dropDown_ordem_Default()
-        {
-            int index = -1;
-            if (preferences.ordem == "Alfabética") { index = 0; }
-            if (preferences.ordem == "Seleção") { index = 1; }
-            Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItemIndex = index;
-        }
+        //public void dropDown_ordem_Default()
+        //{
+        //    int index = -1;
+        //    if (preferences.ordem == "Alfabética") { index = 0; }
+        //    if (preferences.ordem == "Seleção") { index = 1; }
+        //    Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItemIndex = index;
+        //}
 
         public void dropDown_separador_Default()
         {
@@ -122,7 +124,16 @@ namespace PeriTAB
             if (preferences.separador == "Nenhum") { index = 0; }
             if (preferences.separador == "Espaço") { index = 1; }
             if (preferences.separador == "Parágrafo") { index = 2; }
+            if (preferences.separador == "Parágrafo + 3pt") { index = 3; }
             Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItemIndex = index;
+        }
+        public void checkBox_assinar_Default()
+        {
+            Globals.Ribbons.Ribbon1.checkBox_assinar.Checked = bool.Parse(preferences.assinar_pdf);
+        }
+        public void checkBox_abrir_Default()
+        {
+            Globals.Ribbons.Ribbon1.checkBox_abrir.Checked = bool.Parse(preferences.abrir_pdf);
         }
         public void button_renomeia_documento_Default()
         {
@@ -205,13 +216,17 @@ namespace PeriTAB
 
         public class preferences
         {
-            private static string var1, var2, var3, var4, var5, var6;
+            private static string var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11;
             public static string largura { get { return var1; } set { var1 = value; } }
             public static string altura { get { return var2; } set { var2 = value; } }
             public static string largura_checked { get { return var3; } set { var3 = value; } }
             public static string ordem { get { return var4; } set { var4 = value; } }
             public static string separador { get { return var5; } set { var5 = value; } }
             public static string painel_de_estilos { get { return var6; } set { var6 = value; } }
+            public static string unidade { get { return var7; } set { var7 = value; } }
+            public static string precisao { get { return var8; } set { var8 = value; } }
+            public static string assinar_pdf { get { return var9; } set { var9 = value; } }
+            public static string abrir_pdf { get { return var10; } set { var10 = value; } }
         }
 
 

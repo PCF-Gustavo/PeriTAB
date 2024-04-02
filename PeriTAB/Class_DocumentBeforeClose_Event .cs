@@ -28,7 +28,7 @@ namespace PeriTAB
                 Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Remove(Doc);
                 Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Remove(Doc);
             }
-            catch (System.Collections.Generic.KeyNotFoundException ex) { }
+            catch (System.Collections.Generic.KeyNotFoundException) { }
             //if (b) MessageBox.Show("Taskpane removed");
         }
     }

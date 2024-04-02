@@ -71,10 +71,9 @@ namespace PeriTAB
             if (File.Exists(Ribbon1.Variables.caminho_template))
             {
                 Globals.ThisAddIn.Application.AddIns.Unload(true);
-                File.Delete(Ribbon1.Variables.caminho_template);
+                try { File.Delete(Ribbon1.Variables.caminho_template); } catch (IOException) { }
+                try { escreve_preferencias(); } catch (IOException) { }
             }
-            //Variables.caminho_template
-            escreve_preferencias();
         }
 
         private void escreve_preferencias()
@@ -118,10 +117,11 @@ namespace PeriTAB
             }
             
             preferences += "<largura_checked>" + Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() + "</largura_checked>" + System.Environment.NewLine;
-            preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
+            //preferences += "<ordem>" + Globals.Ribbons.Ribbon1.dropDown_ordem.SelectedItem.Label + "</ordem>" + System.Environment.NewLine;
             preferences += "<separador>" + Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label + "</separador>" + System.Environment.NewLine;
             preferences += "<painel_de_estilos>" + Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked.ToString() + "</painel_de_estilos>" + System.Environment.NewLine;
-
+            preferences += "<assinar_pdf>" + Globals.Ribbons.Ribbon1.checkBox_assinar.Checked.ToString() + "</assinar_pdf>" + System.Environment.NewLine;
+            preferences += "<abrir_pdf>" + Globals.Ribbons.Ribbon1.checkBox_abrir.Checked.ToString() + "</abrir_pdf>" + System.Environment.NewLine;
             File.WriteAllText(preferences_path, preferences);
             //MessageBox.Show(preferences);
         }
@@ -137,18 +137,22 @@ namespace PeriTAB
                 Class_Buttons.preferences.largura = procura(preferences_text, "largura");
                 Class_Buttons.preferences.altura = procura(preferences_text, "altura");
                 Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
-                Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
+                //Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
                 Class_Buttons.preferences.separador = procura(preferences_text, "separador");
                 Class_Buttons.preferences.painel_de_estilos = procura(preferences_text, "painel_de_estilos");
+                Class_Buttons.preferences.assinar_pdf = procura(preferences_text, "assinar_pdf");
+                Class_Buttons.preferences.abrir_pdf = procura(preferences_text, "abrir_pdf");
             }
             else
             { // Preferências iniciais
                 Class_Buttons.preferences.largura = "10";
                 Class_Buttons.preferences.altura = "10";
                 Class_Buttons.preferences.largura_checked = "true";
-                Class_Buttons.preferences.ordem = "Alfabética";
+                //Class_Buttons.preferences.ordem = "Alfabética";
                 Class_Buttons.preferences.separador = "Nenhum";
                 Class_Buttons.preferences.painel_de_estilos = "false";
+                Class_Buttons.preferences.assinar_pdf = "true";
+                Class_Buttons.preferences.abrir_pdf = "true";
             }
         }
 

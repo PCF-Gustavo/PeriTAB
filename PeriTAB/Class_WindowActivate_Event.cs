@@ -35,7 +35,7 @@ namespace PeriTAB
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true; }
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false; }
             }
-            catch (System.Runtime.InteropServices.COMException ex) { }
+            catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
             try
@@ -43,7 +43,7 @@ namespace PeriTAB
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = true; }
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = false; }
             }
-            catch (System.Runtime.InteropServices.COMException ex) { }
+            catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Ver código" do Ribbon
             //iClass_ValueChanged_Event.ShowFieldCodes();
