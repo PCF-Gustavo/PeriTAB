@@ -216,7 +216,7 @@ namespace PeriTAB
 
         public class preferences
         {
-            private static string var1, var2, var3, var4, var5, var6, var7, var8, var9, var10, var11;
+            private static string var1, var2, var3, var4, var5, var6, var7, var8, var9, var10;
             public static string largura { get { return var1; } set { var1 = value; } }
             public static string altura { get { return var2; } set { var2 = value; } }
             public static string largura_checked { get { return var3; } set { var3 = value; } }

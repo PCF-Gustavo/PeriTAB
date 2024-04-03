@@ -134,14 +134,77 @@ namespace PeriTAB
             {
                 string preferences_text = File.ReadAllText(preferences_path);
 
-                Class_Buttons.preferences.largura = procura(preferences_text, "largura");
-                Class_Buttons.preferences.altura = procura(preferences_text, "altura");
-                Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
+                if (procura(preferences_text, "largura") != null)
+                {
+                    Class_Buttons.preferences.largura = procura(preferences_text, "largura");
+                }
+                else
+                {
+                    Class_Buttons.preferences.largura = "10";
+                }
+
+                if (procura(preferences_text, "altura") != null)
+                {
+                    Class_Buttons.preferences.altura = procura(preferences_text, "altura");
+                }
+                else
+                {
+                    Class_Buttons.preferences.altura = "10";
+                }
+
+                if (procura(preferences_text, "largura_checked") != null)
+                {
+                    Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
+                }
+                else
+                {
+                    Class_Buttons.preferences.largura_checked = "true";
+                }
+
+                if (procura(preferences_text, "separador") != null)
+                {
+                    Class_Buttons.preferences.separador = procura(preferences_text, "separador");
+                }
+                else
+                {
+                    Class_Buttons.preferences.separador = "Nenhum";
+                }
+
+                if (procura(preferences_text, "painel_de_estilos") != null)
+                {
+                    Class_Buttons.preferences.painel_de_estilos = procura(preferences_text, "painel_de_estilos");
+                }
+                else
+                {
+                    Class_Buttons.preferences.painel_de_estilos = "false";
+                }
+
+                if (procura(preferences_text, "assinar_pdf") != null)
+                {
+                    Class_Buttons.preferences.assinar_pdf = procura(preferences_text, "assinar_pdf");
+                }
+                else
+                {
+                    Class_Buttons.preferences.assinar_pdf = "true";
+                }
+
+                if (procura(preferences_text, "abrir_pdf") != null)
+                {
+                    Class_Buttons.preferences.abrir_pdf = procura(preferences_text, "abrir_pdf");
+                }
+                else
+                {
+                    Class_Buttons.preferences.abrir_pdf = "true";
+                }
+
+                //Class_Buttons.preferences.largura = procura(preferences_text, "largura");
+                //Class_Buttons.preferences.altura = procura(preferences_text, "altura");
+                //Class_Buttons.preferences.largura_checked = procura(preferences_text, "largura_checked");
                 //Class_Buttons.preferences.ordem = procura(preferences_text, "ordem");
-                Class_Buttons.preferences.separador = procura(preferences_text, "separador");
-                Class_Buttons.preferences.painel_de_estilos = procura(preferences_text, "painel_de_estilos");
-                Class_Buttons.preferences.assinar_pdf = procura(preferences_text, "assinar_pdf");
-                Class_Buttons.preferences.abrir_pdf = procura(preferences_text, "abrir_pdf");
+                //Class_Buttons.preferences.separador = procura(preferences_text, "separador");
+                //Class_Buttons.preferences.painel_de_estilos = procura(preferences_text, "painel_de_estilos");
+                //Class_Buttons.preferences.assinar_pdf = procura(preferences_text, "assinar_pdf");
+                //Class_Buttons.preferences.abrir_pdf = procura(preferences_text, "abrir_pdf");
             }
             else
             { // Preferências iniciais
@@ -160,7 +223,16 @@ namespace PeriTAB
         {
             string str1 = "<" + valor + ">";
             string str2 = "</" + valor + ">";
-            return texto.Substring((texto.IndexOf(str1) + (str1).Length), texto.IndexOf(str2) - (texto.IndexOf(str1) + (str1).Length));
+
+
+            if (texto.IndexOf(str1) > -1 & texto.IndexOf(str2) > -1)
+            {
+                return texto.Substring((texto.IndexOf(str1) + (str1).Length), texto.IndexOf(str2) - (texto.IndexOf(str1) + (str1).Length));
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #region Código gerado por VSTO
