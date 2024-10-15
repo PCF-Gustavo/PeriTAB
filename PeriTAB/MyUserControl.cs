@@ -195,9 +195,13 @@ namespace PeriTAB
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
                 if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
-                    if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
+                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
                     {
-                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+                        {
+                            p.Range.ParagraphFormat.SpaceBefore = 0;
+                        }
                     }
                 }
 
@@ -240,9 +244,13 @@ namespace PeriTAB
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
                 if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
-                    if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
+                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
                     {
-                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+                        {
+                            p.Range.ParagraphFormat.SpaceBefore = 0;
+                        }
                     }
                 }
 
@@ -285,9 +293,13 @@ namespace PeriTAB
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
                 if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
-                    if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
+                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
                     {
-                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+                        {
+                            p.Range.ParagraphFormat.SpaceBefore = 0;
+                        }
                     }
                 }
 
@@ -385,6 +397,8 @@ namespace PeriTAB
                     p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
                     p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
                     p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
+                    //MessageBox.Show(p.Previous().Range.ParagraphFormat.KeepWithNext.ToString());
+                    p.Previous().Range.ParagraphFormat.KeepWithNext = -1;
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -421,9 +435,13 @@ namespace PeriTAB
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
                 if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
                 {
-                    if ((((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04a - Seção_1 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04b - Seção_2 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04c - Seção_3 (PeriTAB)" | (((Microsoft.Office.Interop.Word.Style)r.get_Style()).NameLocal.ToString()) == "04d - Seção_4 (PeriTAB)")
+                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();                   
+                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
                     {
-                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+                            {
+                            p.Range.ParagraphFormat.SpaceBefore = 0;
+                        }               
                     }
                 }
             }

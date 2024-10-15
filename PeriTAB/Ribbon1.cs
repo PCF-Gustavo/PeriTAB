@@ -40,6 +40,7 @@ using System.Security.Policy;
 using Microsoft.VisualBasic.Devices;
 using iTextSharp.text.pdf.codec.wmf;
 using iTextSharp.xmp.impl.xpath;
+using Microsoft.VisualBasic;
 //using System.Windows;
 //using Microsoft.VisualBasic;
 
@@ -2117,7 +2118,14 @@ private int pega_paragrafo_do_preambulo()
                     //}
                     if (IsLastShapeInParagraph(ishape))
                     {
-                        Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+                        bool label_existe = false;
+                        foreach (CaptionLabel label in Globals.ThisAddIn.Application.CaptionLabels)
+                        {
+                            if (label.Name == "Figura") { label_existe = true; }
+                        }
+                        if (!label_existe) { Globals.ThisAddIn.Application.CaptionLabels.Add("Figura"); }
+
+                        Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);                        
                         Globals.ThisAddIn.Application.Selection.set_Style((object)"07 - Legendas de Figuras (PeriTAB)");
                         Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
                         Globals.ThisAddIn.Application.Run("alinha_legenda");
@@ -2566,6 +2574,11 @@ private int pega_paragrafo_do_preambulo()
                 default:
                     return 0;
             }
+        }
+
+        private void button_novo_alan_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.Selection.Text = "Oi, Mundo";
         }
 
 
