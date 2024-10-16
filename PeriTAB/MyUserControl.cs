@@ -372,8 +372,34 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
+                //List<int> positions = new List<int>();
+                //for (int i = 1; i <= p.Range.Characters.Count; i++)
+                //{
+                //    Range characterRange = p.Range.Characters[i];
+                //    if (characterRange.Font.Name == "Courier New")
+                //    {
+                //        positions.Add(i);
+                //    }
+                //}
+                //string positionsOutput = string.Join(", ", positions);
+                //MessageBox.Show("Posições dos caracteres com fonte 'Courier New': " + positionsOutput);
+
                 p.Range.set_Style((object)estilo_nome);
                 Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+
+                //foreach (int pos in positions)
+                //{
+
+                //    //MessageBox.Show(pos.ToString());
+                //    p.Range.Characters[pos].Font.Size = 30;
+                //    //p.Range.Characters[pos].Font.Name = "Courier New";
+                //    MessageBox.Show(p.Range.Characters[pos].Font.Name);
+                //    //Range rangeToChange = Globals.ThisAddIn.Application.ActiveDocument.Range(pos, pos + 1);
+                //    //rangeToChange.Font.Name = "Courier New";
+
+                //    //p.Range.Characters(1).
+                //    //    (pos, pos + 1).Font.Name = "Courier New";
+                //}
             }
             if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) { Globals.ThisAddIn.Application.Run("alinha_legenda"); }
             Globals.ThisAddIn.Application.ScreenUpdating = true;

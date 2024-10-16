@@ -73,14 +73,17 @@ namespace PeriTAB
             //Declara instacias das classes
             Class_Buttons iClass_Buttons = new Class_Buttons();
 
-            //Revisa a habilitação do botao "Gera PDF" do Ribbon
-            iClass_Buttons.button_gera_pdf_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
+            iClass_Buttons.button_abre_SISCRIM_Default();
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
             iClass_Buttons.button_renomeia_documento_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
-            //else if ((Globals.ThisAddIn.Application.ActiveDocument.Path).Substring(0, 4) == "http") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento não pode ser renomeado porque está salvo online."; }                     
+            
+            //Revisa a habilitação do botao "Gera PDF" do Ribbon
+            iClass_Buttons.button_gera_pdf_Default();
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
         }
 
 

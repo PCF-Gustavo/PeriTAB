@@ -54,34 +54,19 @@ namespace PeriTAB
             if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
             if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
 
-            ////Revisa a habilitação do botao "Cola Figura" do Ribbon
-            //iClass_Buttons.button_cola_imagem_Default();
-            //if (!System.Windows.Clipboard.ContainsData("FileDrop")) { Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = false; Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Não há imagem no Clipboard."; }
-            //if (Globals.ThisAddIn.Application.Language != MsoLanguageID.msoLanguageIDBrazilianPortuguese) { Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = false; Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Este botão apenas funciona no Word em Português Brasileiro."; }
+            //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
+            iClass_Buttons.button_abre_SISCRIM_Default();
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
             iClass_Buttons.button_renomeia_documento_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
-            //else if ((Globals.ThisAddIn.Application.ActiveDocument.Path).Substring(0, 4) == "http") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento não pode ser renomeado porque está salvo online."; }
 
             //Revisa a habilitação do botao "Gera PDF" do Ribbon
             iClass_Buttons.button_gera_pdf_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 
-            ////Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
-            //iClass_Buttons.button_abre_SISCRIM_Default();
-            //string localpath = Globals.Ribbons.Ribbon1.GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.FullName);
-            //if (File.Exists(localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf") | File.Exists(localpath.Substring(0, localpath.LastIndexOf(".")) + "_assinado.pdf"))
-            //{
-            //    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = true; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = ""; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Abre SISCRIM na página do Laudo.";
-            //}
-            
-            //if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") 
-            //{ 
-            //    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "O PDF do laudo ainda não foi gerado."; }
-
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-
             if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             {
                 //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
