@@ -175,6 +175,9 @@ namespace PeriTAB
                 case "button_cola_imagem":
                     Globals.Ribbons.Ribbon1.button_cola_imagem.Image = imagem;
                     break;
+                case "button_autodimensiona_imagem":
+                    Globals.Ribbons.Ribbon1.button_autodimensiona_imagem.Image = imagem;
+                    break;
                 case "button_confere_preambulo":
                     Globals.Ribbons.Ribbon1.button_confere_preambulo.Image = imagem;
                     break;

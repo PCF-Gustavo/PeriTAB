@@ -33,7 +33,6 @@ using System.Diagnostics;
 using System.Threading;
 using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
 //using Spire.Doc.Interface;
-//using iTextSharp.text.pdf.parser;
 using System.Linq;
 using System.Runtime.InteropServices.ComTypes;
 using System.Security.Policy;
@@ -916,6 +915,150 @@ namespace PeriTAB
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
                 iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar);
                 button_redimensiona_imagem.Enabled = true;
+            }).Start();
+        }
+
+        private void button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
+        {
+            new Thread(() =>
+            {
+                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.load_icon_png_7969);
+                button_autodimensiona_imagem.Enabled = false;
+                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+                Dictionary<int,List<InlineShape>> dict_InlineShape_paragraph = new Dictionary<int, List<InlineShape>>();
+
+                foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                {
+                    if (iShape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
+                    {
+                        int num_Paragraph = 0;
+                        if (iShape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | iShape.Type == WdInlineShapeType.wdInlineShapePicture)
+                        {
+                            Paragraph iParagraph = iShape.Range.Paragraphs.First;
+                            for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+                            {
+                                if (Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
+                                {
+                                    num_Paragraph = i;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!dict_InlineShape_paragraph.ContainsKey(num_Paragraph))
+                        {
+                            dict_InlineShape_paragraph[num_Paragraph] = new List<InlineShape>();
+                        }
+                        dict_InlineShape_paragraph[num_Paragraph].Add(iShape);
+                    }
+                }
+                foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
+                {
+                    if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                    {
+                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                        {
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                            {
+                                iShape.Width = (float)(iShape.Width * 1.1);
+                            }
+                        }
+                        foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                        {
+                            iShape.Width = (float)(iShape.Width * 0.9);
+                        }
+                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                        {
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                            {
+                                iShape.Width = (float)(iShape.Width * 1.01);
+                            }
+                        }
+                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 2)
+                        {
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                            {
+                                iShape.Width = (float)(iShape.Width * 0.99);
+                            }
+                        }
+                    }
+                    if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                    {
+                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                        {
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                            {
+                                iShape.Width = (float)(iShape.Width * 0.9);
+                            }
+                        }
+                        foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                        {
+                            iShape.Width = (float)(iShape.Width * 1.1);
+                        }
+                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                        {
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                            {
+                                iShape.Width = (float)(iShape.Width * 0.99);
+                            }
+                        }
+                    }
+                }
+
+                //if ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                //{
+                //    while ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                //    {
+                //        foreach (InlineShape ishape in list_InlineShape)
+                //        {
+                //            ishape.Width = (float)(ishape.Width * 1.1);
+                //        }
+                //    }
+                //    foreach (InlineShape ishape in list_InlineShape)
+                //    {
+                //        ishape.Width = (float)(ishape.Width * 0.9);
+                //    }
+                //    while ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
+                //    {
+                //        foreach (InlineShape ishape in list_InlineShape)
+                //        {
+                //            ishape.Width = (float)(ishape.Width * 1.01);
+                //        }
+                //    }
+                //    while ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 2)
+                //    {
+                //        foreach (InlineShape ishape in list_InlineShape)
+                //        {
+                //            ishape.Width = (float)(ishape.Width * 0.99);
+                //        }
+                //    }
+                //}
+                //if ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                //{
+                //    while ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                //    {
+                //        foreach (InlineShape ishape in list_InlineShape)
+                //        {
+                //            ishape.Width = (float)(ishape.Width * 0.9);
+                //        }
+                //    }
+                //    foreach (InlineShape ishape in list_InlineShape)
+                //    {
+                //        ishape.Width = (float)(ishape.Width * 1.1);
+                //    }
+                //    while ((list_InlineShape[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                //    {
+                //        foreach (InlineShape ishape in list_InlineShape)
+                //        {
+                //            ishape.Width = (float)(ishape.Width * 0.99);
+                //        }
+                //    }
+                //}
+                    //}
+                //}
+                Globals.ThisAddIn.Application.ScreenUpdating = true;
+                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.redimensionar);
+                button_autodimensiona_imagem.Enabled = true;
             }).Start();
         }
 
@@ -2576,10 +2719,6 @@ private int pega_paragrafo_do_preambulo()
             }
         }
 
-        private void button_novo_alan_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.Selection.Text = "Oi, Mundo";
-        }
 
 
 
