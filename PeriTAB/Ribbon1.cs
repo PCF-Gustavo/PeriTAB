@@ -254,10 +254,13 @@ namespace PeriTAB
             object obj = System.Windows.Clipboard.GetData("FileDrop");
             new Thread(() =>
             {
+                // Configurações iniciais
+                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                bool success = true;
+                string msg_StatusBar = "";
+                string msg_Falha = "";
                 iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.load_icon_png_7969);
                 button_cola_imagem.Enabled = false;
-
-
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
                 if (System.Windows.Clipboard.ContainsData("FileDrop"))
@@ -299,32 +302,32 @@ namespace PeriTAB
 
                         //if (dropDown_ordem.SelectedItem.Label == "Alfabética") {
 
-                            //pathfile2.OrderBy(x => Convert.ToInt16(Path.GetFileNameWithoutExtension(x)));
-                            //pathfile2.OrderBy(x => x);
+                        //pathfile2.OrderBy(x => Convert.ToInt16(Path.GetFileNameWithoutExtension(x)));
+                        //pathfile2.OrderBy(x => x);
 
-                            Array.Sort(pathfile2, new Comparer_Windows_order());
+                        Array.Sort(pathfile2, new Comparer_Windows_order());
 
-                            //Array.Sort(pathfile2, StringComparer.Ordinal);
-                            //DirectoryInfo[] di = new DirectoryInfo(pathfile2);
-                            //FileSystemInfo[] files = di.GetFileSystemInfos();
-                            //var orderedFiles = files.OrderBy(f => f.Name);
-                            //pathfile2 = orderedFiles
+                        //Array.Sort(pathfile2, StringComparer.Ordinal);
+                        //DirectoryInfo[] di = new DirectoryInfo(pathfile2);
+                        //FileSystemInfo[] files = di.GetFileSystemInfos();
+                        //var orderedFiles = files.OrderBy(f => f.Name);
+                        //pathfile2 = orderedFiles
 
-                            //Array.Sort(pathfile2);
-                            //pathfile2.OrderBy(System.IO.Path.GetFileNameWithoutExtension);
-                            //Array.Sort(pathfile2, (s1, s2) => Path.GetFileName(s1).CompareTo(Path.GetFileName(s2)));
-                            //pathfile2.OrderBy(f => f);
-                            //pathfile2.OrderBy(System.IO.Path.GetFileName);
-                            //pathfile2 = pathfile2.OrderBy(System.IO.Path.GetFileName).ToList();
-                            //List<string> pathfile_list = new List<string> { };
-                            //pathfile_list = pathfile2.OrderBy(System.IO.Path.GetFileName).ToList();
-                            //pathfile2.OrderBy(x => x.Substring(0,x.LastIndexOf(".")));
-                            //Array.Sort(pathfile2, (a,b) => ;
+                        //Array.Sort(pathfile2);
+                        //pathfile2.OrderBy(System.IO.Path.GetFileNameWithoutExtension);
+                        //Array.Sort(pathfile2, (s1, s2) => Path.GetFileName(s1).CompareTo(Path.GetFileName(s2)));
+                        //pathfile2.OrderBy(f => f);
+                        //pathfile2.OrderBy(System.IO.Path.GetFileName);
+                        //pathfile2 = pathfile2.OrderBy(System.IO.Path.GetFileName).ToList();
+                        //List<string> pathfile_list = new List<string> { };
+                        //pathfile_list = pathfile2.OrderBy(System.IO.Path.GetFileName).ToList();
+                        //pathfile2.OrderBy(x => x.Substring(0,x.LastIndexOf(".")));
+                        //Array.Sort(pathfile2, (a,b) => ;
 
-                            //string[] pathfile = (string[])obj;
-                            //string[] pathfile2 = { "" };
+                        //string[] pathfile = (string[])obj;
+                        //string[] pathfile2 = { "" };
                         //} 
-                    //Ordem alfabética        
+                        //Ordem alfabética        
 
 
                         //if (dropDown_ordem.SelectedItem.Label == "Seleção")
@@ -433,10 +436,29 @@ namespace PeriTAB
                         }
                         //Globals.ThisAddIn.Application.ScreenUpdating = true;
                     }
-                    else MessageBox.Show("Imagem não encontrada.");
+                    else 
+                    {
+                        success = false;
+                        msg_Falha = "Não há imagens no Clipboard.";
+                    }
                 }
-                else MessageBox.Show("Imagem não encontrada.");
+                else 
+                {
+                    success = false;
+                    msg_Falha = "Não há imagens no Clipboard.";
+                }
 
+                // Mensagens da Thread
+                if (success) { msg_StatusBar = "Cola imagem: Sucesso"; } else { msg_StatusBar = "Cola imagem: Falha"; }
+                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                {
+                    stopwatch.Stop();
+                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                }
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+                if (!success) MessageBox.Show(msg_Falha, "Cola imagem");
+
+                // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
                 iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.image_icon);
                 button_cola_imagem.Enabled = true;
@@ -882,10 +904,21 @@ namespace PeriTAB
         private void button_redimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             new Thread(() => {
+                // Configurações iniciais
+                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                bool success = true;
+                string msg_StatusBar = "";
+                string msg_Falha = "";
                 iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.load_icon_png_7969);
                 button_redimensiona_imagem.Enabled = false;
-
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+                if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1) 
+                { 
+                    success = false;
+                    msg_Falha = "Não há imagens selecionadas.";
+                }
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -909,9 +942,20 @@ namespace PeriTAB
                             imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
                         }
                         //imagem.LockAspectRatio = LockAspectRatio_i;
-
                     }
                 }
+
+                // Mensagens da Thread
+                if (success) { msg_StatusBar = "Redimensiona: Sucesso"; } else { msg_StatusBar = "Redimensiona: Falha"; }
+                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                {
+                    stopwatch.Stop();
+                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                }
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+                if (!success) MessageBox.Show(msg_Falha, "Redimensiona");
+
+                // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
                 iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar2);
                 button_redimensiona_imagem.Enabled = true;
@@ -922,19 +966,20 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                // Inicia o cronômetro para medir o tempo de execução da Thread
-                Stopwatch stopwatch = new Stopwatch();
-                if (versao() == null) { stopwatch.Start(); }
-
-                // Variável de controle do sucesso
+                // Configurações iniciais
+                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
-
-                
-
-
+                string msg_StatusBar = "";
+                string msg_Falha = "";
                 iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.load_icon_png_7969);
                 button_autodimensiona_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+                if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
+                {
+                    success = false;
+                    msg_Falha = "Não há imagens selecionadas.";
+                }
 
                 Dictionary<int, List<InlineShape>> dict_InlineShape_paragraph = new Dictionary<int, List<InlineShape>>();
                 foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -1045,6 +1090,7 @@ namespace PeriTAB
                         if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1 || algumMenorQue1cm)
                         {
                             success = false;
+                            msg_Falha = "Alguma(s) imagem(ns) selecionada(s) não cabe(m) em uma única linha.";
 
                             // Restaura os tamanhos originais das imagens
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
@@ -1069,18 +1115,17 @@ namespace PeriTAB
                     }
                 }
 
-                string msg_StatusBar;
+                // Mensagens da Thread
                 if (success) { msg_StatusBar = "Autodimensiona: Sucesso"; } else { msg_StatusBar = "Autodimensiona: Falha"; }
-
-                // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                if (versao() == null) { 
+                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
                 }
-
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-                if (!success) MessageBox.Show("Alguma(s) imagem(ns) selecionada(s) não cabe(m) em uma única linha.", "Autodimensiona");
+                if (!success) MessageBox.Show(msg_Falha, "Autodimensiona");
 
+                // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
                 iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.redimensionar3);
                 button_autodimensiona_imagem.Enabled = true;
