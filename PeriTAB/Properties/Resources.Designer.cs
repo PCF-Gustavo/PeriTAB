@@ -323,6 +323,26 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap redimensionar2 {
+            get {
+                object obj = ResourceManager.GetObject("redimensionar2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap redimensionar3 {
+            get {
+                object obj = ResourceManager.GetObject("redimensionar3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap seta1 {
             get {
                 object obj = ResourceManager.GetObject("seta1", resourceCulture);

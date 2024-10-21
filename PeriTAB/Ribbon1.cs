@@ -886,34 +886,34 @@ namespace PeriTAB
                 button_redimensiona_imagem.Enabled = false;
 
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    InlineShape imagem = ishape;
-                    imagem.LockAspectRatio = MsoTriState.msoTrue;
-
-                    //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
-                    //imagem.LockAspectRatio = (MsoTriState)1;
-                    if (checkBox_largura.Checked)
+                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
                     {
-                        string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
-                        float.TryParse(larg_string, out float larg);
-                        imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
-                    }
+                        InlineShape imagem = ishape;
+                        imagem.LockAspectRatio = MsoTriState.msoTrue;
 
-                    if (checkBox_altura.Checked)
-                    {
-                        string alt_string = Globals.Ribbons.Ribbon1.editBox_altura.Text;
-                        float.TryParse(alt_string, out float alt);
-                        imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                        //MsoTriState LockAspectRatio_i = imagem.LockAspectRatio;
+                        //imagem.LockAspectRatio = (MsoTriState)1;
+                        if (checkBox_largura.Checked)
+                        {
+                            string larg_string = Globals.Ribbons.Ribbon1.editBox_largura.Text;
+                            float.TryParse(larg_string, out float larg);
+                            imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                        }
+
+                        if (checkBox_altura.Checked)
+                        {
+                            string alt_string = Globals.Ribbons.Ribbon1.editBox_altura.Text;
+                            float.TryParse(alt_string, out float alt);
+                            imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                        }
+                        //imagem.LockAspectRatio = LockAspectRatio_i;
+
                     }
-                    //imagem.LockAspectRatio = LockAspectRatio_i;
-                    
                 }
-            }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar);
+                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar2);
                 button_redimensiona_imagem.Enabled = true;
             }).Start();
         }
@@ -922,253 +922,167 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-            iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.load_icon_png_7969);
-            button_autodimensiona_imagem.Enabled = false;
+                // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch();
+                if (versao() == null) { stopwatch.Start(); }
+
+                // Variável de controle do sucesso
+                bool success = true;
+
+                
+
+
+                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.load_icon_png_7969);
+                button_autodimensiona_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
                 Dictionary<int, List<InlineShape>> dict_InlineShape_paragraph = new Dictionary<int, List<InlineShape>>();
-
-            foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-            {
-                if (iShape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
+                foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
-                    int num_Paragraph = 0;
-                    if (iShape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | iShape.Type == WdInlineShapeType.wdInlineShapePicture)
+                    // Verifica se o parágrafo contém mais de uma InlineShape
+                    if (iShape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
                     {
-                        Paragraph iParagraph = iShape.Range.Paragraphs.First;
-                        for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+                        int num_Paragraph = 0;
+                        if (iShape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | iShape.Type == WdInlineShapeType.wdInlineShapePicture)
                         {
-                            if (Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
+                            Paragraph iParagraph = iShape.Range.Paragraphs.First;
+                            for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
                             {
-                                num_Paragraph = i;
-                                break;
+                                if (Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
+                                {
+                                    num_Paragraph = i;
+                                    break;
+                                }
                             }
                         }
+                        // Verifica se o dicionário já contém o parágrafo
+                        if (!dict_InlineShape_paragraph.ContainsKey(num_Paragraph))
+                        {
+                            // Se não contém, cria uma nova lista de InlineShapes para esse parágrafo
+                            dict_InlineShape_paragraph[num_Paragraph] = new List<InlineShape>();
+                        }
+                        // Adiciona a InlineShape à lista correspondente ao parágrafo
+                        dict_InlineShape_paragraph[num_Paragraph].Add(iShape);
                     }
-                    if (!dict_InlineShape_paragraph.ContainsKey(num_Paragraph))
-                    {
-                        dict_InlineShape_paragraph[num_Paragraph] = new List<InlineShape>();
-                    }
-                    dict_InlineShape_paragraph[num_Paragraph].Add(iShape);
                 }
-            }
+                // Itera por cada parágrafo que contém múltiplas InlineShapes
                 foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
                 {
+                    // Verifica se o parágrafo tem exatamente uma linha: caso de aumento das imagens
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
                     {
                         while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
                         {
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                iShape.Width = (float)(iShape.Width * 1.1);
+                                //iShape.Width = (float)(iShape.Width * 1.1);
+                                iShape.Width *= 1.1f;
                             }
                         }
                         foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                         {
-                            iShape.Width = (float)(iShape.Width * 0.9);
+                            //iShape.Width = (float)(iShape.Width * 0.9);
+                            iShape.Width *= 0.9f;
                         }
                         while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
                         {
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                iShape.Width = (float)(iShape.Width * 1.01);
+                                //iShape.Width = (float)(iShape.Width * 1.01);
+                                iShape.Width *= 1.01f;
                             }
                         }
                         while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 2)
                         {
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                iShape.Width = (float)(iShape.Width * 0.99);
+                                //iShape.Width = (float)(iShape.Width * 0.99);
+                                iShape.Width *= 0.99f;
                             }
                         }
                     }
+                    // Verifica se o parágrafo tem mais de uma linha: caso de redução das imagens
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
                     {
-                        if (dict_InlineShape_paragraph[iParagraph].Count < dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes.Count)
+                        // Dicionário para armazenar os tamanhos originais das imagens
+                        Dictionary<InlineShape, float> tamanho_original = new Dictionary<InlineShape, float>();
+
+                        // Armazena o tamanho original das imagens no parágrafo
+                        foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                         {
-                            //foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes)
-                            //{
-
-                            //}
-
-                            //List<string> lista = new List<string> { };
-                            //lista = dict_InlineShape_paragraph[iParagraph];
-
-
-                                //string mensagem = string.Join(Environment.NewLine, lista);
-                                //MessageBox.Show(mensagem, "Valores da Lista");
-
-                                //List<InlineShape> list_InlineShape_not_selected_in_paragraph = new List<InlineShape>();
-
-                                //foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes)
-                                //{
-                                //    list_InlineShape_not_selected_in_paragraph.Add(iShape);
-                                //}
-
-                                //foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-                                //{
-                                //    list_InlineShape_not_selected_in_paragraph.Remove(iShape);
-                                //}
-
-                                //MessageBox.Show(list_InlineShape_not_selected_in_paragraph.Count.ToString());
-
-
-                                //List<InlineShape> list_InlineShape_selected = new List<InlineShape>();
-                                //List<InlineShape> list_InlineShape_selected_in_paragraph = new List<InlineShape>();
-                                //List<InlineShape> list_InlineShape_not_selected_in_paragraph = new List<InlineShape>();
-
-                                ////list_InlineShape_not_selected = dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes.Except(Globals.ThisAddIn.Application.Selection.InlineShapes).ToList();
-
-                                //foreach (InlineShape iShape_paragraph in dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes)
-                                //{
-                                //    foreach (InlineShape iShape_selectec in Globals.ThisAddIn.Application.Selection.InlineShapes)
-                                //    {
-                                //        if (iShape_paragraph.Range.Start == iShape_selectec.Range.Start && iShape_paragraph.Range.End == iShape_selectec.Range.End)
-                                //        {
-                                //            if (!list_InlineShape_selected_in_paragraph.Contains(iShape_paragraph))
-                                //                list_InlineShape_selected_in_paragraph.Add(iShape_paragraph);
-                                //        }
-                                //    }
-                                //}
-                                //foreach (InlineShape iShape_paragraph in dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes)
-                                //{
-                                //    foreach (InlineShape iShape_selectec_in_paragraph in list_InlineShape_selected_in_paragraph)
-                                //    {
-                                //        if (iShape_paragraph.Range.Start != iShape_selectec_in_paragraph.Range.Start || iShape_paragraph.Range.End != iShape_selectec_in_paragraph.Range.End)
-                                //        {
-                                //            if (!list_InlineShape_not_selected_in_paragraph.Contains(iShape_selectec_in_paragraph))
-                                //                list_InlineShape_not_selected_in_paragraph.Add(iShape_selectec_in_paragraph);
-                                //        }
-                                //    }
-                                //}
-                                ////MessageBox.Show(list_InlineShape_selected.Count.ToString());
-                                //MessageBox.Show(list_InlineShape_selected_in_paragraph.Count.ToString());
-                                //MessageBox.Show(list_InlineShape_not_selected_in_paragraph.Count.ToString());
-
-                                //foreach (InlineShape iShape in list_InlineShape_not_selected)
-                                //{
-                                //    iShape.Select();
-                                //    MessageBox.Show("opa");
-                                //}
-
-                                //List<InlineShape> inlineShapes_selected = dict_InlineShape_paragraph[iParagraph];
-                                //MessageBox.Show(inlineShapes_selected.Count.ToString());
-
-                                //List<InlineShape> inlineShapes_in_paragraph = new List<InlineShape>();
-
-                                //foreach (InlineShape iShape in (dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.InlineShapes)
-                                //{
-                                //    inlineShapes_in_paragraph.Add(iShape);
-                                //}
-                                //List<InlineShape> inlineShapes_in_paragraph = dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.InlineShapes.Cast<InlineShape>().ToList();
-                                //MessageBox.Show(inlineShapes_in_paragraph.Count.ToString());
-                                // Realizando a interseção
-                                //List<InlineShape> list_InlineShape_not_selected = new List<InlineShape>();
-                                //list_InlineShape_not_selected = inlineShapes_in_paragraph.Except(inlineShapes_selected).ToList();
-
-                                //foreach (InlineShape iShape in inlineShapes_selected)
-                                //{
-                                //    inlineShapes_in_paragraph.Remove(iShape);
-                                //}
-
-                                //list_InlineShape_not_selected = nextParagraphInlineShapes;
-
-                                //MessageBox.Show(list_InlineShape_not_selected.Count.ToString());
-                                //MessageBox.Show(inlineShapes_in_paragraph.Count.ToString());
-
-                                //foreach (InlineShape iShape in list_InlineShape_not_selected) 
-                                //{
-                                //    iShape.Select();
-                                //}
-
+                            tamanho_original[iShape] = iShape.Width;
                         }
-                        //bool b = true;
-                        //int i = 0;
-                        //while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
-                        //{
 
-                            //if (b)
-                            //{
-                            //    i = 0;
-                            //    foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
-                            //    {
-                            //        i++;
-                            //    }
-                            //}
-                            //float[] tamanho_inicial = new float[i + 1];
-                            //if (b)
-                            //{
-                            //    i = 0;
-                            //    foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
-                            //    {
-                            //        tamanho_inicial[i] = iShape.Width;
-                            //        MessageBox.Show(i.ToString());
-                            //        MessageBox.Show(tamanho_inicial[i].ToString());
-                            //        i++;
-                                    
-                            //    }
-                            //    b = false;
-                            //}
-                            ////MessageBox.Show(i.ToString());
-                            ////MessageBox.Show(tamanho_inicial[i].ToString());
-                            //float tamanho_atual = 0;
-                            //foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
-                            //{
-                            //    tamanho_atual = (float)(iShape.Width * 0.9);
-                            //    iShape.Width = tamanho_atual;
-                            //}
-                            //MessageBox.Show(tamanho_atual.ToString());
-                            //if (tamanho_atual < 20) 
-                            //{
-                            //    i = 0;
-                            //    foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
-                            //    {
-                            //        MessageBox.Show(i.ToString());
-                            //        MessageBox.Show(tamanho_inicial[i].ToString());
-                            //        iShape.Width = tamanho_inicial[i];
-                            //        i++;
-                            //    }
-                            //    MessageBox.Show("Não é possível redimensionar as imagens selecionadas para caberem em uma única linha");
-                            //    goto saida;
-                            //}
-                        //}
-                        int timeout = 0;
-                        while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                        // Primeira tentativa de ajustar todas as imagens
+                        for (int iteration = 0; iteration < 50; iteration++)
                         {
-                            timeout++;
+                            // Verifica se as imagens já cabem em uma linha
+                            if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) <= 1)
+                            {
+                                break; // Sai do loop se já estiver ajustado
+                            }
+
+                            // Reduz todas as imagens no parágrafo por 10% a cada iteração
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                iShape.Width = (float)(iShape.Width * 0.9);
-                            }
-                            if (timeout == 50)
-                            {
-                                MessageBox.Show("Alguma(s) imagem(ns) selecionada(s) não cabe(m) em uma única linha");
-                                foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
-                                {
-                                    iShape.Width = (float)(iShape.Width / Math.Pow(0.9, 50));
-                                }
-                                break;
+                                iShape.Width *= 0.9f;
                             }
                         }
-                        if (timeout < 50)
+
+                        // Após as 50 iterações, verifica se alguma imagem ficou menor que 1 cm e se ainda ocupa mais de uma linha
+                        bool algumMenorQue1cm = false;
+
+                        foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                         {
+                            if (iShape.Width < 28.35) // Verifica se a largura é menor que 1 cm em pontos
+                            {
+                                algumMenorQue1cm = true;
+                                break; // Não precisa verificar mais
+                            }
+                        }
+
+                        // Se depois de 50 tentativas ainda não couber em uma linha ou imagem ficar muito pequena, desiste de redimensionar.
+                        if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1 || algumMenorQue1cm)
+                        {
+                            success = false;
+
+                            // Restaura os tamanhos originais das imagens
                             foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                iShape.Width = (float)(iShape.Width * 1.1);
+                                iShape.Width = tamanho_original[iShape];
                             }
-                            while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
+                        }
+                        else
+                        {
+                            // Se as imagens couberem em uma linha, faz o ajuste fino
+                            foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
                             {
-                                foreach (InlineShape iShape in dict_InlineShape_paragraph[iParagraph])
+                                iShape.Width *= 1.1f; // Aumenta ligeiramente o tamanho
+
+                                // Faz um ajuste final, caso precise
+                                while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
                                 {
-                                    iShape.Width = (float)(iShape.Width * 0.99);
+                                    iShape.Width *= 0.99f; // Ajusta em decrementos menores (1%)
                                 }
                             }
                         }
                     }
                 }
-                //saida:
+
+                string msg_StatusBar;
+                if (success) { msg_StatusBar = "Autodimensiona: Sucesso"; } else { msg_StatusBar = "Autodimensiona: Falha"; }
+
+                // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (versao() == null) { 
+                    stopwatch.Stop();
+                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                }
+
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+                if (!success) MessageBox.Show("Alguma(s) imagem(ns) selecionada(s) não cabe(m) em uma única linha.", "Autodimensiona");
+
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.redimensionar);
+                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.redimensionar3);
                 button_autodimensiona_imagem.Enabled = true;
             }).Start();
         }
