@@ -1125,7 +1125,8 @@ namespace PeriTAB
                         float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
                         float recuoEsquerdaPts = iShape.Range.Paragraphs[1].Format.LeftIndent;
                         float recuoDireitaPts = iShape.Range.Paragraphs[1].Format.RightIndent;
-                        float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts);
+                        float primeiralinhaPts = iShape.Range.Paragraphs[1].Format.FirstLineIndent;
+                        float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
                         iShape.Width = espacoDigitavelPts;
                     }
                 }
