@@ -184,6 +184,12 @@ namespace PeriTAB
                 case "button_confere_num_legenda":
                     Globals.Ribbons.Ribbon1.button_confere_num_legenda.Image = imagem;
                     break;
+                case "button_abre_SISCRIM":
+                    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Image = imagem;
+                    break;
+                case "button_renomeia_documento":
+                    Globals.Ribbons.Ribbon1.button_renomeia_documento.Image = imagem;
+                    break;
                 case "button_gera_pdf":
                     Globals.Ribbons.Ribbon1.button_gera_pdf.Image = imagem;
                     break;
@@ -207,9 +213,6 @@ namespace PeriTAB
                     break;
                 case "menu_formatacao_campos":
                     Globals.Ribbons.Ribbon1.menu_formatacao_campos.Image = imagem;
-                    break;
-                case "button_Subir_SISCRIM":
-                    Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Image = imagem;
                     break;
                     //default:
                     //    break;
