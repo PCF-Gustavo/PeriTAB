@@ -64,15 +64,38 @@ namespace PeriTAB
 
             //Revisa a habilitação do botao "Gera PDF" do Ribbon
             iClass_Buttons.button_gera_pdf_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf); ;  Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+
+            ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
+            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            //{
+            //    //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
+            //    Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
+            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
+            //}
 
             //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            //{
+
+            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
             {
-                //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
-                Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
+                MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+                MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
+                else
+                {
+                    Microsoft.Office.Interop.Word.Style s = null;
+                    try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                    if (s != null)
+                    {
+                        if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false);
+                    }
+                }
             }
+
+
+            //}
 
             //if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc) == false) 
             //{

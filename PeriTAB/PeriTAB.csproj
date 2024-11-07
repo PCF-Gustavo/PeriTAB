@@ -301,12 +301,6 @@
     <None Include="Resources\icone_pdf.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icone_pdfa.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icone_pdf2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\seta2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -364,9 +358,6 @@
     <None Include="Resources\formatacao2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\icone_pdf-load2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\load2.png" />
   </ItemGroup>
   <ItemGroup>
@@ -380,6 +371,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\redimensionar3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icone-pdf-chave.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

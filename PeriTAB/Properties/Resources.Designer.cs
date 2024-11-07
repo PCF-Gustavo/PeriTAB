@@ -193,9 +193,19 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icone_pdf2 {
+        internal static System.Drawing.Bitmap icone_pdf {
             get {
-                object obj = ResourceManager.GetObject("icone_pdf2", resourceCulture);
+                object obj = ResourceManager.GetObject("icone_pdf", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icone_pdf_chave {
+            get {
+                object obj = ResourceManager.GetObject("icone-pdf-chave", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

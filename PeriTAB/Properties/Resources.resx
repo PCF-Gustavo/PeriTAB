@@ -136,8 +136,14 @@
   <data name="redimensionar" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\redimensionar.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="formatacao" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\formatacao.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="seta3" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\seta3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="redimensionar3" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\redimensionar3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="peso" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\peso.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -162,9 +168,6 @@
   </data>
   <data name="engrenagem" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\engrenagem.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="formatacao" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\formatacao.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="lupa" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\lupa.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -208,8 +211,8 @@
   <data name="numero" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\numero.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="icone_pdf2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\icone_pdf2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icone_pdf" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icone_pdf.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="download2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\download2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -223,7 +226,7 @@
   <data name="vassoura" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\vassoura.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="redimensionar3" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\redimensionar3.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="icone-pdf-chave" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\icone-pdf-chave.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

@@ -5,6 +5,7 @@ using Microsoft.Office.Tools;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -120,6 +121,7 @@ namespace PeriTAB
 
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
             //bool b = false;
             //bool checked1 = Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos2.Checked;
             //var botao_painel_de_estilos2 = (Microsoft.Office.Tools.CustomTaskPane)sender;
@@ -147,13 +149,30 @@ namespace PeriTAB
                 //}).Start();
                 Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked = Visib;
                 Metodo_TaskPanes_Visible(Visib);
-                //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in list_TaskPane)
+                if (Ribbon1.Variables.debugging)
+                {
+                    string msg_StatusBar = "";
+                    //if (!Visib) msg_StatusBar = "Painel de Estilos: Fechado pelo X";
+                    switch (Visib)
+                    {
+                        case true:
+                            msg_StatusBar = "Painel de Estilos: Aberto ???";
+                            break;
+                        case false:
+                            msg_StatusBar = "Painel de Estilos: Fechado pelo X";
+                            break;
+                    }
+                    stopwatch.Stop();
+                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                    Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+                }
+                    //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in list_TaskPane)
 
-                //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values)
-                //{
-                //    try { CTP.Visible = TB_checked; } catch (System.Runtime.InteropServices.COMException ex) { }
-                //}
-            }
+                    //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values)
+                    //{
+                    //    try { CTP.Visible = TB_checked; } catch (System.Runtime.InteropServices.COMException ex) { }
+                    //}
+                }
 
 
             //if (botao_painel_de_estilos2.Visible)

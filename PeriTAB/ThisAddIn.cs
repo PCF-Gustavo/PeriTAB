@@ -10,6 +10,7 @@ using Microsoft.Office.Tools.Word;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using System.Windows;
+using System.Diagnostics;
 
 namespace PeriTAB
 {
@@ -24,6 +25,7 @@ namespace PeriTAB
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+
             //MessageBox.Show("Startup");
             le_preferencias();
 

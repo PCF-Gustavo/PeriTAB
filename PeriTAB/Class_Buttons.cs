@@ -143,6 +143,7 @@ namespace PeriTAB
         }
         public void button_gera_pdf_Default()
         {
+            Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf_chave;
             Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = true;
             Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "";
             Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";

@@ -43,6 +43,7 @@ using Microsoft.VisualBasic;
 //using System.Windows;
 //using Microsoft.VisualBasic;
 using System.Text.RegularExpressions;
+using System.Runtime.ConstrainedExecution;
 
 
 namespace PeriTAB
@@ -56,6 +57,7 @@ namespace PeriTAB
             private static string var1 = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
             private static string var2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
             private static string var3, var4;
+            public static bool var5;
             //private static X509Certificate2 var_cert = null;
             //private static IExternalSignature var_sig = null;
             public static string caminho_template { get { return var1; } set { } }
@@ -64,6 +66,7 @@ namespace PeriTAB
             public static string editBox_altura_Text { get { return var4; } set { var4 = value; } }
             //public static X509Certificate2 cert { get { return var_cert; } set { var_cert = value; } }
             //public static IExternalSignature sig { get { return var_sig; } set { var_sig = value; } }
+            public static bool debugging { get { return var5; } set { var5 = value; } }
         }
 
         const string quote = "\"";
@@ -93,11 +96,15 @@ namespace PeriTAB
             if (versao() != null)
             {
                 Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB " + versao().Major + "." + versao().Minor + "." + versao().Build;
+                Variables.debugging = false;
             }
             else
             {
+                Variables.debugging = true;
                 Globals.Ribbons.Ribbon1.label_nome.Label = "PeriTAB Debugging";
             }
+
+            if (Variables.debugging) { button_teste.Visible = true; }
         }
 
         //public void Add_Button(object sender)
@@ -201,6 +208,8 @@ namespace PeriTAB
 
         private void toggleButton_painel_de_estilos_Click(object sender, RibbonControlEventArgs e)
         {
+            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+            string msg_StatusBar = "";
             //    var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
             //    if (botao_toggle.Checked == true) Globals.ThisAddIn.TaskPane1.Visible = true;
             //    if (botao_toggle.Checked == false) Globals.ThisAddIn.TaskPane1.Visible = false;
@@ -214,10 +223,24 @@ namespace PeriTAB
             //foreach (MyUserControl UC1 in Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Values)
             //{
             var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
-            if (botao_toggle.Checked == true) Class_New_or_Open_Event.Metodo_TaskPanes_Visible(true);
-            if (botao_toggle.Checked == false) Class_New_or_Open_Event.Metodo_TaskPanes_Visible(false);
+            if (botao_toggle.Checked == true)
+            {
+                Class_New_or_Open_Event.Metodo_TaskPanes_Visible(true);
+                if (Ribbon1.Variables.debugging) msg_StatusBar = "Painel de Estilos: Aberto";
+            }
+            if (botao_toggle.Checked == false)
+            {
+                Class_New_or_Open_Event.Metodo_TaskPanes_Visible(false);
+                if (Ribbon1.Variables.debugging) msg_StatusBar = "Painel de Estilos: Fechado";
+            }
             //}
 
+            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            }
         }
 
         private void button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
@@ -258,7 +281,7 @@ namespace PeriTAB
             new Thread(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -453,7 +476,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Cola imagem: Sucesso"; } else { msg_StatusBar = "Cola imagem: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -568,7 +591,7 @@ namespace PeriTAB
             new Thread(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -599,9 +622,9 @@ namespace PeriTAB
                 //    MessageBox.Show("Documentos que ainda não foram salvos não podem ser renomeados.");
                 //    return;
                 //}
-                if (versao() == null) { stopwatch.Stop(); }
+                if (Variables.debugging) { stopwatch.Stop(); }
                 nome_doc = Microsoft.VisualBasic.Interaction.InputBox("Novo nome do documento:", "", nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf(".")));
-                if (versao() == null) { stopwatch.Start(); }
+                if (Variables.debugging) { stopwatch.Start(); }
 
                 // Expressão regular para validar nome de arquivo no Windows
                 string regex_Windows = @"^[^\\\/\:\*\?\""<>\|]+$";
@@ -609,14 +632,17 @@ namespace PeriTAB
                 // Usa Regex.IsMatch para validar o nome do arquivo
                 //bool nomeValido = 
 
-                if (/*nome_doc == "" || */!Regex.IsMatch(nome_doc, regex_Windows) || string.IsNullOrWhiteSpace(nome_doc))
+                //MessageBox.Show(nome_doc);
+                if (nome_doc == "") { success = false; }
+                //else if (nome_doc == null) { success = false; }
+                else if (/*nome_doc == "" || */!Regex.IsMatch(nome_doc, regex_Windows) || string.IsNullOrWhiteSpace(nome_doc))
                 {
                     //MessageBox.Show("ok");
                     //return;
                     success = false;
                     msg_Falha = "Nome inválido.";
                 }
-                else if (nome_doc == null || nome_doc == nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf("."))) { }
+                else if (nome_doc == nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf("."))) { }
                 else
                 {
                     Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(FileName: Path.Combine(caminho_doc, nome_doc + ".docx"), FileFormat: WdSaveFormat.wdFormatDocumentDefault);
@@ -645,7 +671,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Renomeia documento: Sucesso"; } else { msg_StatusBar = "Renomeia documento: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -666,7 +692,7 @@ namespace PeriTAB
             {
                 Globals.ThisAddIn.Application.DisplayStatusBar = false;
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -723,9 +749,9 @@ namespace PeriTAB
                             certClient = st.Certificates[0];
                             break;
                         default:
-                            if (versao() == null) { stopwatch.Stop(); }
+                            if (Variables.debugging) { stopwatch.Stop(); }
                             X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
-                            if (versao() == null) { stopwatch.Start(); }
+                            if (Variables.debugging) { stopwatch.Start(); }
                             if (collection.Count > 0)
                             {
                                 certClient = collection[0];
@@ -817,7 +843,12 @@ namespace PeriTAB
                     //rsa.PersistKeyInCsp = false; // Força a solicitação da senha
 
                     RSACryptoServiceProvider rsa2 = new RSACryptoServiceProvider();
-                    rsa2.PersistKeyInCsp = true;
+
+                    //RSACryptoServiceProvider rsa = certClient.PrivateKey as RSACryptoServiceProvider;*********************************************************
+                    //rsa.PersistKeyInCsp = false;
+
+                    //rsa2.PersistKeyInCsp = true;
+                    //MessageBox.Show(rsa2.PersistKeyInCsp.ToString());
 
                     IExternalSignature externalSignature = new X509Certificate2Signature(certClient, "SHA-256");
 
@@ -909,6 +940,12 @@ namespace PeriTAB
                     //inputPdf.Close();
                     //chain.Clear();
                     pdfStamper.Close();
+                    //certClient.Dispose();
+
+
+
+
+
                     if (File.Exists(path_pdf_assinado))
                     {
                         //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
@@ -961,7 +998,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Gera PDF: Sucesso"; } else { msg_StatusBar = "Gera PDF: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -971,8 +1008,9 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
+                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf);
                 button_gera_pdf.Enabled = true;
+                
             }).Start();
         }
 
@@ -1014,7 +1052,7 @@ namespace PeriTAB
             new Thread(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -1056,7 +1094,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Redimensiona: Sucesso"; } else { msg_StatusBar = "Redimensiona: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -1076,7 +1114,7 @@ namespace PeriTAB
             new Thread(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -1120,20 +1158,26 @@ namespace PeriTAB
                     }
                     else
                     {
-                        float larguraPaginaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth;
-                        float margemEsquerdaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin;
-                        float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
-                        float recuoEsquerdaPts = iShape.Range.Paragraphs[1].Format.LeftIndent;
-                        float recuoDireitaPts = iShape.Range.Paragraphs[1].Format.RightIndent;
-                        float primeiralinhaPts = iShape.Range.Paragraphs[1].Format.FirstLineIndent;
-                        float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
-                        iShape.Width = espacoDigitavelPts;
+                        if (!(iShape.Range.Paragraphs[1].Range.Information[WdInformation.wdWithInTable]))
+                        {
+                            float larguraPaginaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth;
+                            float margemEsquerdaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin;
+                            float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
+                            float recuoEsquerdaPts = iShape.Range.Paragraphs[1].Format.LeftIndent;
+                            float recuoDireitaPts = iShape.Range.Paragraphs[1].Format.RightIndent;
+                            float primeiralinhaPts = iShape.Range.Paragraphs[1].Format.FirstLineIndent;
+                            float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
+                            iShape.Width = espacoDigitavelPts;
+                        }
+                        else { success = false; }
                     }
                 }
                 // Itera por cada parágrafo que contém múltiplas InlineShapes
                 foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
                 {
+                    //MessageBox.Show((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines).ToString());
                     // Verifica se o parágrafo tem exatamente uma linha: caso de aumento das imagens
+                    if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 0) { success = false; } //Se está dentro da tabela, o numero de linhas do paragrafo é zero
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
                     {
                         while (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
@@ -1237,7 +1281,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Autodimensiona: Sucesso"; } else { msg_StatusBar = "Autodimensiona: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -2203,11 +2247,7 @@ namespace PeriTAB
 
         private void button_confere_formatacao_Click(object sender, RibbonControlEventArgs e)
         {
-            foreach (Microsoft.Office.Interop.Word.Shape ishape in Globals.ThisAddIn.Application.Selection.Range.ShapeRange)
-            {
-                MessageBox.Show(ishape.Type.ToString());
-
-            }
+            
 
         }
 
@@ -2725,7 +2765,7 @@ namespace PeriTAB
             new Thread(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (versao() == null) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -2798,7 +2838,7 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Abre SISCRIM: Sucesso"; } else { msg_StatusBar = "Abre SISCRIM: Falha"; }
-                if (versao() == null) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
                 {
                     stopwatch.Stop();
                     msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
@@ -2931,6 +2971,38 @@ namespace PeriTAB
                     return 0;
             }
         }
+
+        private void button_teste_Click(object sender, RibbonControlEventArgs e)
+        {
+            //X509Store store = new X509Store(StoreName.My, StoreLocation.CurrentUser);
+            //store.Open(OpenFlags.ReadOnly);
+
+            //foreach (X509Certificate2 cert in store.Certificates)
+            //{
+            //    try
+            //    {
+            //        // Tenta acessar a chave privada
+            //        RSACryptoServiceProvider rsa = cert.PrivateKey as RSACryptoServiceProvider;
+            //        if (rsa != null)
+            //        {
+            //            // Verifica se a chave está persistente no CSP
+            //            if (rsa.PersistKeyInCsp)
+            //            {
+            //                MessageBox.Show($"Certificado com chave persistente encontrado: {cert.Subject}");
+            //            }
+            //        }
+            //    }
+            //    catch (CryptographicException ex)
+            //    {
+            //        // Captura erros como ausência de chave privada ou falta de permissão
+            //        MessageBox.Show($"Erro ao acessar chave privada para o certificado {cert.Subject}: {ex.Message}");
+            //    }
+            //}
+
+            //store.Close();
+        }
+
+
 
 
 

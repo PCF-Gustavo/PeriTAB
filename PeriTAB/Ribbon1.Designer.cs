@@ -54,6 +54,7 @@ namespace PeriTAB{
             this.tab_default = this.Factory.CreateRibbonTab();
             this.tab = this.Factory.CreateRibbonTab();
             this.group_porextenso = this.Factory.CreateRibbonGroup();
+            this.button_teste = this.Factory.CreateRibbonButton();
             this.button_moeda = this.Factory.CreateRibbonButton();
             this.button_inteiro = this.Factory.CreateRibbonButton();
             this.dropDown_unidade = this.Factory.CreateRibbonDropDown();
@@ -173,6 +174,7 @@ namespace PeriTAB{
             // 
             // group_porextenso
             // 
+            this.group_porextenso.Items.Add(this.button_teste);
             this.group_porextenso.Items.Add(this.button_moeda);
             this.group_porextenso.Items.Add(this.button_inteiro);
             this.group_porextenso.Items.Add(this.dropDown_unidade);
@@ -180,6 +182,15 @@ namespace PeriTAB{
             this.group_porextenso.Items.Add(this.button_massa);
             this.group_porextenso.Label = "Por Extenso";
             this.group_porextenso.Name = "group_porextenso";
+            // 
+            // button_teste
+            // 
+            this.button_teste.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_teste.Label = "Teste";
+            this.button_teste.Name = "button_teste";
+            this.button_teste.ShowImage = true;
+            this.button_teste.Visible = false;
+            this.button_teste.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_teste_Click);
             // 
             // button_moeda
             // 
@@ -807,7 +818,7 @@ namespace PeriTAB{
             // button_gera_pdf
             // 
             this.button_gera_pdf.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.button_gera_pdf.Image = global::PeriTAB.Properties.Resources.icone_pdf2;
+            this.button_gera_pdf.Image = global::PeriTAB.Properties.Resources.icone_pdf_chave;
             this.button_gera_pdf.Label = "Gera PDF";
             this.button_gera_pdf.Name = "button_gera_pdf";
             this.button_gera_pdf.ShowImage = true;
@@ -987,6 +998,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_autodimensiona_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_referencia;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
     }
 
     partial class ThisRibbonCollection
