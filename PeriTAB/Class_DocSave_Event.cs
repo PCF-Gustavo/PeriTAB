@@ -18,21 +18,7 @@ namespace PeriTAB
 
         public void Metodo_DocumentBeforeSave(Document Doc, ref bool SaveAsUI, ref bool Cancel)
         {
-            checa_compressao_em_imagem(); //
-
             espera_salvar(); //Cria a thread  que chama o Metodo_DocumentAfterSave()
-        }
-
-        private void checa_compressao_em_imagem()
-        {
-            //foreach (InlineShape s in Globals.ThisAddIn.Application.ActiveDocument.InlineShapes) {
-            //    if (s.Type == WdInlineShapeType.wdInlineShapePicture | s.Type == WdInlineShapeType.wdInlineShapeLinkedPicture) {
-            //        //MessageBox.Show(s.Height + " " + s.ScaleHeight + " " + s.Width + " " + s.ScaleWidth + " " + s.PictureFormat + " ");
-                    
-                
-                
-            //    }
-            //}
         }
 
         private void espera_salvar()

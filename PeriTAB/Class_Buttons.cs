@@ -5,6 +5,9 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
+using System.IO;
+using System.Windows.Forms;
 
 namespace PeriTAB
 {
@@ -107,7 +110,7 @@ namespace PeriTAB
         public void editBox_altura_Default()
         {
             Globals.Ribbons.Ribbon1.editBox_altura.Enabled = !bool.Parse(preferences.largura_checked);
-            if (Globals.Ribbons.Ribbon1.checkBox_altura.Checked) { Globals.Ribbons.Ribbon1.editBox_altura.Text = preferences.altura; }
+            if (Globals.Ribbons.Ribbon1.checkBox_altura.Enabled) { Globals.Ribbons.Ribbon1.editBox_altura.Text = preferences.altura; }
         }
 
         //public void dropDown_ordem_Default()
@@ -223,19 +226,54 @@ namespace PeriTAB
 
         public class preferences
         {
-            private static string var1, var2, var3, var4, var5, var6, var7, var8, var9, var10;
-            public static string largura { get { return var1; } set { var1 = value; } }
-            public static string altura { get { return var2; } set { var2 = value; } }
-            public static string largura_checked { get { return var3; } set { var3 = value; } }
-            public static string ordem { get { return var4; } set { var4 = value; } }
-            public static string separador { get { return var5; } set { var5 = value; } }
-            public static string painel_de_estilos { get { return var6; } set { var6 = value; } }
-            public static string unidade { get { return var7; } set { var7 = value; } }
-            public static string precisao { get { return var8; } set { var8 = value; } }
-            public static string assinar_pdf { get { return var9; } set { var9 = value; } }
-            public static string abrir_pdf { get { return var10; } set { var10 = value; } }
+            private static string private_largura, private_altura, private_largura_checked, private_separador, private_painel_de_estilos, private_assinar_pdf, private_abrir_pdf;
+            static preferences() // Bloco estático para definir o valor inicial das variáveis (Leitura das preferencias)
+            {
+                //MessageBox.Show("preferences");
+                if (File.Exists(Ribbon1.Variables.caminho_preferences))
+                {
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(Ribbon1.Variables.caminho_preferences);
+                    XmlElement root = xmlDoc.DocumentElement;
+
+                    // Lendo as preferências
+                    private_largura = GetElementValue(root, "largura", "10");
+                    private_altura = GetElementValue(root, "altura", "10");
+                    private_largura_checked = GetElementValue(root, "largura_checked", "true");
+                    private_separador = GetElementValue(root, "separador", "Nenhum");
+                    private_painel_de_estilos = GetElementValue(root, "painel_de_estilos", "false");
+                    private_assinar_pdf = GetElementValue(root, "assinar_pdf", "true");
+                    private_abrir_pdf = GetElementValue(root, "abrir_pdf", "true");
+                }
+                else
+                {
+                    // Preferências iniciais
+                    private_largura = "10";
+                    private_altura = "10";
+                    private_largura_checked = "true";
+                    private_separador = "Nenhum";
+                    private_painel_de_estilos = "false";
+                    private_assinar_pdf = "true";
+                    private_abrir_pdf = "true";
+                }
+            }
+
+            public static string largura { get { return private_largura; } set { private_largura = value; } }
+            public static string altura { get { return private_altura; } set { private_altura = value; } }
+            public static string largura_checked { get { return private_largura_checked; } set { private_largura_checked = value; } }
+            public static string separador { get { return private_separador; } set { private_separador = value; } }
+            public static string painel_de_estilos { get { return private_painel_de_estilos; } set { private_painel_de_estilos = value; } }
+            public static string assinar_pdf { get { return private_assinar_pdf; } set { private_assinar_pdf = value; } }
+            public static string abrir_pdf { get { return private_abrir_pdf; } set { private_abrir_pdf = value; } }
+
+            // Método auxiliar para obter o valor de um elemento XML
+            private static string GetElementValue(XmlElement root, string tagName, string defaultValue)
+            {
+                XmlNode node = root.SelectSingleNode(tagName);
+                return node != null ? node.InnerText : defaultValue;
+            }
+
         }
-
-
     }
+
 }

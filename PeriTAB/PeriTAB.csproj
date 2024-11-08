@@ -194,7 +194,6 @@
     <Compile Include="Class_AnyButtonClick_Event.cs" />
     <Compile Include="Class_DocSave_Event.cs" />
     <Compile Include="Class_DocChange_Event.cs" />
-    <Compile Include="Class_ValueChanged_Event.cs" />
     <Compile Include="Class_DocumentBeforeClose_Event .cs" />
     <Compile Include="Class_WindowDeactivate_Event .cs" />
     <Compile Include="Class_WindowActivate_Event.cs" />
