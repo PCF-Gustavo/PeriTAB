@@ -49,8 +49,8 @@ namespace PeriTAB
             //MessageBox.Show("new or open");
             Class_Buttons iClass_Buttons = new Class_Buttons();
 
-            Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
-            iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+            //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+            //iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
             //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Metodo_TaskPanes_Visible(true);
 
@@ -70,7 +70,11 @@ namespace PeriTAB
             //MessageBox.Show("fefewfw fwefw2222");
                 
             Globals.ThisAddIn.iMyUserControl = new MyUserControl();
-            Globals.ThisAddIn.iMyUserControl.AutoScroll = false;
+            Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+            //Globals.ThisAddIn.iMyUserControl.AutoScroll = false;
+
+            Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+            iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
             //list_UserControl.Add(Globals.ThisAddIn.iMyUserControl);
             iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
@@ -132,7 +136,8 @@ namespace PeriTAB
 
             int spacingHeight = 5;
             int buttonHeight = (int)(40 / dpiFactor);
-            int headerHeight = (int)(38 / dpiFactor);
+            int headerHeight = (int)(54 / dpiFactor);
+            //int headerHeight = (int)(38 / dpiFactor);
             int taskPaneHeight = buttonHeight + headerHeight + 2*spacingHeight;
 
             iTaskPane.Height = taskPaneHeight;
@@ -140,11 +145,7 @@ namespace PeriTAB
 
             var userControl = Globals.ThisAddIn.iMyUserControl;
 
-            int buttonCount = userControl.Controls.OfType<Button>().Count();
-            if (buttonCount == 0)
-            {
-                return; // No buttons to resize
-            }
+            int buttonCount = userControl.Controls.OfType<Button>().Count(); // Contar todos os botões de userControl
 
             // Calcular a largura total disponível para os botões
             int spacingWidth = 5;
@@ -154,23 +155,40 @@ namespace PeriTAB
             // A largura de cada botão será a largura total disponível dividida pelo número de botões
             int buttonWidth = totalButtonWidth / buttonCount;
 
+            List<Button> list_botoes = userControl.Controls.OfType<Button>().ToList(); // Obter todos os botões de userControl
+
+            list_botoes = list_botoes.OrderBy(b => b.Location.X).ToList(); // Ordenar os botões pela posição X
+
             int currentX = spacingWidth; // Começar o primeiro botão com o espaço inicial
 
-            foreach (Control control in userControl.Controls)
+            foreach (Button botao in list_botoes)
             {
-                if (control is Button button)
-                {
-                    // Definir a largura e altura do botão
-                    button.Width = buttonWidth;
-                    button.Height = buttonHeight;
+                // Definir a largura e altura do botão
+                botao.Width = buttonWidth;
+                botao.Height = buttonHeight;
 
-                    // Manter a coordenada Y fixa em 10, conforme o código original
-                    button.Location = new System.Drawing.Point(currentX, spacingHeight);
+                // Manter a coordenada Y fixa em 10, conforme o código original
+                botao.Location = new System.Drawing.Point(currentX, spacingHeight);
 
-                    // Atualizar a coordenada X para o próximo botão
-                    currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
-                }
+                // Atualizar a coordenada X para o próximo botão
+                currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
             }
+
+            //    foreach (Control control in userControl.Controls)
+            //{
+            //    if (control is Button button)
+            //    {
+            //        // Definir a largura e altura do botão
+            //        button.Width = buttonWidth;
+            //        button.Height = buttonHeight;
+
+            //        // Manter a coordenada Y fixa em 10, conforme o código original
+            //        button.Location = new System.Drawing.Point(currentX, spacingHeight);
+
+            //        // Atualizar a coordenada X para o próximo botão
+            //        currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
+            //    }
+            //}
 
             //// Garantir que o último botão ocupe o espaço total restante sem espaçamento extra
             //Control lastButton = userControl.Controls.OfType<Button>().LastOrDefault();

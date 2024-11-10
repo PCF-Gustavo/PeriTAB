@@ -621,60 +621,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
-        private void button_DockRight_Click(object sender, EventArgs e)
-        {
-            //    Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNone;
-            //    Globals.ThisAddIn.TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionRight;
-            //    Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            //    this.Size = new System.Drawing.Size(100, 900);
-            //    this.button_DockRight.Visible = false;
-            //    this.button_sem_formatacao.Location = new System.Drawing.Point(5, 5);
-            //    this.button_corpo_do_texto.Location = new System.Drawing.Point(5, 50);
-            //    this.button_citacoes.Location = new System.Drawing.Point(5, 95);
-            //    this.button_secao_1.Location = new System.Drawing.Point(5, 140);
-            //    this.button_secao_2.Location = new System.Drawing.Point(5, 185);
-            //    this.button_secao_3.Location = new System.Drawing.Point(5, 230);
-            //    this.button_secao_4.Location = new System.Drawing.Point(5, 275);
-            //    this.button_enumeracao.Location = new System.Drawing.Point(5, 320);
-            //    this.button_reinicia_lista.Size = new System.Drawing.Size(90, 24);
-            //    this.button_reinicia_lista.Location = new System.Drawing.Point(5, 359);
-            //    this.button_figuras.Location = new System.Drawing.Point(5, 388);
-            //    this.button_legendas_de_figuras.Location = new System.Drawing.Point(5, 433);
-            //    this.button_legendas_de_tabelas.Location = new System.Drawing.Point(5, 478);
-            //    this.button_quesitos.Location = new System.Drawing.Point(5, 523);
-            //    this.button_DockBottom.Location = new System.Drawing.Point(30, 568);
-            //    this.button_DockBottom.Visible = true;
-            //    Globals.ThisAddIn.TaskPane1.Width = 120;
-            //    this.Size = new System.Drawing.Size(100, 900);
-        }
-
-    private void button_DockBottom_Click(object sender, EventArgs e)
-        {
-            //    Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNone;
-            //    Globals.ThisAddIn.TaskPane1.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
-            //    Globals.ThisAddIn.TaskPane1.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            //    this.Size = new System.Drawing.Size(1400, 100);
-            //    this.button_DockBottom.Visible = false;
-            //    this.button_DockRight.Visible = true;
-            //    this.button_DockRight.Location = new System.Drawing.Point(1204, 5);
-            //    this.button_sem_formatacao.Location = new System.Drawing.Point(5, 5);
-            //    this.button_corpo_do_texto.Location = new System.Drawing.Point(100, 5);
-            //    this.button_citacoes.Location = new System.Drawing.Point(195, 5);
-            //    this.button_secao_1.Location = new System.Drawing.Point(290, 5);
-            //    this.button_secao_2.Location = new System.Drawing.Point(385, 5);
-            //    this.button_secao_3.Location = new System.Drawing.Point(480, 5);
-            //    this.button_secao_4.Location = new System.Drawing.Point(575, 5);
-            //    this.button_enumeracao.Location = new System.Drawing.Point(670, 5);
-            //    this.button_reinicia_lista.Size = new System.Drawing.Size(60, 40);
-            //    this.button_reinicia_lista.Location = new System.Drawing.Point(759, 5);
-            //    this.button_figuras.Location = new System.Drawing.Point(824, 5);
-            //    this.button_legendas_de_figuras.Location = new System.Drawing.Point(919, 5);
-            //    this.button_legendas_de_tabelas.Location = new System.Drawing.Point(1014, 5);
-            //    this.button_quesitos.Location = new System.Drawing.Point(1109, 5);                  
-            //    this.Size = new System.Drawing.Size(1400, 100);
-            //    Globals.ThisAddIn.TaskPane1.Height = 90;
-        }
-
         public Button MyButton(string nome_botao)
         {
             foreach (Button botao in Controls)
@@ -704,84 +650,25 @@ namespace PeriTAB
             }
         }
 
-
-
-
-
-        //public void Habilita_Destaca_button1(bool habilita, bool destaca = false)
-        //{
-        //    button_sem_formatacao.Enabled = habilita;
-        //    if (destaca){button_sem_formatacao.BackColor = SystemColors.Highlight;button_sem_formatacao.ForeColor = SystemColors.HighlightText;}
-        //}
-        //public void Habilita_Destaca_button2(bool habilita, bool destaca = false)
-        //{
-        //    button_corpo_do_texto.Enabled = habilita;
-        //    if (destaca) { button_corpo_do_texto.BackColor = SystemColors.Highlight; button_corpo_do_texto.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button3(bool habilita, bool destaca = false)
-        //{
-        //    button_citacoes.Enabled = habilita;
-        //    if (destaca) { button_citacoes.BackColor = SystemColors.Highlight; button_citacoes.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button4(bool habilita, bool destaca = false)
-        //{
-        //    button_secao_1.Enabled = habilita;
-        //    if (destaca) { button_secao_1.BackColor = SystemColors.Highlight; button_secao_1.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button5(bool habilita, bool destaca = false)
-        //{
-        //    button_secao_2.Enabled = habilita;
-        //    if (destaca) { button_secao_2.BackColor = SystemColors.Highlight; button_secao_2.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button6(bool habilita, bool destaca = false)
-        //{
-        //    button_secao_3.Enabled = habilita;
-        //    if (destaca) { button_secao_3.BackColor = SystemColors.Highlight; button_secao_3.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button7(bool habilita, bool destaca = false)
-        //{
-        //    button_secao_4.Enabled = habilita;
-        //    if (destaca) { button_secao_4.BackColor = SystemColors.Highlight; button_secao_4.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button8(bool habilita, bool destaca = false)
-        //{
-        //    button_enumeracao.Enabled = habilita;
-        //    if (destaca) { button_enumeracao.BackColor = SystemColors.Highlight; button_enumeracao.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_button9(bool habilita)
-        //{
-        //    button_reinicia_lista.Enabled = habilita;
-        //}
-        //public void Habilita_Destaca_button10(bool habilita, bool destaca = false)
-        //{
-        //    button_figuras.Enabled = habilita;
-        //    if (destaca) { button_figuras.BackColor = SystemColors.Highlight; button_figuras.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button11(bool habilita, bool destaca = false)
-        //{
-        //    button_legendas_de_figuras.Enabled = habilita;
-        //    if (destaca) { button_legendas_de_figuras.BackColor = SystemColors.Highlight; button_legendas_de_figuras.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button12(bool habilita, bool destaca = false)
-        //{
-        //    button_legendas_de_tabelas.Enabled = habilita;
-        //    if (destaca) { button_legendas_de_tabelas.BackColor = SystemColors.Highlight; button_legendas_de_tabelas.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button13(bool habilita, bool destaca = false)
-        //{
-        //    button_quesitos.Enabled = habilita;
-        //    if (destaca) { button_quesitos.BackColor = SystemColors.Highlight; button_quesitos.ForeColor = SystemColors.HighlightText; }
-        //}
-        //public void Habilita_Destaca_button14(bool habilita, bool destaca = false)
-        //{
-        //    button_fecho.Enabled = habilita;
-        //    if (destaca) { button_fecho.BackColor = SystemColors.Highlight; button_fecho.ForeColor = SystemColors.HighlightText; }
-        //}
-
-        //public void Habilita_button_reinicia_lista(bool habilita)
-        //{
-        //    button_reinicia_lista.Enabled = habilita;
-        //}
+        // Dicionário estático, inicializado uma vez para todos os usos.
+        public static readonly Dictionary<string, string> dict_estilo_e_botao = new Dictionary<string, string>
+        {
+            { "01 - Sem Formatação (PeriTAB)", "button_sem_formatacao" },
+            { "02 - Corpo do Texto (PeriTAB)", "button_corpo_do_texto" },
+            { "03 - Citações (PeriTAB)", "button_citacoes" },
+            { "04a - Seção_1 (PeriTAB)", "button_secao_1" },
+            { "04b - Seção_2 (PeriTAB)", "button_secao_2" },
+            { "04c - Seção_3 (PeriTAB)", "button_secao_3" },
+            { "04d - Seção_4 (PeriTAB)", "button_secao_4" },
+            { "05 - Enumerações (PeriTAB)", "button_enumeracao" },
+            { "06 - Figuras (PeriTAB)", "button_figuras" },
+            { "07 - Legendas de Figuras (PeriTAB)", "button_legendas_de_figuras" },
+            { "08a - Texto de Figuras (PeriTAB)", "button_textos_de_figuras" },
+            { "08 - Legendas de Tabelas (PeriTAB)", "button_legendas_de_tabelas" },
+            { "09 - Quesitos (PeriTAB)", "button_quesitos" },
+            { "10 - Fecho (PeriTAB)", "button_fecho" },
+            { "11 - Parágrafo Numerado (PeriTAB)", "button_paragrafo_numerado" }
+        };
 
 
 
