@@ -17,20 +17,97 @@ namespace PeriTAB
 {
     public partial class MyUserControl : UserControl
     {
-
+        // Dicionário de instância para mapear o nome do estilo ao botão
+        public readonly Dictionary<string, Button> dict_estilo_e_botao = new Dictionary<string, Button>();
+        public readonly Dictionary<Button, string> dict_botao_e_estilo = new Dictionary<Button, string>();
         public MyUserControl()
         {
             InitializeComponent();
+
+            // Inicializa o dicionário associando os botões aos seus estilos
+            //dict_estilo_e_botao2.Add("01 - Sem Formatação (PeriTAB)", button_sem_formatacao);
+            //dict_estilo_e_botao2.Add("02 - Corpo do Texto (PeriTAB)", button_corpo_do_texto);
+            //dict_estilo_e_botao2.Add("03 - Citações (PeriTAB)", button_citacoes);
+            //dict_estilo_e_botao2.Add("04a - Seção_1 (PeriTAB)", button_secao_1);
+            //dict_estilo_e_botao2.Add("04b - Seção_2 (PeriTAB)", button_secao_2);
+            //dict_estilo_e_botao2.Add("04c - Seção_3 (PeriTAB)", button_secao_3);
+            //dict_estilo_e_botao2.Add("04d - Seção_4 (PeriTAB)", button_secao_4);
+            //dict_estilo_e_botao2.Add("05 - Enumerações (PeriTAB)", button_enumeracao);
+            //dict_estilo_e_botao2.Add("06 - Figuras (PeriTAB)", button_figuras);
+            //dict_estilo_e_botao2.Add("07 - Legendas de Figuras (PeriTAB)", button_legendas_de_figuras);
+            //dict_estilo_e_botao2.Add("08a - Texto de Figuras (PeriTAB)", button_textos_de_figuras);
+            //dict_estilo_e_botao2.Add("08 - Legendas de Tabelas (PeriTAB)", button_legendas_de_tabelas);
+            //dict_estilo_e_botao2.Add("09 - Quesitos (PeriTAB)", button_quesitos);
+            //dict_estilo_e_botao2.Add("10 - Fecho (PeriTAB)", button_fecho);
+            //dict_estilo_e_botao2.Add("11 - Parágrafo Numerado (PeriTAB)", button_paragrafo_numerado);
+
+            // Definindo os estilos e botões associados
+            var estilos_e_botoes = new (string, Button)[]
+            {
+                // ("01 - Sem Formatação (PeriTAB)", button_sem_formatacao)
+                //,("02 - Corpo do Texto (PeriTAB)", button_corpo_do_texto)
+                //,("03 - Citações (PeriTAB)", button_citacoes)
+                //,("04a - Seção_1 (PeriTAB)", button_secao_1)
+                //,("04b - Seção_2 (PeriTAB)", button_secao_2)
+                //,("04c - Seção_3 (PeriTAB)", button_secao_3)
+                //,("04d - Seção_4 (PeriTAB)", button_secao_4)
+                //,("10 - Seção_5 (PeriTAB)", button_secao_5)
+                //,("05 - Enumerações (PeriTAB)", button_enumeracao)
+                //,("06 - Figuras (PeriTAB)", button_figuras)
+                //,("07 - Legendas de Figuras (PeriTAB)", button_legendas_de_figuras)
+                //,("08a - Texto de Figuras (PeriTAB)", button_textos_de_figuras)
+                //,("08 - Legendas de Tabelas (PeriTAB)", button_legendas_de_tabelas)
+                //,("09 - Quesitos (PeriTAB)", button_quesitos)
+                //,("10 - Fecho (PeriTAB)", button_fecho)
+                //,("11 - Parágrafo Numerado (PeriTAB)", button_paragrafo_numerado)
+                //,("17 - Notas de rodapé (PeriTAB)", button_notas_de_rodape)
+                 ("01 - Sem Formatação (PeriTAB)", button_sem_formatacao)
+                ,("02 - Corpo do Texto (PeriTAB)", button_corpo_do_texto)
+                ,("03 - Parágrafo Numerado (PeriTAB)", button_paragrafo_numerado)
+                ,("04 - Citações (PeriTAB)", button_citacoes)
+                ,("05 - Seção_1 (PeriTAB)", button_secao_1)
+                ,("06 - Seção_2 (PeriTAB)", button_secao_2)
+                ,("07 - Seção_3 (PeriTAB)", button_secao_3)
+                ,("08 - Seção_4 (PeriTAB)", button_secao_4)
+                ,("09 - Seção_5 (PeriTAB)", button_secao_5)
+                ,("10 - Enumerações (PeriTAB)", button_enumeracao)
+                ,("11 - Figuras (PeriTAB)", button_figuras)
+                ,("12 - Legendas de Figuras (PeriTAB)", button_legendas_de_figuras)
+                ,("13 - Texto de Figuras (PeriTAB)", button_textos_de_figuras)
+                ,("14 - Legendas de Tabelas (PeriTAB)", button_legendas_de_tabelas)
+                ,("15 - Quesitos (PeriTAB)", button_quesitos)
+                ,("16 - Fecho (PeriTAB)", button_fecho)
+                ,("17 - Notas de rodapé (PeriTAB)", button_notas_de_rodape)
+            };
+
+            // Dicionário associando os botões aos seus estilos (Preenche o dicionário usando um loop)
+            foreach (var item in estilos_e_botoes)
+            {
+                dict_estilo_e_botao.Add(item.Item1, item.Item2);
+            }
+
+            // Implementa o dicionario invertido
+            dict_botao_e_estilo = dict_estilo_e_botao.ToDictionary(par => par.Value, par => par.Key);
         }
+
         private void button_sem_formatacao_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome = "01 - Sem Formatação (PeriTAB)";
+            //Button botao = sender as Button;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            //MessageBox.Show(botao.Name);
+            //MessageBox.Show(estilo_nome);
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            //MessageBox.Show(estilo_nome_baseado);
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+            //MessageBox.Show(estilo_nome_seguinte);
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome = "01 - Sem Formatação (PeriTAB)";
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs){ p.Range.set_Style((object)estilo_nome); }
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
             if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
             {
                 string msg_StatusBar = "Estilo Sem Formatação: Sucesso";
@@ -41,12 +118,35 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
+        //private void button_sem_formatacao_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    string estilo_nome_baseado = "Normal";
+        //    string estilo_nome = "01 - Sem Formatação (PeriTAB)";
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs){ p.Range.set_Style((object)estilo_nome); }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Sem Formatação: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
+
         private void button_corpo_do_texto_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome = "02 - Corpo do Texto (PeriTAB)";
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
@@ -62,9 +162,13 @@ namespace PeriTAB
         private void button_paragrafo_numerado_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome = "11 - Parágrafo Numerado (PeriTAB)";
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome = "11 - Parágrafo Numerado (PeriTAB)";
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
@@ -80,9 +184,13 @@ namespace PeriTAB
         private void button_citacoes_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome = "03 - Citações (PeriTAB)";
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome = "03 - Citações (PeriTAB)";
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
@@ -139,14 +247,17 @@ namespace PeriTAB
         private void button_secao_1_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "04a - Seção_1 (PeriTAB)";
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "04a - Seção_1 (PeriTAB)";
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
             {
 
@@ -223,14 +334,21 @@ namespace PeriTAB
         private void button_secao_2_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "04b - Seção_2 (PeriTAB)";
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "04b - Seção_2 (PeriTAB)";
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -280,14 +398,21 @@ namespace PeriTAB
         private void button_secao_3_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "04c - Seção_3 (PeriTAB)";
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "04c - Seção_3 (PeriTAB)";
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -337,14 +462,21 @@ namespace PeriTAB
         private void button_secao_4_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "04d - Seção_4 (PeriTAB)";
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "04d - Seção_4 (PeriTAB)";
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -391,14 +523,86 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
+        private void button_secao_5_Click(object sender, EventArgs e)
+        {
+            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "04d - Seção_4 (PeriTAB)";
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            {
+                p.Range.set_Style((object)estilo_nome);
+                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
+                    {
+                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+                        {
+                            p.Range.ParagraphFormat.SpaceBefore = 0;
+                        }
+                    }
+                }
+
+                int s;
+                if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
+                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+                {
+                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+                    try
+                    {
+                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+                        {
+                            int loc_hifen = a.IndexOf("-");
+                            for (int i = 1; i <= loc_hifen; i++)
+                            {
+                                if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+                                p.Range.Characters[1].Delete();
+                            }
+                        }
+                    }
+                    catch (System.ArgumentOutOfRangeException) { }
+                }
+            }
+            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                string msg_StatusBar = "Estilo Seção Quinária: Sucesso";
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
         private void button_enumeracao_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome = "05 - Enumerações (PeriTAB)";
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome = "05 - Enumerações (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) { p.Range.set_Style((object)estilo_nome); }
             if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
             {
@@ -410,31 +614,39 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
-        private void button_reinicia_lista_Click(object sender, EventArgs e)
-        {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            Globals.ThisAddIn.Application.Selection.Range.ListFormat.ApplyListTemplate(Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListTemplate,(object)false);
-            //if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_button_reinicia_lista(false); }
-            if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_Destaca(MyButton("button_reinicia_lista"), false); }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                string msg_StatusBar = "Reinicia Lista: Sucesso";
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
-        }
+        //private void button_reinicia_lista_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    Globals.ThisAddIn.Application.Selection.Range.ListFormat.ApplyListTemplate(Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListTemplate,(object)false);
+        //    //if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_button_reinicia_lista(false); }
+        //    if (Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Habilita_Destaca(MyButton("button_reinicia_lista"), false); }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Reinicia Lista: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //}
 
         private void button_figuras_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Normal";
-            string estilo_nome_seguinte = "07 - Legendas de Figuras (PeriTAB)";
-            string estilo_nome = "06 - Figuras (PeriTAB)";
+            //string estilo_nome_baseado = "Normal";
+            //string estilo_nome_seguinte = "07 - Legendas de Figuras (PeriTAB)";
+            //string estilo_nome = "06 - Figuras (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -452,13 +664,21 @@ namespace PeriTAB
         private void button_legendas_de_figuras_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Legenda";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "07 - Legendas de Figuras (PeriTAB)";
+            //string estilo_nome_baseado = "Legenda";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "07 - Legendas de Figuras (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 //List<int> positions = new List<int>();
@@ -504,13 +724,21 @@ namespace PeriTAB
         private void button_textos_de_figuras_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "07 - Legendas de Figuras (PeriTAB)";
-            string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "08a - Texto de Figuras (PeriTAB)";
+            //string estilo_nome_baseado = "07 - Legendas de Figuras (PeriTAB)";
+            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "08a - Texto de Figuras (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -540,13 +768,21 @@ namespace PeriTAB
         private void button_legendas_de_tabelas_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "Legenda";
-            string estilo_nome_seguinte = "01 - Sem Formatação (PeriTAB)";
-            string estilo_nome = "08 - Legendas de Tabelas (PeriTAB)";
+            //string estilo_nome_baseado = "Legenda";
+            //string estilo_nome_seguinte = "01 - Sem Formatação (PeriTAB)";
+            //string estilo_nome = "08 - Legendas de Tabelas (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
             { 
                 p.Range.set_Style((object)estilo_nome);
@@ -566,11 +802,19 @@ namespace PeriTAB
         private void button_quesitos_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "09 - Quesitos (PeriTAB)";
+            //string estilo_nome_baseado = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "09 - Quesitos (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -601,11 +845,19 @@ namespace PeriTAB
         private void button_fecho_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            string estilo_nome_baseado = "02 - Corpo do Texto (PeriTAB)";
-            string estilo_nome = "10 - Fecho (PeriTAB)";
+            //string estilo_nome_baseado = "02 - Corpo do Texto (PeriTAB)";
+            //string estilo_nome = "10 - Fecho (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
             foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
                 p.Range.set_Style((object)estilo_nome);
@@ -621,14 +873,55 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
-        public Button MyButton(string nome_botao)
+        private void button_notas_de_rodape_Click(object sender, EventArgs e)
         {
-            foreach (Button botao in Controls)
+            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+            //string estilo_nome_baseado = "Texto de nota de rodapé";
+            //string estilo_nome = "17 - Notas de rodapé (PeriTAB)";
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            //Globals.ThisAddIn.Application.ScreenUpdating = false;
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
-                if (botao.Name == nome_botao) return botao;
+                p.Range.set_Style((object)estilo_nome);
             }
-            MessageBox.Show("não achou o botao: " + nome_botao);
-            return null;
+            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                string msg_StatusBar = "Estilo Notas de rodapé: Sucesso";
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
+        //public Button MyButton(string nome_botao)
+        //{
+        //    foreach (Button botao in Controls)
+        //    {
+        //        if (botao.Name == nome_botao) return botao;
+        //    }
+        //    MessageBox.Show("não achou o botao: " + nome_botao);
+        //    return null;
+        //}
+
+        // Método para buscar botão pelo nome
+        public Button MyButton(string nomeBotao)
+        {
+            var botao = Controls.OfType<Button>().FirstOrDefault(b => b.Name == nomeBotao);
+            //if (botao == null)
+            //{
+            //    MessageBox.Show($"Botão '{nomeBotao}' não encontrado.");
+            //}
+            return botao;
         }
 
         public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
@@ -637,38 +930,56 @@ namespace PeriTAB
             b.Enabled = habilita;
             if (destaca) { b.BackColor = SystemColors.Highlight; b.ForeColor = SystemColors.HighlightText; }
         }
-        internal void Remove_Destaque_Botoes(MyUserControl UCs)
-        {
-            foreach (Button b in UCs.Controls)
-            {
-                if ((b.GetType()).Name == "Button")
-                {
-                    b.BackColor = SystemColors.Control;
-                    b.ForeColor = SystemColors.ControlText;
-                }
+        //internal void Remove_Destaque_Botoes(MyUserControl UCs)
+        //{
+        //    foreach (Button b in UCs.Controls)
+        //    {
+        //        if ((b.GetType()).Name == "Button")
+        //        {
+        //            b.BackColor = SystemColors.Control;
+        //            b.ForeColor = SystemColors.ControlText;
+        //        }
 
+        //    }
+        //}
+
+        public void Remove_Destaque_Botoes(MyUserControl UserControl)
+        {
+            foreach (var botao in UserControl.Controls.OfType<Button>())
+            {
+                botao.BackColor = SystemColors.Control;
+                botao.ForeColor = SystemColors.ControlText;
             }
         }
 
-        // Dicionário estático, inicializado uma vez para todos os usos.
-        public static readonly Dictionary<string, string> dict_estilo_e_botao = new Dictionary<string, string>
+        private void MyUserControl_Load(object sender, EventArgs e)
         {
-            { "01 - Sem Formatação (PeriTAB)", "button_sem_formatacao" },
-            { "02 - Corpo do Texto (PeriTAB)", "button_corpo_do_texto" },
-            { "03 - Citações (PeriTAB)", "button_citacoes" },
-            { "04a - Seção_1 (PeriTAB)", "button_secao_1" },
-            { "04b - Seção_2 (PeriTAB)", "button_secao_2" },
-            { "04c - Seção_3 (PeriTAB)", "button_secao_3" },
-            { "04d - Seção_4 (PeriTAB)", "button_secao_4" },
-            { "05 - Enumerações (PeriTAB)", "button_enumeracao" },
-            { "06 - Figuras (PeriTAB)", "button_figuras" },
-            { "07 - Legendas de Figuras (PeriTAB)", "button_legendas_de_figuras" },
-            { "08a - Texto de Figuras (PeriTAB)", "button_textos_de_figuras" },
-            { "08 - Legendas de Tabelas (PeriTAB)", "button_legendas_de_tabelas" },
-            { "09 - Quesitos (PeriTAB)", "button_quesitos" },
-            { "10 - Fecho (PeriTAB)", "button_fecho" },
-            { "11 - Parágrafo Numerado (PeriTAB)", "button_paragrafo_numerado" }
-        };
+
+        }
+
+
+
+        //// Dicionário estático, inicializado uma vez para todos os usos.
+        //public static readonly Dictionary<string, string> dict_estilo_e_botao = new Dictionary<string, string>
+        //{
+        //    { "01 - Sem Formatação (PeriTAB)", "button_sem_formatacao" },
+        //    { "02 - Corpo do Texto (PeriTAB)", "button_corpo_do_texto" },
+        //    { "03 - Citações (PeriTAB)", "button_citacoes" },
+        //    { "04a - Seção_1 (PeriTAB)", "button_secao_1" },
+        //    { "04b - Seção_2 (PeriTAB)", "button_secao_2" },
+        //    { "04c - Seção_3 (PeriTAB)", "button_secao_3" },
+        //    { "04d - Seção_4 (PeriTAB)", "button_secao_4" },
+        //    { "05 - Enumerações (PeriTAB)", "button_enumeracao" },
+        //    { "06 - Figuras (PeriTAB)", "button_figuras" },
+        //    { "07 - Legendas de Figuras (PeriTAB)", "button_legendas_de_figuras" },
+        //    { "08a - Texto de Figuras (PeriTAB)", "button_textos_de_figuras" },
+        //    { "08 - Legendas de Tabelas (PeriTAB)", "button_legendas_de_tabelas" },
+        //    { "09 - Quesitos (PeriTAB)", "button_quesitos" },
+        //    { "10 - Fecho (PeriTAB)", "button_fecho" },
+        //    { "11 - Parágrafo Numerado (PeriTAB)", "button_paragrafo_numerado" }
+        //};
+
+
 
 
 

@@ -20,8 +20,9 @@ namespace PeriTAB
         private void Metodo_SelectionChange(Selection Sel)
         {
             //Declara instacias das classes
-            Class_Buttons iClass_Buttons = new Class_Buttons(); 
-            
+            //Class_Buttons iClass_Buttons = new Class_Buttons();
+            MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+
             //iClass_Buttons.button_renomeia_documento_Default();
 
             ////Revisa a habilitação do botao "Cola Figura" do Ribbon
@@ -81,21 +82,20 @@ namespace PeriTAB
             //}
 
             ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
-            {
-                MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-                MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
-                else
-                {
-                    Microsoft.Office.Interop.Word.Style s = null;
-                    try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                    if (s != null)
-                    {
-                        if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false);
-                    }
-                }
-            }
+            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
+            //{
+            //    UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), true);
+            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), false); }
+            //    else
+            //    {
+            //        Microsoft.Office.Interop.Word.Style s = null;
+            //        try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //        if (s != null)
+            //        {
+            //            if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), false);
+            //        }
+            //    }
+            //}
 
             //Revisa o destaque dos botoes do TaskPane
             if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked)
@@ -105,8 +105,7 @@ namespace PeriTAB
                     Stopwatch stopWatch = new Stopwatch();
                     stopWatch.Start(); // Inicia o cronômetro
 
-                    MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-                    Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(MUC);
+                    Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(UserControl_ActiveDocument);
 
                     foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
                     {
@@ -114,15 +113,29 @@ namespace PeriTAB
                         if (stopWatch.Elapsed.TotalSeconds > 0.2)
                             break;
 
+                        Microsoft.Office.Interop.Word.Style estilo = null;
                         if (p.Range.StoryType == WdStoryType.wdMainTextStory)
                         {
-                            Microsoft.Office.Interop.Word.Style estilo = null;
                             try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
 
-                            if (estilo != null && MyUserControl.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                            //if (estilo != null && MyUserControl.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                            //{
+                            //    string botaoNome = MyUserControl.dict_estilo_e_botao[estilo.NameLocal];
+                            //    UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton(botaoNome), true, true);
+                            //}
+                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
                             {
-                                string botaoNome = MyUserControl.dict_estilo_e_botao[estilo.NameLocal];
-                                MUC.Habilita_Destaca(MUC.MyButton(botaoNome), true, true);
+                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
+                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
+                            }
+                        }
+                        if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+                        {
+                            try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                            {
+                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
+                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
                             }
                         }
                     }

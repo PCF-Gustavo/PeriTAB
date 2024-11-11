@@ -13,6 +13,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Media.TextFormatting;
 using static System.Net.WebRequestMethods;
 
 namespace PeriTAB
@@ -71,6 +72,9 @@ namespace PeriTAB
                 
             Globals.ThisAddIn.iMyUserControl = new MyUserControl();
             Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+            //System.Windows.Forms.MessageBox.Show(Control.DefaultFont.ToString());
+            //Globals.ThisAddIn.iMyUserControl.Font = Control.DefaultFont;
+            //Globals.ThisAddIn.iMyUserControl.Font = Control.;
             //Globals.ThisAddIn.iMyUserControl.AutoScroll = false;
 
             Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
@@ -134,13 +138,13 @@ namespace PeriTAB
             var screenArea = Screen.PrimaryScreen.WorkingArea;
             float dpiFactor = 96f / Graphics.FromHwnd(IntPtr.Zero).DpiX;
 
-            int spacingHeight = 5;
-            int buttonHeight = (int)(40 / dpiFactor);
-            int headerHeight = (int)(54 / dpiFactor);
-            //int headerHeight = (int)(38 / dpiFactor);
-            int taskPaneHeight = buttonHeight + headerHeight + 2*spacingHeight;
+            //int spacingHeight = 5;
+            //int buttonHeight = (int)(40 / dpiFactor);
+            //int headerHeight = (int)(54 / dpiFactor);
+            ////int headerHeight = (int)(38 / dpiFactor);
+            //int taskPaneHeight = buttonHeight + headerHeight + 2*spacingHeight;
 
-            iTaskPane.Height = taskPaneHeight;
+            //iTaskPane.Height = taskPaneHeight;
             int taskPaneWidth = screenArea.Width;
 
             var userControl = Globals.ThisAddIn.iMyUserControl;
@@ -155,6 +159,14 @@ namespace PeriTAB
             // A largura de cada botão será a largura total disponível dividida pelo número de botões
             int buttonWidth = totalButtonWidth / buttonCount;
 
+            int buttonHeight = (int)(buttonWidth / 3);
+            int spacingHeight = (int)(buttonHeight / 10);
+            int headerHeight = (int)(80 / dpiFactor);
+            //int headerHeight = (int)(38 / dpiFactor);
+            int taskPaneHeight = buttonHeight + headerHeight + 2 * spacingHeight;
+
+            iTaskPane.Height = taskPaneHeight;
+
             List<Button> list_botoes = userControl.Controls.OfType<Button>().ToList(); // Obter todos os botões de userControl
 
             list_botoes = list_botoes.OrderBy(b => b.Location.X).ToList(); // Ordenar os botões pela posição X
@@ -165,7 +177,9 @@ namespace PeriTAB
             {
                 // Definir a largura e altura do botão
                 botao.Width = buttonWidth;
+                //System.Windows.Forms.MessageBox.Show(buttonWidth.ToString());
                 botao.Height = buttonHeight;
+                botao.Height = (int)(buttonWidth / 2);
 
                 // Manter a coordenada Y fixa em 10, conforme o código original
                 botao.Location = new System.Drawing.Point(currentX, spacingHeight);
@@ -173,6 +187,97 @@ namespace PeriTAB
                 // Atualizar a coordenada X para o próximo botão
                 currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
             }
+        }
+                //Graphics g = botao.CreateGraphics();
+                //System.Drawing.Font currentFont = botao.Font;
+                //SizeF textSize = g.MeasureString(botao.Text, currentFont);
+
+                //if (textSize.Width > buttonWidth && textSize.Height > buttonHeight)
+                //{
+                //    float scaleFactor = Math.Min(buttonWidth / textSize.Width, buttonHeight / textSize.Height);
+                //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
+                //    int newFontSize = (int)(currentFont.Size * scaleFactor * 0.8);
+                //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+                //}
+
+                //if (textSize.Width > buttonWidth || textSize.Height > buttonHeight)
+                //{
+                //    float scaleFactor = Math.Min(buttonWidth / textSize.Width, buttonHeight / textSize.Height);
+                //    int newFontSize = (int)(currentFont.Size * scaleFactor);
+                //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+                //}
+
+                //if (textSize.Width > buttonWidth)
+                //{
+                //    float scaleFactor = buttonWidth / textSize.Width;
+                //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
+                //    int newFontSize = (int)(currentFont.Size * scaleFactor);
+                //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+                //}
+                //if (textSize.Height > buttonHeight)
+                //{
+                //    float scaleFactor = buttonHeight / textSize.Height;
+                //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
+                //    int newFontSize = (int)(currentFont.Size * scaleFactor);
+                //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+                //}
+
+                //while (true)
+                //{
+                //    SizeF textSize = g.MeasureString(botao.Text, currentFont);
+                //    if (textSize.Width > buttonWidth)
+                //    {
+                //        float scaleFactor = (float)0.9;
+                //        int newFontSize = (int)(currentFont.Size * scaleFactor);
+                //        botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+                //    }
+                //    else
+                //    {
+                //        break;
+                //    }
+                //    currentFont = botao.Font;
+                //}
+
+                //    // Se o texto for maior que a largura do botão, ajusta o tamanho da fonte
+                //    if (textSize.Width > buttonWidth)
+                //{
+
+                //    // Calcula o fator de ajuste baseado na largura
+                //    float scaleFactor = buttonWidth / textSize.Width;
+
+                //    // Ajusta o tamanho da fonte de acordo com a largura
+                //    float newFontSize = currentFont.Size * scaleFactor;
+
+                //    // Ajusta a fonte até que o texto caiba também na altura do botão
+                //    // Verifique se o texto em várias linhas se ajusta ao botão verticalmente
+                //    while (true)
+                //    {
+                //        // Cria uma nova fonte com o tamanho ajustado
+                //        System.Drawing.Font adjustedFont = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
+
+                //        // Medimos o tamanho do texto com a fonte ajustada
+                //        SizeF adjustedTextSize = g.MeasureString(botao.Text, adjustedFont);
+
+                //        // Verifica se o texto ajustado cabe na largura e na altura do botão
+                //        if (adjustedTextSize.Width <= buttonWidth && adjustedTextSize.Height <= buttonHeight)
+                //        {
+                //            // Se couber, definimos a nova fonte
+                //            botao.Font = adjustedFont;
+                //            break;
+                //        }
+                //        else
+                //        {
+                //            // Caso não caiba, diminui o tamanho da fonte e tenta novamente
+                //            newFontSize -= 1;
+                //        }
+
+
+                        // Clean up the Graphics object.
+                        //g.Dispose();
+
+                //    }
+                //}
+            //}
 
             //    foreach (Control control in userControl.Controls)
             //{
@@ -197,7 +302,7 @@ namespace PeriTAB
             //    // Ajustar a posição do último botão para não ter espaçamento à direita
             //    lastButton.Location = new System.Drawing.Point(currentX - (buttonWidth + spacingWidth), spacingHeight);
             //}
-        }
+        
         
 
         //public static void Metodo_TaskPanes_Visible(bool b)

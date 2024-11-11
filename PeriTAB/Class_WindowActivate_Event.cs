@@ -78,21 +78,21 @@ namespace PeriTAB
             //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             //{
 
-            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
-            {
-                MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-                MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
-                else
-                {
-                    Microsoft.Office.Interop.Word.Style s = null;
-                    try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                    if (s != null)
-                    {
-                        if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false);
-                    }
-                }
-            }
+            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
+            //{
+            //    MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+            //    MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
+            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
+            //    else
+            //    {
+            //        Microsoft.Office.Interop.Word.Style s = null;
+            //        try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //        if (s != null)
+            //        {
+            //            if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false);
+            //        }
+            //    }
+            //}
 
 
             //}

@@ -20,7 +20,7 @@ namespace PeriTAB
             button_atualiza_campos_Default();
             button_moeda_Default();
             button_inteiro_Default();
-            button_importa_estilos_Default();
+            //button_importa_estilos_Default();
             button_limpa_estilos_Default();
             toggleButton_estilos_Default();
             button_cola_imagem_Default();
@@ -67,11 +67,11 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon1.button_inteiro.ScreenTip = "Macro moeda_por_extenso";
             Globals.Ribbons.Ribbon1.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
         }
-        public void button_importa_estilos_Default()
-        {
-            Globals.Ribbons.Ribbon1.button_importa_estilos.Enabled = true;
-            Globals.Ribbons.Ribbon1.button_importa_estilos.SuperTip = "Importa Estilos de parágrafos.";
-        }
+        //public void button_importa_estilos_Default()
+        //{
+        //    Globals.Ribbons.Ribbon1.button_importa_estilos.Enabled = true;
+        //    Globals.Ribbons.Ribbon1.button_importa_estilos.SuperTip = "Importa Estilos de parágrafos.";
+        //}
         public void button_limpa_estilos_Default()
         {
             Globals.Ribbons.Ribbon1.button_limpa_estilos.Enabled = true;
