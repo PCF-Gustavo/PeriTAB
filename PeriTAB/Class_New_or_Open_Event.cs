@@ -48,14 +48,14 @@ namespace PeriTAB
         public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc) 
         {
             //MessageBox.Show("new or open");
-            Class_Buttons iClass_Buttons = new Class_Buttons();
+            //Class_Buttons iClass_Buttons = new Class_Buttons();
 
             //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
             //iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
             //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Metodo_TaskPanes_Visible(true);
 
-            if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
+            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
             Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
 
             //Configura o Task Pane
@@ -69,29 +69,34 @@ namespace PeriTAB
             //if (Doc != null)
             //{
             //MessageBox.Show("fefewfw fwefw2222");
-                
-            Globals.ThisAddIn.iMyUserControl = new MyUserControl();
-            Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
-            //System.Windows.Forms.MessageBox.Show(Control.DefaultFont.ToString());
-            //Globals.ThisAddIn.iMyUserControl.Font = Control.DefaultFont;
-            //Globals.ThisAddIn.iMyUserControl.Font = Control.;
-            //Globals.ThisAddIn.iMyUserControl.AutoScroll = false;
 
-            Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
-            iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+            if (!Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
+            {
 
-            //list_UserControl.Add(Globals.ThisAddIn.iMyUserControl);
-            iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
-            Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, Globals.ThisAddIn.iMyUserControl);
-            Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
-            //MessageBox.Show("Taskpane adicionado");
-            //MessageBox.Show(Globals.ThisAddIn.CustomTaskPanes.Count.ToString());
-            //MessageBox.Show(Globals.ThisAddIn.Application.Documents.Count.ToString());
-            //iTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
-            //iTaskPane.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
-            //iTaskPane.Height = 90;
-            RedimensionarTaskPane();
-            iTaskPane.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+                Globals.ThisAddIn.iMyUserControl = new MyUserControl();
+                Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+                //System.Windows.Forms.MessageBox.Show(Control.DefaultFont.ToString());
+                //Globals.ThisAddIn.iMyUserControl.Font = Control.DefaultFont;
+                //Globals.ThisAddIn.iMyUserControl.Font = Control.;
+                //Globals.ThisAddIn.iMyUserControl.AutoScroll = false;
+
+                Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+                iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+
+                //list_UserControl.Add(Globals.ThisAddIn.iMyUserControl);
+                iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
+                Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, Globals.ThisAddIn.iMyUserControl);
+                Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
+                //MessageBox.Show("Taskpane adicionado");
+                //MessageBox.Show(Globals.ThisAddIn.CustomTaskPanes.Count.ToString());
+                //MessageBox.Show(Globals.ThisAddIn.Application.Documents.Count.ToString());
+                //iTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
+                //iTaskPane.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
+                //iTaskPane.Height = 90;
+                iTaskPane.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+                RedimensionarTaskPane();
+            }
+            //iTaskPane.VisibleChanged += MyCustomTaskPane_VisibleChanged;
 
             //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true;
 

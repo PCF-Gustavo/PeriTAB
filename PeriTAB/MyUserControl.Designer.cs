@@ -89,7 +89,7 @@
             this.button_secao_1.TabIndex = 0;
             this.button_secao_1.Text = "Seção Primária";
             this.button_secao_1.UseVisualStyleBackColor = true;
-            this.button_secao_1.Click += new System.EventHandler(this.button_secao_1_Click);
+            this.button_secao_1.Click += new System.EventHandler(this.button_secoes_Click);
             // 
             // button_secao_2
             // 
@@ -100,7 +100,7 @@
             this.button_secao_2.TabIndex = 0;
             this.button_secao_2.Text = "Seção Secundária";
             this.button_secao_2.UseVisualStyleBackColor = true;
-            this.button_secao_2.Click += new System.EventHandler(this.button_secao_2_Click);
+            this.button_secao_2.Click += new System.EventHandler(this.button_secoes_Click);
             // 
             // button_secao_3
             // 
@@ -111,7 +111,7 @@
             this.button_secao_3.TabIndex = 0;
             this.button_secao_3.Text = "Seção Terciária";
             this.button_secao_3.UseVisualStyleBackColor = true;
-            this.button_secao_3.Click += new System.EventHandler(this.button_secao_3_Click);
+            this.button_secao_3.Click += new System.EventHandler(this.button_secoes_Click);
             // 
             // button_secao_4
             // 
@@ -122,7 +122,7 @@
             this.button_secao_4.TabIndex = 0;
             this.button_secao_4.Text = "Seção Quaternária";
             this.button_secao_4.UseVisualStyleBackColor = true;
-            this.button_secao_4.Click += new System.EventHandler(this.button_secao_4_Click);
+            this.button_secao_4.Click += new System.EventHandler(this.button_secoes_Click);
             // 
             // button_enumeracao
             // 
@@ -221,7 +221,7 @@
             this.button_secao_5.TabIndex = 0;
             this.button_secao_5.Text = "Seção Quinária";
             this.button_secao_5.UseVisualStyleBackColor = true;
-            this.button_secao_5.Click += new System.EventHandler(this.button_secao_5_Click);
+            this.button_secao_5.Click += new System.EventHandler(this.button_secoes_Click);
             // 
             // button_notas_de_rodape
             // 

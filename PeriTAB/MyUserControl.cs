@@ -12,6 +12,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using System.Text.RegularExpressions;
 
 namespace PeriTAB
 {
@@ -244,348 +245,387 @@ namespace PeriTAB
         //    Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
         //    Globals.ThisAddIn.Application.ScreenUpdating = true;
         //}
-        private void button_secao_1_Click(object sender, EventArgs e)
+        //private void button_secao_1_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+        //    //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+        //    //string estilo_nome = "04a - Seção_1 (PeriTAB)";
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //    string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+        //    string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
+        //    {
+
+
+        //        p.Range.set_Style((object)estilo_nome); 
+        //        Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
+
+        //        int s;
+        //        if (p.Range.Text.Length >= 7) { s = 7; } else { s = p.Range.Text.Length; }
+        //        if (s == 0) break;
+        //        if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
+        //        {
+        //            string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+        //            try
+        //            {
+        //                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+        //                {
+        //                    //MessageBox.Show(a);
+        //                    int loc_hifen = a.IndexOf("-");
+        //                    //MessageBox.Show(loc_hifen.ToString());
+        //                    for (int i = 1; i <= loc_hifen; i++)
+        //                    {
+        //                        //MessageBox.Show(p.Range.Characters[1].Text);
+        //                        if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+        //                        p.Range.Characters[1].Delete();
+        //                    }
+        //                    //break;
+        //                }
+        //            }
+        //            catch (System.ArgumentOutOfRangeException) { }
+        //        }
+        //    }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Seção Primária: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
+
+        private void button_secoes_Click(object sender, EventArgs e)
         {
             Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            //string estilo_nome = "04a - Seção_1 (PeriTAB)";
+
             string estilo_nome = dict_botao_e_estilo[sender as Button];
             string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
             string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
             Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs) 
+            // Expressão regular para identificar prefixos de números romanos com espaços, hífen/en dash e mais espaços
+            //Regex romanPrefixRegex = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3}))\s*[-\u2013]\s*");
+            //Regex Regex_prefixo_secoes = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)");
+            //Regex Regex_prefixo_secoes = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\s*(\.\d+)*\s*[-\u2013]\s*)");
+            Regex Regex_prefixo_secoes = new Regex(@"^\s*(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)");
+
+
+            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
             {
-
-
-                p.Range.set_Style((object)estilo_nome); 
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); } } //Deleta parágrafo anterior em branco
-
-                int s;
-                if (p.Range.Text.Length >= 7) { s = 7; } else { s = p.Range.Text.Length; }
-                if (s == 0) break;
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
-                {
-                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    try
-                    {
-                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
-                        {
-                            //MessageBox.Show(a);
-                            int loc_hifen = a.IndexOf("-");
-                            //MessageBox.Show(loc_hifen.ToString());
-                            for (int i = 1; i <= loc_hifen; i++)
-                            {
-                                //MessageBox.Show(p.Range.Characters[1].Text);
-                                if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                                p.Range.Characters[1].Delete();
-                            }
-                            //break;
-                        }
-                    }
-                    catch (System.ArgumentOutOfRangeException) { }
-                }
-
-
-                ////string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-").Replace(".", "").Replace("0", "").Replace("1", "").Replace("2", "").Replace("3", "").Replace("4", "").Replace("5", "").Replace("6", "").Replace("7", "").Replace("8", "").Replace("9", "");
-                //int loc_hifen = a.IndexOf("-");
-                //MessageBox.Show(a);
-                //for (int i = 1; i <= loc_hifen; i++)
+                // Verifica e apaga todos os parágrafos anteriores em branco ou apenas com espaços
+                //Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1);
+                //while (r != null && string.IsNullOrWhiteSpace(r.Text)) // Verifica se o parágrafo está em branco ou apenas com espaços
                 //{
-                //    MessageBox.Show(p.Range.Characters[1].Text);
-                //    p.Range.Characters[1].Delete();
+                //    r.Delete(); // Deleta o parágrafo
+                //    r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); // Avança para o parágrafo anterior
                 //}
-                //if (loc_hifen != -1)
-                //{
-                //    //MessageBox.Show(a.Substring(0, 2).Replace(" ", ""));
-                //    if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Substring(0, 2) == "II" | a.Substring(0, 2) == "IV" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Substring(0, 2) == "VI")
-                //    {
-                //        for (int i = 1; i <= loc_hifen; i++)
-                //        {
-                //            //MessageBox.Show(p.Range.Characters[1].Text);
-                //            p.Range.Characters[1].Delete();
-                //        }
-                //    }
-                //}
-                //Replace(((char)8211).ToString(), "-")
-                //if ((p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) != -1)
-                //{
-                //    for (int i = 0; i <= (p.Range.Text.Substring(0, 12)).IndexOf(Convert.ToChar(150)) - 1; i++)
-                //    {
-                //        MessageBox.Show(p.Range.Characters[i].ToString());
-                //        p.Range.Characters[i].Delete();
-                //    }
-                //}
-            }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                string msg_StatusBar = "Estilo Seção Primária: Sucesso";
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+                Paragraph previousParagraph = p.Previous();
+                while (previousParagraph != null && string.IsNullOrWhiteSpace(previousParagraph.Range.Text)) // Verifica se o parágrafo está em branco ou apenas com espaços
+                {
+                    previousParagraph.Range.Delete(); // Deleta o parágrafo
+                    previousParagraph = p.Previous(); // Avança para o parágrafo anterior
+                }
 
-        private void button_secao_2_Click(object sender, EventArgs e)
-        {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            //string estilo_nome = "04b - Seção_2 (PeriTAB)";
-            //Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
-            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
-            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+                // Verifica se o texto começa com o prefixo
+                string paragraphText = p.Range.Text;
+                Match match = Regex_prefixo_secoes.Match(paragraphText);
 
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
+                if (match.Success)
+                {
+                    // Calcula o comprimento do prefixo e remove-o do parágrafo
+                    int prefixLength = match.Length;
+                    for (int i = 1; i <= prefixLength; i++)
+                    {
+                        if (p.Range.Characters[1].Fields.Count > 0)
+                        {
+                            p.Range.Characters[1].Fields.Unlink();
+                        }
+                        p.Range.Characters[1].Delete();
+                    }
+                }
+
                 p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
-                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
-                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
-                    {
-                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
-                        {
-                            p.Range.ParagraphFormat.SpaceBefore = 0;
-                        }
-                    }
-                }
-
-                int s;
-                if (p.Range.Text.Length >= 9) { s = 9; } else { s = p.Range.Text.Length; }
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    try
-                    {
-                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
-                    {
-                        int loc_hifen = a.IndexOf("-");
-                        for (int i = 1; i <= loc_hifen; i++)
-                        {
-                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                            p.Range.Characters[1].Delete();
-                        }
-                    }
-                    }
-                    catch (System.ArgumentOutOfRangeException) { }
-                }
             }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+
+            // Exibe o tempo de execução se estiver no modo debugging
+            if (Ribbon1.Variables.debugging)
             {
-                string msg_StatusBar = "Estilo Seção Secundária: Sucesso";
+                string msg_StatusBar = "Estilo Seção: Sucesso";
                 stopwatch.Stop();
                 msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
             }
+
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
 
-        private void button_secao_3_Click(object sender, EventArgs e)
-        {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            //string estilo_nome = "04c - Seção_3 (PeriTAB)";
-            //Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
-            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
-            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //private void button_secao_2_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+        //    //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+        //    //string estilo_nome = "04b - Seção_2 (PeriTAB)";
+        //    //Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //    string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+        //    string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
-                p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
-                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
-                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
-                    {
-                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
-                        {
-                            p.Range.ParagraphFormat.SpaceBefore = 0;
-                        }
-                    }
-                }
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+        //    {
+        //        p.Range.set_Style((object)estilo_nome);
+        //        Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+        //        if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+        //            if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
+        //            {
+        //                if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+        //                {
+        //                    p.Range.ParagraphFormat.SpaceBefore = 0;
+        //                }
+        //            }
+        //        }
 
-                int s;
-                if (p.Range.Text.Length >= 11) { s = 11; } else { s = p.Range.Text.Length; }
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                        try
-                        {
-                            if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
-                    {
-                        int loc_hifen = a.IndexOf("-");
-                        for (int i = 1; i <= loc_hifen; i++)
-                        {
-                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                            p.Range.Characters[1].Delete();
-                        }
-                    }
-                    }
-                    catch (System.ArgumentOutOfRangeException) { }
-                }
-            }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                string msg_StatusBar = "Estilo Seção Terciária: Sucesso";
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //        int s;
+        //        if (p.Range.Text.Length >= 9) { s = 9; } else { s = p.Range.Text.Length; }
+        //        if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+        //            try
+        //            {
+        //                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+        //            {
+        //                int loc_hifen = a.IndexOf("-");
+        //                for (int i = 1; i <= loc_hifen; i++)
+        //                {
+        //                    if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+        //                    p.Range.Characters[1].Delete();
+        //                }
+        //            }
+        //            }
+        //            catch (System.ArgumentOutOfRangeException) { }
+        //        }
+        //    }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Seção Secundária: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
-        private void button_secao_4_Click(object sender, EventArgs e)
-        {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            //string estilo_nome = "04d - Seção_4 (PeriTAB)";
-            //Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
-            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
-            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //private void button_secao_3_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+        //    //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+        //    //string estilo_nome = "04c - Seção_3 (PeriTAB)";
+        //    //Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //    string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+        //    string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
-                p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
-                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
-                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
-                    {
-                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
-                        {
-                            p.Range.ParagraphFormat.SpaceBefore = 0;
-                        }
-                    }
-                }
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+        //    {
+        //        p.Range.set_Style((object)estilo_nome);
+        //        Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+        //        if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+        //            if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
+        //            {
+        //                if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+        //                {
+        //                    p.Range.ParagraphFormat.SpaceBefore = 0;
+        //                }
+        //            }
+        //        }
 
-                int s;
-                if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                            try
-                            {
-                                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
-                    {
-                        int loc_hifen = a.IndexOf("-");
-                        for (int i = 1; i <= loc_hifen; i++)
-                        {
-                            if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                            p.Range.Characters[1].Delete();
-                        }
-                    }
-                    }
-                    catch (System.ArgumentOutOfRangeException) { }
-                }
-            }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                string msg_StatusBar = "Estilo Seção Quaternária: Sucesso";
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //        int s;
+        //        if (p.Range.Text.Length >= 11) { s = 11; } else { s = p.Range.Text.Length; }
+        //        if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+        //            try
+        //            {
+        //                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+        //                {
+        //                    int loc_hifen = a.IndexOf("-");
+        //                    for (int i = 1; i <= loc_hifen; i++)
+        //                    {
+        //                        if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+        //                        p.Range.Characters[1].Delete();
+        //                    }
+        //                }
+        //            }
+        //            catch (System.ArgumentOutOfRangeException) { }
+        //        }
+        //    }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Seção Terciária: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
-        private void button_secao_5_Click(object sender, EventArgs e)
-        {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-            //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
-            //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
-            //string estilo_nome = "04d - Seção_4 (PeriTAB)";
-            //Globals.ThisAddIn.Application.ScreenUpdating = false;
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
-            string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
-            string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //private void button_secao_4_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+        //    //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+        //    //string estilo_nome = "04d - Seção_4 (PeriTAB)";
+        //    //Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //    string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+        //    string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
-                p.Range.set_Style((object)estilo_nome);
-                Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
-                if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
-                    if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
-                    {
-                        if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
-                        {
-                            p.Range.ParagraphFormat.SpaceBefore = 0;
-                        }
-                    }
-                }
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+        //    {
+        //        p.Range.set_Style((object)estilo_nome);
+        //        Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+        //        if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+        //            if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
+        //            {
+        //                if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+        //                {
+        //                    p.Range.ParagraphFormat.SpaceBefore = 0;
+        //                }
+        //            }
+        //        }
 
-                int s;
-                if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
-                if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
-                {
-                    string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
-                    try
-                    {
-                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
-                        {
-                            int loc_hifen = a.IndexOf("-");
-                            for (int i = 1; i <= loc_hifen; i++)
-                            {
-                                if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
-                                p.Range.Characters[1].Delete();
-                            }
-                        }
-                    }
-                    catch (System.ArgumentOutOfRangeException) { }
-                }
-            }
-            if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                string msg_StatusBar = "Estilo Seção Quinária: Sucesso";
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
-        }
+        //        int s;
+        //        if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
+        //        if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+        //                    try
+        //                    {
+        //                        if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+        //            {
+        //                int loc_hifen = a.IndexOf("-");
+        //                for (int i = 1; i <= loc_hifen; i++)
+        //                {
+        //                    if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+        //                    p.Range.Characters[1].Delete();
+        //                }
+        //            }
+        //            }
+        //            catch (System.ArgumentOutOfRangeException) { }
+        //        }
+        //    }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Seção Quaternária: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
+
+        //private void button_secao_5_Click(object sender, EventArgs e)
+        //{
+        //    Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
+        //    //string estilo_nome_baseado = "04 - Seções (PeriTAB)";
+        //    //string estilo_nome_seguinte = "02 - Corpo do Texto (PeriTAB)";
+        //    //string estilo_nome = "04d - Seção_4 (PeriTAB)";
+        //    //Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    //Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //    string estilo_nome_baseado = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_BaseStyle().NameLocal;
+        //    string estilo_nome_seguinte = Globals.ThisAddIn.Application.ActiveDocument.Styles[estilo_nome].get_NextParagraphStyle().NameLocal;
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_seguinte, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome, WdOrganizerObject.wdOrganizerObjectStyles);
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+        //    {
+        //        p.Range.set_Style((object)estilo_nome);
+        //        Range r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); if (r != null) { if (r.Text == ((char)13).ToString()) { r.Delete(); r = Globals.ThisAddIn.Application.Selection.Previous(WdUnits.wdParagraph, 1); } } //Deleta parágrafo anterior em branco
+        //        if (r != null & Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            Microsoft.Office.Interop.Word.Style r_estilo = (Microsoft.Office.Interop.Word.Style)r.get_Style();
+        //            if (r_estilo != null) //Ao que parece, paragráfos com o estilo "revisado" perdem o parâmetro de estilo. Esta linha evita este erro.          
+        //            {
+        //                if (r_estilo.NameLocal.ToString() == "04a - Seção_1 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04b - Seção_2 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04c - Seção_3 (PeriTAB)" | r_estilo.NameLocal.ToString() == "04d - Seção_4 (PeriTAB)")
+        //                {
+        //                    p.Range.ParagraphFormat.SpaceBefore = 0;
+        //                }
+        //            }
+        //        }
+
+        //        int s;
+        //        if (p.Range.Text.Length >= 13) { s = 13; } else { s = p.Range.Text.Length; }
+        //        if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1)
+        //        {
+        //            string a = p.Range.Text.Substring(0, s).Replace(((char)8211).ToString(), "-");
+        //            try
+        //            {
+        //                if (a.Replace(" ", "").Substring(0, 2) == "I-" | a.Replace(" ", "").Substring(0, 3) == "II-" | a.Replace(" ", "").Substring(0, 4) == "III-" | a.Replace(" ", "").Substring(0, 3) == "IV-" | a.Replace(" ", "").Substring(0, 2) == "V-" | a.Replace(" ", "").Substring(0, 3) == "VI-" | a.Replace(" ", "").Substring(0, 4) == "VII-" | a.Replace(" ", "").Substring(0, 5) == "VIII-" | a.Replace(" ", "").Substring(0, 3) == "IX-" | a.Replace(" ", "").Substring(0, 2) == "X-" | a.Substring(0, 2) == "I." | a.Substring(0, 3) == "II." | a.Substring(0, 4) == "III." | a.Substring(0, 3) == "IV." | a.Substring(0, 2) == "V." | a.Substring(0, 3) == "VI." | a.Substring(0, 4) == "VII." | a.Substring(0, 5) == "VIII." | a.Substring(0, 3) == "IX." | a.Substring(0, 2) == "X.")
+        //                {
+        //                    int loc_hifen = a.IndexOf("-");
+        //                    for (int i = 1; i <= loc_hifen; i++)
+        //                    {
+        //                        if (p.Range.Characters[1].Fields.Count > 0) { p.Range.Characters[1].Fields.Unlink(); }
+        //                        p.Range.Characters[1].Delete();
+        //                    }
+        //                }
+        //            }
+        //            catch (System.ArgumentOutOfRangeException) { }
+        //        }
+        //    }
+        //    if (Ribbon1.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+        //    {
+        //        string msg_StatusBar = "Estilo Seção Quinária: Sucesso";
+        //        stopwatch.Stop();
+        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+        //        Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+        //    }
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //}
 
         private void button_enumeracao_Click(object sender, EventArgs e)
         {

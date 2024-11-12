@@ -51,7 +51,7 @@ namespace PeriTAB
     public partial class Ribbon1
     {
         // Cria instância das classes
-        Class_Buttons iClass_Buttons = new Class_Buttons();
+        //Class_Buttons iClass_Buttons = new Class_Buttons();
 
         // Gerencia variáveis globais
         public class Variables
@@ -61,7 +61,7 @@ namespace PeriTAB
             //private static string var1 = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
             //private static string var2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences;
-            private static string private_editBox_largura_Text, private_editBox_altura_Text;
+            //private static string private_editBox_largura_Text, private_editBox_altura_Text;
             private static readonly bool private_debugging;
             static Variables() // Bloco estático para definir o valor inicial das variáveis
             {
@@ -76,8 +76,8 @@ namespace PeriTAB
             public static string caminho_template { get { return private_caminho_template; } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string caminho_preferences { get { return private_caminho_preferences; } }
-            public static string editBox_largura_Text { get { return private_editBox_largura_Text; } set { private_editBox_largura_Text = value; } }
-            public static string editBox_altura_Text { get { return private_editBox_altura_Text; } set { private_editBox_altura_Text = value; } }
+            //public static string editBox_largura_Text { get { return private_editBox_largura_Text; } set { private_editBox_largura_Text = value; } }
+            //public static string editBox_altura_Text { get { return private_editBox_altura_Text; } set { private_editBox_altura_Text = value; } }
             //public static X509Certificate2 cert { get { return var_cert; } set { var_cert = value; } }
             //public static IExternalSignature sig { get { return var_sig; } set { var_sig = value; } }
             public static bool debugging { get { return private_debugging; } }
@@ -89,6 +89,7 @@ namespace PeriTAB
 
         private void Ribbon1_Load(object sender, RibbonUIEventArgs e)
         {
+            //iClass_Buttons.le_preferencias(Ribbon1.Variables.caminho_preferences);
             //MessageBox.Show("Ribbon1_Load");
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
             //try { File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal); } catch (IOException ex) { MessageBox.Show("PeriTAB_Template_tmp.dotm em uso"); Globals.ThisAddIn.Application.Quit(); return; }
@@ -157,11 +158,11 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_confere_num_legenda.Enabled = false;
                 Globals.ThisAddIn.Application.Run("atualiza_todos_campos"); //****************
                 Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
-                iClass_Buttons.muda_imagem("button_confere_num_legenda", Properties.Resources.lupa);
+                (sender as RibbonButton).Image = Properties.Resources.lupa;
                 button_confere_num_legenda.Enabled = true;
             }).Start();
         }
@@ -175,11 +176,11 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("button_atualiza_campos", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_atualiza_campos.Enabled = false;
                 Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
                 Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
-                iClass_Buttons.muda_imagem("button_atualiza_campos", Properties.Resources.atualizar);
+                (sender as RibbonButton).Image = Properties.Resources.atualizar;
                 button_atualiza_campos.Enabled = true;
             }).Start();
         }
@@ -325,7 +326,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_cola_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -526,7 +527,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_cola_imagem", Properties.Resources.image_icon);
+                (sender as RibbonButton).Image = Properties.Resources.image_icon;
                 button_cola_imagem.Enabled = true;
             }).Start();
         }
@@ -552,21 +553,22 @@ namespace PeriTAB
             //}
 
             // Checa se Variables.editBox_largura_Text já tem o valor de prefencia
-            if (string.IsNullOrEmpty(Variables.editBox_largura_Text)) Variables.editBox_largura_Text = Class_Buttons.preferences.largura;
+            //if (string.IsNullOrEmpty(Variables.editBox_largura_Text)) Variables.editBox_largura_Text = Class_Buttons.preferences.largura;
 
             if (checkBox_largura.Checked)
             {
                 checkBox_altura.Checked = false;
                 editBox_altura.Enabled = false;
-                Class_Buttons.preferences.altura = editBox_altura.Text;
+                //Class_Buttons.preferences.altura = editBox_altura.Text;
                 editBox_altura.Text = "";
                 editBox_largura.Enabled = true;
-                editBox_largura.Text = Variables.editBox_largura_Text;
+                //editBox_largura.Text = Variables.editBox_largura_Text;
+                editBox_largura.Text = Class_Controls.GetPreference("largura");
             }
-            else
-            {
-                checkBox_largura.Checked = true;
-            }
+            //else
+            //{
+            //    checkBox_largura.Checked = true;
+            //}
         }
 
         private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
@@ -577,21 +579,22 @@ namespace PeriTAB
             //    Variables.editBox_altura_Text = Class_Buttons.preferences.altura;
             //}
 
-            if (string.IsNullOrEmpty(Variables.editBox_altura_Text)) Variables.editBox_altura_Text = Class_Buttons.preferences.altura;
+            //if (string.IsNullOrEmpty(Variables.editBox_altura_Text)) Variables.editBox_altura_Text = Class_Buttons.preferences.altura;
 
             if (checkBox_altura.Checked)
             {
                 checkBox_largura.Checked = false;
                 editBox_largura.Enabled = false;
-                Class_Buttons.preferences.largura = editBox_largura.Text;
+                //Class_Buttons.preferences.largura = editBox_largura.Text;
                 editBox_largura.Text = "";
                 editBox_altura.Enabled = true;
-                editBox_altura.Text = Variables.editBox_altura_Text;
+                //editBox_altura.Text = Variables.editBox_altura_Text;
+                editBox_altura.Text = Class_Controls.GetPreference("altura");
             }
-            else
-            {
-                checkBox_altura.Checked = true;
-            }
+            //else
+            //{
+            //    checkBox_altura.Checked = true;
+            //}
         }
 
         private void checkBox_referencia_Click(object sender, RibbonControlEventArgs e)
@@ -607,13 +610,25 @@ namespace PeriTAB
         {
             //if (Variables.editBox_largura_Text == null) { Variables.editBox_largura_Text = Class_Buttons.preferences.largura; }
 
+            //if (float.TryParse(editBox_largura.Text, out float larg) & larg.ToString() == editBox_largura.Text & larg >= 0.1 & larg < 100)
+            //{
+            //    Variables.editBox_largura_Text = editBox_largura.Text;
+            //}
+            //else
+            //{
+            //    editBox_largura.Text = Variables.editBox_largura_Text;
+
+            //}
+
             if (float.TryParse(editBox_largura.Text, out float larg) & larg.ToString() == editBox_largura.Text & larg >= 0.1 & larg < 100)
             {
-                Variables.editBox_largura_Text = editBox_largura.Text;
+                //Class_Buttons.preferences.largura = editBox_largura.Text;
+                Class_Controls.ChangePreference("largura", editBox_largura.Text);
             }
             else
             {
-                editBox_largura.Text = Variables.editBox_largura_Text;
+                editBox_largura.Text = Class_Controls.GetPreference("largura");
+
             }
         }
 
@@ -621,13 +636,22 @@ namespace PeriTAB
         {
             //if (Variables.editBox_altura_Text == null) { Variables.editBox_altura_Text = Class_Buttons.preferences.altura; }
 
+            //if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text & alt >= 0.1 & alt < 100)
+            //{
+            //    Variables.editBox_altura_Text = editBox_altura.Text;
+            //}
+            //else
+            //{
+            //    editBox_altura.Text = Variables.editBox_altura_Text;
+            //}
             if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text & alt >= 0.1 & alt < 100)
             {
-                Variables.editBox_altura_Text = editBox_altura.Text;
+                //Class_Buttons.preferences.altura = editBox_altura.Text;
+                Class_Controls.ChangePreference("altura", editBox_altura.Text);
             }
             else
             {
-                editBox_altura.Text = Variables.editBox_altura_Text;
+                editBox_altura.Text = Class_Controls.GetPreference("altura"); ;
             }
         }
 
@@ -642,7 +666,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_renomeia_documento", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_cola_imagem.Enabled = false;
                 //Globals.ThisAddIn.Application.ScreenUpdating = false;
                 //Globals.ThisAddIn.Application.Run("renomeia_documento");
@@ -743,7 +767,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_renomeia_documento", Properties.Resources.abc);
+                (sender as RibbonButton).Image = Properties.Resources.abc;
                 button_cola_imagem.Enabled = true;
             }).Start();
         }
@@ -758,7 +782,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_gera_pdf.Enabled = false;
 
                 //iClass_Buttons.button_gera_pdf_image(load: true);
@@ -1070,7 +1094,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf);
+                (sender as RibbonButton).Image = Properties.Resources.icone_pdf;
                 button_gera_pdf.Enabled = true;
                 
             }).Start();
@@ -1118,7 +1142,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_redimensiona_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -1166,7 +1190,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_redimensiona_imagem", Properties.Resources.redimensionar2);
+                (sender as RibbonButton).Image = Properties.Resources.redimensionar2;
                 button_redimensiona_imagem.Enabled = true;
             }).Start();
         }
@@ -1180,7 +1204,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_autodimensiona_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -1353,7 +1377,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_autodimensiona_imagem", Properties.Resources.redimensionar3);
+                (sender as RibbonButton).Image = Properties.Resources.redimensionar3;
                 button_autodimensiona_imagem.Enabled = true;
             }).Start();
         }
@@ -1461,7 +1485,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_confere_preambulo.Enabled = false;
 
 
@@ -1477,7 +1501,7 @@ namespace PeriTAB
                 if (num_laudo == null | ano_laudo == null | unidade_laudo == null)
                 {
                     MessageBox.Show("Referência do laudo não encontrada.");
-                    iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
+                    (sender as RibbonButton).Image = Properties.Resources.checklist2;
                     button_confere_preambulo.Enabled = true;
                     return;
                 }
@@ -1538,7 +1562,7 @@ namespace PeriTAB
                         //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br/sistemas/criminalistica/documento.php?acao=localizar_registro&tipo_busca=numero_laudo&numero_busca=" + num_laudo + "/" + ano_laudo);
                     }
                 }
-                iClass_Buttons.muda_imagem("button_confere_preambulo", Properties.Resources.checklist2);
+                (sender as RibbonButton).Image = Properties.Resources.checklist2;
                 button_confere_preambulo.Enabled = true;
             }).Start();
         }
@@ -2418,7 +2442,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_inserir_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 //string selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
@@ -2441,7 +2465,7 @@ namespace PeriTAB
                 //    MessageBox.Show("opa");
                 //}
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+                (sender as RibbonButton).Image = Properties.Resources._;
                 menu_inserir_imagem.Enabled = true;
             }).Start();
 
@@ -2451,7 +2475,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_inserir_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -2464,7 +2488,7 @@ namespace PeriTAB
                     }
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+                (sender as RibbonButton).Image = Properties.Resources._;
                 menu_inserir_imagem.Enabled = true;
             }).Start();
         }
@@ -2473,7 +2497,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_inserir_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -2486,7 +2510,7 @@ namespace PeriTAB
                     }
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+                (sender as RibbonButton).Image = Properties.Resources._;
                 menu_inserir_imagem.Enabled = true;
             }).Start();
         }
@@ -2495,7 +2519,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_inserir_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 Range r = Globals.ThisAddIn.Application.Selection.Range;
@@ -2564,7 +2588,7 @@ namespace PeriTAB
                 }
                 r.Select();
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_inserir_imagem", Properties.Resources._);
+                (sender as RibbonButton).Image = Properties.Resources._;
                 menu_inserir_imagem.Enabled = true;
             }).Start();
         }
@@ -2573,7 +2597,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_remover_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -2584,7 +2608,7 @@ namespace PeriTAB
                     }
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+                (sender as RibbonButton).Image = Properties.Resources.x;
                 menu_remover_imagem.Enabled = true;
             }).Start();
         }
@@ -2593,7 +2617,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_remover_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -2604,7 +2628,7 @@ namespace PeriTAB
                     }
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+                (sender as RibbonButton).Image = Properties.Resources.x;
                 menu_remover_imagem.Enabled = true;
             }).Start();
         }
@@ -2613,7 +2637,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_remover_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 //MessageBox.Show(Globals.ThisAddIn.Application.Selection.ShapeRange.Count.ToString());
@@ -2632,7 +2656,7 @@ namespace PeriTAB
                     ishape.Delete();
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+                (sender as RibbonButton).Image = Properties.Resources.x;
                 menu_remover_imagem.Enabled = true;
             }).Start();
         }
@@ -2641,7 +2665,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_remover_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -2652,7 +2676,7 @@ namespace PeriTAB
                     }
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+                (sender as RibbonButton).Image = Properties.Resources.x;
                 menu_remover_imagem.Enabled = true;
             }).Start();
         }
@@ -2661,7 +2685,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_remover_imagem.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 List<InlineShape> listaShapes = new List<InlineShape>();
@@ -2677,7 +2701,7 @@ namespace PeriTAB
                     ishape.Delete();
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_remover_imagem", Properties.Resources.x);
+                (sender as RibbonButton).Image = Properties.Resources.x;
                 menu_remover_imagem.Enabled = true;
             }).Start();
         }
@@ -2686,7 +2710,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_inserir_tabela", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_inserir_tabela.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
                 Range r = Globals.ThisAddIn.Application.Selection.Range;
@@ -2725,7 +2749,7 @@ namespace PeriTAB
                 }
                 r.Select();
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_inserir_tabela", Properties.Resources._);
+                (sender as RibbonButton).Image = Properties.Resources._;
                 menu_inserir_tabela.Enabled = true;
             }).Start();
         }
@@ -2733,7 +2757,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_formatacao_tabela", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_formatacao_tabela.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -2759,7 +2783,7 @@ namespace PeriTAB
                 //}
 
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_formatacao_tabela", Properties.Resources.formatacao2);
+                (sender as RibbonButton).Image = Properties.Resources.formatacao2;
                 menu_formatacao_tabela.Enabled = true;
             }).Start();
         }
@@ -2768,7 +2792,7 @@ namespace PeriTAB
         {
             new Thread(() =>
             {
-                iClass_Buttons.muda_imagem("menu_formatacao_campos", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 menu_formatacao_campos.Enabled = false;
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -2813,7 +2837,7 @@ namespace PeriTAB
 
                 }
                 Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("menu_formatacao_campos", Properties.Resources.formatacao2);
+                (sender as RibbonButton).Image = Properties.Resources.formatacao2;
                 menu_formatacao_campos.Enabled = true;
             }).Start();
         }
@@ -2827,7 +2851,7 @@ namespace PeriTAB
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                iClass_Buttons.muda_imagem("button_abre_SISCRIM", Properties.Resources.load_icon_png_7969);
+                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
                 button_abre_SISCRIM.Enabled = false;
 
                 string[] identificadores_laudo = pega_identificadores_laudo();
@@ -2906,7 +2930,7 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                iClass_Buttons.muda_imagem("button_abre_SISCRIM", Properties.Resources.subir2);
+                (sender as RibbonButton).Image = Properties.Resources.subir2;
                 button_abre_SISCRIM.Enabled = true;
             }).Start();
         }

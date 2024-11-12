@@ -30,7 +30,7 @@ namespace PeriTAB
             //MessageBox.Show("ThisAddIn_Startup");
             //le_preferencias(Ribbon1.Variables.caminho_preferences);
 
-            // Ajuste dos valores de editBox_largura_Text e
+            // Ajuste dos valores de editBox_largura_Text e editBox_altura_Text
             //Ribbon1.Variables.editBox_largura_Text = Class_Buttons.preferences.largura;
             //Ribbon1.Variables.editBox_altura_Text = Class_Buttons.preferences.altura;
 
@@ -43,6 +43,8 @@ namespace PeriTAB
             //TaskPane1.VisibleChanged += MyCustomTaskPane_VisibleChanged;
 
 
+            Class_Controls iClass_Controls = new Class_Controls(); iClass_Controls.le_preferencias(Ribbon1.Variables.caminho_preferences); iClass_Controls.Configura_Valores_iniciais();
+
 
             //Inicia Eventos
             //iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Evento_New_or_Open();
@@ -52,7 +54,7 @@ namespace PeriTAB
             if (Globals.ThisAddIn.Application.Documents.Count == 1) { /*MessageBox.Show("sss");*/ iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument); }
             Class_DocumentBeforeClose_Event iClass_DocumentBeforeClose_Event = new Class_DocumentBeforeClose_Event(); iClass_DocumentBeforeClose_Event.Evento_DocumentBeforeClose();
             //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
-            Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.DefaultAll();
+            //Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.le_preferencias(Ribbon1.Variables.caminho_preferences); iClass_Buttons.DefaultAll(); 
             Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event(); iClass_DocSave_Event.Evento_DocSave();            
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
@@ -245,6 +247,7 @@ namespace PeriTAB
    
         private void escreve_preferencias(string caminho_preferences)
         {
+
             if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB))
             {
                 Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB);
@@ -254,15 +257,17 @@ namespace PeriTAB
 
             // Cria um dicionário de preferências
             var preferencias = new Dictionary<string, string>
-    {
-        { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_largura.Text) ? Ribbon1.Variables.editBox_largura_Text : Globals.Ribbons.Ribbon1.editBox_largura.Text }, // Verifica e define valores para largura se for vazio ou null (Ribbon1.Variables.editBox_largura_Text)
-        { "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_altura.Text) ? Ribbon1.Variables.editBox_altura_Text : Globals.Ribbons.Ribbon1.editBox_altura.Text },// Verifica e define valores para altura se for vazio ou null (Ribbon1.Variables.editBox_altura_Text)
-        { "largura_checked", Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() },
-        { "separador", Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label },
-        { "painel_de_estilos", Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked.ToString() },
-        { "assinar_pdf", Globals.Ribbons.Ribbon1.checkBox_assinar.Checked.ToString() },
-        { "abrir_pdf", Globals.Ribbons.Ribbon1.checkBox_abrir.Checked.ToString() }
-    };
+            {
+                //{ "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_largura.Text) ? Ribbon1.Variables.editBox_largura_Text : Globals.Ribbons.Ribbon1.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon1.Variables.editBox_largura_Text)
+                //{ ,"altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_altura.Text) ? Ribbon1.Variables.editBox_altura_Text : Globals.Ribbons.Ribbon1.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon1.Variables.editBox_altura_Text)
+                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_largura.Text) ? Class_Controls.GetPreference("largura") : Globals.Ribbons.Ribbon1.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon1.Variables.editBox_largura_Text)
+                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_altura.Text) ? Class_Controls.GetPreference("altura") : Globals.Ribbons.Ribbon1.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon1.Variables.editBox_altura_Text)
+                ,{ "largura_checked", Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() }
+                ,{ "separador", Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label }
+                ,{ "painel_de_estilos", Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked.ToString() }
+                ,{ "assinar_pdf", Globals.Ribbons.Ribbon1.checkBox_assinar.Checked.ToString() }
+                ,{ "abrir_pdf", Globals.Ribbons.Ribbon1.checkBox_abrir.Checked.ToString() }
+            };
             //if (string.IsNullOrEmpty(preferencias["altura"]) || string.IsNullOrEmpty(preferencias["largura"])) 
             //{
             //    MessageBox.Show("erro na preferencia");

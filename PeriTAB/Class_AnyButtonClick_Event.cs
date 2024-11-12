@@ -69,12 +69,14 @@ namespace PeriTAB
         {
             //MessageBox.Show("AnyButtonClick_Ribbon");
 
-            Class_Buttons iClass_Buttons = new Class_Buttons();
+            //Class_Buttons iClass_Buttons = new Class_Buttons();
+            Class_Controls iClass_Controls = new Class_Controls();
 
             ////Revisa a habilitação do botao "Gera PDF" do Ribbon e Sessão de token
-            iClass_Buttons.button_gera_pdf_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf); ; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
-            if (!Globals.Ribbons.Ribbon1.checkBox_assinar.Checked) { iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf); }
+            //iClass_Buttons.button_gera_pdf_Default();
+            iClass_Controls.button_gera_pdf_valorinicial();
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            if (!Globals.Ribbons.Ribbon1.checkBox_assinar.Checked) { Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf; }
 
             //Revisa o destaque dos botoes do TaskPane
             if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked)
