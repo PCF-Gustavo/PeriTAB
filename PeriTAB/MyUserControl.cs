@@ -316,9 +316,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             // Expressão regular para identificar prefixos de números romanos com espaços, hífen/en dash e mais espaços
-            //Regex romanPrefixRegex = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3}))\s*[-\u2013]\s*");
-            //Regex Regex_prefixo_secoes = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)");
-            //Regex Regex_prefixo_secoes = new Regex(@"^(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})\s*(\.\d+)*\s*[-\u2013]\s*)");
             Regex Regex_prefixo_secoes = new Regex(@"^\s*(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)");
 
 
