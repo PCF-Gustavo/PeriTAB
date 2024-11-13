@@ -56,7 +56,7 @@
             this.button_sem_formatacao.TabIndex = 0;
             this.button_sem_formatacao.Text = "Sem Formatação";
             this.button_sem_formatacao.UseVisualStyleBackColor = true;
-            this.button_sem_formatacao.Click += new System.EventHandler(this.button_sem_formatacao_Click);
+            this.button_sem_formatacao.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_corpo_do_texto
             // 
@@ -67,7 +67,7 @@
             this.button_corpo_do_texto.TabIndex = 0;
             this.button_corpo_do_texto.Text = "Corpo do Texto";
             this.button_corpo_do_texto.UseVisualStyleBackColor = true;
-            this.button_corpo_do_texto.Click += new System.EventHandler(this.button_corpo_do_texto_Click);
+            this.button_corpo_do_texto.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_citacoes
             // 
@@ -78,7 +78,7 @@
             this.button_citacoes.TabIndex = 0;
             this.button_citacoes.Text = "Citações";
             this.button_citacoes.UseVisualStyleBackColor = true;
-            this.button_citacoes.Click += new System.EventHandler(this.button_citacoes_Click);
+            this.button_citacoes.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_secao_1
             // 
@@ -89,7 +89,7 @@
             this.button_secao_1.TabIndex = 0;
             this.button_secao_1.Text = "Seção Primária";
             this.button_secao_1.UseVisualStyleBackColor = true;
-            this.button_secao_1.Click += new System.EventHandler(this.button_secoes_Click);
+            this.button_secao_1.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_secao_2
             // 
@@ -100,7 +100,7 @@
             this.button_secao_2.TabIndex = 0;
             this.button_secao_2.Text = "Seção Secundária";
             this.button_secao_2.UseVisualStyleBackColor = true;
-            this.button_secao_2.Click += new System.EventHandler(this.button_secoes_Click);
+            this.button_secao_2.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_secao_3
             // 
@@ -111,7 +111,7 @@
             this.button_secao_3.TabIndex = 0;
             this.button_secao_3.Text = "Seção Terciária";
             this.button_secao_3.UseVisualStyleBackColor = true;
-            this.button_secao_3.Click += new System.EventHandler(this.button_secoes_Click);
+            this.button_secao_3.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_secao_4
             // 
@@ -122,7 +122,7 @@
             this.button_secao_4.TabIndex = 0;
             this.button_secao_4.Text = "Seção Quaternária";
             this.button_secao_4.UseVisualStyleBackColor = true;
-            this.button_secao_4.Click += new System.EventHandler(this.button_secoes_Click);
+            this.button_secao_4.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_enumeracao
             // 
@@ -133,7 +133,7 @@
             this.button_enumeracao.TabIndex = 0;
             this.button_enumeracao.Text = "Enumeração";
             this.button_enumeracao.UseVisualStyleBackColor = true;
-            this.button_enumeracao.Click += new System.EventHandler(this.button_enumeracao_Click);
+            this.button_enumeracao.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_figuras
             // 
@@ -144,7 +144,7 @@
             this.button_figuras.TabIndex = 0;
             this.button_figuras.Text = "Figuras";
             this.button_figuras.UseVisualStyleBackColor = true;
-            this.button_figuras.Click += new System.EventHandler(this.button_figuras_Click);
+            this.button_figuras.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_legendas_de_figuras
             // 
@@ -155,7 +155,7 @@
             this.button_legendas_de_figuras.TabIndex = 0;
             this.button_legendas_de_figuras.Text = "Legendas de Figuras";
             this.button_legendas_de_figuras.UseVisualStyleBackColor = true;
-            this.button_legendas_de_figuras.Click += new System.EventHandler(this.button_legendas_de_figuras_Click);
+            this.button_legendas_de_figuras.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_legendas_de_tabelas
             // 
@@ -166,7 +166,7 @@
             this.button_legendas_de_tabelas.TabIndex = 0;
             this.button_legendas_de_tabelas.Text = "Legendas de Tabelas";
             this.button_legendas_de_tabelas.UseVisualStyleBackColor = true;
-            this.button_legendas_de_tabelas.Click += new System.EventHandler(this.button_legendas_de_tabelas_Click);
+            this.button_legendas_de_tabelas.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_quesitos
             // 
@@ -177,7 +177,7 @@
             this.button_quesitos.TabIndex = 0;
             this.button_quesitos.Text = "Quesitos";
             this.button_quesitos.UseVisualStyleBackColor = true;
-            this.button_quesitos.Click += new System.EventHandler(this.button_quesitos_Click);
+            this.button_quesitos.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_fecho
             // 
@@ -188,7 +188,7 @@
             this.button_fecho.TabIndex = 0;
             this.button_fecho.Text = "Fecho";
             this.button_fecho.UseVisualStyleBackColor = true;
-            this.button_fecho.Click += new System.EventHandler(this.button_fecho_Click);
+            this.button_fecho.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_textos_de_figuras
             // 
@@ -210,7 +210,7 @@
             this.button_paragrafo_numerado.TabIndex = 0;
             this.button_paragrafo_numerado.Text = "Parágrafo Numerado";
             this.button_paragrafo_numerado.UseVisualStyleBackColor = true;
-            this.button_paragrafo_numerado.Click += new System.EventHandler(this.button_paragrafo_numerado_Click);
+            this.button_paragrafo_numerado.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_secao_5
             // 
@@ -221,7 +221,7 @@
             this.button_secao_5.TabIndex = 0;
             this.button_secao_5.Text = "Seção Quinária";
             this.button_secao_5.UseVisualStyleBackColor = true;
-            this.button_secao_5.Click += new System.EventHandler(this.button_secoes_Click);
+            this.button_secao_5.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_notas_de_rodape
             // 
@@ -232,7 +232,7 @@
             this.button_notas_de_rodape.TabIndex = 0;
             this.button_notas_de_rodape.Text = "Notas de rodapé";
             this.button_notas_de_rodape.UseVisualStyleBackColor = true;
-            this.button_notas_de_rodape.Click += new System.EventHandler(this.button_notas_de_rodape_Click);
+            this.button_notas_de_rodape.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // MyUserControl
             // 
