@@ -63,6 +63,8 @@ namespace PeriTAB
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences;
             //private static string private_editBox_largura_Text, private_editBox_altura_Text;
             private static readonly bool private_debugging;
+            private static AddIn private_AddIn_PeriTAB;
+            private static Template private_Template_PeriTAB;
             static Variables() // Bloco estático para definir o valor inicial das variáveis
             {
                 private_caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
@@ -74,6 +76,8 @@ namespace PeriTAB
 
             // Declara variáveis públicas
             public static string caminho_template { get { return private_caminho_template; } }
+            public static AddIn AddIn_PeriTAB { get { return private_AddIn_PeriTAB; } set { private_AddIn_PeriTAB = value; } }
+            public static Template Template_PeriTAB { get { return private_Template_PeriTAB; } set { private_Template_PeriTAB = value; } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string caminho_preferences { get { return private_caminho_preferences; } }
             //public static string editBox_largura_Text { get { return private_editBox_largura_Text; } set { private_editBox_largura_Text = value; } }
@@ -102,7 +106,17 @@ namespace PeriTAB
                     MessageBox.Show("PeriTAB_Template_tmp.dotm não encontrado"); Globals.ThisAddIn.Application.Quit(); return;
                 }
             }
-            Globals.ThisAddIn.Application.AddIns.Add(Variables.caminho_template);
+            Variables.AddIn_PeriTAB = Globals.ThisAddIn.Application.AddIns.Add(Variables.caminho_template);
+
+            // Retorna o valor de PeriTAB como tipo Template
+            foreach (Microsoft.Office.Interop.Word.Template template in Globals.ThisAddIn.Application.Templates)
+            {
+                if (template.Name == "PeriTAB_Template_tmp.dotm")
+                {
+                    Variables.Template_PeriTAB = template;
+                    break;
+                }
+            }
 
             // Escreve o número da versão
             //System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
@@ -303,7 +317,35 @@ namespace PeriTAB
 
         private void button_inserir_pagina_extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldPage, slash + "* Cardtext " + slash + "* Lower", false);
+            //Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldPage, slash + "* Cardtext " + slash + "* Lower", false);
+
+            //// Procura pelo template_PeriTAB  --- dá pra melhorar chamando o template de forma global
+            //Template template_PeriTAB = null;
+            //foreach (Microsoft.Office.Interop.Word.Template template in Globals.ThisAddIn.Application.Templates) 
+            //{
+            //    if (template.Name == "PeriTAB_Template_tmp.dotm")
+            //    {
+            //        template_PeriTAB = template;
+            //        break;
+            //    }
+            //}
+
+
+
+
+
+            // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
+            string autotextName = "Numero_de_paginas_por_extenso";
+            BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
+            for (int i = 1; i <= buildingBlockEntries.Count; i++)
+            {
+                BuildingBlock bb = buildingBlockEntries.Item(i);
+                if (bb.Name == autotextName)
+                {
+                    bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
+                    break;
+                }
+            }
         }
 
         private void button_inserir_paginas_Click(object sender, RibbonControlEventArgs e)
@@ -312,7 +354,31 @@ namespace PeriTAB
         }
         private void button_inserir_paginas_extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldNumPages, slash + "* Cardtext " + slash + "* Lower", false);
+            //Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldNumPages, slash + "* Cardtext " + slash + "* Lower", false);
+
+            //// Procura pelo template_PeriTAB  --- dá pra melhorar chamando o template de forma global
+            //Template template_PeriTAB = null;
+            //foreach (Microsoft.Office.Interop.Word.Template template in Globals.ThisAddIn.Application.Templates)
+            //{
+            //    if (template.Name == "PeriTAB_Template_tmp.dotm")
+            //    {
+            //        template_PeriTAB = template;
+            //        break;
+            //    }
+            //}
+
+            // Procurar pelo autotexto Pagina_atual_por_extenso no template_PeriTAB
+            string autotextName = "Pagina_atual_por_extenso";
+            BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
+            for (int i = 1; i <= buildingBlockEntries.Count; i++)
+            {
+                BuildingBlock bb = buildingBlockEntries.Item(i);
+                if (bb.Name == autotextName)
+                {
+                    bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
+                    break;
+                }
+            }
         }
 
 
