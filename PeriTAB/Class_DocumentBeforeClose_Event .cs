@@ -11,6 +11,7 @@ namespace PeriTAB
         }
         private void Metodo_DocumentBeforeClose(Document Doc, ref bool Cancel)
         {
+            //MessageBox.Show("Evento_DocumentBeforeClose");
             //try
             //{
             //    Microsoft.Office.Tools.CustomTaskPane CTP = Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane[Doc];
@@ -20,7 +21,7 @@ namespace PeriTAB
             //}
             //catch (System.Collections.Generic.KeyNotFoundException) { }
 
-
+            //*********************************************
             // Exclusão do Painel de Estilos. Remove também dos dicionarios.
             if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc))
             {

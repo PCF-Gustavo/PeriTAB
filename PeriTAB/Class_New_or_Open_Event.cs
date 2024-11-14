@@ -20,14 +20,17 @@ namespace PeriTAB
 {
     public class Class_New_or_Open_Event
     {
+        Class_DocumentClose_Event iClass_DocumentClose_Event = new Class_DocumentClose_Event();
 
         //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event;
         //public static MyUserControl iUserControl_1;
         public static Microsoft.Office.Tools.CustomTaskPane iTaskPane;
         //public static List<MyUserControl> list_UserControl = new List<MyUserControl>();
-        
+
         //public static List<Microsoft.Office.Tools.CustomTaskPane> list_TaskPane = new List<Microsoft.Office.Tools.CustomTaskPane>();
         //public static List<Microsoft.Office.Interop.Word.Document> list_Doc = new List<Microsoft.Office.Interop.Word.Document>();
+
+
 
         public static Dictionary<Microsoft.Office.Interop.Word.Document, Microsoft.Office.Tools.CustomTaskPane> Dicionario_Doc_e_TaskPane = new Dictionary<Microsoft.Office.Interop.Word.Document, Microsoft.Office.Tools.CustomTaskPane>();
 
@@ -47,16 +50,19 @@ namespace PeriTAB
         }
         public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc) 
         {
-            //MessageBox.Show("new or open");
+            //System.Windows.Forms.MessageBox.Show("new or open");
             //Class_Buttons iClass_Buttons = new Class_Buttons();
 
-            //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
-            //iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+            //Class_ChangeActiveDocumentNumber_Event iClass_ChangeActiveDocumentNumber_Event = new Class_ChangeActiveDocumentNumber_Event();
+            iClass_DocumentClose_Event.Tracking_OpenDocumentNumber();
 
-            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Metodo_TaskPanes_Visible(true);
+                //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+                //iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
-            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
-            Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
+                //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Metodo_TaskPanes_Visible(true);
+
+                //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc)) return; //Se o documento já tem Taskpane, retorna.
+                Class_DocChange_Event iClass_DocChange_Event = new Class_DocChange_Event(); iClass_DocChange_Event.Evento_DocChange();
 
             //Configura o Task Pane
             //List<UserControl1> list_UserControl1 = new List<UserControl1>();

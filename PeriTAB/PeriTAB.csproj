@@ -33,7 +33,7 @@
     <PublishUrl>C:\Users\gustavo.gvs.PF\OneDrive - Polícia Federal\PCF Gustavo\Visual Studio\PeriTAB\publicacoes\</PublishUrl>
     <InstallUrl />
     <TargetCulture>pt-BR</TargetCulture>
-    <ApplicationVersion>1.1.12.0</ApplicationVersion>
+    <ApplicationVersion>1.1.13.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -196,6 +196,7 @@
     <Compile Include="Class_AnyButtonClick_Event.cs" />
     <Compile Include="Class_DocSave_Event.cs" />
     <Compile Include="Class_DocChange_Event.cs" />
+    <Compile Include="Class_DocumentClose_Event .cs" />
     <Compile Include="Class_DocumentBeforeClose_Event .cs" />
     <Compile Include="Class_WindowDeactivate_Event .cs" />
     <Compile Include="Class_WindowActivate_Event.cs" />

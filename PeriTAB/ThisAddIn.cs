@@ -52,13 +52,16 @@ namespace PeriTAB
             //MessageBox.Show(Globals.ThisAddIn.CustomTaskPanes.Count.ToString());
             //MessageBox.Show(Globals.ThisAddIn.Application.Documents.Count.ToString());
             if (Globals.ThisAddIn.Application.Documents.Count == 1) { /*MessageBox.Show("sss");*/ iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument); }
-            Class_DocumentBeforeClose_Event iClass_DocumentBeforeClose_Event = new Class_DocumentBeforeClose_Event(); iClass_DocumentBeforeClose_Event.Evento_DocumentBeforeClose();
+            //Class_DocumentBeforeClose_Event iClass_DocumentBeforeClose_Event = new Class_DocumentBeforeClose_Event(); iClass_DocumentBeforeClose_Event.Evento_DocumentBeforeClose();
             //Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event(); iClass_AnyButtonClick_Event.Evento_AnyButtonClick();
             //Class_Buttons iClass_Buttons = new Class_Buttons(); iClass_Buttons.le_preferencias(Ribbon1.Variables.caminho_preferences); iClass_Buttons.DefaultAll(); 
             Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event(); iClass_DocSave_Event.Evento_DocSave();            
             Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event(); iClass_SelectionChange_Event.Evento_SelectionChange();
             Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event(); iClass_WindowActivate_Event.Evento_WindowActivate();
             Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event(); iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
+
+
+            Class_DocumentClose_Event iClass_DocumentClose_Event = new Class_DocumentClose_Event(); iClass_DocumentClose_Event.Evento_DocumentClose();
 
             //iClass_New_or_Open_Event.Metodo_TaskPane2_Visible(true);
 
