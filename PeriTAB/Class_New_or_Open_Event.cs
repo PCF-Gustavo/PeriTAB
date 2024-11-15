@@ -107,7 +107,7 @@ namespace PeriTAB
             //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true;
 
             //Revisa a habilitação do ToggleButton "Painel de Estilos" do Ribbon
-            new Thread(() =>
+            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
             {
                 int count = 0;
                 while (!Globals.ThisAddIn.CustomTaskPanes[0].Visible)
@@ -127,7 +127,7 @@ namespace PeriTAB
                     return;
                 }
 
-            }).Start();
+            /*}).Start();*/});
 
             //list_TaskPane.Add(iTaskPane);
             //Dicionario_Doc_e_TaskPane.Add(Globals.ThisAddIn.Application.ActiveDocument, iTaskPane);
@@ -327,10 +327,10 @@ namespace PeriTAB
 
         public static void Metodo_TaskPanes_Visible(bool b)
         {
-            new Thread(() =>
+            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
             {
                 foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values) CTP.Visible = b;
-            }).Start();
+            /*}).Start();*/});
 
 
             //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values)

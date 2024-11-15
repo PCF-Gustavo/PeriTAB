@@ -23,7 +23,7 @@ namespace PeriTAB
 
         private void espera_salvar()
         {
-            new Thread(() =>
+            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
             {
                 while (true)
                 {
@@ -51,7 +51,7 @@ namespace PeriTAB
                         Thread.Sleep(1000);
                     }
                 }
-            }).Start();
+            /*}).Start();*/});
         }
 
         public void Metodo_DocumentAfterSave()

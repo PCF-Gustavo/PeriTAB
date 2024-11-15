@@ -26,7 +26,7 @@ namespace PeriTAB
 
         private void espera_fechar(Document Doc)
         {
-            new Thread(() =>
+            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
             {
                 while (true)
                 {
@@ -34,7 +34,7 @@ namespace PeriTAB
                     Thread.Sleep(1000);
                 }
                 Metodo_DocumentAfterClose(Doc);
-            }).Start();
+            /*}).Start();*/});
         }
 
         public void Tracking_OpenDocumentNumber()
@@ -44,7 +44,7 @@ namespace PeriTAB
         }
         public void Metodo_DocumentAfterClose(Document Doc)
         {
-            new Thread(() =>
+            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
             {
                 Thread.Sleep(100);
                 if (IsDocumentOpen(Doc))
@@ -93,7 +93,7 @@ namespace PeriTAB
                 //    }
                 //}
 
-            }).Start();
+            /*}).Start();*/});
 
         }
 
