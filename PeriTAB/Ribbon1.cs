@@ -52,7 +52,7 @@ namespace PeriTAB
     public partial class Ribbon1
     {
         // Cria instância das classes
-        //Class_Buttons iClass_Buttons = new Class_Buttons();
+        Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
 
         // Gerencia variáveis globais
         public class Variables
@@ -292,12 +292,14 @@ namespace PeriTAB
             var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
             if (botao_toggle.Checked == true)
             {
-                Class_New_or_Open_Event.Metodo_TaskPanes_Visible(true);
+                iClass_CustomTaskPanes.Visible(true);
+                //Class_New_or_Open_Event.Metodo_TaskPanes_Visible(true);
                 if (Ribbon1.Variables.debugging) msg_StatusBar = "Painel de Estilos: Aberto";
             }
             if (botao_toggle.Checked == false)
             {
-                Class_New_or_Open_Event.Metodo_TaskPanes_Visible(false);
+                iClass_CustomTaskPanes.Visible(false);
+                //Class_New_or_Open_Event.Metodo_TaskPanes_Visible(false);
                 if (Ribbon1.Variables.debugging) msg_StatusBar = "Painel de Estilos: Fechado";
             }
             //}

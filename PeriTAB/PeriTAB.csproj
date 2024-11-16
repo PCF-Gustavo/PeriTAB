@@ -190,6 +190,7 @@
   -->
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="Class_CustomTaskPanes.cs" />
     <Compile Include="Class_Controls .cs" />
     <Compile Include="antigo-Class_Controls2 .cs" />
     <Compile Include="antigo-Class_Buttons.cs" />
