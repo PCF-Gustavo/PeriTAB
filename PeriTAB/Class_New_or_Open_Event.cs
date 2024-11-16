@@ -146,35 +146,18 @@ namespace PeriTAB
             /*}).Start();*/});
         }
 
-
         private void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch(); if (Ribbon1.Variables.debugging) { stopwatch.Start(); }
-
-            bool Visib = ((Microsoft.Office.Tools.CustomTaskPane)sender).Visible;
-            bool TB_checked = Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked;
-
-            if (Visib != TB_checked)
+            Tarefa.Run(() =>
             {
-                Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked = Visib;
-                Metodo_TaskPanes_Visible(Visib);
-                if (Ribbon1.Variables.debugging)
+                if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) // Se o botão do Ribbon estiver marcado
                 {
-                    string msg_StatusBar = "";
-                    switch (Visib)
+                    if (((Microsoft.Office.Tools.CustomTaskPane)sender).Visible == false) // Se o painel de estilos foi fechado
                     {
-                        case true:
-                            msg_StatusBar = "Painel de Estilos: Aberto ???";
-                            break;
-                        case false:
-                            msg_StatusBar = "Painel de Estilos: Fechado pelo X";
-                            break;
+                        ((Microsoft.Office.Tools.CustomTaskPane)sender).Visible = true;
                     }
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                    Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 }
-            }
+            });
         }
     }
 }
