@@ -18,12 +18,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.WindowSelectionChange += new ApplicationEvents4_WindowSelectionChangeEventHandler(Metodo_SelectionChange);
         }
 
-        //calcular tempo de execução
-        //Stopwatch stopWatch = new Stopwatch();
-        //stopWatch.Start(); // Inicia o cronômetro
-        //stopWatch.Stop(); // Para o cronômetro
-        //TimeSpan ts = stopWatch.Elapsed; // Tempo de execução
-
         private async void Metodo_SelectionChange(Selection Sel)
         {
             Stopwatch stopWatch = new Stopwatch();
@@ -71,8 +65,6 @@ namespace PeriTAB
             {
                 if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
                 {
-                    //Stopwatch stopWatch = new Stopwatch();
-                    //stopWatch.Start(); // Inicia o cronômetro
 
                     Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(UserControl_ActiveDocument);
 
