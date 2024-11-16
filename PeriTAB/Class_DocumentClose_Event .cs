@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Threading;
-using System.Windows.Forms;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -26,7 +26,7 @@ namespace PeriTAB
 
         private void espera_fechar(Document Doc)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 while (true)
                 {
@@ -44,7 +44,7 @@ namespace PeriTAB
         }
         public void Metodo_DocumentAfterClose(Document Doc)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 Thread.Sleep(100);
                 if (IsDocumentOpen(Doc))

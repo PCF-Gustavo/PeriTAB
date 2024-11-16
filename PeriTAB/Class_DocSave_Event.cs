@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Tarefa = System.Threading.Tasks.Task;
 using System.Windows;
 
 namespace PeriTAB
@@ -23,7 +23,7 @@ namespace PeriTAB
 
         private void espera_salvar()
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 while (true)
                 {

@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using Tarefa = System.Threading.Tasks.Task;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media.TextFormatting;
@@ -107,7 +107,7 @@ namespace PeriTAB
             //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true;
 
             //Revisa a habilitação do ToggleButton "Painel de Estilos" do Ribbon
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 int count = 0;
                 while (!Globals.ThisAddIn.CustomTaskPanes[0].Visible)
@@ -327,7 +327,7 @@ namespace PeriTAB
 
         public static void Metodo_TaskPanes_Visible(bool b)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values) CTP.Visible = b;
             /*}).Start();*/});

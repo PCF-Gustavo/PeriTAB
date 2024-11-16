@@ -31,7 +31,7 @@ using System.Security.Authentication;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Threading;
-using System.Threading.Tasks;
+using Tarefa = System.Threading.Tasks.Task;
 using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
 //using Spire.Doc.Interface;
 using System.Linq;
@@ -169,36 +169,59 @@ namespace PeriTAB
         //    return publish_version;
         //}
 
-        private void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
+        private async void button_confere_num_legenda_Click(object sender, RibbonControlEventArgs e)
         {
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
 
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
-            {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_confere_num_legenda.Enabled = false;
-                Globals.ThisAddIn.Application.Run("atualiza_todos_campos"); //****************
-                Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
-                (sender as RibbonButton).Image = Properties.Resources.lupa;
-                button_confere_num_legenda.Enabled = true;
-                /*}).Start();*/});
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+                {
+                    Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
+                    Globals.ThisAddIn.Application.Run("confere_numeracao_legendas");
+                });
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.lupa;
+            RibbonButton.Enabled = true;
         }
 
-        private void button_alinha_legenda_Click(object sender, RibbonControlEventArgs e)
+        private async void button_alinha_legenda_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("alinha_legenda");
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+            {
+                Globals.ThisAddIn.Application.Run("alinha_legenda");
+            });
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.lupa;
+            RibbonButton.Enabled = true;
         }
 
-        private void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
+        private async void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+                // Atualiza a UI na Thread principal
+                RibbonButton RibbonButton = (RibbonButton)sender;
+                RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+                RibbonButton.Enabled = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_atualiza_campos.Enabled = false;
                 Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
                 Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
-                (sender as RibbonButton).Image = Properties.Resources.atualizar;
-                button_atualiza_campos.Enabled = true;
-            /*}).Start();*/});
+            });
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.atualizar;
+                RibbonButton.Enabled = true;
         }
         private void checkBox_destaca_campos_Click(object sender, RibbonControlEventArgs e)
         {
@@ -386,19 +409,23 @@ namespace PeriTAB
         }
 
 
-        private void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             object obj = System.Windows.Clipboard.GetData("FileDrop");
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_cola_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
 
                 if (System.Windows.Clipboard.ContainsData("FileDrop"))
                 {
@@ -595,11 +622,14 @@ namespace PeriTAB
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Cola imagem");
 
-                // Configurações finais
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.image_icon;
-                button_cola_imagem.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+            // Configurações finais
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.image_icon;
+            RibbonButton.Enabled = true;
+
         }
 
         public class Comparer_Windows_order : IComparer<string> /*implement an IComparer to get the same sort behavior as Windows Explorer*/
@@ -727,17 +757,21 @@ namespace PeriTAB
 
 
 
-        private void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
+        private async void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            await Tarefa.Run(() =>
             {
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_cola_imagem.Enabled = false;
+
                 //Globals.ThisAddIn.Application.ScreenUpdating = false;
                 //Globals.ThisAddIn.Application.Run("renomeia_documento");
                 //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Documento renomeado com sucesso.";
@@ -837,23 +871,30 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.abc;
-                button_cola_imagem.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+            RibbonButton.Image = Properties.Resources.abc;
+            RibbonButton.Enabled = true;
         }
 
-        private void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
+        private async void button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+            //Globals.ThisAddIn.Application.DisplayStatusBar = false;
+
+            await Tarefa.Run(() =>
             {
-                Globals.ThisAddIn.Application.DisplayStatusBar = false;
+
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_gera_pdf.Enabled = false;
+
 
                 //iClass_Buttons.button_gera_pdf_image(load: true);
                 PdfReader inputPdf = null;
@@ -1164,10 +1205,13 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.icone_pdf;
-                button_gera_pdf.Enabled = true;
-                
-            /*}).Start();*/});
+
+
+                /*}).Start();*/
+            });
+
+            RibbonButton.Image = Properties.Resources.icone_pdf;
+            RibbonButton.Enabled = true;
         }
 
         public string GetLocalPath(string path)
@@ -1203,18 +1247,22 @@ namespace PeriTAB
             return localpath;
         }
 
-        private void button_redimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_redimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_redimensiona_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
 
                 if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
                 {
@@ -1259,24 +1307,30 @@ namespace PeriTAB
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Redimensiona");
 
                 // Configurações finais
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.redimensionar2;
-                button_redimensiona_imagem.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.redimensionar2;
+            RibbonButton.Enabled = true;
         }
 
-        private void button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_autodimensiona_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
 
                 if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
                 {
@@ -1445,11 +1499,14 @@ namespace PeriTAB
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Autodimensiona");
 
-                // Configurações finais
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.redimensionar3;
-                button_autodimensiona_imagem.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+
+            // Configurações finais
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.redimensionar3;
+            RibbonButton.Enabled = true;
         }
 
         private string get_text(string texto, string inicio = null, string fim = null) //Retona a primeira ocorrência de string entre os strings 'inicio' e 'fim' no string 'texto'.
@@ -1551,13 +1608,15 @@ namespace PeriTAB
             return false;
         }
 
-        private void button_confere_preambulo_Click(object sender, RibbonControlEventArgs e)
+        private async void button_confere_preambulo_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
-            {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_confere_preambulo.Enabled = false;
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
 
+            await Tarefa.Run(() =>
+            {
 
                 string localpath = GetLocalPath(Globals.ThisAddIn.Application.ActiveDocument.Path);
                 string download_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Downloads");
@@ -1571,8 +1630,8 @@ namespace PeriTAB
                 if (num_laudo == null | ano_laudo == null | unidade_laudo == null)
                 {
                     MessageBox.Show("Referência do laudo não encontrada.");
-                    (sender as RibbonButton).Image = Properties.Resources.checklist2;
-                    button_confere_preambulo.Enabled = true;
+                    RibbonButton.Image = Properties.Resources.checklist2;
+                    RibbonButton.Enabled = true;
                     return;
                 }
 
@@ -1632,9 +1691,12 @@ namespace PeriTAB
                         //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br/sistemas/criminalistica/documento.php?acao=localizar_registro&tipo_busca=numero_laudo&numero_busca=" + num_laudo + "/" + ano_laudo);
                     }
                 }
-                (sender as RibbonButton).Image = Properties.Resources.checklist2;
-                button_confere_preambulo.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+
+            RibbonButton.Image = Properties.Resources.checklist2;
+            RibbonButton.Enabled = true;
         }
 
         private string[] pega_identificadores_laudo()
@@ -2508,13 +2570,17 @@ namespace PeriTAB
         //    }
         //}
 
-        private void button_borda_preta_Click(object sender, RibbonControlEventArgs e)
+        private async void button_borda_preta_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_inserir_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 //string selectedText = Globals.ThisAddIn.Application.Selection.Range.ToString();
                 //int L1 = selectedText.Split('\r').Length;
                 //MessageBox.Show(L1.ToString());
@@ -2534,20 +2600,25 @@ namespace PeriTAB
                 //{
                 //    MessageBox.Show("opa");
                 //}
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources._;
-                menu_inserir_imagem.Enabled = true;
+
             /*}).Start();*/});
 
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_imagem.Enabled = true;
         }
 
-        private void button_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
+        private async void button_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_inserir_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -2557,19 +2628,25 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
                     }
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources._;
-                menu_inserir_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_imagem.Enabled = true;
         }
 
-        private void button_borda_amarela_Click(object sender, RibbonControlEventArgs e)
+        private async void button_borda_amarela_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_inserir_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -2579,20 +2656,27 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
                     }
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources._;
-                menu_inserir_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_imagem.Enabled = true;
         }
 
-        private void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Range r = Globals.ThisAddIn.Application.Selection.Range;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_inserir_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
-                Range r = Globals.ThisAddIn.Application.Selection.Range;
+
+
 
                 string estilo_nome_baseado = "Legenda";
                 Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
@@ -2656,20 +2740,26 @@ namespace PeriTAB
                         Globals.ThisAddIn.Application.Run("alinha_legenda");
                     }
                 }
-                r.Select();
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources._;
-                menu_inserir_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            r.Select();
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_imagem.Enabled = true;
         }
 
-        private void button_remove_borda_Click(object sender, RibbonControlEventArgs e)
+        private async void button_remove_borda_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_remover_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_remover_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -2677,19 +2767,25 @@ namespace PeriTAB
                         ishape.Line.Visible = MsoTriState.msoFalse;
                     }
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.x;
-                menu_remover_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.x;
+            menu_remover_imagem.Enabled = true;
         }
 
-        private void button_remove_formatacao_Click_1(object sender, RibbonControlEventArgs e)
+        private async void button_remove_formatacao_Click_1(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_remover_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_remover_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -2697,19 +2793,25 @@ namespace PeriTAB
                         ishape.Reset();
                     }
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.x;
-                menu_remover_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.x;
+            menu_remover_imagem.Enabled = true;
         }
 
-        private void button_remove_forma_Click(object sender, RibbonControlEventArgs e)
+        private async void button_remove_forma_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_remover_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_remover_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 //MessageBox.Show(Globals.ThisAddIn.Application.Selection.ShapeRange.Count.ToString());
                 //MessageBox.Show(Globals.ThisAddIn.Application.Selection.Range.ShapeRange.Count.ToString());
                 List<Microsoft.Office.Interop.Word.Shape> listaShapes = new List<Microsoft.Office.Interop.Word.Shape>();
@@ -2725,19 +2827,25 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.x;
-                menu_remover_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.x;
+            menu_remover_imagem.Enabled = true;
         }
 
-        private void button_remove_texto_alt_Click(object sender, RibbonControlEventArgs e)
+        private async void button_remove_texto_alt_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_remover_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_remover_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -2745,19 +2853,24 @@ namespace PeriTAB
                         ishape.AlternativeText = "";
                     }
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.x;
-                menu_remover_imagem.Enabled = true;
+
             /*}).Start();*/});
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.x;
+            menu_remover_imagem.Enabled = true;
         }
 
-        private void button_remove_imagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_remove_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_remover_imagem.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_remover_imagem.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
                 List<InlineShape> listaShapes = new List<InlineShape>();
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -2770,20 +2883,26 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.x;
-                menu_remover_imagem.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.x;
+            menu_remover_imagem.Enabled = true;
         }
 
-        private void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
+        private async void button_legenda_tabela_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_tabela.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Range r = Globals.ThisAddIn.Application.Selection.Range;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_inserir_tabela.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
-                Range r = Globals.ThisAddIn.Application.Selection.Range;
+
 
                 string estilo_nome_baseado = "Legenda";
                 Globals.ThisAddIn.Application.OrganizerCopy(Ribbon1.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
@@ -2817,19 +2936,25 @@ namespace PeriTAB
                     Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
                     Globals.ThisAddIn.Application.Run("alinha_legenda");
                 }
-                r.Select();
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources._;
-                menu_inserir_tabela.Enabled = true;
+
             /*}).Start();*/});
+
+            r.Select();
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_tabela.Enabled = true;
         }
-        private void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
+        private async void button_centralizar_tabela_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_formatacao_tabela.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_formatacao_tabela.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
 
                 foreach (Table itable in Globals.ThisAddIn.Application.Selection.Tables)
                 {
@@ -2852,19 +2977,25 @@ namespace PeriTAB
                 //    }
                 //}
 
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.formatacao2;
-                menu_formatacao_tabela.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.formatacao2;
+            menu_formatacao_tabela.Enabled = true;
         }
 
-        private void button_minuscula_campos_Click(object sender, RibbonControlEventArgs e)
+        private async void button_minuscula_campos_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_formatacao_campos.Enabled = false;
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            await Tarefa.Run(() =>
             {
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                menu_formatacao_campos.Enabled = false;
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+
 
                 //if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count == 1) 
                 //{
@@ -2906,23 +3037,29 @@ namespace PeriTAB
                     }
 
                 }
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.formatacao2;
-                menu_formatacao_campos.Enabled = true;
+
             /*}).Start();*/});
+
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            RibbonButton.Image = Properties.Resources.formatacao2;
+            menu_formatacao_campos.Enabled = true;
         }
 
-        private void button_abre_SISCRIM_Click(object sender, RibbonControlEventArgs e)
+        private async void button_abre_SISCRIM_Click(object sender, RibbonControlEventArgs e)
         {
-            /*new Thread(() =>*/System.Threading.Tasks.Task Tarefa = System.Threading.Tasks.Task.Run(() =>
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            await Tarefa.Run(() =>
             {
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
-                (sender as RibbonButton).Image = Properties.Resources.load_icon_png_7969;
-                button_abre_SISCRIM.Enabled = false;
+
 
                 string[] identificadores_laudo = pega_identificadores_laudo();
 
@@ -3000,9 +3137,12 @@ namespace PeriTAB
 
                 // Configurações finais
                 //Globals.ThisAddIn.Application.ScreenUpdating = true;
-                (sender as RibbonButton).Image = Properties.Resources.subir2;
-                button_abre_SISCRIM.Enabled = true;
-            /*}).Start();*/});
+
+                /*}).Start();*/
+            });
+
+            RibbonButton.Image = Properties.Resources.subir2;
+            RibbonButton.Enabled = true;
         }
 
         private int pega_codigo_registro(string unidade_registro)
