@@ -77,7 +77,7 @@ namespace PeriTAB
 
         private float CalcularTamanhoFonteMaximo(List<Button> botoes, int largura, int altura)
         {
-            float tamanhoMaximo = 12f; // Fonte máxima por padrão
+            float tamanhoMaximo = 14f; // Fonte máxima por padrão
             float tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
             float tamanhoMinimo = 5f; // Fonte máxima por padrão
             float margemDeFolga = 0.9f; // Margem de folga de 10%
