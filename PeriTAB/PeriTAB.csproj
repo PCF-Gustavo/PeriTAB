@@ -388,7 +388,7 @@
     <ManifestKeyFile>PeriTAB_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4B005FE69DA32E8280444193031271BFF2257493</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>F32878367E92CE33F03A515D3C95FB7F3D95C043</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -460,6 +460,14 @@ namespace PeriTAB
 
                 if (new List<string>
                 {
+                    "15 - Quesitos (PeriTAB)"
+                }.Contains(estilo_nome))
+                {
+                    Ajusta_Quesito(p, new Regex(@"\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
+                }
+
+                if (new List<string>
+                {
                     "12 - Legendas de Figuras (PeriTAB)",
                     "14 - Legendas de Tabelas (PeriTAB)"
                 }.Contains(estilo_nome))
@@ -521,6 +529,20 @@ namespace PeriTAB
                         p.Range.Characters[1].Fields.Unlink();
                     }
                     p.Range.Characters[1].Delete();
+                }
+            }
+        }
+
+        private void Ajusta_Quesito(Paragraph p, Regex prefixo)  //Deleta parágrafos anteriores em branco ou apenas com espaços
+        {
+            Match match = prefixo.Match(p.Range.Text);
+            if (match.Success)
+            {
+                p.Range.Font.Bold = 0; // Remove o negrito de todo o texto
+                int prefixLength = match.Length; // Calcula o comprimento do prefixo
+                for (int i = 1; i <= prefixLength; i++)
+                {
+                    p.Range.Characters[i].Bold = 1;
                 }
             }
         }
