@@ -78,7 +78,7 @@ namespace PeriTAB
         private float CalcularTamanhoFonteMaximo(List<Button> botoes, int largura, int altura)
         {
             float tamanhoMaximo = 12f; // Fonte máxima por padrão
-            float tamanhoFonte = tamanhoMaximo + 1; // Tamanho inicial de fonte
+            float tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
             float tamanhoMinimo = 5f; // Fonte máxima por padrão
             float margemDeFolga = 0.9f; // Margem de folga de 10%
             largura = (int)(largura * margemDeFolga); // Ajustar a largura com base na margem de folga
@@ -104,10 +104,10 @@ namespace PeriTAB
                     num_linhas = 2;
                 }
 
-                tamanhoFonte = tamanhoMaximo + 1; // Restaurar o tamanho da fonte para o valor máximo
+                tamanhoFonte = tamanhoMaximo + 0.1f; // Restaurar o tamanho da fonte para o valor máximo
 
                 // Calcular o tamanho máximo de fonte para o botão
-                while (tamanhoTexto.Width > largura * num_linhas /*|| tamanhoTexto.Height * num_linhas > altura*/)
+                while (tamanhoTexto.Width > largura * num_linhas || botao_iteracao.Font.GetHeight() * num_linhas > altura)
                 {
                     tamanhoFonte -= 0.1f; // Reduzir a fonte para caber
 
