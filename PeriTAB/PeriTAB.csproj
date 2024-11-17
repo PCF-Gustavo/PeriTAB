@@ -199,6 +199,30 @@
     <Compile Include="Class_DocChange_Event.cs" />
     <Compile Include="Class_DocumentClose_Event .cs" />
     <Compile Include="Class_DocumentBeforeClose_Event .cs" />
+    <Compile Include="RibbonGroup8_Entrega .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup7_Conferencia .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup6_Tabela .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup5_Imagem.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup4_Campos.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup3_Estilos .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup2_Formatacao .cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="RibbonGroup1_Por_Extenso.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Class_WindowDeactivate_Event .cs" />
     <Compile Include="Class_WindowActivate_Event.cs" />
     <Compile Include="Class_New_or_Open_Event.cs" />
@@ -222,8 +246,8 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="Ribbon1.resx">
-      <DependentUpon>Ribbon1.cs</DependentUpon>
+    <EmbeddedResource Include="Ribbon.resx">
+      <DependentUpon>Ribbon.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="MyUserControl.resx">
@@ -240,11 +264,11 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Ribbon1.cs">
+    <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Ribbon1.Designer.cs">
-      <DependentUpon>Ribbon1.cs</DependentUpon>
+    <Compile Include="Ribbon.Designer.cs">
+      <DependentUpon>Ribbon.cs</DependentUpon>
     </Compile>
     <Compile Include="ThisAddIn.cs">
       <SubType>Code</SubType>

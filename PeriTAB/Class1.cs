@@ -77,9 +77,9 @@ namespace PeriTAB
         {
             MessageBox.Show("TabDisposed");           
         }
-        public void Metodo_Ribbon1Close(object sender, System.EventArgs e)
+        public void Metodo_RibbonClose(object sender, System.EventArgs e)
         {
-            MessageBox.Show("Ribbon1Close");
+            MessageBox.Show("RibbonClose");
         }
         public void Metodo_menu1ItemsLoading(object sender, RibbonControlEventArgs e)
         {
@@ -155,15 +155,15 @@ namespace PeriTAB
         }
         public void Evento_TabDisposed()
         {
-            Globals.Ribbons.Ribbon1.tab.Disposed += new System.EventHandler(Metodo_TabDisposed);
+            Globals.Ribbons.Ribbon.tab.Disposed += new System.EventHandler(Metodo_TabDisposed);
         }
-        public void Evento_Ribbon1Close()
+        public void Evento_RibbonClose()
         {
-            Globals.Ribbons.Ribbon1.Close += new System.EventHandler(Metodo_Ribbon1Close);
+            Globals.Ribbons.Ribbon.Close += new System.EventHandler(Metodo_RibbonClose);
         }
         public void Evento_menu1ItemsLoading()
         {
-            Globals.Ribbons.Ribbon1.menu_campos.ItemsLoading += new RibbonControlEventHandler(Metodo_menu1ItemsLoading);
+            Globals.Ribbons.Ribbon.menu_campos.ItemsLoading += new RibbonControlEventHandler(Metodo_menu1ItemsLoading);
         }
         public void Evento_ContentControlOnEnter()
         {

@@ -145,7 +145,7 @@ namespace PeriTAB
         {
             Tarefa.Run(() =>
             {
-                if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) // Se o botão do Ribbon estiver marcado
+                if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) // Se o botão do Ribbon estiver marcado
                 {
                     if (((Microsoft.Office.Tools.CustomTaskPane)sender).Visible == false) // Se o painel de estilos foi fechado
                     {

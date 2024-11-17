@@ -31,36 +31,36 @@ namespace PeriTAB
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
             
             //Lê e configura preferências
-            iClass_Controls.le_preferencias(Ribbon1.Variables.caminho_preferences);
+            iClass_Controls.le_preferencias(Ribbon.Variables.caminho_preferences);
             iClass_Controls.Configura_Valores_iniciais();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
         {
-            if (File.Exists(Ribbon1.Variables.caminho_template))
+            if (File.Exists(Ribbon.Variables.caminho_template))
             {
                 Globals.ThisAddIn.Application.AddIns.Unload(true);
-                try { File.Delete(Ribbon1.Variables.caminho_template); } catch (IOException) { }
-                try { escreve_preferencias(Ribbon1.Variables.caminho_preferences); } catch (IOException) { }
+                try { File.Delete(Ribbon.Variables.caminho_template); } catch (IOException) { }
+                try { escreve_preferencias(Ribbon.Variables.caminho_preferences); } catch (IOException) { }
             }
         }
         private void escreve_preferencias(string caminho_preferences)
         {
-            if (!Directory.Exists(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB))
+            if (!Directory.Exists(Ribbon.Variables.caminho_AppData_Roaming_PeriTAB))
             {
-                Directory.CreateDirectory(Ribbon1.Variables.caminho_AppData_Roaming_PeriTAB);
+                Directory.CreateDirectory(Ribbon.Variables.caminho_AppData_Roaming_PeriTAB);
             }
 
             // Cria um dicionário de preferências
             Dictionary<string, string> preferencias = new Dictionary<string, string>
             {
-                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_largura.Text) ? Class_Controls.GetPreference("largura") : Globals.Ribbons.Ribbon1.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon1.Variables.editBox_largura_Text)
-                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon1.editBox_altura.Text) ? Class_Controls.GetPreference("altura") : Globals.Ribbons.Ribbon1.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon1.Variables.editBox_altura_Text)
-                ,{ "largura_checked", Globals.Ribbons.Ribbon1.checkBox_largura.Checked.ToString() }
-                ,{ "separador", Globals.Ribbons.Ribbon1.dropDown_separador.SelectedItem.Label }
-                ,{ "painel_de_estilos", Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked.ToString() }
-                ,{ "assinar_pdf", Globals.Ribbons.Ribbon1.checkBox_assinar.Checked.ToString() }
-                ,{ "abrir_pdf", Globals.Ribbons.Ribbon1.checkBox_abrir.Checked.ToString() }
+                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_largura.Text) ? Class_Controls.GetPreference("largura") : Globals.Ribbons.Ribbon.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon.Variables.editBox_largura_Text)
+                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_altura.Text) ? Class_Controls.GetPreference("altura") : Globals.Ribbons.Ribbon.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon.Variables.editBox_altura_Text)
+                ,{ "largura_checked", Globals.Ribbons.Ribbon.checkBox_largura.Checked.ToString() }
+                ,{ "separador", Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem.Label }
+                ,{ "painel_de_estilos", Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked.ToString() }
+                ,{ "assinar_pdf", Globals.Ribbons.Ribbon.checkBox_assinar.Checked.ToString() }
+                ,{ "abrir_pdf", Globals.Ribbons.Ribbon.checkBox_abrir.Checked.ToString() }
             };
 
             // Criar um XmlDocument para gerar o XML

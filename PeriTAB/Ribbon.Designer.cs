@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 namespace PeriTAB{
 
-    partial class Ribbon1 : Microsoft.Office.Tools.Ribbon.RibbonBase
+    partial class Ribbon : Microsoft.Office.Tools.Ribbon.RibbonBase
     {
 
         /// <summary>
@@ -13,7 +13,7 @@ namespace PeriTAB{
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        public Ribbon1()
+        public Ribbon()
             : base(Globals.Factory.GetRibbonFactory())
         {
             InitializeComponent();
@@ -838,13 +838,13 @@ namespace PeriTAB{
             this.label_email.Label = "gustavo.gvs@pf.gov.br";
             this.label_email.Name = "label_email";
             // 
-            // Ribbon1
+            // Ribbon
             // 
-            this.Name = "Ribbon1";
+            this.Name = "Ribbon";
             this.RibbonType = "Microsoft.Word.Document";
             this.Tabs.Add(this.tab_default);
             this.Tabs.Add(this.tab);
-            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon1_Load);
+            this.Load += new Microsoft.Office.Tools.Ribbon.RibbonUIEventHandler(this.Ribbon_Load);
             this.tab_default.ResumeLayout(false);
             this.tab_default.PerformLayout();
             this.tab.ResumeLayout(false);
@@ -964,9 +964,9 @@ namespace PeriTAB{
 
     partial class ThisRibbonCollection
     {
-        internal Ribbon1 Ribbon1
+        internal Ribbon Ribbon
         {
-            get { return this.GetRibbon<Ribbon1>(); }
+            get { return this.GetRibbon<Ribbon>(); }
         }
     }
 }

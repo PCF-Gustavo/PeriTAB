@@ -36,7 +36,7 @@ namespace PeriTAB
             }
 
             //Monitoramento do Painel de estilos
-            if (Ribbon1.Variables.debugging)
+            if (Ribbon.Variables.debugging)
             {
                 string string_Documents_Count = (Globals.ThisAddIn.Application.Documents.Count - 1).ToString();
                 string string_CustomTaskPanes_Count = Globals.ThisAddIn.CustomTaskPanes.Count.ToString();
