@@ -1,11 +1,9 @@
 ﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using Tarefa = System.Threading.Tasks.Task;
 using System.Windows.Forms;
 
@@ -71,154 +69,72 @@ namespace PeriTAB
                 // Atualizar a coordenada X para o próximo botão
                 currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
             }
-
-            
         }
 
         private float CalcularTamanhoFonteMaximo(List<Button> botoes, int largura, int altura)
         {
-            float tamanhoMaximo = 14f; // Fonte máxima por padrão
-            float tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
+            float tamanhoMaximo = 15f; // Fonte máxima por padrão
             float tamanhoMinimo = 5f; // Fonte máxima por padrão
-            float margemDeFolga = 0.9f; // Margem de folga de 10%
-            largura = (int)(largura * margemDeFolga); // Ajustar a largura com base na margem de folga
+            float margemDeFolga_altura = 0.85f; // Margem de folga da altura de 15%
+            altura = (int)(altura * margemDeFolga_altura); // Ajustar a largura com base na margem de folga
+            int NumeroDeLinhasMaximo = 2;
+            float margemDeFolga_largura = 0.9f; // Margem de folga da largura de 10%
+            largura = (int)(largura * margemDeFolga_largura); // Ajustar a largura com base na margem de folga
 
-            Button botao_iteracao = new Button();
+            // Medir a altura do texto do botão e determinar o maior tamanho de fonte que cabe em relação a altura
+            float tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
+            Button button_teste = new Button();
+            button_teste.Font = new System.Drawing.Font(button_teste.Font.FontFamily, tamanhoFonte);
 
+            while (button_teste.Height + (NumeroDeLinhasMaximo - 1) * button_teste.Font.GetHeight() > altura)
+            {
+                tamanhoFonte -= 0.1f; // Reduzir a fonte para caber
 
+                if (tamanhoFonte <= tamanhoMinimo) // Definir um limite para o tamanho da fonte
+                {
+                    return tamanhoMinimo;
+                }
+
+                button_teste.Font = new System.Drawing.Font(button_teste.Font.FontFamily, tamanhoFonte);
+
+            }
+            tamanhoMaximo = tamanhoFonte;
+
+            // Medir a largura de cada palavr' do texto dos botões e determinar o maior tamanho de fonte que cabe em relação a largura
+            tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
             foreach (var botao in botoes)
             {
-
-                botao_iteracao.Font = new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte);
-                // Medir o texto do botão e determinar o tamanho de fonte necessário para caber
-                SizeF tamanhoTexto = botao.CreateGraphics().MeasureString(botao.Text, new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte));
-
-                int num_linhas;
-
-                if (!botao.Text.Contains(" "))
+                using (Graphics Graphics= botao.CreateGraphics())
                 {
-                    num_linhas = 1;
-                }
-                else
-                {
-                    num_linhas = 2;
-                }
-
-                tamanhoFonte = tamanhoMaximo + 0.1f; // Restaurar o tamanho da fonte para o valor máximo
-
-                // Calcular o tamanho máximo de fonte para o botão
-                while (tamanhoTexto.Width > largura * num_linhas || botao_iteracao.Font.GetHeight() * num_linhas > altura)
-                {
-                    tamanhoFonte -= 0.1f; // Reduzir a fonte para caber
-
-                    if (tamanhoFonte <= tamanhoMinimo) // Definir um limite para o tamanho da fonte
+                    // Loop em cada palavra do texto do botao
+                    foreach (string palavra in botao.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        tamanhoFonte = 5;
-                        break;
-                    }
+                        SizeF tamanhoTexto = Graphics.MeasureString(palavra, new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte));
 
-                    tamanhoTexto = botao.CreateGraphics().MeasureString(botao.Text, new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte));
+                        tamanhoFonte = tamanhoMaximo + 0.1f; // Restaurar o tamanho da fonte para o valor máximo
 
-                    // Definir o maior tamanho de fonte encontrado
-                    if (tamanhoFonte < tamanhoMaximo)
-                    {
-                        tamanhoMaximo = tamanhoFonte;
+                        while (tamanhoTexto.Width > largura)
+                        {
+                            tamanhoFonte -= 0.1f; // Reduzir a fonte para caber
+
+                            if (tamanhoFonte <= tamanhoMinimo) // Definir um limite para o tamanho da fonte
+                            {
+                                return tamanhoMinimo;
+                            }
+
+                            tamanhoTexto = Graphics.MeasureString(palavra, new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte));
+
+                            // Definir o maior tamanho de fonte encontrado
+                            if (tamanhoFonte < tamanhoMaximo)
+                            {
+                                tamanhoMaximo = tamanhoFonte;
+                            }
+                        }
                     }
                 }
             }
                 return tamanhoMaximo; // Retorna o maior tamanho de fonte que cabe em todos os botões
-            
         }
-
-        //private float CalcularTamanhoFonteMaximo(List<Button> botoes, int largura, int altura)
-        //{
-        //    // Definir o tamanho da fonte inicial para o cálculo
-        //    float tamanhoFonteInicial = 12f; // Tamanho inicial de fonte
-        //    float margemDeFolga = 1f; // Margem de folga de 5% (0.95 significa 95% da largura disponível)
-        //    float tamanhoFonte = tamanhoFonteInicial;
-
-        //    // Calcula a largura máxima que o texto pode ocupar
-        //    int larguraDisponivel = (int)(largura * margemDeFolga);
-
-        //    // Verificar se o texto pode caber em uma única linha
-        //    foreach (var botao in botoes)
-        //    {
-        //        // Medir o tamanho do texto no botão
-        //        SizeF tamanhoTexto = MeasuredTextSize(botao, botao.Text, botao.Font);
-
-        //        // Ajustar o tamanho da fonte até que o texto caiba no botão (dentro da margem de 5%)
-        //        while (tamanhoTexto.Width > larguraDisponivel || tamanhoTexto.Height > altura)
-        //        {
-        //            tamanhoFonte -= 0.5f; // Ajuste mais suave, diminuir de 0.5 em 0.5
-
-        //            if (tamanhoFonte <= 5) // Definir um limite para o tamanho da fonte
-        //            {
-        //                tamanhoFonte = 5;
-        //                break;
-        //            }
-
-        //            botao.Font = new System.Drawing.Font(botao.Font.FontFamily, tamanhoFonte);
-        //            tamanhoTexto = MeasuredTextSize(botao, botao.Text, botao.Font);
-        //        }
-
-        //        // Definir o maior tamanho de fonte encontrado
-        //        if (tamanhoFonte > 5)
-        //        {
-        //            tamanhoFonte = Math.Min(tamanhoFonte, 12f); // Não deixar ultrapassar o tamanho máximo de 12f
-        //        }
-        //    }
-
-        //    return tamanhoFonte; // Retorna o tamanho da fonte ajustado
-        //}
-
-        //// Função para medir o tamanho do texto sem quebra de linha
-        //private SizeF MeasuredTextSize(Button botao, string text, System.Drawing.Font font)
-        //{
-        //    using (Graphics g = botao.CreateGraphics())
-        //    {
-        //        // Usar a propriedade "NoWrap" para evitar a quebra de linha
-        //        StringFormat sf = new StringFormat();
-        //        sf.Trimming = StringTrimming.None;  // Garante que o texto não será cortado por causa de uma quebra de linha
-        //        sf.FormatFlags = StringFormatFlags.NoWrap;  // Garantir que o texto não será quebrado em várias linhas
-
-        //        return g.MeasureString(text, font, new PointF(0, 0), sf);
-        //    }
-        //}
-        ////******* redimensionar texto de acordo com o tamanho dos botoes
-
-        //Graphics g = botao.CreateGraphics();
-        //System.Drawing.Font currentFont = botao.Font;
-        //SizeF textSize = g.MeasureString(botao.Text, currentFont);
-
-        //if (textSize.Width > buttonWidth && textSize.Height > buttonHeight)
-        //{
-        //    float scaleFactor = Math.Min(buttonWidth / textSize.Width, buttonHeight / textSize.Height);
-        //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
-        //    int newFontSize = (int)(currentFont.Size * scaleFactor * 0.8);
-        //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
-        //}
-
-        //if (textSize.Width > buttonWidth || textSize.Height > buttonHeight)
-        //{
-        //    float scaleFactor = Math.Min(buttonWidth / textSize.Width, buttonHeight / textSize.Height);
-        //    int newFontSize = (int)(currentFont.Size * scaleFactor);
-        //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
-        //}
-
-        //if (textSize.Width > buttonWidth)
-        //{
-        //    float scaleFactor = buttonWidth / textSize.Width;
-        //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
-        //    int newFontSize = (int)(currentFont.Size * scaleFactor);
-        //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
-        //}
-        //if (textSize.Height > buttonHeight)
-        //{
-        //    float scaleFactor = buttonHeight / textSize.Height;
-        //    System.Windows.Forms.MessageBox.Show(scaleFactor.ToString());
-        //    int newFontSize = (int)(currentFont.Size * scaleFactor);
-        //    botao.Font = new System.Drawing.Font(currentFont.FontFamily, newFontSize);
-        //}
 
         public void Visible(bool b)
         {
