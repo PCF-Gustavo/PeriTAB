@@ -21,6 +21,10 @@ namespace PeriTAB
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            //Lê e configura preferências
+            iClass_RibbonControls.le_preferencias(Ribbon.Variables.caminho_preferences);
+            iClass_RibbonControls.Configura_Valores_iniciais();
+
             //Inicia Eventos
             iClass_New_or_Open_Event.Evento_New_or_Open();
             if (Globals.ThisAddIn.Application.Documents.Count == 1) iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument);
@@ -29,10 +33,6 @@ namespace PeriTAB
             iClass_SelectionChange_Event.Evento_SelectionChange();
             iClass_WindowActivate_Event.Evento_WindowActivate();
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
-
-            //Lê e configura preferências
-            iClass_RibbonControls.le_preferencias(Ribbon.Variables.caminho_preferences);
-            iClass_RibbonControls.Configura_Valores_iniciais();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)

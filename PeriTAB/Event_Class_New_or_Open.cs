@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -36,7 +37,7 @@ namespace PeriTAB
                 Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
                 iTaskPane.VisibleChanged += iClass_CustomTaskPanes.MyCustomTaskPane_VisibleChanged;
                 iClass_CustomTaskPanes.Redimensionar(Globals.ThisAddIn.iMyUserControl, iTaskPane);
-                if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) { iTaskPane.Visible = true; } //Checa se deve mostrar o "Painel de Estilos" do Ribbon
+                if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
             }
         }
     }
