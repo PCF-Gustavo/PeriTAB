@@ -15,7 +15,7 @@ namespace PeriTAB
         Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event();
 
         public MyUserControl iMyUserControl;
-        Class_Controls iClass_Controls = new Class_Controls();
+        Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
 
         public Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl> Dicionario_Doc_e_UserControl = new Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl>();
 
@@ -31,8 +31,8 @@ namespace PeriTAB
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
 
             //Lê e configura preferências
-            iClass_Controls.le_preferencias(Ribbon.Variables.caminho_preferences);
-            iClass_Controls.Configura_Valores_iniciais();
+            iClass_RibbonControls.le_preferencias(Ribbon.Variables.caminho_preferences);
+            iClass_RibbonControls.Configura_Valores_iniciais();
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
@@ -54,8 +54,8 @@ namespace PeriTAB
             // Cria um dicionário de preferências
             Dictionary<string, string> preferencias = new Dictionary<string, string>
             {
-                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_largura.Text) ? Class_Controls.GetPreference("largura") : Globals.Ribbons.Ribbon.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon.Variables.editBox_largura_Text)
-                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_altura.Text) ? Class_Controls.GetPreference("altura") : Globals.Ribbons.Ribbon.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon.Variables.editBox_altura_Text)
+                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_largura.Text) ? Class_RibbonControls.GetPreference("largura") : Globals.Ribbons.Ribbon.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon.Variables.editBox_largura_Text)
+                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_altura.Text) ? Class_RibbonControls.GetPreference("altura") : Globals.Ribbons.Ribbon.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon.Variables.editBox_altura_Text)
                 ,{ "largura_checked", Globals.Ribbons.Ribbon.checkBox_largura.Checked.ToString() }
                 ,{ "separador", Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem.Label }
                 ,{ "painel_de_estilos", Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked.ToString() }

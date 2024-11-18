@@ -13,7 +13,7 @@ namespace PeriTAB
             //MessageBox.Show("Winact");
             //Declara instacias das classes
             //Class_Buttons iClass_Buttons = new Class_Buttons();
-            Class_Controls iClass_Controls = new Class_Controls();
+            Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
             //Class_ValueChanged_Event iClass_ValueChanged_Event = new Class_ValueChanged_Event();           
 
             //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon            
@@ -47,17 +47,17 @@ namespace PeriTAB
             if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
 
             //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
-            iClass_Controls.button_abre_SISCRIM_valorinicial();
+            iClass_RibbonControls.button_abre_SISCRIM_valorinicial();
             //iClass_Buttons.button_abre_SISCRIM_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
-            iClass_Controls.button_renomeia_documento_valorinicial();
+            iClass_RibbonControls.button_renomeia_documento_valorinicial();
             //iClass_Buttons.button_renomeia_documento_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Gera PDF" do Ribbon
-            iClass_Controls.button_gera_pdf_valorinicial();
+            iClass_RibbonControls.button_gera_pdf_valorinicial();
             //iClass_Buttons.button_gera_pdf_Default();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 

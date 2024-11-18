@@ -270,7 +270,7 @@ namespace PeriTAB
                 editBox_altura.Text = "";
                 editBox_largura.Enabled = true;
                 //editBox_largura.Text = Variables.editBox_largura_Text;
-                editBox_largura.Text = Class_Controls.GetPreference("largura");
+                editBox_largura.Text = Class_RibbonControls.GetPreference("largura");
             }
             //else
             //{
@@ -296,7 +296,7 @@ namespace PeriTAB
                 editBox_largura.Text = "";
                 editBox_altura.Enabled = true;
                 //editBox_altura.Text = Variables.editBox_altura_Text;
-                editBox_altura.Text = Class_Controls.GetPreference("altura");
+                editBox_altura.Text = Class_RibbonControls.GetPreference("altura");
             }
             //else
             //{
@@ -330,11 +330,11 @@ namespace PeriTAB
             if (float.TryParse(editBox_largura.Text, out float larg) & larg.ToString() == editBox_largura.Text & larg >= 0.1 & larg < 100)
             {
                 //Class_Buttons.preferences.largura = editBox_largura.Text;
-                Class_Controls.ChangePreference("largura", editBox_largura.Text);
+                Class_RibbonControls.ChangePreference("largura", editBox_largura.Text);
             }
             else
             {
-                editBox_largura.Text = Class_Controls.GetPreference("largura");
+                editBox_largura.Text = Class_RibbonControls.GetPreference("largura");
 
             }
         }
@@ -354,11 +354,11 @@ namespace PeriTAB
             if (float.TryParse(editBox_altura.Text, out float alt) & alt.ToString() == editBox_altura.Text & alt >= 0.1 & alt < 100)
             {
                 //Class_Buttons.preferences.altura = editBox_altura.Text;
-                Class_Controls.ChangePreference("altura", editBox_altura.Text);
+                Class_RibbonControls.ChangePreference("altura", editBox_altura.Text);
             }
             else
             {
-                editBox_altura.Text = Class_Controls.GetPreference("altura"); ;
+                editBox_altura.Text = Class_RibbonControls.GetPreference("altura"); ;
             }
         }
 

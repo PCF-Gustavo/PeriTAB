@@ -79,5 +79,6 @@ namespace PeriTAB
                 Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
             }
         }
+
     }
 }

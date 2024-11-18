@@ -7,7 +7,7 @@ using System.Xml;
 
 namespace PeriTAB
 {
-    internal class Class_Controls
+    internal class Class_RibbonControls
     {
         public void Configura_Valores_iniciais()
         {

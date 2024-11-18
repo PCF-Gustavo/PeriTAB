@@ -61,11 +61,11 @@ namespace PeriTAB
             //MessageBox.Show("AnyButtonClick_Ribbon");
 
             //Class_Buttons iClass_Buttons = new Class_Buttons();
-            Class_Controls iClass_Controls = new Class_Controls();
+            Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
 
             ////Revisa a habilitação do botao "Gera PDF" do Ribbon e Sessão de token
             //iClass_Buttons.button_gera_pdf_Default();
-            iClass_Controls.button_gera_pdf_valorinicial();
+            iClass_RibbonControls.button_gera_pdf_valorinicial();
             if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
             if (!Globals.Ribbons.Ribbon.checkBox_assinar.Checked) { Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; }
 
