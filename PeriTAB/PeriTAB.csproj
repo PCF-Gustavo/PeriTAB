@@ -282,13 +282,7 @@
     <None Include="Resources\lupa.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\esquadro.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\abc.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\radiografia.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\aquarela.png" />
@@ -306,16 +300,10 @@
     <None Include="Resources\vassoura.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\download2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\download3.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\seta3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\seta1.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\image_icon.png" />
@@ -324,16 +312,10 @@
     <None Include="Resources\icone_pdf.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\seta2.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\redimensionar.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\engrenagem.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\checklist.jpg" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\checklist2.png" />
@@ -343,9 +325,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\formatacao.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\marcador.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\marcador2.png" />
@@ -372,16 +351,10 @@
     <None Include="Resources\quadrado.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\subir1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\subir2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\formatacao2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\load2.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\load-icon-png-7969.png" />
