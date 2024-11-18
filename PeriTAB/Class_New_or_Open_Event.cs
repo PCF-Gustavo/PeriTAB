@@ -1,12 +1,5 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
-using System;
+﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using Tarefa = System.Threading.Tasks.Task;
-using System.Windows.Forms;
 
 namespace PeriTAB
 {
@@ -35,7 +28,7 @@ namespace PeriTAB
                 //************** precisa criar 1 usercontrol para cada documento aberto????? **************
                 Globals.ThisAddIn.iMyUserControl = new MyUserControl();
                 Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
-                
+
                 iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
                 iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");

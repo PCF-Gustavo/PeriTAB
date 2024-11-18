@@ -1,9 +1,9 @@
 ﻿using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Xml;
-using System.IO;
 
 namespace PeriTAB
 {
@@ -24,8 +24,8 @@ namespace PeriTAB
             SetControl(Control: Globals.Ribbons.Ribbon.editBox_largura, Checked: bool.Parse(GetPreference("largura_checked")));
             SetControl(Control: Globals.Ribbons.Ribbon.checkBox_altura, Checked: !bool.Parse(GetPreference("largura_checked")));
             SetControl(Control: Globals.Ribbons.Ribbon.editBox_altura, Checked: !bool.Parse(GetPreference("largura_checked")));
-            if (bool.Parse(GetPreference("largura_checked"))){ SetControl(Control: Globals.Ribbons.Ribbon.editBox_largura, Text: GetPreference("largura")); }
-            if (!bool.Parse(GetPreference("largura_checked"))){ SetControl(Control: Globals.Ribbons.Ribbon.editBox_altura, Text: GetPreference("altura")); }
+            if (bool.Parse(GetPreference("largura_checked"))) { SetControl(Control: Globals.Ribbons.Ribbon.editBox_largura, Text: GetPreference("largura")); }
+            if (!bool.Parse(GetPreference("largura_checked"))) { SetControl(Control: Globals.Ribbons.Ribbon.editBox_altura, Text: GetPreference("altura")); }
             SetControl(Control: Globals.Ribbons.Ribbon.dropDown_separador, SelectedItem: GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_separador, GetPreference("separador")));
             SetControl(Control: Globals.Ribbons.Ribbon.checkBox_assinar, Checked: bool.Parse(GetPreference("assinar_pdf")));
             SetControl(Control: Globals.Ribbons.Ribbon.checkBox_abrir, Checked: bool.Parse(GetPreference("abrir_pdf")));
@@ -34,7 +34,7 @@ namespace PeriTAB
             SetControl(Control: Globals.Ribbons.Ribbon.button_abre_SISCRIM, Enabled: true, SuperTip: "Abre SISCRIM na página do Laudo ou da Requisição.");
         }
 
-        private RibbonDropDownItem GetDropDownItemFromLabel(RibbonDropDown Control, string Label) 
+        private RibbonDropDownItem GetDropDownItemFromLabel(RibbonDropDown Control, string Label)
         {
             foreach (RibbonDropDownItem item in Control.Items)
             {

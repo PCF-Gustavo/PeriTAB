@@ -6,7 +6,7 @@ namespace PeriTAB
     internal class Class_DocumentBeforeClose_Event
     {
         public void Evento_DocumentBeforeClose()
-        {            
+        {
             Globals.ThisAddIn.Application.DocumentBeforeClose += new ApplicationEvents4_DocumentBeforeCloseEventHandler(Metodo_DocumentBeforeClose);
         }
         private void Metodo_DocumentBeforeClose(Document Doc, ref bool Cancel)

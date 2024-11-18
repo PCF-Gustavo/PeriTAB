@@ -8,6 +8,10 @@ namespace PeriTAB
 {
     public partial class Ribbon
     {
+        // Define constantes
+        const string quote = "\"";
+        const string slash = @"\";
+
         // Cria instância das classes
         Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
 
@@ -15,11 +19,7 @@ namespace PeriTAB
         public class Variables
         {
             // Declara variáveis privadas
-
-            //private static string var1 = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
-            //private static string var2 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences;
-            //private static string private_editBox_largura_Text, private_editBox_altura_Text;
             private static readonly bool private_debugging;
             private static AddIn private_AddIn_PeriTAB;
             private static Template private_Template_PeriTAB;
@@ -29,7 +29,6 @@ namespace PeriTAB
                 private_caminho_AppData_Roaming_PeriTAB = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
                 private_caminho_preferences = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, "preferences.xml");
                 private_debugging = !System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed;
-                //MessageBox.Show("Variables");
             }
 
             // Declara variáveis públicas
@@ -38,24 +37,16 @@ namespace PeriTAB
             public static Template Template_PeriTAB { get { return private_Template_PeriTAB; } set { private_Template_PeriTAB = value; } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string caminho_preferences { get { return private_caminho_preferences; } }
-            //public static string editBox_largura_Text { get { return private_editBox_largura_Text; } set { private_editBox_largura_Text = value; } }
-            //public static string editBox_altura_Text { get { return private_editBox_altura_Text; } set { private_editBox_altura_Text = value; } }
-            //public static X509Certificate2 cert { get { return var_cert; } set { var_cert = value; } }
-            //public static IExternalSignature sig { get { return var_sig; } set { var_sig = value; } }
             public static bool debugging { get { return private_debugging; } }
         }
 
-        // Define constantes
-        const string quote = "\"";
-        const string slash = @"\";
+
 
         private void Ribbon_Load(object sender, RibbonUIEventArgs e)
         {
-            //iClass_Buttons.le_preferencias(Ribbon.Variables.caminho_preferences);
             //MessageBox.Show("Ribbon_Load");
+
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
-            //try { File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal); } catch (IOException ex) { MessageBox.Show("PeriTAB_Template_tmp.dotm em uso"); Globals.ThisAddIn.Application.Quit(); return; }
-            //File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal);
             try { File.WriteAllBytes(Variables.caminho_template, Properties.Resources.Normal); }
             catch (IOException)
             {
@@ -76,11 +67,6 @@ namespace PeriTAB
                 }
             }
 
-            // Escreve o número da versão
-            //System.Version publish_version = Assembly.GetExecutingAssembly().GetName().Version;
-            //Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
-            //Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
-
             if (Variables.debugging)
             {
                 button_teste.Visible = true;
@@ -88,23 +74,10 @@ namespace PeriTAB
             }
             else
             {
+                // Escreve o número da versão
                 System.Version publish_version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
                 Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
             }
-
-
-            //if (versao() != null)
-            //{
-            //    Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + versao().Major + "." + versao().Minor + "." + versao().Build;
-            //    //Variables.debugging = false;
-            //}
-            //else
-            //{
-            //    //Variables.debugging = true;
-            //    Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB Debugging";
-            //}
-
-            //if (Variables.debugging) { button_teste.Visible = true; }
         }
     }
 }

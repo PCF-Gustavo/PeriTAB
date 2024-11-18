@@ -1,16 +1,8 @@
-﻿using Microsoft.Office.Tools.Ribbon;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using System.IO;
-using System.Windows.Forms;
-using System.Windows.Input;
-using System.Windows.Controls;
-using static System.Net.Mime.MediaTypeNames;
+using System.Linq;
+using System.Xml;
 
 namespace PeriTAB
 {
@@ -86,8 +78,8 @@ namespace PeriTAB
         }
 
         public void toggleButton_painel_de_estilos_Default()
-        {            
-            Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked = bool.Parse(GetPreference("painel_de_estilos")); 
+        {
+            Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked = bool.Parse(GetPreference("painel_de_estilos"));
             //Globals.ThisAddIn.TaskPane1.Visible = bool.Parse(preferences.painel_de_estilos);
         }
 

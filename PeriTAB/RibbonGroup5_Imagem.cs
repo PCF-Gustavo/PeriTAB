@@ -1,22 +1,14 @@
-﻿using iTextSharp.text.pdf.security;
-using iTextSharp.text.pdf;
-using Microsoft.Office.Core;
+﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using System.Windows.Forms;
-using Org.BouncyCastle.Security;
-using System.Security.Cryptography.X509Certificates;
-using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
-using System.Text;
-using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Windows.Forms;
 using Tarefa = System.Threading.Tasks.Task;
-using System.Text.RegularExpressions;
 
 
 namespace PeriTAB
@@ -949,7 +941,7 @@ namespace PeriTAB
             menu_remover_imagem.Enabled = true;
         }
 
-        private void button_alinha_legenda_figuras_Click (object sender, RibbonControlEventArgs e) 
+        private void button_alinha_legenda_figuras_Click(object sender, RibbonControlEventArgs e)
         { }
 
         private async void button_remove_imagem_Click(object sender, RibbonControlEventArgs e)

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
+using System.Windows.Forms;
 
 namespace PeriTAB
 {
@@ -13,7 +8,7 @@ namespace PeriTAB
     {
         public void Metodo_DocumentOpen(Microsoft.Office.Interop.Word.Document Doc)
         {
-            MessageBox.Show("DocumentOpen");            
+            MessageBox.Show("DocumentOpen");
         }
 
         public void Metodo_NewDocument(Microsoft.Office.Interop.Word.Document Doc)
@@ -45,7 +40,7 @@ namespace PeriTAB
         {
             MessageBox.Show("WindowActivate");
         }
-        
+
         public void Metodo_WindowBeforeDoubleClick(Microsoft.Office.Interop.Word.Selection Sel, ref bool Cancel)
         {
             MessageBox.Show("WindowBeforeDoubleClick");
@@ -58,24 +53,24 @@ namespace PeriTAB
         {
             MessageBox.Show("WindowDeactivate");
         }
-        
+
         public void Metodo_WindowSelectionChange(Microsoft.Office.Interop.Word.Selection Sel)
         {
             MessageBox.Show("WindowSelectionChange");
         }
-        
+
         public void Metodo_WindowSize(Microsoft.Office.Interop.Word.Document Doc, Microsoft.Office.Interop.Word.Window Wn)
         {
             MessageBox.Show("WindowSize");
-            
+
         }
         public void SettingChanging(object sender, System.Configuration.SettingChangingEventArgs e)
         {
-            MessageBox.Show("SettingChanging");            
+            MessageBox.Show("SettingChanging");
         }
         public void Metodo_TabDisposed(object sender, System.EventArgs e)
         {
-            MessageBox.Show("TabDisposed");           
+            MessageBox.Show("TabDisposed");
         }
         public void Metodo_RibbonClose(object sender, System.EventArgs e)
         {
@@ -112,7 +107,7 @@ namespace PeriTAB
         }
 
         public void Evento_DocumentChange()
-        {            
+        {
             Globals.ThisAddIn.Application.DocumentChange += new ApplicationEvents4_DocumentChangeEventHandler(Metodo_DocumentChange);
         }
 
@@ -150,7 +145,7 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.WindowSize += new ApplicationEvents4_WindowSizeEventHandler(Metodo_WindowSize);
         }
         public void Evento_SettingChanging()
-        {            
+        {
             Properties.Settings.Default.SettingChanging += new System.Configuration.SettingChangingEventHandler(SettingChanging);
         }
         public void Evento_TabDisposed()
@@ -171,7 +166,7 @@ namespace PeriTAB
         }
         public void Evento_()
         {
-            
+
         }
 
     }

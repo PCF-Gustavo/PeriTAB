@@ -1,20 +1,11 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.IO;
+﻿using Microsoft.Office.Interop.Word;
 
 namespace PeriTAB
 {
     internal class Class_WindowActivate_Event
     {
         public void Evento_WindowActivate()
-        {            
+        {
             Globals.ThisAddIn.Application.WindowActivate += new ApplicationEvents4_WindowActivateEventHandler(Metodo_WindowActivate);
         }
         private void Metodo_WindowActivate(Microsoft.Office.Interop.Word.Document Doc, Microsoft.Office.Interop.Word.Window Wn)

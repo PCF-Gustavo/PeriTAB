@@ -1,11 +1,9 @@
 ﻿using Microsoft.Office.Interop.Word;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Tarefa = System.Threading.Tasks.Task;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Windows.Controls.Primitives;
-using System.Linq;
-using System.Diagnostics;
 
 namespace PeriTAB
 {
@@ -41,7 +39,8 @@ namespace PeriTAB
             {
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
-            } catch (System.Runtime.InteropServices.COMException) { }
+            }
+            catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
             try
@@ -70,13 +69,13 @@ namespace PeriTAB
 
                     List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
 
-                    await Tarefa.Run( () =>
+                    await Tarefa.Run(() =>
                     {
 
                         foreach (Microsoft.Office.Interop.Word.Paragraph p in paragrafosSelecionados)
                         {
                             if (token.IsCancellationRequested)
-                            break;
+                                break;
 
                             Microsoft.Office.Interop.Word.Style estilo = null;
                             if (p.Range.StoryType == WdStoryType.wdMainTextStory)

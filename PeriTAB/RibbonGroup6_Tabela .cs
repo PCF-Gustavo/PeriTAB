@@ -1,22 +1,7 @@
-﻿using iTextSharp.text.pdf.security;
-using iTextSharp.text.pdf;
-using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Security.Cryptography;
-using System.Windows.Forms;
-using Org.BouncyCastle.Security;
-using System.Security.Cryptography.X509Certificates;
-using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
-using System.Text;
-using System.Drawing;
-using System.Runtime.InteropServices;
-using System.Diagnostics;
 using Tarefa = System.Threading.Tasks.Task;
-using System.Text.RegularExpressions;
 
 
 namespace PeriTAB

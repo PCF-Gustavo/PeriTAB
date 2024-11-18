@@ -1,16 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
-using System.IO;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
-using System.Windows.Markup;
 
 namespace PeriTAB
 {
@@ -53,7 +44,7 @@ namespace PeriTAB
             //}
             //MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
             //MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-            if (UC != null) 
+            if (UC != null)
             {
                 foreach (System.Windows.Forms.Button b1 in UC.Controls) //Loop botoes do Taskpane
                 {
@@ -62,7 +53,7 @@ namespace PeriTAB
                         b1.Click += new System.EventHandler(Metodo_AnyButtonClick_TaskPane);
                     }
                 }
-        }
+            }
         }
 
         private void Metodo_AnyButtonClick_Ribbon(object sender, RibbonControlEventArgs e)

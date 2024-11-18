@@ -1,5 +1,5 @@
-﻿using System.IO;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 
 namespace PeriTAB
@@ -13,7 +13,7 @@ namespace PeriTAB
         Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event();
         Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event();
         Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event();
-        
+
         public MyUserControl iMyUserControl;
         Class_Controls iClass_Controls = new Class_Controls();
 
@@ -25,11 +25,11 @@ namespace PeriTAB
             iClass_New_or_Open_Event.Evento_New_or_Open();
             if (Globals.ThisAddIn.Application.Documents.Count == 1) iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument);
             iClass_DocumentClose_Event.Evento_DocumentClose();
-            iClass_DocSave_Event.Evento_DocSave();            
+            iClass_DocSave_Event.Evento_DocSave();
             iClass_SelectionChange_Event.Evento_SelectionChange();
             iClass_WindowActivate_Event.Evento_WindowActivate();
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
-            
+
             //Lê e configura preferências
             iClass_Controls.le_preferencias(Ribbon.Variables.caminho_preferences);
             iClass_Controls.Configura_Valores_iniciais();
@@ -93,7 +93,7 @@ namespace PeriTAB
             this.Startup += new System.EventHandler(ThisAddIn_Startup);
             this.Shutdown += new System.EventHandler(ThisAddIn_Shutdown);
         }
-        
+
         #endregion
     }
 }

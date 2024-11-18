@@ -1,11 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
 using Tarefa = System.Threading.Tasks.Task;
-using System.Windows;
 
 namespace PeriTAB
 {
@@ -23,35 +18,37 @@ namespace PeriTAB
 
         private void espera_salvar()
         {
-            /*new Thread(() =>*/Tarefa.Run(() =>
-            {
-                while (true)
-                {
-                    try
-                    {
-                        while (Globals.ThisAddIn.Application.BackgroundSavingStatus > 0) // Wait until the save operation is complete. (Globals.ThisAddIn.Application will throw exceptions while the save file dialog is open)
-                            Thread.Sleep(1000);
-                        break;
-                    }
-                    catch
-                    {
-                        Thread.Sleep(1000);
-                    }
-                }
-                // If we get to here, the user either saved the document or canceled the saving process. To distinguish between the two, we check the value of document.Saved.
-                while (true)
-                {
-                    try
-                    {
-                        if (Globals.ThisAddIn.Application.ActiveDocument.Saved) Metodo_DocumentAfterSave();
-                        break;
-                    }
-                    catch
-                    {
-                        Thread.Sleep(1000);
-                    }
-                }
-            /*}).Start();*/});
+            /*new Thread(() =>*/
+            Tarefa.Run(() =>
+{
+    while (true)
+    {
+        try
+        {
+            while (Globals.ThisAddIn.Application.BackgroundSavingStatus > 0) // Wait until the save operation is complete. (Globals.ThisAddIn.Application will throw exceptions while the save file dialog is open)
+                Thread.Sleep(1000);
+            break;
+        }
+        catch
+        {
+            Thread.Sleep(1000);
+        }
+    }
+    // If we get to here, the user either saved the document or canceled the saving process. To distinguish between the two, we check the value of document.Saved.
+    while (true)
+    {
+        try
+        {
+            if (Globals.ThisAddIn.Application.ActiveDocument.Saved) Metodo_DocumentAfterSave();
+            break;
+        }
+        catch
+        {
+            Thread.Sleep(1000);
+        }
+    }
+    /*}).Start();*/
+});
         }
 
         public void Metodo_DocumentAfterSave()

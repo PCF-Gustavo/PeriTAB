@@ -4,8 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using Tarefa = System.Threading.Tasks.Task;
 using System.Windows.Forms;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -104,7 +104,7 @@ namespace PeriTAB
             tamanhoFonte = tamanhoMaximo + 0.1f; // Tamanho inicial de fonte
             foreach (var botao in botoes)
             {
-                using (Graphics Graphics= botao.CreateGraphics())
+                using (Graphics Graphics = botao.CreateGraphics())
                 {
                     // Loop em cada palavra do texto do botao
                     foreach (string palavra in botao.Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries))
@@ -133,7 +133,7 @@ namespace PeriTAB
                     }
                 }
             }
-                return tamanhoMaximo; // Retorna o maior tamanho de fonte que cabe em todos os botões
+            return tamanhoMaximo; // Retorna o maior tamanho de fonte que cabe em todos os botões
         }
 
         public void Visible(bool b)
