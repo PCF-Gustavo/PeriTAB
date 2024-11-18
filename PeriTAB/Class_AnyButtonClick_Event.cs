@@ -18,7 +18,7 @@ namespace PeriTAB
     {
         public void Evento_AnyButtonClick(MyUserControl UC)
         {
-            foreach (RibbonGroup g in Globals.Ribbons.Ribbon1.tab.Groups) //Loop botoes do Ribbon
+            foreach (RibbonGroup g in Globals.Ribbons.Ribbon.tab.Groups) //Loop botoes do Ribbon
             {
                 foreach (RibbonControl c in g.Items)
                 {
@@ -75,11 +75,11 @@ namespace PeriTAB
             ////Revisa a habilitação do botao "Gera PDF" do Ribbon e Sessão de token
             //iClass_Buttons.button_gera_pdf_Default();
             iClass_Controls.button_gera_pdf_valorinicial();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
-            if (!Globals.Ribbons.Ribbon1.checkBox_assinar.Checked) { Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf; }
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            if (!Globals.Ribbons.Ribbon.checkBox_assinar.Checked) { Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; }
 
             //Revisa o destaque dos botoes do TaskPane
-            if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked)
+            if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
             {
                 if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
                 {
@@ -125,7 +125,7 @@ namespace PeriTAB
             }
 
             //Revisa o destaque dos botoes do TaskPane
-            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked == true)
+            //if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked == true)
             //{
             //    if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             //    {
@@ -216,7 +216,7 @@ namespace PeriTAB
             //}
 
             //Revisa o destaque dos botoes do TaskPane
-            if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked)
+            if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
             {
                 if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
                 {
@@ -261,7 +261,7 @@ namespace PeriTAB
             }
 
             //Revisa o destaque dos botoes do TaskPane
-            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked == true)
+            //if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked == true)
             //{
             //    if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
             //    {

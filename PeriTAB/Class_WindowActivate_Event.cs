@@ -27,48 +27,48 @@ namespace PeriTAB
 
             //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon            
             //iClass_ValueChanged_Event.FieldShading(); *** Não está funcinando bem. A call "var = Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading;" impede a inserção de formas
-            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true; }
-            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false; }
+            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
+            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
 
             //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon
             try
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
             }
             catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
             try
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = false; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = true; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = false; }
             }
             catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Ver código" do Ribbon
             //iClass_ValueChanged_Event.ShowFieldCodes();
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = false; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = false; }
 
             //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
 
             //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
             iClass_Controls.button_abre_SISCRIM_valorinicial();
             //iClass_Buttons.button_abre_SISCRIM_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
             iClass_Controls.button_renomeia_documento_valorinicial();
             //iClass_Buttons.button_renomeia_documento_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon1.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
 
             //Revisa a habilitação do botao "Gera PDF" do Ribbon
             iClass_Controls.button_gera_pdf_valorinicial();
             //iClass_Buttons.button_gera_pdf_Default();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon1.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon1.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon1.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 
             ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
             //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)

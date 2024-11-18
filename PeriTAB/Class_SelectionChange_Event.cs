@@ -1,222 +1,109 @@
-﻿using Microsoft.Office.Core;
-using Microsoft.Office.Interop.Word;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.Office.Interop.Word;
+using System.Threading;
+using Tarefa = System.Threading.Tasks.Task;
 using System.Windows.Forms;
+using System.Collections.Generic;
+using System.Windows.Controls.Primitives;
+using System.Linq;
+using System.Diagnostics;
 
 namespace PeriTAB
 {
     internal class Class_SelectionChange_Event
     {
+        private static CancellationTokenSource cancellationTokenSource = null;
+
         public void Evento_SelectionChange()
         {
             Globals.ThisAddIn.Application.WindowSelectionChange += new ApplicationEvents4_WindowSelectionChangeEventHandler(Metodo_SelectionChange);
         }
 
-        private void Metodo_SelectionChange(Selection Sel)
+        private async void Metodo_SelectionChange(Selection Sel)
         {
+            Stopwatch stopWatch = new Stopwatch();
+            stopWatch.Start(); // Inicia o cronômetro
+
+            // Se houver uma operação em andamento, cancelamos a execução anterior
+            cancellationTokenSource?.Cancel();
+
+            //if (cancellationTokenSource != null)
+            //cancellationTokenSource.Cancel(); // Cancela a execução anterior
+
+            // Criamos uma nova fonte de cancelamento para a próxima execução
+            cancellationTokenSource = new CancellationTokenSource();
+            CancellationToken token = cancellationTokenSource.Token;
+
             //Declara instacias das classes
-            //Class_Buttons iClass_Buttons = new Class_Buttons();
             MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-
-            //iClass_Buttons.button_renomeia_documento_Default();
-
-            ////Revisa a habilitação do botao "Cola Figura" do Ribbon
-            //iClass_Buttons.button_cola_imagem_Default();
-            //if (!System.Windows.Clipboard.ContainsData("FileDrop")) { Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = false; Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Não há imagem no Clipboard."; }
-            //if (Globals.ThisAddIn.Application.Language != MsoLanguageID.msoLanguageIDBrazilianPortuguese) { Globals.Ribbons.Ribbon1.button_cola_imagem.Enabled = false; Globals.Ribbons.Ribbon1.button_cola_imagem.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon1.button_cola_imagem.SuperTip = "Este botão apenas funciona no Word em Português Brasileiro."; }
-
-            //Revisa a habilitação do ToggleButton "Painel de Estilos" do Ribbon
-            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked) Class_New_or_Open_Event.Metodo_TaskPanes_Visible(true);
 
             //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon
             try
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon1.checkBox_destaca_campos.Checked = false; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
             } catch (System.Runtime.InteropServices.COMException) { }
 
             //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
             try
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon1.checkBox_mostra_indicadores.Checked = false; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = true; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = false; }
             }
             catch (System.Runtime.InteropServices.COMException) { }
 
 
             //Revisa a habilitação do CheckBox "Ver código" do Ribbon
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon1.checkBox_vercodigo_campos.Checked = false; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = false; }
 
             //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon1.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
-
-            ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-            //{
-            //    //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
-            //    Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
-            //}
-
-            ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-            //{
-            //    //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
-            //    MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-            //    MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
-            //}
-
-            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
-            //{
-            //    MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-            //    MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
-            //}
-
-            ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
-            //{
-            //    UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), false); }
-            //    else
-            //    {
-            //        Microsoft.Office.Interop.Word.Style s = null;
-            //        try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-            //        if (s != null)
-            //        {
-            //            if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton("button_reinicia_lista"), false);
-            //        }
-            //    }
-            //}
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
+            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
 
             //Revisa o destaque dos botoes do TaskPane
-            if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked)
+            if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
             {
                 if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
                 {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start(); // Inicia o cronômetro
 
                     Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(UserControl_ActiveDocument);
 
-                    foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+                    List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
+
+                    await Tarefa.Run( () =>
                     {
-                        // Limita o tempo de processamento a 0.2 segundos
-                        if (stopWatch.Elapsed.TotalSeconds > 0.2)
+
+                        foreach (Microsoft.Office.Interop.Word.Paragraph p in paragrafosSelecionados)
+                        {
+                            if (token.IsCancellationRequested)
                             break;
 
-                        Microsoft.Office.Interop.Word.Style estilo = null;
-                        if (p.Range.StoryType == WdStoryType.wdMainTextStory)
-                        {
-                            try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                            Microsoft.Office.Interop.Word.Style estilo = null;
+                            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+                            {
+                                try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
 
-                            //if (estilo != null && MyUserControl.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            //{
-                            //    string botaoNome = MyUserControl.dict_estilo_e_botao[estilo.NameLocal];
-                            //    UserControl_ActiveDocument.Habilita_Destaca(UserControl_ActiveDocument.MyButton(botaoNome), true, true);
-                            //}
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                                if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                                {
+                                    System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
+                                    UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
+                                }
+                            }
+                            if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
                             {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
+                                try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                                if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
+                                {
+                                    System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
+                                    UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
+                                }
                             }
                         }
-                        if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
-                        {
-                            try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
-                            }
-                        }
-                    }
+                    }, token);
                 }
             }
-
-
-
-
-            //Revisa o destaque dos botoes do TaskPane
-            //if (Globals.Ribbons.Ribbon1.toggleButton_painel_de_estilos.Checked == true)
-            //{
-            //    if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-            //    {
-            //        Stopwatch stopWatch = new Stopwatch(); stopWatch.Start(); //inicia cronometro
-            //        MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-            //        Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(MUC);
-            //        foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            //        {
-            //            if (stopWatch.Elapsed.TotalSeconds > 0.2) break; //limita tempo de processamento
-            //            //if (stopWatch.Elapsed.TotalSeconds > 0.2)
-            //            //{
-            //            //    MessageBox.Show("stopWatch.Elapsed.TotalSeconds > 0.2");
-            //            //    break;
-            //            //}
-
-            //            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
-            //            {
-            //                Microsoft.Office.Interop.Word.Style s = null;
-            //                try { s = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-            //                if (s != null)
-            //                {
-            //                    if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_sem_formatacao"), true, true);
-            //                    if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_corpo_do_texto"), true, true);
-            //                    if (s.NameLocal == "03 - Citações (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_citacoes"), true, true);
-            //                    if (s.NameLocal == "04a - Seção_1 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_1"), true, true);
-            //                    if (s.NameLocal == "04b - Seção_2 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_2"), true, true);
-            //                    if (s.NameLocal == "04c - Seção_3 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_3"), true, true);
-            //                    if (s.NameLocal == "04d - Seção_4 (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_secao_4"), true, true);
-            //                    if (s.NameLocal == "05 - Enumerações (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_enumeracao"), true, true);
-            //                    if (s.NameLocal == "06 - Figuras (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_figuras"), true, true);
-            //                    if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_legendas_de_figuras"), true, true);
-            //                    if (s.NameLocal == "08a - Texto de Figuras (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_textos_de_figuras"), true, true);
-            //                    if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_legendas_de_tabelas"), true, true);
-            //                    if (s.NameLocal == "09 - Quesitos (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_quesitos"), true, true);
-            //                    if (s.NameLocal == "10 - Fecho (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_fecho"), true, true);
-            //                    if (s.NameLocal == "11 - Parágrafo Numerado (PeriTAB)") MUC.Habilita_Destaca(MUC.MyButton("button_paragrafo_numerado"), true, true);
-            //                    //if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") MUC.Habilita_Destaca_button1(true, true);
-            //                    //if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") MUC.Habilita_Destaca_button2(true, true);
-            //                    //if (s.NameLocal == "03 - Citações (PeriTAB)") MUC.Habilita_Destaca_button3(true, true);
-            //                    //if (s.NameLocal == "04a - Seção_1 (PeriTAB)") MUC.Habilita_Destaca_button4(true, true);
-            //                    //if (s.NameLocal == "04b - Seção_2 (PeriTAB)") MUC.Habilita_Destaca_button5(true, true);
-            //                    //if (s.NameLocal == "04c - Seção_3 (PeriTAB)") MUC.Habilita_Destaca_button6(true, true);
-            //                    //if (s.NameLocal == "04d - Seção_4 (PeriTAB)") MUC.Habilita_Destaca_button7(true, true);
-            //                    //if (s.NameLocal == "05 - Enumerações (PeriTAB)") MUC.Habilita_Destaca_button8(true, true);
-            //                    //if (s.NameLocal == "06 - Figuras (PeriTAB)") MUC.Habilita_Destaca_button10(true, true);
-            //                    //if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") MUC.Habilita_Destaca_button11(true, true);
-            //                    //if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") MUC.Habilita_Destaca_button12(true, true);
-            //                    //if (s.NameLocal == "09 - Quesitos (PeriTAB)") MUC.Habilita_Destaca_button13(true, true);
-            //                    //if (s.NameLocal == "10 - Fecho (PeriTAB)") MUC.Habilita_Destaca_button14(true, true);
-            //                    //if (s.NameLocal == "01 - Sem Formatação (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button1(true, true);
-            //                    //if (s.NameLocal == "02 - Corpo do Texto (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button2(true, true);
-            //                    //if (s.NameLocal == "03 - Citações (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button3(true, true);
-            //                    //if (s.NameLocal == "04a - Seção_1 (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button4(true, true);
-            //                    //if (s.NameLocal == "04b - Seção_2 (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button5(true, true);
-            //                    //if (s.NameLocal == "04c - Seção_3 (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button6(true, true);
-            //                    //if (s.NameLocal == "04d - Seção_4 (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button7(true, true);
-            //                    //if (s.NameLocal == "05 - Enumerações (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button8(true, true);
-            //                    //if (s.NameLocal == "06 - Figuras (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button10(true, true);
-            //                    //if (s.NameLocal == "07 - Legendas de Figuras (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button11(true, true);
-            //                    //if (s.NameLocal == "08 - Legendas de Tabelas (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button12(true, true);
-            //                    //if (s.NameLocal == "09 - Quesitos (PeriTAB)") Globals.ThisAddIn.iMyUserControl.Habilita_Destaca_button13(true, true);
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
-
-
-
-
+            stopWatch.Stop(); // Para o cronômetro
+            Globals.ThisAddIn.Application.StatusBar = $" (Tempo de execução: {stopWatch.Elapsed.TotalSeconds:F2} segundos)";
         }
     }
 }

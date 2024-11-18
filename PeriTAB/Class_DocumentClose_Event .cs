@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Threading;
-using System.Windows.Forms;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -26,7 +26,7 @@ namespace PeriTAB
 
         private void espera_fechar(Document Doc)
         {
-            new Thread(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 while (true)
                 {
@@ -34,7 +34,7 @@ namespace PeriTAB
                     Thread.Sleep(1000);
                 }
                 Metodo_DocumentAfterClose(Doc);
-            }).Start();
+            /*}).Start();*/});
         }
 
         public void Tracking_OpenDocumentNumber()
@@ -44,7 +44,7 @@ namespace PeriTAB
         }
         public void Metodo_DocumentAfterClose(Document Doc)
         {
-            new Thread(() =>
+            /*new Thread(() =>*/Tarefa.Run(() =>
             {
                 Thread.Sleep(100);
                 if (IsDocumentOpen(Doc))
@@ -72,7 +72,7 @@ namespace PeriTAB
                 }
 
                 ////Monitoramento do Painel de estilos
-                //if (Ribbon1.Variables.debugging)
+                //if (Ribbon.Variables.debugging)
                 //{
                 //    string string_Documents_Count = (Globals.ThisAddIn.Application.Documents.Count - 1).ToString();
                 //    string string_CustomTaskPanes_Count = Globals.ThisAddIn.CustomTaskPanes.Count.ToString();
@@ -93,7 +93,7 @@ namespace PeriTAB
                 //    }
                 //}
 
-            }).Start();
+            /*}).Start();*/});
 
         }
 
