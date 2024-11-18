@@ -12,7 +12,7 @@ namespace PeriTAB
         {
             // Atualiza a UI na Thread principal
             RibbonButton RibbonButton = (RibbonButton)sender;
-            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_inserir_tabela.Image = Properties.Resources.load_icon_png_7969;
             menu_inserir_tabela.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             Range r = Globals.ThisAddIn.Application.Selection.Range;
@@ -59,7 +59,7 @@ namespace PeriTAB
 
             r.Select();
             Globals.ThisAddIn.Application.ScreenUpdating = true;
-            RibbonButton.Image = Properties.Resources._;
+            menu_inserir_tabela.Image = Properties.Resources._;
             menu_inserir_tabela.Enabled = true;
         }
 
@@ -67,7 +67,7 @@ namespace PeriTAB
         {
             // Atualiza a UI na Thread principal
             RibbonButton RibbonButton = (RibbonButton)sender;
-            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            menu_formatacao_tabela.Image = Properties.Resources.load_icon_png_7969;
             menu_formatacao_tabela.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -101,7 +101,7 @@ namespace PeriTAB
             });
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
-            RibbonButton.Image = Properties.Resources.formatacao2;
+            menu_formatacao_tabela.Image = Properties.Resources.formatacao2;
             menu_formatacao_tabela.Enabled = true;
         }
     }
