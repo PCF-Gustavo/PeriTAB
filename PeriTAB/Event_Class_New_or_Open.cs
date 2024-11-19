@@ -8,6 +8,8 @@ namespace PeriTAB
     {
         Class_DocumentClose_Event iClass_DocumentClose_Event = new Class_DocumentClose_Event();
         Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+        Event_Class_ControlOnExit iEvent_Class_ControlOnExit = new Event_Class_ControlOnExit();
+
         Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
 
         public static Microsoft.Office.Tools.CustomTaskPane iTaskPane;
@@ -31,6 +33,7 @@ namespace PeriTAB
                 Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
 
                 iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+                iEvent_Class_ControlOnExit.Metodo_ControlOnExit();
 
                 iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
                 Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, Globals.ThisAddIn.iMyUserControl);

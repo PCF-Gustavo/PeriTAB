@@ -194,6 +194,7 @@
     <Compile Include="Event_Class_DocSave.cs" />
     <Compile Include="Event_Class_DocChange.cs" />
     <Compile Include="Event_Class_DocumentClose.cs" />
+    <Compile Include="Event_Class_ControlOnExit .cs" />
     <Compile Include="RibbonGroup8_Entrega.cs">
       <SubType>Component</SubType>
     </Compile>
