@@ -109,8 +109,7 @@ namespace PeriTAB
                 {
                     // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
                     string autotextName = "Tipo de unidade de criminalistic";
-                    BuildingBlockEntries buildingBlockEntries = Globals.ThisAddIn.Application.Templates["Normal.dotm"].BuildingBlockEntries;
-                    //BuildingBlockEntries buildingBlockEntries = Globals.ThisAddIn.Application.ActiveDocument.get_AttachedTemplate().BuildingBlockEntries;
+                    BuildingBlockEntries buildingBlockEntries = Ribbon.Variables.Template_PeriTAB.BuildingBlockEntries;
                     for (int i = 1; i <= buildingBlockEntries.Count; i++)
                     {
                         BuildingBlock bb = buildingBlockEntries.Item(i);
@@ -128,7 +127,6 @@ namespace PeriTAB
                             }
                         }
                     }
-
                 }
                     
             }
