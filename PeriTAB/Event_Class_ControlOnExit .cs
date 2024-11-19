@@ -5,20 +5,21 @@ using System.Linq;
 
 namespace PeriTAB
 {
-    internal class Event_Class_ControlOnExit
+    internal class Class_ContentControlOnExit_Event
     {
         private static Dictionary<string, string> dict_Unidade_e_Unidade_da_PF = new Dictionary<string, string>()
         {
             { "INC/DITEC/PF", "DITEC - INSTITUTO NACIONAL DE CRIMINALÍSTICA" },
         };
         private static Dictionary<string, string> dict_Unidade_da_PF_e_Unidade = dict_Unidade_e_Unidade_da_PF.ToDictionary(par => par.Value, par => par.Key);
-        public void Metodo_ControlOnExit()
+        public void Metodo_ContentControlOnExit()
         {
             // Configura o evento global para monitorar quando o controle é alterado
             Globals.ThisAddIn.Application.ActiveDocument.ContentControlOnExit += (ContentControl contentControl, ref bool cancel) =>
             {
                 VincularLista(contentControl, "Unidade", "Unidade da PF", dict_Unidade_e_Unidade_da_PF);
                 VincularLista(contentControl, "Unidade da PF", "Unidade", dict_Unidade_da_PF_e_Unidade);
+                Add_or_remove_ultima_linha_cabecalho(contentControl);
             };
 
         }
@@ -88,6 +89,50 @@ namespace PeriTAB
                     break;
                 }
             }
+        }
+
+        private void Add_or_remove_ultima_linha_cabecalho(ContentControl ContentControl)
+        {
+            if (ContentControl.Title == "Unidade" || ContentControl.Title == "Unidade da PF")
+            {
+                ContentControl controle_Unidade_da_PF = GetContentControl("Unidade da PF");
+
+                Paragraph paragraph = controle_Unidade_da_PF.Range.Paragraphs[1].Next();
+                if (controle_Unidade_da_PF.Range.Text == "DITEC - INSTITUTO NACIONAL DE CRIMINALÍSTICA")
+                {
+                    if (paragraph != null)
+                    {
+                        paragraph.Range.Delete();
+                    }
+                }
+                else 
+                {
+                    // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
+                    string autotextName = "Tipo de unidade de criminalistic";
+                    BuildingBlockEntries buildingBlockEntries = Globals.ThisAddIn.Application.Templates["Normal.dotm"].BuildingBlockEntries;
+                    //BuildingBlockEntries buildingBlockEntries = Globals.ThisAddIn.Application.ActiveDocument.get_AttachedTemplate().BuildingBlockEntries;
+                    for (int i = 1; i <= buildingBlockEntries.Count; i++)
+                    {
+                        BuildingBlock bb = buildingBlockEntries.Item(i);
+                        if (bb.Name == autotextName)
+                        {
+                            if (paragraph == null)
+                            {
+                                controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
+                                bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
+                            }
+                            else
+                            {
+                                paragraph.Range.Text = "";
+                                bb.Insert(paragraph.Range);
+                            }
+                        }
+                    }
+
+                }
+                    
+            }
+
         }
 
     }
