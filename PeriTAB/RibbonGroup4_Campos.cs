@@ -94,6 +94,11 @@ namespace PeriTAB
             }
         }
 
+        private void button_inserir_ano_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "DATE " + slash + "@ " + quote + "yyyy" + quote , false);
+        }
+
         private async void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal

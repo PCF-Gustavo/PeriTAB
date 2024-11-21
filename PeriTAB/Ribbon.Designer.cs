@@ -72,6 +72,7 @@ namespace PeriTAB{
             this.button_inserir_pagina_extenso = this.Factory.CreateRibbonButton();
             this.button_inserir_paginas = this.Factory.CreateRibbonButton();
             this.button_inserir_paginas_extenso = this.Factory.CreateRibbonButton();
+            this.button_inserir_ano = this.Factory.CreateRibbonButton();
             this.button_atualiza_campos = this.Factory.CreateRibbonButton();
             this.menu_formatacao_campos = this.Factory.CreateRibbonMenu();
             this.button_minuscula_campos = this.Factory.CreateRibbonButton();
@@ -304,6 +305,7 @@ namespace PeriTAB{
             this.menu_inserir_campos.Items.Add(this.button_inserir_pagina_extenso);
             this.menu_inserir_campos.Items.Add(this.button_inserir_paginas);
             this.menu_inserir_campos.Items.Add(this.button_inserir_paginas_extenso);
+            this.menu_inserir_campos.Items.Add(this.button_inserir_ano);
             this.menu_inserir_campos.Label = "Inserir";
             this.menu_inserir_campos.Name = "menu_inserir_campos";
             this.menu_inserir_campos.OfficeImageId = "FieldCodes";
@@ -343,6 +345,13 @@ namespace PeriTAB{
             this.button_inserir_paginas_extenso.Name = "button_inserir_paginas_extenso";
             this.button_inserir_paginas_extenso.ShowImage = true;
             this.button_inserir_paginas_extenso.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_paginas_extenso_Click);
+            // 
+            // button_inserir_ano
+            // 
+            this.button_inserir_ano.Label = "Ano";
+            this.button_inserir_ano.Name = "button_inserir_ano";
+            this.button_inserir_ano.ShowImage = true;
+            this.button_inserir_ano.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_ano_Click);
             // 
             // button_atualiza_campos
             // 
@@ -960,6 +969,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_referencia;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_ano;
     }
 
     partial class ThisRibbonCollection

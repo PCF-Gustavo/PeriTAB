@@ -1,5 +1,4 @@
 ﻿using Microsoft.Office.Interop.Word;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,69 +59,25 @@ namespace PeriTAB
             ,{ "NUTEC/DPF/VLA/RO" , "DELEGACIA DE POLÍCIA FEDERAL EM VILHENA" }
 
         };
-        private static Dictionary<string, string> dict_Unidade_da_PF_e_Unidade = dict_Unidade_e_Unidade_da_PF.ToDictionary(par => par.Value, par => par.Key); // Dicionario invertido
 
-        private static Dictionary<string, string> dict_Unidade_e_Tipo_de_Unidade_de_criminalistica = new Dictionary<string, string>()
+        private static Dictionary<string, string> dict_Secao_de_conclusao_e_Fim_do_preambulo = new Dictionary<string, string>()
         {
-             { "SETEC/SR/PF/AC" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/AL" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/AP" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/AM" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/BA" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/CE" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/DF" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/ES" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/GO" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/MA" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/MT" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/MS" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/MG" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/PA" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/PB" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/PR" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/PE" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/PI" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/RJ" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/RN" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/RS" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/RO" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/RR" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/SC" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/SP" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/SE" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "SETEC/SR/PF/TO" , "SETOR TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/ARU/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/CAS/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/DRS/MS" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/FIG/PR" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/GRA/PR" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/JFA/MG" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/JZO/BA" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/LDA/PR" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/MII/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/PDE/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/PFO/RS" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/PTS/RS" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/RPO/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/SIC/MT" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/SJK/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/SMA/RS" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/SNM/PA" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/SOD/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/STS/SP" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/UDI/MG" , "NUCLEO TECNICO CIENTIFICO" }
-            ,{ "NUTEC/DPF/VLA/RO" , "NUCLEO TECNICO CIENTIFICO" }
+             { "RESPOSTA AOS QUESITOS", "respondendo aos quesitos formulados, abaixo transcritos" }
+            ,{ "CONCLUSÃO" , "atendendo ao abaixo transcrito" }
         };
-        
+
+        private static Dictionary<string, string> dict_Fim_do_preambulo_e_Secao_de_conclusao = dict_Secao_de_conclusao_e_Fim_do_preambulo.ToDictionary(par => par.Value, par => par.Key); // Dicionario invertido
+
         public void Metodo_ContentControlOnExit()
         {
             // Configura o evento global para monitorar quando o controle é alterado
             Globals.ThisAddIn.Application.ActiveDocument.ContentControlOnExit += (ContentControl contentControl, ref bool cancel) =>
             {
                 VincularLista(contentControl, "Unidade", "Unidade da PF", dict_Unidade_e_Unidade_da_PF);
-                VincularLista(contentControl, "Unidade da PF", "Unidade", dict_Unidade_da_PF_e_Unidade);
-                VincularLista(contentControl, "Unidade", "Tipo de unidade de criminalistica", dict_Unidade_e_Tipo_de_Unidade_de_criminalistica);
-                Add_or_remove_ultima_linha_cabecalho(contentControl);
+                Add_or_remove_ultima_linha_cabecalho1(contentControl);
+                Muda_Tipo_de_unidade_de_criminalistica(contentControl);
+                VincularLista(contentControl, "Seção de conclusão", "Fim do preâmbulo", dict_Secao_de_conclusao_e_Fim_do_preambulo);
+                VincularLista(contentControl, "Fim do preâmbulo", "Seção de conclusão", dict_Fim_do_preambulo_e_Secao_de_conclusao);
             };
 
         }
@@ -188,15 +143,24 @@ namespace PeriTAB
             {
                 if (entry.Text == valor_da_lista)
                 {
-                    ContentControl.DropdownListEntries[entry.Index].Select();
+                    if (ContentControl.LockContents)
+                    {
+                        ContentControl.LockContents = false;
+                        ContentControl.DropdownListEntries[entry.Index].Select();
+                        ContentControl.LockContents = true;
+                    }
+                    else
+                    {
+                        ContentControl.DropdownListEntries[entry.Index].Select();
+                    }
                     break;
                 }
             }
         }
 
-        private void Add_or_remove_ultima_linha_cabecalho(ContentControl ContentControl)
+        private void Add_or_remove_ultima_linha_cabecalho1(ContentControl ContentControl)
         {
-            if (ContentControl.Title == "Unidade" || ContentControl.Title == "Unidade da PF")
+            if (ContentControl.Title == "Unidade" /*|| ContentControl.Title == "Unidade da PF"*/)
             {
                 ContentControl controle_Unidade_da_PF = GetContentControl("Unidade da PF");
 
@@ -205,6 +169,7 @@ namespace PeriTAB
                 {
                     if (paragraph != null)
                     {
+                        paragraph.Range.ContentControls[1].LockContentControl = false;
                         paragraph.Range.Delete();
                     }
                 }
@@ -225,15 +190,25 @@ namespace PeriTAB
                             }
                             else
                             {
-                                paragraph.Range.Text = "";
-                                bb.Insert(paragraph.Range);
+                                paragraph.Range.ContentControls[1].LockContentControl = false;
+                                paragraph.Range.Delete();
+                                controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
+                                bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
                             }
                         }
                     }
                 }
-                    
             }
+        }
 
+        private void Muda_Tipo_de_unidade_de_criminalistica(ContentControl ContentControl)
+        {
+            if (ContentControl.Title == "Unidade")
+            {
+                ContentControl controle_Tipo_de_unidade_de_criminalistica = GetContentControl("Tipo de unidade de criminalistica");
+                if (ContentControl.Range.Text.StartsWith("SETEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "SETOR TÉCNICO-CIENTÍFICO");
+                if (ContentControl.Range.Text.StartsWith("NUTEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "NÚCLEO TÉCNICO-CIENTÍFICO");
+            }
         }
 
     }
