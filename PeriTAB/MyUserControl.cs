@@ -168,7 +168,7 @@ namespace PeriTAB
             }
         }
 
-        private void Importa_todos_estilos()
+        public void Importa_todos_estilos()
         {
             List<string> listaEstilos = dict_estilo_e_botao.Keys.ToList();
             foreach (string estilo in listaEstilos)

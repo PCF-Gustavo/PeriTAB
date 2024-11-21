@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.IO;
@@ -80,8 +81,41 @@ namespace PeriTAB
             }
         }
 
+        public void inserir_autotexto(Range range, string autotextName)
+        {
+            // Procura pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
+            for (int i = 1; i <= Variables.Template_PeriTAB.BuildingBlockEntries.Count; i++)
+            {
+                BuildingBlock bb = Variables.Template_PeriTAB.BuildingBlockEntries.Item(i);
+                if (bb.Name == autotextName)
+                {
+                    bb.Insert(range);
+                    Range Previous = Globals.ThisAddIn.Application.Selection.Range.Previous();
+                    if (Previous != null) if (Previous.Fields.Count > 0) Previous.Words[1].Fields.Update();
+                    break;
+                }
+            }
+        }
 
+        public void atualiza_todos_campos(Document document)
+        {
+            // Percorre todas as StoryRanges no documento
+            foreach (Range storyRange in document.StoryRanges)
+            {
+                // Atualiza os campos em cada StoryRange
+                storyRange.Fields.Update();
 
+                // Percorre os shapes (caixas de texto) em cada StoryRange
+                foreach (Microsoft.Office.Interop.Word.Shape shape in document.Shapes)
+                {
+                    if (shape.Type == MsoShapeType.msoTextBox) // Verifica se é uma caixa de texto
+                    {
+                        // Atualiza os campos dentro da caixa de texto
+                        shape.TextFrame.TextRange.Fields.Update();
+                    }
+                }
+            }
+        }
 
     }
 }

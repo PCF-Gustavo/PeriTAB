@@ -169,7 +169,7 @@ namespace PeriTAB
                 {
                     if (paragraph != null)
                     {
-                        paragraph.Range.ContentControls[1].LockContentControl = false;
+                        if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
                         paragraph.Range.Delete();
                     }
                 }
@@ -190,7 +190,7 @@ namespace PeriTAB
                             }
                             else
                             {
-                                paragraph.Range.ContentControls[1].LockContentControl = false;
+                                if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
                                 paragraph.Range.Delete();
                                 controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
                                 bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);

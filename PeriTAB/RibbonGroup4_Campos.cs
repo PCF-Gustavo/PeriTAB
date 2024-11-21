@@ -41,24 +41,26 @@ namespace PeriTAB
             //    }
             //}
 
+            inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "Numero_de_paginas_por_extenso");
 
 
 
-
-            // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
-            string autotextName = "Numero_de_paginas_por_extenso";
-            BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
-            for (int i = 1; i <= buildingBlockEntries.Count; i++)
-            {
-                BuildingBlock bb = buildingBlockEntries.Item(i);
-                if (bb.Name == autotextName)
-                {
-                    bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
-                    Globals.ThisAddIn.Application.Selection.Range.Previous().Words[1].Fields.Update();
-                    break;
-                }
-            }
+            
+            //string autotextName = "Numero_de_paginas_por_extenso";
+            //BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
+            //for (int i = 1; i <= buildingBlockEntries.Count; i++)
+            //{
+            //    BuildingBlock bb = buildingBlockEntries.Item(i);
+            //    if (bb.Name == autotextName)
+            //    {
+            //        bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
+            //        Globals.ThisAddIn.Application.Selection.Range.Previous().Words[1].Fields.Update();
+            //        break;
+            //    }
+            //}
         }
+
+
 
         private void button_inserir_paginas_Click(object sender, RibbonControlEventArgs e)
         {
@@ -79,19 +81,21 @@ namespace PeriTAB
             //    }
             //}
 
-            // Procurar pelo autotexto Pagina_atual_por_extenso no template_PeriTAB
-            string autotextName = "Pagina_atual_por_extenso";
-            BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
-            for (int i = 1; i <= buildingBlockEntries.Count; i++)
-            {
-                BuildingBlock bb = buildingBlockEntries.Item(i);
-                if (bb.Name == autotextName)
-                {
-                    bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
-                    Globals.ThisAddIn.Application.Selection.Range.Previous().Words[1].Fields.Update();
-                    break;
-                }
-            }
+            //// Procurar pelo autotexto Pagina_atual_por_extenso no template_PeriTAB
+            //string autotextName = "Pagina_atual_por_extenso";
+            //BuildingBlockEntries buildingBlockEntries = Variables.Template_PeriTAB.BuildingBlockEntries;
+            //for (int i = 1; i <= buildingBlockEntries.Count; i++)
+            //{
+            //    BuildingBlock bb = buildingBlockEntries.Item(i);
+            //    if (bb.Name == autotextName)
+            //    {
+            //        bb.Insert(Globals.ThisAddIn.Application.Selection.Range);
+            //        Globals.ThisAddIn.Application.Selection.Range.Previous().Words[1].Fields.Update();
+            //        break;
+            //    }
+            //}
+            inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "Pagina_atual_por_extenso");
+
         }
 
         private void button_inserir_ano_Click(object sender, RibbonControlEventArgs e)

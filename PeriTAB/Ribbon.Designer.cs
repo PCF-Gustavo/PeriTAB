@@ -62,6 +62,7 @@ namespace PeriTAB{
             this.button_massa = this.Factory.CreateRibbonButton();
             this.group_formatacao = this.Factory.CreateRibbonGroup();
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
+            this.button_formata_cabecalhos_e_preambulo = this.Factory.CreateRibbonButton();
             this.toggleButton_painel_de_estilos = this.Factory.CreateRibbonToggleButton();
             this.group_estilos = this.Factory.CreateRibbonGroup();
             this.button_limpa_estilos = this.Factory.CreateRibbonButton();
@@ -247,6 +248,7 @@ namespace PeriTAB{
             // group_formatacao
             // 
             this.group_formatacao.Items.Add(this.button_alinha_legenda);
+            this.group_formatacao.Items.Add(this.button_formata_cabecalhos_e_preambulo);
             this.group_formatacao.Items.Add(this.toggleButton_painel_de_estilos);
             this.group_formatacao.Label = "Formatação";
             this.group_formatacao.Name = "group_formatacao";
@@ -259,6 +261,14 @@ namespace PeriTAB{
             this.button_alinha_legenda.Name = "button_alinha_legenda";
             this.button_alinha_legenda.ShowImage = true;
             this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
+            // 
+            // button_formata_cabecalhos_e_preambulo
+            // 
+            this.button_formata_cabecalhos_e_preambulo.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_formata_cabecalhos_e_preambulo.Label = "Cabeçalhos e preâmbulo";
+            this.button_formata_cabecalhos_e_preambulo.Name = "button_formata_cabecalhos_e_preambulo";
+            this.button_formata_cabecalhos_e_preambulo.ShowImage = true;
+            this.button_formata_cabecalhos_e_preambulo.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_formata_cabecalhos_e_preambulo_Click);
             // 
             // toggleButton_painel_de_estilos
             // 
@@ -970,6 +980,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_referencia;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_ano;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_formata_cabecalhos_e_preambulo;
     }
 
     partial class ThisRibbonCollection
