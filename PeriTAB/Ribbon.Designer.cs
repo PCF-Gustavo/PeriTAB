@@ -136,6 +136,7 @@ namespace PeriTAB{
             this.label_nome = this.Factory.CreateRibbonLabel();
             this.label_criado = this.Factory.CreateRibbonLabel();
             this.label_email = this.Factory.CreateRibbonLabel();
+            this.button_inserir_secao_de_conclusao = this.Factory.CreateRibbonButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group_porextenso.SuspendLayout();
@@ -316,6 +317,7 @@ namespace PeriTAB{
             this.menu_inserir_campos.Items.Add(this.button_inserir_paginas);
             this.menu_inserir_campos.Items.Add(this.button_inserir_paginas_extenso);
             this.menu_inserir_campos.Items.Add(this.button_inserir_ano);
+            this.menu_inserir_campos.Items.Add(this.button_inserir_secao_de_conclusao);
             this.menu_inserir_campos.Label = "Inserir";
             this.menu_inserir_campos.Name = "menu_inserir_campos";
             this.menu_inserir_campos.OfficeImageId = "FieldCodes";
@@ -857,6 +859,13 @@ namespace PeriTAB{
             this.label_email.Label = "gustavo.gvs@pf.gov.br";
             this.label_email.Name = "label_email";
             // 
+            // button_inserir_secao_de_conclusao
+            // 
+            this.button_inserir_secao_de_conclusao.Label = "Seção de conclusão";
+            this.button_inserir_secao_de_conclusao.Name = "button_inserir_secao_de_conclusao";
+            this.button_inserir_secao_de_conclusao.ShowImage = true;
+            this.button_inserir_secao_de_conclusao.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_secao_de_conclusao_Click);
+            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -981,6 +990,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_ano;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_formata_cabecalhos_e_preambulo;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_secao_de_conclusao;
     }
 
     partial class ThisRibbonCollection

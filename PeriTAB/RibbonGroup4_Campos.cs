@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
+using System.Collections.Generic;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -103,8 +104,71 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "DATE " + slash + "@ " + quote + "yyyy" + quote , false);
         }
 
+        private void button_inserir_secao_de_conclusao_Click(object sender, RibbonControlEventArgs e)
+        {
+            bool secao_de_conclusao_ja_existe = false;
+            foreach (ContentControl contentControl in Globals.ThisAddIn.Application.ActiveDocument.ContentControls)
+            {
+                if (contentControl.Title == "Seção de conclusão") secao_de_conclusao_ja_existe = true;
+            }
+
+            // Insere apenas se já não existe.
+            if (secao_de_conclusao_ja_existe == false) inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "secao_de_conclusao");
+
+            // Atualiza valor
+            //ContentControl controle_secao_de_conclusao = null;
+            //ContentControl controle_fim_do_preambulo = null;
+            //foreach (ContentControl control in Globals.ThisAddIn.Application.ActiveDocument.ContentControls)
+            //{
+            //    if (control.Title == "Seção de conclusão")
+            //    {
+            //        controle_secao_de_conclusao = control;
+            //    }
+            //    if (control.Title == "Fim do preâmbulo")
+            //    {
+            //        controle_fim_do_preambulo = control;
+            //    }
+            //}
+            //if (controle_secao_de_conclusao != null && controle_fim_do_preambulo != null)
+            //{
+            //    foreach (ContentControlListEntry entry in controle_secao_de_conclusao.DropdownListEntries)
+            //    {
+            //        if (entry.Text == "RESPOSTA AOS QUESITOS")
+            //        {
+            //            if (controle_fim_do_preambulo.Range.Text == "respondendo aos quesitos formulados, abaixo transcritos") controle_secao_de_conclusao.DropdownListEntries[entry.Index].Select();
+            //            break;
+            //        }
+            //        if (entry.Text == "CONCLUSÃO")
+            //        {
+            //            if (controle_fim_do_preambulo.Range.Text == "atendendo ao abaixo transcrito") controle_secao_de_conclusao.DropdownListEntries[entry.Index].Select();
+            //            break;
+            //        }
+            //    }
+            //}
+        }
+
+        private static Dictionary<string, string> dict_Secao_de_conclusao_e_Fim_do_preambulo = new Dictionary<string, string>()
+        {
+             { "RESPOSTA AOS QUESITOS", "respondendo aos quesitos formulados, abaixo transcritos" }
+            ,{ "CONCLUSÃO" , "atendendo ao abaixo transcrito" }
+        };
+
         private async void button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
+            //// Atualiza a UI na Thread principal
+            //RibbonButton RibbonButton = (RibbonButton)sender;
+            //RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            //RibbonButton.Enabled = false;
+
+            //await Tarefa.Run(() =>
+            //{
+            //    Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
+            //    Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
+            //});
+
+            //// Após a execução das tarefas, atualiza a UI na Thread principal
+            //RibbonButton.Image = Properties.Resources.atualizar;
+            //RibbonButton.Enabled = true;
             // Atualiza a UI na Thread principal
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
@@ -112,11 +176,11 @@ namespace PeriTAB
 
             await Tarefa.Run(() =>
             {
-                Globals.ThisAddIn.Application.Run("atualiza_todos_campos");
-                Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
+                Globals.Ribbons.Ribbon.atualiza_todos_campos(Globals.ThisAddIn.Application.ActiveDocument);
             });
 
             // Após a execução das tarefas, atualiza a UI na Thread principal
+            Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Campos atualizados com sucesso.";
             RibbonButton.Image = Properties.Resources.atualizar;
             RibbonButton.Enabled = true;
         }
