@@ -89,5 +89,18 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range, "cabecalho2");
             Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Paragraphs[Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Paragraphs.Count].Range.Delete();
         }
+
+        private void button_habilita_edicao_Click(object sender, RibbonControlEventArgs e)
+        {
+            Range range = Globals.ThisAddIn.Application.Selection.Range;
+            while (range.ContentControls.Count > 0)
+            {
+                foreach (Microsoft.Office.Interop.Word.ContentControl cc in range.ContentControls)
+                {
+                    cc.LockContentControl = false;
+                    cc.Delete();
+                }
+            }
+        }
     }
 }

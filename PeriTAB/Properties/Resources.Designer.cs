@@ -153,6 +153,16 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap emergencia {
+            get {
+                object obj = ResourceManager.GetObject("emergencia", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap engrenagem {
             get {
                 object obj = ResourceManager.GetObject("engrenagem", resourceCulture);

@@ -64,6 +64,8 @@ namespace PeriTAB{
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
             this.button_formata_cabecalhos_e_preambulo = this.Factory.CreateRibbonButton();
             this.toggleButton_painel_de_estilos = this.Factory.CreateRibbonToggleButton();
+            this.menu_formatacao = this.Factory.CreateRibbonMenu();
+            this.button_habilita_edicao = this.Factory.CreateRibbonButton();
             this.group_estilos = this.Factory.CreateRibbonGroup();
             this.button_limpa_estilos = this.Factory.CreateRibbonButton();
             this.group_campos = this.Factory.CreateRibbonGroup();
@@ -74,6 +76,7 @@ namespace PeriTAB{
             this.button_inserir_paginas = this.Factory.CreateRibbonButton();
             this.button_inserir_paginas_extenso = this.Factory.CreateRibbonButton();
             this.button_inserir_ano = this.Factory.CreateRibbonButton();
+            this.button_inserir_secao_de_conclusao = this.Factory.CreateRibbonButton();
             this.button_atualiza_campos = this.Factory.CreateRibbonButton();
             this.menu_formatacao_campos = this.Factory.CreateRibbonMenu();
             this.button_minuscula_campos = this.Factory.CreateRibbonButton();
@@ -136,7 +139,6 @@ namespace PeriTAB{
             this.label_nome = this.Factory.CreateRibbonLabel();
             this.label_criado = this.Factory.CreateRibbonLabel();
             this.label_email = this.Factory.CreateRibbonLabel();
-            this.button_inserir_secao_de_conclusao = this.Factory.CreateRibbonButton();
             this.tab_default.SuspendLayout();
             this.tab.SuspendLayout();
             this.group_porextenso.SuspendLayout();
@@ -251,6 +253,7 @@ namespace PeriTAB{
             this.group_formatacao.Items.Add(this.button_alinha_legenda);
             this.group_formatacao.Items.Add(this.button_formata_cabecalhos_e_preambulo);
             this.group_formatacao.Items.Add(this.toggleButton_painel_de_estilos);
+            this.group_formatacao.Items.Add(this.menu_formatacao);
             this.group_formatacao.Label = "Formatação";
             this.group_formatacao.Name = "group_formatacao";
             // 
@@ -280,6 +283,22 @@ namespace PeriTAB{
             this.toggleButton_painel_de_estilos.ShowImage = true;
             this.toggleButton_painel_de_estilos.SuperTip = "Abre Painel de Estilos";
             this.toggleButton_painel_de_estilos.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.toggleButton_painel_de_estilos_Click);
+            // 
+            // menu_formatacao
+            // 
+            this.menu_formatacao.Image = global::PeriTAB.Properties.Resources.engrenagem;
+            this.menu_formatacao.Items.Add(this.button_habilita_edicao);
+            this.menu_formatacao.Label = " ";
+            this.menu_formatacao.Name = "menu_formatacao";
+            this.menu_formatacao.ShowImage = true;
+            // 
+            // button_habilita_edicao
+            // 
+            this.button_habilita_edicao.Image = global::PeriTAB.Properties.Resources.emergencia;
+            this.button_habilita_edicao.Label = "Habilitar edição (na seleção)";
+            this.button_habilita_edicao.Name = "button_habilita_edicao";
+            this.button_habilita_edicao.ShowImage = true;
+            this.button_habilita_edicao.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_habilita_edicao_Click);
             // 
             // group_estilos
             // 
@@ -364,6 +383,13 @@ namespace PeriTAB{
             this.button_inserir_ano.Name = "button_inserir_ano";
             this.button_inserir_ano.ShowImage = true;
             this.button_inserir_ano.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_ano_Click);
+            // 
+            // button_inserir_secao_de_conclusao
+            // 
+            this.button_inserir_secao_de_conclusao.Label = "Seção de conclusão";
+            this.button_inserir_secao_de_conclusao.Name = "button_inserir_secao_de_conclusao";
+            this.button_inserir_secao_de_conclusao.ShowImage = true;
+            this.button_inserir_secao_de_conclusao.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_secao_de_conclusao_Click);
             // 
             // button_atualiza_campos
             // 
@@ -859,13 +885,6 @@ namespace PeriTAB{
             this.label_email.Label = "gustavo.gvs@pf.gov.br";
             this.label_email.Name = "label_email";
             // 
-            // button_inserir_secao_de_conclusao
-            // 
-            this.button_inserir_secao_de_conclusao.Label = "Seção de conclusão";
-            this.button_inserir_secao_de_conclusao.Name = "button_inserir_secao_de_conclusao";
-            this.button_inserir_secao_de_conclusao.ShowImage = true;
-            this.button_inserir_secao_de_conclusao.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_secao_de_conclusao_Click);
-            // 
             // Ribbon
             // 
             this.Name = "Ribbon";
@@ -991,6 +1010,8 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_ano;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_formata_cabecalhos_e_preambulo;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_secao_de_conclusao;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_habilita_edicao;
+        internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_formatacao;
     }
 
     partial class ThisRibbonCollection
