@@ -62,6 +62,7 @@ namespace PeriTAB{
             this.button_massa = this.Factory.CreateRibbonButton();
             this.group_formatacao = this.Factory.CreateRibbonGroup();
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
+            this.button_formata_pagina = this.Factory.CreateRibbonButton();
             this.button_formata_cabecalhos_e_preambulo = this.Factory.CreateRibbonButton();
             this.toggleButton_painel_de_estilos = this.Factory.CreateRibbonToggleButton();
             this.menu_formatacao = this.Factory.CreateRibbonMenu();
@@ -251,6 +252,7 @@ namespace PeriTAB{
             // group_formatacao
             // 
             this.group_formatacao.Items.Add(this.button_alinha_legenda);
+            this.group_formatacao.Items.Add(this.button_formata_pagina);
             this.group_formatacao.Items.Add(this.button_formata_cabecalhos_e_preambulo);
             this.group_formatacao.Items.Add(this.toggleButton_painel_de_estilos);
             this.group_formatacao.Items.Add(this.menu_formatacao);
@@ -265,6 +267,14 @@ namespace PeriTAB{
             this.button_alinha_legenda.Name = "button_alinha_legenda";
             this.button_alinha_legenda.ShowImage = true;
             this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
+            // 
+            // button_formata_pagina
+            // 
+            this.button_formata_pagina.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_formata_pagina.Label = "Página";
+            this.button_formata_pagina.Name = "button_formata_pagina";
+            this.button_formata_pagina.ShowImage = true;
+            this.button_formata_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_formata_pagina_Click);
             // 
             // button_formata_cabecalhos_e_preambulo
             // 
@@ -1012,6 +1022,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_secao_de_conclusao;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_habilita_edicao;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_formatacao;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_formata_pagina;
     }
 
     partial class ThisRibbonCollection

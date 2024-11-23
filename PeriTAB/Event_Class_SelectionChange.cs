@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using Tarefa = System.Threading.Tasks.Task;
 
@@ -36,25 +37,21 @@ namespace PeriTAB
             {
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
-            }
-            catch (System.Runtime.InteropServices.COMException) { }
 
-            //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
-            try
-            {
+                //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = true; }
                 if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = false; }
+
+                //Revisa a habilitação do CheckBox "Ver código" do Ribbon
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = true; }
+                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = false; }
+
+                //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
+                if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
+                if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
             }
             catch (System.Runtime.InteropServices.COMException) { }
-
-
-            //Revisa a habilitação do CheckBox "Ver código" do Ribbon
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = false; }
-
-            //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
-            if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
+           
 
             //Revisa o destaque dos botoes do TaskPane
             if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
