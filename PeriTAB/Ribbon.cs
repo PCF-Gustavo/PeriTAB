@@ -83,16 +83,19 @@ namespace PeriTAB
 
         public BuildingBlock inserir_autotexto(Range range, string autotextName)
         {
-            // Procura pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
-            for (int i = 1; i <= Variables.Template_PeriTAB.BuildingBlockEntries.Count; i++)
+            if (range != null)
             {
-                BuildingBlock bb = Variables.Template_PeriTAB.BuildingBlockEntries.Item(i);
-                if (bb.Name == autotextName)
+                // Procura pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
+                for (int i = 1; i <= Variables.Template_PeriTAB.BuildingBlockEntries.Count; i++)
                 {
-                    bb.Insert(range);
-                    Range Previous = Globals.ThisAddIn.Application.Selection.Range.Previous();
-                    if (Previous != null) if (Previous.Fields.Count > 0) Previous.Words[1].Fields.Update();
-                    return bb;
+                    BuildingBlock bb = Variables.Template_PeriTAB.BuildingBlockEntries.Item(i);
+                    if (bb.Name == autotextName)
+                    {
+                        bb.Insert(range);
+                        Range Previous = Globals.ThisAddIn.Application.Selection.Range.Previous();
+                        if (Previous != null) if (Previous.Fields.Count > 0) Previous.Words[1].Fields.Update();
+                        return bb;
+                    }
                 }
             }
             return null;

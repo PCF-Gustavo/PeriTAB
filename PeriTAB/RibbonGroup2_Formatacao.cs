@@ -3,7 +3,9 @@ using Microsoft.Office.Tools.Ribbon;
 using Microsoft.VisualBasic;
 using System.Diagnostics;
 using System.Windows.Controls;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Tab;
 using Tarefa = System.Threading.Tasks.Task;
+using System.Linq;
 
 
 namespace PeriTAB
@@ -85,10 +87,45 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
             Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo");
 
-            //// Insere cabeçalho2
+            // Insere cabeçalho2
             Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range, "cabecalho2");
             Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Paragraphs[Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range.Paragraphs.Count].Range.Delete();
+
+            // Insere secao_de_conclusao
+            Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos");
+            if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusão");
+            Globals.Ribbons.Ribbon.inserir_autotexto(UltimoParagrafo, "secao_de_conclusao");
         }
+
+        // Função para procurar o último parágrafo com o critério especificado
+        static Range EncontrarUltimoParagrafo(string textoBusca)
+        {
+            // Obter o intervalo do conteúdo do documento
+            Range range = Globals.ThisAddIn.Application.ActiveDocument.Content;
+            Find find = range.Find;
+
+            // Configurar o critério de busca
+            find.Text = textoBusca;
+            find.MatchCase = false; // Ignorar maiúsculas/minúsculas
+            find.MatchWholeWord = true; // Procurar palavra completa
+            find.Forward = false; // Buscar na direção do começo do documento (trás para frente)
+            find.Wrap = WdFindWrap.wdFindStop; // Não reiniciar ao encontrar a primeira ocorrência
+
+            // Realizar a busca
+            Range ultimoRangeEncontrado = null;
+
+            // Realizar a busca de trás para frente
+            while (find.Execute())
+            {
+                // Armazenar o último range encontrado
+                ultimoRangeEncontrado = range.Duplicate;
+                range.SetRange(range.Start - 1, Globals.ThisAddIn.Application.ActiveDocument.Content.Start); // Avançar a busca para o início
+            }
+
+            return ultimoRangeEncontrado;
+        }
+
+
 
         private void button_habilita_edicao_Click(object sender, RibbonControlEventArgs e)
         {
@@ -101,6 +138,9 @@ namespace PeriTAB
                     cc.Delete();
                 }
             }
+
+
+
         }
     }
 }
