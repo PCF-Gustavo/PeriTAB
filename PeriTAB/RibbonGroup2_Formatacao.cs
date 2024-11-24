@@ -222,7 +222,7 @@ namespace PeriTAB
             Find find = range.Find;
             find.ClearFormatting();
             //find.Text = @"[lL][aA][uU][dD][oO]([ ]*)N* abaixo transcrito";
-            find.Text = @"[lL][aA][uU][dD][oO]([ ]*)[nN]* abaixo transcrito";
+            find.Text = @"[lL][aA][uU][dD][oO]([ ]*)[nN]* abaix*transcrit*";
             //find.MatchCase = false;
             find.IgnorePunct = true;
             find.IgnoreSpace = true;
@@ -360,7 +360,6 @@ namespace PeriTAB
                     break; // Finalizar a busca quando atingir o início do documento
                 }
             }
-            string aa = ultimoRangeEncontrado.Text;
             return ultimoRangeEncontrado;
         }
 
