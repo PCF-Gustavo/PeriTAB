@@ -1,12 +1,13 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace PeriTAB
 {
     internal class Class_ContentControlOnExit_Event
     {
-        private static Dictionary<string, string> dict_Unidade_e_Unidade_da_PF = new Dictionary<string, string>()
+        public static Dictionary<string, string> dict_Unidade_e_Unidade_da_PF = new Dictionary<string, string>()
         {
              { "INC/DITEC/PF", "DITEC - INSTITUTO NACIONAL DE CRIMINALÍSTICA" }
             ,{ "SETEC/SR/PF/AC" , "SUPERINTENDÊNCIA REGIONAL NO ACRE" }
@@ -61,13 +62,42 @@ namespace PeriTAB
 
         };
 
+        public static List<string> Lista_Unidade = new List<string>(dict_Unidade_e_Unidade_da_PF.Keys);
+
+        public static List<string> Lista_Subtitulos = new List<string>()
+        {
+             { "CONTÁBIL-FINANCEIRO" }
+            ,{ "REGISTROS DE ÁUDIO E IMAGENS" }
+            ,{ "ENGENHARIA" }
+            ,{ "INFORMÁTICA" }
+            ,{ "QUÍMICA FORENSE" }
+            ,{ "LOCAL DE CRIME" }
+            ,{ "MEIO AMBIENTE" }
+            ,{ "PATRIMÔNIO HISTÓRICO, ARTÍSTICO E CULTURA" }
+            ,{ "VEÍCULOS" }
+            ,{ "DOCUMENTOSCOPIA" }
+            ,{ "BIOMETRIA FORENSE" }
+            ,{ "MERCEOLOGIA" }
+            ,{ "BALÍSTICA E CARACTERIZAÇÃO FÍSICA DE MATERIAIS" }
+            ,{ "GENÉTICA FORENSE" }
+            ,{ "BOMBAS E EXPLOSIVOS" }
+            ,{ "MEDICINA E ODONTOLOGIA FORENSE" }
+            ,{ "ELETROELETRÔNICOS" }
+            ,{ "CARACTERIZAÇÃO FÍSICA DE MATERIAIS" }
+            ,{ "CONSTATAÇÃO DE DROGA (PRISÃO EM FLAGRANTE)" }
+            ,{ "GEOLOGIA" }
+        };
+
         private static Dictionary<string, string> dict_Secao_de_conclusao_e_Fim_do_preambulo = new Dictionary<string, string>()
         {
              { "RESPOSTA AOS QUESITOS", "respondendo aos quesitos formulados, abaixo transcritos" }
             ,{ "CONCLUSÃO" , "atendendo ao abaixo transcrito" }
         };
 
-        private static Dictionary<string, string> dict_Fim_do_preambulo_e_Secao_de_conclusao = dict_Secao_de_conclusao_e_Fim_do_preambulo.ToDictionary(par => par.Value, par => par.Key); // Dicionario invertido
+        public static List<string> Lista_secao_de_conclusao = new List<string>(dict_Secao_de_conclusao_e_Fim_do_preambulo.Keys);
+        public static List<string> Lista_fim_do_preambulo = new List<string>(dict_Secao_de_conclusao_e_Fim_do_preambulo.Values);
+
+        public static Dictionary<string, string> dict_Fim_do_preambulo_e_Secao_de_conclusao = dict_Secao_de_conclusao_e_Fim_do_preambulo.ToDictionary(par => par.Value, par => par.Key); // Dicionario invertido
 
         public void Metodo_ContentControlOnExit()
         {
@@ -75,8 +105,11 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ActiveDocument.ContentControlOnExit += (ContentControl contentControl, ref bool cancel) =>
             {
                 VincularLista(contentControl, "Unidade", "Unidade da PF", dict_Unidade_e_Unidade_da_PF);
-                Add_or_remove_ultima_linha_cabecalho1(contentControl);
-                Muda_Tipo_de_unidade_de_criminalistica(contentControl);
+                if (contentControl.Title == "Unidade")
+                {
+                    Add_or_remove_ultima_linha_cabecalho1();
+                    Muda_Tipo_de_unidade_de_criminalistica();
+                }
                 VincularLista(contentControl, "Seção de conclusão", "Fim do preâmbulo", dict_Secao_de_conclusao_e_Fim_do_preambulo);
                 VincularLista(contentControl, "Fim do preâmbulo", "Seção de conclusão", dict_Fim_do_preambulo_e_Secao_de_conclusao);
             };
@@ -103,7 +136,7 @@ namespace PeriTAB
             }
         }
 
-        private ContentControl GetContentControl(string titulo_do_controle)
+        public ContentControl GetContentControl(string titulo_do_controle)
         {
             foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
             {
@@ -138,7 +171,7 @@ namespace PeriTAB
             return null;
         }
 
-        private void ChangeEntry(ContentControl ContentControl, string valor_da_lista)
+        public void ChangeEntry(ContentControl ContentControl, string valor_da_lista)
         {
             foreach (ContentControlListEntry entry in ContentControl.DropdownListEntries)
             {
@@ -159,10 +192,10 @@ namespace PeriTAB
             }
         }
 
-        private void Add_or_remove_ultima_linha_cabecalho1(ContentControl ContentControl)
+        public void Add_or_remove_ultima_linha_cabecalho1()
         {
-            if (ContentControl.Title == "Unidade" /*|| ContentControl.Title == "Unidade da PF"*/)
-            {
+            //if (ContentControl.Title == "Unidade")
+            //{
                 ContentControl controle_Unidade_da_PF = GetContentControl("Unidade da PF");
 
                 Paragraph paragraph = controle_Unidade_da_PF.Range.Paragraphs[1].Next();
@@ -199,17 +232,15 @@ namespace PeriTAB
                         }
                     }
                 }
-            }
+            //}
         }
 
-        private void Muda_Tipo_de_unidade_de_criminalistica(ContentControl ContentControl)
+        public void Muda_Tipo_de_unidade_de_criminalistica()
         {
-            if (ContentControl.Title == "Unidade")
-            {
-                ContentControl controle_Tipo_de_unidade_de_criminalistica = GetContentControl("Tipo de unidade de criminalistica");
-                if (ContentControl.Range.Text.StartsWith("SETEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "SETOR TÉCNICO-CIENTÍFICO");
-                if (ContentControl.Range.Text.StartsWith("NUTEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "NÚCLEO TÉCNICO-CIENTÍFICO");
-            }
+            ContentControl controle_Unidade = GetContentControl("Unidade");
+            ContentControl controle_Tipo_de_unidade_de_criminalistica = GetContentControl("Tipo de unidade de criminalistica");
+            if (controle_Unidade.Range.Text.StartsWith("SETEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "SETOR TÉCNICO-CIENTÍFICO");
+            if (controle_Unidade.Range.Text.StartsWith("NUTEC")) ChangeEntry(controle_Tipo_de_unidade_de_criminalistica, "NÚCLEO TÉCNICO-CIENTÍFICO");
         }
 
     }
