@@ -3,6 +3,7 @@ using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IdentityModel.Tokens;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text.RegularExpressions;
@@ -36,28 +37,10 @@ namespace PeriTAB
             RibbonButton.Enabled = true;
         }
 
-        private void button_formata_pagina_Click(object sender, RibbonControlEventArgs e)
-        {
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientPortrait;
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.DifferentFirstPageHeaderFooter = -1;
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-            Globals.ThisAddIn.Application.ActiveDocument.PageSetup.MirrorMargins = 0;
-
-            DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
-        }
         public void DeleteEmptyParagraphsAtStart(Range range)
         {
             // Enquanto o primeiro parágrafo for vazio (só com quebras de linha ou espaços)
-            while (range.Paragraphs.Count > 0)
+            while (range.Paragraphs.Count > 0 && Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count > 1)
             {
                 // Verifica se o primeiro parágrafo é vazio (somente espaços ou quebras de linha)
                 string text = range.Paragraphs[1].Range.Text.Trim(); // Obtém o texto do parágrafo e remove espaços extras
@@ -96,102 +79,138 @@ namespace PeriTAB
             }
         }
 
-        private void button_formata_cabecalhos_e_preambulo_Click(object sender, RibbonControlEventArgs e)
+        private async void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument].Importa_todos_estilos();
-            string unidade = null;
-            string fim_do_preambulo = null;
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
 
-            // INICIO DO LAUDO
-            // Apaga texto do início do laudo, inclusive os bookmarks e content controls
-            Range inicio_do_laudo = encontrarRangedoIniciodoLaudo(Globals.ThisAddIn.Application.ActiveDocument);
-            //MessageBox.Show(inicio_do_laudo.Text);
-            if (inicio_do_laudo == null)
+            Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument].Importa_todos_estilos();
+
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
             {
-                Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
-                Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo");
-            }
-            else
-            {
-                unidade = SearchTextWithRegex(inicio_do_laudo, @"\b([A-Z]{2,})(\s*/\s*([A-Z]{2,}))+(\s*/\s*([A-Z]{2,}))*\b");
-                string subtitulo = SearchTextWithRegex(inicio_do_laudo, @"\((.*?)\)");
-                fim_do_preambulo = string.Join(" ", inicio_do_laudo.Text.Split(' ').Where(word => !string.IsNullOrEmpty(word)).Reverse().Take(7).Reverse());
-                Exclui_Bookmarks(inicio_do_laudo);
-                Exclui_ContentControls(inicio_do_laudo);
-                List<Paragraph> lista_de_paragrafos_de_inicio_do_laudo = inicio_do_laudo.Paragraphs.Cast<Paragraph>().ToList();
-                foreach (Paragraph p in lista_de_paragrafos_de_inicio_do_laudo)
+                // Page Setup
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientPortrait;
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.MirrorMargins = 0;
+                DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
+
+                string unidade = null;
+                string fim_do_preambulo = null;
+
+                // INICIO DO LAUDO
+                // Apaga texto do início do laudo, inclusive os bookmarks e content controls
+                Range inicio_do_laudo = encontrarRangedoIniciodoLaudo(Globals.ThisAddIn.Application.ActiveDocument);
+                //MessageBox.Show(inicio_do_laudo.Text);
+                if (inicio_do_laudo == null)
                 {
-                    p.Range.Delete();
+                    Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
+                    Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo");
                 }
-                // Insere início do laudo
-                Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo");
-                // Ajusta os ContentControl DropdownList Unidade e Subtítulo
+                else
+                {
+                    unidade = SearchTextWithRegex(inicio_do_laudo, @"\b([A-Z]{2,})(\s*/\s*([A-Z]{2,}))+(\s*/\s*([A-Z]{2,}))*\b");
+                    string subtitulo = SearchTextWithRegex(inicio_do_laudo, @"\((.*?)\)");
+                    fim_do_preambulo = string.Join(" ", inicio_do_laudo.Text.Split(' ').Where(word => !string.IsNullOrEmpty(word)).Reverse().Take(7).Reverse());
+                    Exclui_Bookmarks(inicio_do_laudo);
+                    Exclui_ContentControls(inicio_do_laudo);
+                    List<Paragraph> lista_de_paragrafos_de_inicio_do_laudo = inicio_do_laudo.Paragraphs.Cast<Paragraph>().ToList();
+                    foreach (Paragraph p in lista_de_paragrafos_de_inicio_do_laudo)
+                    {
+                        p.Range.Delete();
+                    }
+                    // Insere início do laudo
+                    Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo");
+                    // Ajusta os ContentControl DropdownList Unidade e Subtítulo
+                    if (unidade != null)
+                    {
+                        string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
+                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade"), maisProximo);
+                    }
+                    if (subtitulo != null)
+                    {
+                        string maisProximo = EncontrarMaisProximo(subtitulo, Class_ContentControlOnExit_Event.Lista_Subtitulos);
+                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Subtítulo"), maisProximo);
+                    }
+                    if (fim_do_preambulo != null)
+                    {
+                        string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
+                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Fim do preâmbulo"), maisProximo);
+                    }
+
+                }
+
+                // CABEÇALHO DA PRIMEIRA PÁGINA
+                // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
+                Range cabecalho_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                Exclui_Bookmarks(cabecalho_1a_pagina);
+                Exclui_ContentControls(cabecalho_1a_pagina);
+                cabecalho_1a_pagina.Text = "";
+                // Insere cabeçalho da primeira pagina
+                Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho1");
                 if (unidade != null)
                 {
                     string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
-                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade"), maisProximo);
+                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
+                    iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
+                    iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
                 }
-                if (subtitulo != null)
+                // Deleta o último parágrafo do cabeçalho da primeira página
+                try { cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete(); }
+                catch (System.Runtime.InteropServices.COMException) { }
+
+                // CABEÇALHO DAS OUTRAS PÁGINAS
+                // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
+                Range cabecalho_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                Exclui_Bookmarks(cabecalho_outras_paginas);
+                Exclui_ContentControls(cabecalho_outras_paginas);
+                cabecalho_outras_paginas.Text = "";
+                // Insere cabeçalho das outras páginas
+                Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho2");
+                // Deleta o último parágrafo do cabeçalho das outras páginas
+                cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
+
+                // SEÇÃO DE CONCLUSÃO
+                // Insere secao_de_conclusao
+                Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos"); 
+                if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]ESPOSTA*[qQ]UESITO?");
+                if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]esposta*[qQ]uesito?");
+                if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusão");
+                if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusao");
+                if (UltimoParagrafo != null)
                 {
-                    string maisProximo = EncontrarMaisProximo(subtitulo, Class_ContentControlOnExit_Event.Lista_Subtitulos);
-                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Subtítulo"), maisProximo);
+
+                    Exclui_Bookmarks(UltimoParagrafo);
+                    Exclui_ContentControls(UltimoParagrafo);
+                    string dasd = UltimoParagrafo.Text;
+                    UltimoParagrafo.Text = "";
+                    Globals.Ribbons.Ribbon.inserir_autotexto(UltimoParagrafo, "secao_de_conclusao");
+                    if (fim_do_preambulo != null)
+                    {
+                        string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
+                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
+                    }
                 }
-                if (fim_do_preambulo != null)
-                {
-                    string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
-                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Fim do preâmbulo"), maisProximo);
-                }
+            });
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
 
-            }
-
-            // CABEÇALHO DA PRIMEIRA PÁGINA
-            // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
-            Range cabecalho_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
-            Exclui_Bookmarks(cabecalho_1a_pagina);
-            Exclui_ContentControls(cabecalho_1a_pagina);
-            cabecalho_1a_pagina.Text = "";
-            // Insere cabeçalho da primeira pagina
-            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho1");
-            if (unidade != null)
-            {
-                string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
-                iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
-                iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
-                iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
-            }
-            // Deleta o último parágrafo do cabeçalho da primeira página
-            //cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete();
-
-            // CABEÇALHO DAS OUTRAS PÁGINAS
-            // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
-            Range cabecalho_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-            Exclui_Bookmarks(cabecalho_outras_paginas);
-            Exclui_ContentControls(cabecalho_outras_paginas);
-            cabecalho_outras_paginas.Text = "";
-            // Insere cabeçalho das outras páginas
-            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho2");
-            // Deleta o último parágrafo do cabeçalho das outras páginas
-            cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
-
-            // SEÇÃO DE CONCLUSÃO
-            // Insere secao_de_conclusao
-            Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos");
-            if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusão");
-            if (UltimoParagrafo != null)
-            {
-
-                Exclui_Bookmarks(UltimoParagrafo);
-                Exclui_ContentControls(UltimoParagrafo);
-                string dasd = UltimoParagrafo.Text;
-                UltimoParagrafo.Text = "";
-                Globals.Ribbons.Ribbon.inserir_autotexto(UltimoParagrafo, "secao_de_conclusao");
-                if (fim_do_preambulo != null)
-                {
-                    string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
-                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
-                }
-            }
-
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.checklist2;
+            RibbonButton.Enabled = true;
         }
 
         private Range encontrarRangedoIniciodoLaudo(Document doc)
@@ -202,8 +221,9 @@ namespace PeriTAB
             // A busca deve cobrir o texto inicial do laudo, ajustando o padrão conforme necessário
             Find find = range.Find;
             find.ClearFormatting();
-            find.Text = @"[lL][aA][uU][dD][oO]([ ]*)N* abaixo transcrito";
-            find.MatchCase = false;
+            //find.Text = @"[lL][aA][uU][dD][oO]([ ]*)N* abaixo transcrito";
+            find.Text = @"[lL][aA][uU][dD][oO]([ ]*)[nN]* abaixo transcrito";
+            //find.MatchCase = false;
             find.IgnorePunct = true;
             find.IgnoreSpace = true;
             find.MatchWildcards = true;  // Permite usar expressões regulares no Find
@@ -300,8 +320,47 @@ namespace PeriTAB
                 // Armazenar o último range encontrado
                 ultimoRangeEncontrado = range.Duplicate;
                 range.SetRange(range.Start - 1, Globals.ThisAddIn.Application.ActiveDocument.Content.Start); // Avançar a busca para o início
+
+                // Opcionalmente, se desejar buscar até o início do documento
+                if (range.Start <= Globals.ThisAddIn.Application.ActiveDocument.Content.Start)
+                {
+                    break; // Finalizar a busca quando atingir o início do documento
+                }
             }
 
+            return ultimoRangeEncontrado;
+        }
+
+        static Range EncontrarUltimoParagrafo_wildcard(string textoBusca)
+        {
+            // Obter o intervalo do conteúdo do documento
+            Range range = Globals.ThisAddIn.Application.ActiveDocument.Content;
+            Find find = range.Find;
+
+            // Configurar o critério de busca
+            find.Text = textoBusca;
+            find.MatchWildcards = true;
+            find.MatchWholeWord = true; // Procurar palavra completa
+            find.Forward = false; // Buscar na direção do começo do documento (trás para frente)
+            find.Wrap = WdFindWrap.wdFindStop; // Não reiniciar ao encontrar a primeira ocorrência
+
+            // Realizar a busca
+            Range ultimoRangeEncontrado = null;
+
+            // Realizar a busca de trás para frente
+            while (find.Execute())
+            {
+                // Armazenar o último range encontrado
+                ultimoRangeEncontrado = range.Duplicate;
+                range.SetRange(range.Start - 1, Globals.ThisAddIn.Application.ActiveDocument.Content.Start); // Avançar a busca para o início
+
+                // Opcionalmente, se desejar buscar até o início do documento
+                if (range.Start <= Globals.ThisAddIn.Application.ActiveDocument.Content.Start)
+                {
+                    break; // Finalizar a busca quando atingir o início do documento
+                }
+            }
+            string aa = ultimoRangeEncontrado.Text;
             return ultimoRangeEncontrado;
         }
 

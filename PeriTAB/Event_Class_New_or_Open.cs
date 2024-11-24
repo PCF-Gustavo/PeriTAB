@@ -1,5 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
+using System.Threading;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -21,6 +23,8 @@ namespace PeriTAB
         }
         public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc)
         {
+            var syncContext = SynchronizationContext.Current;
+            // Executa as tarefas em segundo plano
             //System.Windows.Forms.MessageBox.Show("new or open");
             iClass_DocumentClose_Event.Tracking_OpenDocumentNumber();
 
