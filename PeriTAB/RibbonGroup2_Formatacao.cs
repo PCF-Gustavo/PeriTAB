@@ -189,7 +189,7 @@ namespace PeriTAB
                 Range rodape_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
                 Exclui_Bookmarks(rodape_1a_pagina);
                 Exclui_ContentControls(rodape_1a_pagina);
-                rodape_1a_pagina.Delete();
+                rodape_1a_pagina.Text = "";
                 // Insere cabeçalho da primeira pagina
                 Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape1");
 
@@ -198,7 +198,7 @@ namespace PeriTAB
                 Range rodape_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
                 Exclui_Bookmarks(rodape_outras_paginas);
                 Exclui_ContentControls(rodape_outras_paginas);
-                rodape_outras_paginas.Delete();
+                rodape_outras_paginas.Text = "";
                 // Insere cabeçalho da primeira pagina
                 Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape2");
 
