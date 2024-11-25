@@ -184,6 +184,24 @@ namespace PeriTAB
                 // Deleta o último parágrafo do cabeçalho das outras páginas
                 cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
 
+                // RODAPÉ DA PRIMEIRA PÁGINA
+                // Apaga texto do rodapé da primeira pagina, inclusive os bookmarks e content controls
+                Range rodape_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                Exclui_Bookmarks(rodape_1a_pagina);
+                Exclui_ContentControls(rodape_1a_pagina);
+                rodape_1a_pagina.Delete();
+                // Insere cabeçalho da primeira pagina
+                Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape1");
+
+                // RODAPE DAS OUTRAS PÁGINAS
+                // Apaga texto do rodape das outras páginas, inclusive os bookmarks e content controls
+                Range rodape_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                Exclui_Bookmarks(rodape_outras_paginas);
+                Exclui_ContentControls(rodape_outras_paginas);
+                rodape_outras_paginas.Delete();
+                // Insere cabeçalho da primeira pagina
+                Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape2");
+
                 // SEÇÃO DE CONCLUSÃO
                 // Insere secao_de_conclusao
                 Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos"); 
