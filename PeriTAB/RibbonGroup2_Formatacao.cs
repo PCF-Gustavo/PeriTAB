@@ -143,8 +143,8 @@ namespace PeriTAB
                     section.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
                     section.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
                     section.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
-                    section.PageSetup.DifferentFirstPageHeaderFooter = -1;
-                    section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                    //section.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                    //section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                     section.PageSetup.MirrorMargins = 0;
                 }
 
@@ -195,64 +195,93 @@ namespace PeriTAB
 
                 }
 
-                // CABEÇALHO DA PRIMEIRA PÁGINA
-                // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
-                Range cabecalho_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
-                Exclui_Bookmarks(cabecalho_1a_pagina);
-                Exclui_ContentControls(cabecalho_1a_pagina);
-                cabecalho_1a_pagina.Text = "";
-                // Insere cabeçalho da primeira pagina
-                Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho1");
-                if (unidade != null)
+                bool isFirstSection = true;
+                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
                 {
-                    string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
-                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
-                    iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
-                    iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
+                    foreach (HeaderFooter header in section.Headers)
+                    {
+                        if (isFirstSection)
+                        {
+                            section.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                            section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                        }
+                        else
+                        {
+                            section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                            section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                        }
+                            if (isFirstSection && header.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
+                        {
+                            // CABEÇALHO DA PRIMEIRA PÁGINA
+                            // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
+                            Range cabecalho_1a_pagina = section.Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                            Exclui_Bookmarks(cabecalho_1a_pagina);
+                            Exclui_ContentControls(cabecalho_1a_pagina);
+                            cabecalho_1a_pagina.Text = "";
+                            // Insere cabeçalho da primeira pagina
+                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho1");
+                            if (unidade != null)
+                            {
+                                string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
+                                iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
+                                iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
+                                iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
+                            }
+                            // Deleta o último parágrafo do cabeçalho da primeira página
+                            try { cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete(); }
+                            catch (System.Runtime.InteropServices.COMException) { }
+                        }
+                        else
+                        {
+                            // CABEÇALHO DAS OUTRAS PÁGINAS
+                            // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
+                            Range cabecalho_outras_paginas = section.Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                            Exclui_Bookmarks(cabecalho_outras_paginas);
+                            Exclui_ContentControls(cabecalho_outras_paginas);
+                            cabecalho_outras_paginas.Text = "";
+                            // Insere cabeçalho das outras páginas
+                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho2");
+                            // Deleta o último parágrafo do cabeçalho das outras páginas
+                            cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
+                        }
+                    }
+                    foreach (HeaderFooter footer in section.Footers)
+                    {
+                        if (isFirstSection && footer.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
+                        {
+                            // RODAPÉ DA PRIMEIRA PÁGINA
+                            // Apaga texto do rodapé da primeira pagina, inclusive os bookmarks e content controls
+                            Range rodape_1a_pagina = section.Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                            Exclui_Bookmarks(rodape_1a_pagina);
+                            Exclui_ContentControls(rodape_1a_pagina);
+                            rodape_1a_pagina.Text = "";
+                            // Insere cabeçalho da primeira pagina
+                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape1");
+                        }
+                        else
+                        {
+                            // RODAPE DAS OUTRAS PÁGINAS
+                            // Apaga texto do rodape das outras páginas, inclusive os bookmarks e content controls
+                            Range rodape_outras_paginas = section.Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                            Exclui_Bookmarks(rodape_outras_paginas);
+                            Exclui_ContentControls(rodape_outras_paginas);
+                            rodape_outras_paginas.Text = "";
+                            // Insere cabeçalho da primeira pagina
+                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape2");
+                        }
+                    }
+                    isFirstSection = false;
                 }
-                // Deleta o último parágrafo do cabeçalho da primeira página
-                try { cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete(); }
-                catch (System.Runtime.InteropServices.COMException) { }
-
-                // CABEÇALHO DAS OUTRAS PÁGINAS
-                // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
-                Range cabecalho_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                Exclui_Bookmarks(cabecalho_outras_paginas);
-                Exclui_ContentControls(cabecalho_outras_paginas);
-                cabecalho_outras_paginas.Text = "";
-                // Insere cabeçalho das outras páginas
-                Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho2");
-                // Deleta o último parágrafo do cabeçalho das outras páginas
-                cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
-
-                // RODAPÉ DA PRIMEIRA PÁGINA
-                // Apaga texto do rodapé da primeira pagina, inclusive os bookmarks e content controls
-                Range rodape_1a_pagina = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
-                Exclui_Bookmarks(rodape_1a_pagina);
-                Exclui_ContentControls(rodape_1a_pagina);
-                rodape_1a_pagina.Text = "";
-                // Insere cabeçalho da primeira pagina
-                Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape1");
-
-                // RODAPE DAS OUTRAS PÁGINAS
-                // Apaga texto do rodape das outras páginas, inclusive os bookmarks e content controls
-                Range rodape_outras_paginas = Globals.ThisAddIn.Application.ActiveDocument.Sections[1].Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                Exclui_Bookmarks(rodape_outras_paginas);
-                Exclui_ContentControls(rodape_outras_paginas);
-                rodape_outras_paginas.Text = "";
-                // Insere cabeçalho da primeira pagina
-                Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape2");
 
                 // SEÇÃO DE CONCLUSÃO
                 // Insere secao_de_conclusao
-                Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos"); 
+                Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]ESPOSTA*[qQ]UESITO?");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]esposta*[qQ]uesito?");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusão");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo("conclusao");
                 if (UltimoParagrafo != null)
                 {
-
                     Exclui_Bookmarks(UltimoParagrafo);
                     Exclui_ContentControls(UltimoParagrafo);
                     string dasd = UltimoParagrafo.Text;
