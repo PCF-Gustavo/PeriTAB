@@ -121,19 +121,33 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 // Page Setup
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientPortrait;
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.DifferentFirstPageHeaderFooter = -1;
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.MirrorMargins = 0;
+                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+                {
+                    section.PageSetup.PaperSize = Microsoft.Office.Interop.Word.WdPaperSize.wdPaperA4;
+                    // Verificar a orientação e aplicar configurações específicas
+                    if (section.PageSetup.Orientation == WdOrientation.wdOrientPortrait)
+                    {
+                        // Configurações para retrato (Portrait)
+                        section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
+                        section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
+                    }
+                    else if (section.PageSetup.Orientation == WdOrientation.wdOrientLandscape)
+                    {
+                        // Configurações para paisagem (Landscape)
+                        section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
+                        section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(21);
+                    }
+                    section.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                    section.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                    section.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
+                    section.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                    section.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
+                    section.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
+                    section.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                    section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                    section.PageSetup.MirrorMargins = 0;
+                }
+
                 DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
 
                 string unidade = null;
