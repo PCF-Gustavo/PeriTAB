@@ -13,8 +13,6 @@ namespace PeriTAB
         Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event();
         Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event();
         Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event();
-        
-
 
         public MyUserControl iMyUserControl;
         Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
@@ -35,6 +33,8 @@ namespace PeriTAB
             iClass_SelectionChange_Event.Evento_SelectionChange();
             iClass_WindowActivate_Event.Evento_WindowActivate();
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
+
+
             
         }
 

@@ -3,11 +3,8 @@ using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IdentityModel.Tokens;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Text.RegularExpressions;
-using System.Windows.Forms;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -18,6 +15,36 @@ namespace PeriTAB
         // Cria instância das classes
         Class_ContentControlOnExit_Event iClass_ContentControlOnExit_Event = new Class_ContentControlOnExit_Event();
         public MyUserControl iMyUserControl;
+
+        private void button_adiciona_indicador_Click(object sender, RibbonControlEventArgs e)
+        {
+            // Inicializa o índice do bookmark
+            int i = 1;
+            string bookmarkName = $"indicador{i}_PeriTAB";
+
+            // Verifica se o bookmark já existe e incrementa o número até encontrar um nome disponível
+            while (BookmarkExists(Globals.ThisAddIn.Application.ActiveDocument, bookmarkName))
+            {
+                i++;
+                bookmarkName = $"indicador{i}_PeriTAB";
+            }
+
+            // Adiciona o bookmark com o nome encontrado
+            try { Globals.ThisAddIn.Application.Selection.Bookmarks.Add(bookmarkName); } catch { }
+        }
+
+        // Função para verificar se o bookmark já existe
+        static bool BookmarkExists(Document doc, string bookmarkName)
+        {
+            foreach (Bookmark bookmark in doc.Bookmarks)
+            {
+                if (bookmark.Name == bookmarkName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         private async void button_alinha_legenda_Click(object sender, RibbonControlEventArgs e)
         {

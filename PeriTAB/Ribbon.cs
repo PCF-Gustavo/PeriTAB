@@ -12,7 +12,6 @@ namespace PeriTAB
         // Define constantes
         const string quote = "\"";
         const string slash = @"\";
-        const string dois_pontos = @":";
 
         // Cria instância das classes
         Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
