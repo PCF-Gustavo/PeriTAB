@@ -16,7 +16,6 @@ namespace PeriTAB
             button_atualiza_campos_valorinicial();
             button_moeda_valorinicial();
             button_inteiro_valorinicial();
-            button_limpa_estilos_valorinicial();
             toggleButton_painel_de_estilos_valorinicial();
             button_cola_imagem_valorinicial();
             checkBox_altura_valorinicial();
@@ -61,13 +60,6 @@ namespace PeriTAB
             Globals.Ribbons.Ribbon.button_inteiro.Enabled = true;
             Globals.Ribbons.Ribbon.button_inteiro.ScreenTip = "Macro inteiro_por_extenso";
             Globals.Ribbons.Ribbon.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
-        }
-
-        public void button_limpa_estilos_valorinicial()
-        {
-            Globals.Ribbons.Ribbon.button_limpa_estilos.Enabled = true;
-            Globals.Ribbons.Ribbon.button_limpa_estilos.ScreenTip = "Macro limpa_estilos";
-            Globals.Ribbons.Ribbon.button_limpa_estilos.SuperTip = "Remove Estilos de parágrafos não utilizados.";
         }
 
         public void toggleButton_painel_de_estilos_valorinicial()
@@ -136,7 +128,6 @@ namespace PeriTAB
         }
         public void button_gera_pdf_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_gera_pdf.Image = Properties.Resources.icone_pdf_chave;
             Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = true;
             Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "";
             Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";

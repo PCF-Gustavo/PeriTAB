@@ -121,6 +121,9 @@ namespace PeriTAB
             }
         }
 
+        private void button_limpa_estilos_Click(object sender, RibbonControlEventArgs e)
+        {
 
+        }
     }
 }
