@@ -112,8 +112,8 @@ namespace PeriTAB
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
-
-            Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument].Importa_todos_estilos();
+            Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos();
+            //Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument].Importa_todos_estilos();
 
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
@@ -294,6 +294,7 @@ namespace PeriTAB
                     }
                 }
             });
+            Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos(); // não sei pq precisa repetir essa importacao, mas tem laudo que perde a formatacao se nao faço isso.
             Globals.ThisAddIn.Application.ScreenUpdating = true;
 
             // Após a execução das tarefas, atualiza a UI na Thread principal
