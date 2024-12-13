@@ -33,9 +33,6 @@ namespace PeriTAB
             iClass_SelectionChange_Event.Evento_SelectionChange();
             iClass_WindowActivate_Event.Evento_WindowActivate();
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
-
-
-            
         }
 
         private void ThisAddIn_Shutdown(object sender, System.EventArgs e)
