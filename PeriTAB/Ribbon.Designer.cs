@@ -62,6 +62,7 @@ namespace PeriTAB{
             this.button_massa = this.Factory.CreateRibbonButton();
             this.group_formatacao = this.Factory.CreateRibbonGroup();
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
+            this.button_pagina_em_paisagem = this.Factory.CreateRibbonButton();
             this.button_autoformata_laudo = this.Factory.CreateRibbonButton();
             this.toggleButton_painel_de_estilos = this.Factory.CreateRibbonToggleButton();
             this.button_separador1 = this.Factory.CreateRibbonButton();
@@ -239,6 +240,7 @@ namespace PeriTAB{
             // group_formatacao
             // 
             this.group_formatacao.Items.Add(this.button_alinha_legenda);
+            this.group_formatacao.Items.Add(this.button_pagina_em_paisagem);
             this.group_formatacao.Items.Add(this.button_autoformata_laudo);
             this.group_formatacao.Items.Add(this.toggleButton_painel_de_estilos);
             this.group_formatacao.Items.Add(this.button_separador1);
@@ -255,6 +257,16 @@ namespace PeriTAB{
             this.button_alinha_legenda.Name = "button_alinha_legenda";
             this.button_alinha_legenda.ShowImage = true;
             this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
+            // 
+            // button_pagina_em_paisagem
+            // 
+            this.button_pagina_em_paisagem.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
+            this.button_pagina_em_paisagem.Image = global::PeriTAB.Properties.Resources.atualizar;
+            this.button_pagina_em_paisagem.Label = "Página em paisagem";
+            this.button_pagina_em_paisagem.Name = "button_pagina_em_paisagem";
+            this.button_pagina_em_paisagem.ShowImage = true;
+            this.button_pagina_em_paisagem.SuperTip = "Configura em paisagem as paginas selecionadas.";
+            this.button_pagina_em_paisagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_pagina_em_paisagem_Click);
             // 
             // button_autoformata_laudo
             // 
@@ -925,6 +937,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_adiciona_indicador;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_pagina_em_paisagem;
     }
 
     partial class ThisRibbonCollection

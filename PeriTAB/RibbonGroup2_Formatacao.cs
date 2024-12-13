@@ -64,6 +64,55 @@ namespace PeriTAB
             RibbonButton.Enabled = true;
         }
 
+        private void button_pagina_em_paisagem_Click(object sender, RibbonControlEventArgs e)
+        {
+            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Range r1 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+            Range r2 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+            Range r3 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+            r1.Collapse(WdCollapseDirection.wdCollapseStart);
+            int pagina_inicio_selecao = r1.Information[WdInformation.wdActiveEndPageNumber];
+            r2.Collapse(WdCollapseDirection.wdCollapseEnd);
+            int pagina_fim_selecao = r2.Information[WdInformation.wdActiveEndPageNumber];
+
+            r1 = r1.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_inicio_selecao);
+            r2 = r2.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_fim_selecao + 1);
+
+            if (pagina_inicio_selecao == 1 & pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
+            {
+                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+            }
+            else if (pagina_inicio_selecao == 1)
+            {
+                r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = -1;
+                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                Section next_section = GetNextSection(r3.Sections[1]);
+                next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+            }
+            else if (pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
+            {
+                r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
+                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+            }
+            else
+            {
+                r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
+                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                Section next_section = GetNextSection(r3.Sections[1]);
+                next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+            }
+            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        }
+
         public void DeleteEmptyParagraphsAtStart(Range range)
         {
             // Enquanto o primeiro parágrafo for vazio (só com quebras de linha ou espaços)

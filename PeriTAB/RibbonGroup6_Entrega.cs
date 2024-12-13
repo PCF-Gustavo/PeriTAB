@@ -14,7 +14,6 @@ using System.Windows.Forms;
 using Tarefa = System.Threading.Tasks.Task;
 using X509Certificate = Org.BouncyCastle.X509.X509Certificate;
 
-
 namespace PeriTAB
 {
     public partial class Ribbon
@@ -237,7 +236,6 @@ namespace PeriTAB
                     return 0;
             }
         }
-
         private async void button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
