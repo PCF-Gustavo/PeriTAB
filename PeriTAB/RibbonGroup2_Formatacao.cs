@@ -67,6 +67,7 @@ namespace PeriTAB
 
         private void button_pagina_em_paisagem_Click(object sender, RibbonControlEventArgs e)
         {
+            Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
             Globals.ThisAddIn.Application.ScreenUpdating = false;
             Range r1 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
             Range r2 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
@@ -123,6 +124,7 @@ namespace PeriTAB
                 }
             }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
+            Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
         }
         
 

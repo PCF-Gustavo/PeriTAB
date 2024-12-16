@@ -17,6 +17,7 @@ namespace PeriTAB
     {
         private async void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
+            Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
             object obj = System.Windows.Clipboard.GetData("FileDrop");
 
             // Atualiza a UI na Thread principal
@@ -138,7 +139,7 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             RibbonButton.Image = Properties.Resources.image_icon;
             RibbonButton.Enabled = true;
-
+            Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
         }
 
         public class Comparer_Windows_order : IComparer<string> /*implement an IComparer to get the same sort behavior as Windows Explorer*/
