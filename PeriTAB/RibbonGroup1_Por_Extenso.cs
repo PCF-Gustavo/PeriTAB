@@ -8,7 +8,7 @@ namespace PeriTAB
     {
         private void button_teste_Click(object sender, RibbonControlEventArgs e)
         {
-            
+            Globals.ThisAddIn.Application.Selection.HeaderFooter.LinkToPrevious = !Globals.ThisAddIn.Application.Selection.HeaderFooter.LinkToPrevious;
         }
 
         private void button_moeda_Click(object sender, RibbonControlEventArgs e)

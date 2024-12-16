@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text.RegularExpressions;
 using Tarefa = System.Threading.Tasks.Task;
 
@@ -110,8 +111,20 @@ namespace PeriTAB
                 next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
                 next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
             }
+            foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+            {
+                foreach (HeaderFooter footer in section.Footers)
+                {
+                    try
+                    {
+                        footer.LinkToPrevious = false;
+                    }
+                    catch { }
+                }
+            }
             Globals.ThisAddIn.Application.ScreenUpdating = true;
         }
+        
 
         public void DeleteEmptyParagraphsAtStart(Range range)
         {
