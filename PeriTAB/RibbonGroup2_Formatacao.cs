@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text.RegularExpressions;
+using System.Windows.Controls.Primitives;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -57,74 +58,95 @@ namespace PeriTAB
             // Executa as tarefas em segundo plano
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 Globals.ThisAddIn.Application.Run("alinha_legenda");
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
 
             // Após a execução das tarefas, atualiza a UI na Thread principal
-            RibbonButton.Image = Properties.Resources.lupa;
+            RibbonButton.Image = Properties.Resources.seta3;
             RibbonButton.Enabled = true;
         }
 
-        private void button_pagina_em_paisagem_Click(object sender, RibbonControlEventArgs e)
+        private async void button_pagina_em_paisagem_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
             Globals.ThisAddIn.Application.ScreenUpdating = false;
-            Range r1 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
-            Range r2 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
-            Range r3 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
-            r1.Collapse(WdCollapseDirection.wdCollapseStart);
-            int pagina_inicio_selecao = r1.Information[WdInformation.wdActiveEndPageNumber];
-            r2.Collapse(WdCollapseDirection.wdCollapseEnd);
-            int pagina_fim_selecao = r2.Information[WdInformation.wdActiveEndPageNumber];
 
-            r1 = r1.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_inicio_selecao);
-            r2 = r2.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_fim_selecao + 1);
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+            {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                Range r1 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+                Range r2 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+                Range r3 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+                r1.Collapse(WdCollapseDirection.wdCollapseStart);
+                int pagina_inicio_selecao = r1.Information[WdInformation.wdActiveEndPageNumber];
+                r2.Collapse(WdCollapseDirection.wdCollapseEnd);
+                int pagina_fim_selecao = r2.Information[WdInformation.wdActiveEndPageNumber];
 
-            if (pagina_inicio_selecao == 1 & pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
-            {
-                Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-            }
-            else if (pagina_inicio_selecao == 1)
-            {
-                r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
-                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = -1;
-                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                Section next_section = GetNextSection(r3.Sections[1]);
-                next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
-                next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-            }
-            else if (pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
-            {
-                r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
-                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
-                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
-            }
-            else
-            {
-                r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
-                r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
-                r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
-                r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
-                r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                Section next_section = GetNextSection(r3.Sections[1]);
-                next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
-                next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-            }
-            foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
-            {
-                foreach (HeaderFooter footer in section.Footers)
+                r1 = r1.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_inicio_selecao);
+                r2 = r2.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_fim_selecao + 1);
+
+                if (pagina_inicio_selecao == 1 & pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
                 {
-                    try
-                    {
-                        footer.LinkToPrevious = false;
-                    }
-                    catch { }
+                    Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
                 }
-            }
+                else if (pagina_inicio_selecao == 1)
+                {
+                    r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                    r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = -1;
+                    r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                    Section next_section = GetNextSection(r3.Sections[1]);
+                    next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                    next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                }
+                else if (pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
+                {
+                    r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                    r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
+                    r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                }
+                else
+                {
+                    r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    r2.InsertBreak(WdBreakType.wdSectionBreakNextPage);
+                    r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                    r3.Sections[1].PageSetup.DifferentFirstPageHeaderFooter = 0;
+                    r3.Sections[1].PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                    Section next_section = GetNextSection(r3.Sections[1]);
+                    next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                    next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                }
+                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+                {
+                    foreach (HeaderFooter footer in section.Footers)
+                    {
+                        try
+                        {
+                            footer.LinkToPrevious = false;
+                        }
+                        catch { }
+                    }
+                }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            });
+
             Globals.ThisAddIn.Application.ScreenUpdating = true;
-            Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = null;
+            RibbonButton.Enabled = true;
         }
         
 
@@ -148,26 +170,15 @@ namespace PeriTAB
 
         private void toggleButton_painel_de_estilos_Click(object sender, RibbonControlEventArgs e)
         {
-            Stopwatch stopwatch = new Stopwatch(); if (PeriTAB.Ribbon.Variables.debugging) { stopwatch.Start(); }
-            string msg_StatusBar = "";
-            var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
-            if (botao_toggle.Checked == true)
-            {
-                iClass_CustomTaskPanes.Visible(true);
-                if (PeriTAB.Ribbon.Variables.debugging) msg_StatusBar = "Painel de Estilos: Aberto";
-            }
-            if (botao_toggle.Checked == false)
-            {
-                iClass_CustomTaskPanes.Visible(false);
-                if (PeriTAB.Ribbon.Variables.debugging) msg_StatusBar = "Painel de Estilos: Fechado";
-            }
+            bool success = true;
+            string msg_StatusBar = ((RibbonToggleButton)sender).Label + ": ";
 
-            if (PeriTAB.Ribbon.Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-            }
+            var botao_toggle = (Microsoft.Office.Tools.Ribbon.RibbonToggleButton)sender;
+            if (botao_toggle.Checked == true) iClass_CustomTaskPanes.Visible(true);
+            if (botao_toggle.Checked == false) iClass_CustomTaskPanes.Visible(false);
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
         }
 
         private async void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
@@ -176,10 +187,13 @@ namespace PeriTAB
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
-            Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos();
-            //Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument].Importa_todos_estilos();
+
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
 
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos();
 
             // Executa as tarefas em segundo plano
             await Tarefa.Run(() =>
@@ -361,6 +375,9 @@ namespace PeriTAB
             Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos(); // não sei pq precisa repetir essa importacao, mas tem laudo que perde a formatacao se nao faço isso.
             Globals.ThisAddIn.Application.ScreenUpdating = true;
 
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+
             // Após a execução das tarefas, atualiza a UI na Thread principal
             RibbonButton.Image = Properties.Resources.checklist2;
             RibbonButton.Enabled = true;
@@ -371,12 +388,9 @@ namespace PeriTAB
             Range range = doc.Content;
 
             // Usa o Find para procurar pelo padrão "LAUDO Nº" (ou "LAUDO N°")
-            // A busca deve cobrir o texto inicial do laudo, ajustando o padrão conforme necessário
             Find find = range.Find;
             find.ClearFormatting();
-            //find.Text = @"[lL][aA][uU][dD][oO]([ ]*)N* abaixo transcrito";
             find.Text = @"[lL][aA][uU][dD][oO]([ ]*)[nN]* abaix*transcrit*";
-            //find.MatchCase = false;
             find.IgnorePunct = true;
             find.IgnoreSpace = true;
             find.MatchWildcards = true;  // Permite usar expressões regulares no Find
@@ -398,12 +412,10 @@ namespace PeriTAB
 
             if (match.Success)
             {
-                // Retorna o grupo encontrado (SETEC/SR/PF/MA ou outras variações)
                 return match.Value;
             }
             else
             {
-                // Caso não encontre, retorna uma string vazia ou uma mensagem de erro
                 return null;
             }
         }
@@ -427,7 +439,6 @@ namespace PeriTAB
                     matriz[i, j] = Math.Min(Math.Min(matriz[i - 1, j] + 1, matriz[i, j - 1] + 1), matriz[i - 1, j - 1] + custo);
                 }
             }
-
             return matriz[n, m];
         }
 
@@ -446,7 +457,6 @@ namespace PeriTAB
                     maisProximo = valor;
                 }
             }
-
             return maisProximo;
         }
 
@@ -474,13 +484,11 @@ namespace PeriTAB
                 ultimoRangeEncontrado = range.Duplicate;
                 range.SetRange(range.Start - 1, Globals.ThisAddIn.Application.ActiveDocument.Content.Start); // Avançar a busca para o início
 
-                // Opcionalmente, se desejar buscar até o início do documento
                 if (range.Start <= Globals.ThisAddIn.Application.ActiveDocument.Content.Start)
                 {
                     break; // Finalizar a busca quando atingir o início do documento
                 }
             }
-
             return ultimoRangeEncontrado;
         }
 
@@ -507,7 +515,6 @@ namespace PeriTAB
                 ultimoRangeEncontrado = range.Duplicate;
                 range.SetRange(range.Start - 1, Globals.ThisAddIn.Application.ActiveDocument.Content.Start); // Avançar a busca para o início
 
-                // Opcionalmente, se desejar buscar até o início do documento
                 if (range.Start <= Globals.ThisAddIn.Application.ActiveDocument.Content.Start)
                 {
                     break; // Finalizar a busca quando atingir o início do documento
@@ -537,11 +544,29 @@ namespace PeriTAB
                 }
             }
         }
-        
 
-        private void button_habilita_edicao_Click(object sender, RibbonControlEventArgs e)
+        private async void button_habilita_edicao_Click(object sender, RibbonControlEventArgs e)
         {
-            Exclui_ContentControls(Globals.ThisAddIn.Application.Selection.Range);
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Enabled = false;
+
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
+
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+            {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                Exclui_ContentControls(Globals.ThisAddIn.Application.Selection.Range);
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Enabled = true;
         }
     }
 }

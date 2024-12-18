@@ -120,7 +120,5 @@ namespace PeriTAB
                 }
             }
         }
-
-
     }
 }

@@ -26,14 +26,14 @@ namespace PeriTAB
             RibbonButton.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            // Configurações iniciais
+            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
+            string msg_Falha = "";
+
             await Tarefa.Run(() =>
             {
-                // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
-                bool success = true;
-                string msg_StatusBar = "";
-                string msg_Falha = "";
-
                 if (System.Windows.Clipboard.ContainsData("FileDrop"))
                 {
                     string[] pathfile = (string[])obj;
@@ -124,22 +124,24 @@ namespace PeriTAB
                     success = false;
                     msg_Falha = "Não há imagens no Clipboard.";
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
 
-                // Mensagens da Thread
-                if (success) { msg_StatusBar = "Cola imagem: Sucesso"; } else { msg_StatusBar = "Cola imagem: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-                if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Cola imagem");
             });
+
+            // Mensagens da Thread
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
+
             // Configurações finais
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             RibbonButton.Image = Properties.Resources.image_icon;
             RibbonButton.Enabled = true;
-            Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
         }
 
         public class Comparer_Windows_order : IComparer<string> /*implement an IComparer to get the same sort behavior as Windows Explorer*/
@@ -156,6 +158,7 @@ namespace PeriTAB
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
+            if (!checkBox_largura.Checked) checkBox_largura.Checked = true;
             if (checkBox_largura.Checked)
             {
                 checkBox_altura.Checked = false;
@@ -168,6 +171,7 @@ namespace PeriTAB
 
         private void checkBox_altura_Click(object sender, RibbonControlEventArgs e)
         {
+            if (!checkBox_altura.Checked) checkBox_altura.Checked = true;
             if (checkBox_altura.Checked)
             {
                 checkBox_largura.Checked = false;
@@ -185,7 +189,6 @@ namespace PeriTAB
             //    System.Windows.Forms.MessageBox.Show("Cuidado! Excluir/mover/renomear o arquivo da imagem causará perda de referência.","Referência");
             //}
         }
-
 
         private void editBox_largura_TextChanged(object sender, RibbonControlEventArgs e)
         {
@@ -219,15 +222,15 @@ namespace PeriTAB
             RibbonButton.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            // Configurações iniciais
+            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
+            string msg_Falha = "";
+
             await Tarefa.Run(() =>
             {
-                // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
-                bool success = true;
-                string msg_StatusBar = "";
-                string msg_Falha = "";
-
-
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
                 {
                     success = false;
@@ -256,17 +259,18 @@ namespace PeriTAB
                         }
                     }
                 }
-
-                // Mensagens da Thread
-                if (success) { msg_StatusBar = "Redimensiona: Sucesso"; } else { msg_StatusBar = "Redimensiona: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-                if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Redimensiona");
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+            // Mensagens da Thread
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
+
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             RibbonButton.Image = Properties.Resources.redimensionar2;
             RibbonButton.Enabled = true;
@@ -280,15 +284,15 @@ namespace PeriTAB
             RibbonButton.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            // Configurações iniciais
+            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
+            bool success = true;
+            string msg_StatusBar = RibbonButton.Label + ": ";
+            string msg_Falha = "";
+
             await Tarefa.Run(() =>
             {
-                // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
-                bool success = true;
-                string msg_StatusBar = "";
-                string msg_Falha = "";
-
-
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
                 {
                     success = false;
@@ -440,17 +444,18 @@ namespace PeriTAB
                         }
                     }
                 }
-
-                // Mensagens da Thread
-                if (success) { msg_StatusBar = "Autodimensiona: Sucesso"; } else { msg_StatusBar = "Autodimensiona: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
-                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-                if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Autodimensiona");
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            // Mensagens da Thread
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
+            {
+                stopwatch.Stop();
+                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
 
             // Configurações finais
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -478,13 +483,16 @@ namespace PeriTAB
         private async void button_borda_preta_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_inserir_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_inserir_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -494,7 +502,11 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_inserir_imagem.Image = Properties.Resources._;
@@ -504,13 +516,16 @@ namespace PeriTAB
         private async void button_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_inserir_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_inserir_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -520,7 +535,11 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_inserir_imagem.Image = Properties.Resources._;
@@ -530,13 +549,16 @@ namespace PeriTAB
         private async void button_borda_amarela_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_inserir_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_inserir_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -546,7 +568,11 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_inserir_imagem.Image = Properties.Resources._;
@@ -556,15 +582,18 @@ namespace PeriTAB
         private async void button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_inserir_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_inserir_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
 
             Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial
 
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 string estilo_nome_baseado = "Legenda";
                 Globals.ThisAddIn.Application.OrganizerCopy(PeriTAB.Ribbon.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
 
@@ -603,7 +632,11 @@ namespace PeriTAB
                         Globals.ThisAddIn.Application.Run("alinha_legenda");
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Selecao_inicial.Select(); // Restaura a seleção inicial
             Globals.ThisAddIn.Application.ScreenUpdating = true;
@@ -614,13 +647,16 @@ namespace PeriTAB
         private async void button_remove_borda_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_remover_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_remover_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -628,7 +664,11 @@ namespace PeriTAB
                         ishape.Line.Visible = MsoTriState.msoFalse;
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_remover_imagem.Image = Properties.Resources.x;
@@ -638,13 +678,16 @@ namespace PeriTAB
         private async void button_remove_formatacao_Click_1(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_remover_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_remover_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -652,7 +695,11 @@ namespace PeriTAB
                         ishape.Reset();
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_remover_imagem.Image = Properties.Resources.x;
@@ -662,13 +709,16 @@ namespace PeriTAB
         private async void button_remove_forma_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_remover_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_remover_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 List<Microsoft.Office.Interop.Word.Shape> listaShapes = new List<Microsoft.Office.Interop.Word.Shape>();
                 foreach (Microsoft.Office.Interop.Word.Shape ishape in Globals.ThisAddIn.Application.Selection.Range.ShapeRange)
                 {
@@ -681,7 +731,11 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_remover_imagem.Image = Properties.Resources.x;
@@ -691,13 +745,16 @@ namespace PeriTAB
         private async void button_remove_texto_alt_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_remover_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_remover_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
+
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -705,25 +762,33 @@ namespace PeriTAB
                         ishape.AlternativeText = "";
                     }
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_remover_imagem.Image = Properties.Resources.x;
             menu_remover_imagem.Enabled = true;
         }
 
         private void button_alinha_legenda_figuras_Click(object sender, RibbonControlEventArgs e)
-        { }
+        {
+        }
 
         private async void button_remove_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
             menu_remover_imagem.Image = Properties.Resources.load_icon_png_7969;
             menu_remover_imagem.Enabled = false;
             Globals.ThisAddIn.Application.ScreenUpdating = false;
+            bool success = true;
+            string msg_StatusBar = ((RibbonButton)sender).Label + ": ";
 
             await Tarefa.Run(() =>
             {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 List<InlineShape> listaShapes = new List<InlineShape>();
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -736,7 +801,11 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
             menu_remover_imagem.Image = Properties.Resources.x;

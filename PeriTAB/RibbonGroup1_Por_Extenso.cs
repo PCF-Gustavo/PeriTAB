@@ -1,6 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
-using System.Windows;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -10,14 +10,44 @@ namespace PeriTAB
         {
         }
 
-        private void button_moeda_Click(object sender, RibbonControlEventArgs e)
+        private async void button_moeda_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("moeda_por_extenso");
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+            {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                Globals.ThisAddIn.Application.Run("moeda_por_extenso");
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            });
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.dinheiro;
+            RibbonButton.Enabled = true;
         }
 
-        private void button_inteiro_Click(object sender, RibbonControlEventArgs e)
+        private async void button_inteiro_Click(object sender, RibbonControlEventArgs e)
         {
-            Globals.ThisAddIn.Application.Run("inteiro_por_extenso");
+            // Atualiza a UI na Thread principal
+            RibbonButton RibbonButton = (RibbonButton)sender;
+            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+            RibbonButton.Enabled = false;
+
+            // Executa as tarefas em segundo plano
+            await Tarefa.Run(() =>
+            {
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                Globals.ThisAddIn.Application.Run("inteiro_por_extenso");
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            });
+
+            // Após a execução das tarefas, atualiza a UI na Thread principal
+            RibbonButton.Image = Properties.Resources.numero;
+            RibbonButton.Enabled = true;
         }
 
         // Função para obter a próxima seção

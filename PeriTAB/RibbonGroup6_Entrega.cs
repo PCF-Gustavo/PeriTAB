@@ -77,22 +77,15 @@ namespace PeriTAB
                         num_registro = get_text(identificadores_requisicao_mod, "nº", "/");
                         ano_registro = get_text(identificadores_requisicao_mod, "/", "-");
                         unidade_registro = get_text(identificadores_requisicao_mod, "-");
-                        //MessageBox.Show(unidade_registro);
                         int codigo_registro = pega_codigo_registro(unidade_registro);
-                        //MessageBox.Show(codigo_registro.ToString());
 
                         if (num_registro == null | ano_registro == null | unidade_registro == null | !int.TryParse(num_registro, out _) | !int.TryParse(ano_registro, out _) | codigo_registro == 0)
                         {
-                            //MessageBox.Show("Número do registro da requisição inválido.");
                             success = false;
                             msg_Falha = "Número do registro da requisição inválido.";
                         }
                         else
                         {
-                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-numero_registro=" + num_registro + "&d-ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + 3347 + "&comando=Procurar"/*unidade_registro + "&codigo_unidade_registro_pesquisa="*/);
-                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&d-codigo_tipo_documento=&d-numero_documento=&d-ano_documento=&d-sigla_orgao_emissor-ilike=&d-codigo_subtipo_documento=&p-codigo_tipo_procedimento=&p-numero_procedimento-ilike=&p-sigla_orgao-ilike=&sa-nome_signatario-ilike=&sa-funcao_signatario-ilike=&d-data_emissao-ge=&d-data_emissao-le=&d-numero_siapro=&d-numero_registro_epol=&d-assunto-ilike=&d-operacao-ilike=&dds-nome-ilike=&dc-codigo_tipo_documento_citacao=&dc-nome-ilike=&dc-cpf=&dc-cnpj=&dc-observacao-ilike=&d-marcador-ilike=&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&d-data_protocolo-ge=&d-data_protocolo-le=&d-excluido=&d-recebido=&tl-nome-ilike=&sl-nome-ilike=&dm-nome-ilike=&d-nome_sujeito-ilike=&d-codigo_finalidade_documento=&d-codigo_situacao_documento=&soe-codigo_tipo_sujeito=&soe-sigla_uf=&soe-nome-ilike=&codigo_unidade_registro_pesquisa=" + "3347" + "&d-usuario_criacao-ilike=&d-ignorar_registros_adicionais=0&d-codigo_area_exame=&d-urgencia=&d-motivo_urgencia-ilike=&d-data_limite-ge=&d-data_limite-le=&d-sigiloso=&d-observacao-ilike=&d-conteudo-ilike=&oac-indice-tsquery=&d-publicado=N%C3%A3o&d-naopublicado=N%C3%A3o&dcae-codigo_tipo_material=&dcae-medida=&dcae-codigo_unidade_medida=&dccv-renavam-ilike=&dccv-marca-ilike=&dccv-modelo-ilike=&dccv-placa-ilike=&dccv-chassi-ilike=&dccv-ano_fabricacao-ilike=&dccv-ano_modelo-ilike=&dccv-cor-ilike=&dccv-observacoes-ilike=&dcad-data=&dcad-sigla_uf_municipio=&dcad-codigo_municipio=&dcad-codigo_categoria_droga=&dcad-codigo_droga=&dcad-massa=&dcad-codigo_unidade_medida_massa=&dcad-volume=&dcad-codigo_unidade_medida_volume=&dcad-numero_itens=&dcad-massa_media_unitaria=&dcad-codigo_unidade_medida_massa_media_unitaria=&comando=Procurar");
-                            //System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + "3347" + "&d-ignorar_registros_adicionais=0" + "&comando=Procurar");
-
                             System.Diagnostics.Process.Start("https://www.ditec.pf.gov.br:8443/sistemas/criminalistica/controle_documento.php?action=localizar_resultado&numero_registro=" + num_registro + " &ano_registro=" + ano_registro + "&codigo_unidade_registro_pesquisa=" + codigo_registro + "&d-ignorar_registros_adicionais=0");
                         }
                     }
@@ -107,11 +100,6 @@ namespace PeriTAB
                 }
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Abre SISCRIM");
-
-                // Configurações finais
-                //Globals.ThisAddIn.Application.ScreenUpdating = true;
-
-                /*}).Start();*/
             });
 
             RibbonButton.Image = Properties.Resources.subir2;
@@ -251,31 +239,12 @@ namespace PeriTAB
                 string msg_StatusBar = "";
                 string msg_Falha = "";
 
-                //Globals.ThisAddIn.Application.ScreenUpdating = false;
-                //Globals.ThisAddIn.Application.Run("renomeia_documento");
-                //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "Documento renomeado com sucesso.";
-
                 string nome_doc_completo = Globals.ThisAddIn.Application.ActiveDocument.FullName;
                 string caminho_doc = Globals.ThisAddIn.Application.ActiveDocument.Path;
                 string nome_doc_antigo = Globals.ThisAddIn.Application.ActiveDocument.Name;
                 string nome_doc = null;
 
-                //MessageBox.Show(nome_doc_completo);
-                //MessageBox.Show(caminho_doc);
-                //MessageBox.Show(nome_doc_antigo);
-
                 nome_doc_completo = GetLocalPath(nome_doc_completo);
-                //if (nome_doc_completo.StartsWith("http"))
-                //{
-                //    MessageBox.Show("Este documento está armazenado na internet, o que impossibilita o uso dessa Macro. Caso esteja usando o Microsoft Onedrive, você pode resolver esse problema desmarcando a opção 'Usar os aplicativos do Office para sincronizar os arquivos do Office que eu abri', localizada na aba 'Office' nas configurações do Microsoft OneDrive.");
-                //    return;
-                //}
-
-                //if (caminho_doc == "")
-                //{
-                //    MessageBox.Show("Documentos que ainda não foram salvos não podem ser renomeados.");
-                //    return;
-                //}
                 if (Variables.debugging) { stopwatch.Stop(); }
                 nome_doc = Microsoft.VisualBasic.Interaction.InputBox("Novo nome do documento:", "", nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf(".")));
                 if (Variables.debugging) { stopwatch.Start(); }
@@ -283,16 +252,9 @@ namespace PeriTAB
                 // Expressão regular para validar nome de arquivo no Windows
                 string regex_Windows = @"^[^\\\/\:\*\?\""<>\|]+$";
 
-                // Usa Regex.IsMatch para validar o nome do arquivo
-                //bool nomeValido = 
-
-                //MessageBox.Show(nome_doc);
                 if (nome_doc == "") { success = false; }
-                //else if (nome_doc == null) { success = false; }
-                else if (/*nome_doc == "" || */!Regex.IsMatch(nome_doc, regex_Windows) || string.IsNullOrWhiteSpace(nome_doc))
+                else if (!Regex.IsMatch(nome_doc, regex_Windows) || string.IsNullOrWhiteSpace(nome_doc))
                 {
-                    //MessageBox.Show("ok");
-                    //return;
                     success = false;
                     msg_Falha = "Nome inválido.";
                 }
@@ -347,11 +309,6 @@ namespace PeriTAB
                 }
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Renomeia documento");
-
-                // Configurações finais
-                //Globals.ThisAddIn.Application.ScreenUpdating = true;
-
-                /*}).Start();*/
             });
             RibbonButton.Image = Properties.Resources.abc;
             RibbonButton.Enabled = true;
@@ -363,19 +320,15 @@ namespace PeriTAB
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
-            //Globals.ThisAddIn.Application.DisplayStatusBar = false;
 
             await Tarefa.Run(() =>
             {
-
                 // Configurações iniciais
                 Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
 
-
-                //iClass_Buttons.button_gera_pdf_image(load: true);
                 PdfReader inputPdf = null;
                 bool inputPdf_open = false;
                 string path = Globals.ThisAddIn.Application.ActiveDocument.FullName;
@@ -388,17 +341,8 @@ namespace PeriTAB
                     //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2); MessageBox.Show("Não foi possível gerar o PDF."); button_gera_pdf.Enabled = true; return; 
                 }
                 string path_pdf = localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf";
-                //Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
 
-                //try { Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(localpath.Substring(0, localpath.LastIndexOf(".")), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true); } catch (COMException ex) { MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); return; }
                 Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB"), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
-
-                //if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
-                //{
-                //    File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
-                //    return;
-                //}
-                //else { MessageBox.Show("Não foi possível gerar o PDF."); return; }
 
                 if (Globals.Ribbons.Ribbon.checkBox_assinar.Checked)
                 {
@@ -408,17 +352,14 @@ namespace PeriTAB
                     X509Store st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                     st.Open(OpenFlags.MaxAllowed);
                     IExternalSignature s = null;
-                    //MessageBox.Show("1");
                     foreach (X509Certificate2 c in st.Certificates)
                     {
                         if (c.Verify() == false) { st.Remove(c); continue; } //Elimina certificado não validados
                         try { s = new X509Certificate2Signature(c, "SHA-256"); } catch { st.Remove(c); } //Elimina certificado que não se pode pegar a assinatura
                     }
-                    //MessageBox.Show("2");
                     switch (st.Certificates.Count)
                     {
                         case 0:
-                            //MessageBox.Show("Nenhum certificado válido encontrado.");
                             success = false;
                             msg_Falha = "Nenhum certificado válido encontrado.";
                             goto saida;
@@ -435,64 +376,23 @@ namespace PeriTAB
                             }
                             else
                             {
-                                //MessageBox.Show("Nenhum certificado foi selecionado.");
                                 success = false;
-                                //msg_Falha = "Nenhum certificado foi selecionado.";
                                 goto saida;
                             }
                             break;
                     }
-                    //Variables.cert = certClient;
-                    //st.Dispose();
                     st.Close();
 
-                    //st.Remove(certClient);
-                    //Debug.WriteLine("1");
-                    //Get Cert Chain
                     IList<X509Certificate> chain = new List<X509Certificate>();
 
                     X509Chain x509Chain = new X509Chain();
-                    //MessageBox.Show("3");
                     x509Chain.Build(certClient);
 
-
-
-                    //new Thread(() =>
-                    //{
-                    //    x509Chain.Build(certClient);
-                    //}).Start();
-
-
-
-                    //System.Threading.Tasks.Task t = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                    //{
-                    //    x509Chain.Build(certClient);
-                    //});
-                    //t.Wait();
-
-                    //bool thread_finnished = false;
-                    //new Thread(() =>
-                    //{
-                    //    x509Chain.Build(certClient);
-                    //    thread_finnished = true;
-                    //}).Start();
-
-                    //while (true) 
-                    //{
-                    //    if (thread_finnished) break;
-                    //}
-
-
-
-                    //MessageBox.Show("4");
                     foreach (X509ChainElement x509ChainElement in x509Chain.ChainElements)
                     {
                         chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
                     }
 
-                    //Debug.WriteLine("2");
-                    //PdfReader inputPdf = new PdfReader(path_pdf);
-                    //PdfReader inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
                     inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
                     inputPdf_open = true;
 
@@ -506,14 +406,8 @@ namespace PeriTAB
                         success = false;
                         msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
                         goto saida;
-                        //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2); 
-                        //MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); 
-                        //button_gera_pdf.Enabled = true;
                     }
-
-
-
-
+                    
                     PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
 
                     // Desativa a persistência da chave no CSP, garantindo que a senha seja solicitada sempre
@@ -580,18 +474,7 @@ namespace PeriTAB
                     try
                     {
                         MakeSignature.SignDetached(signatureAppearance, externalSignature, chain, null, null, null, 0, CryptoStandard.CMS);
-                        // Descarrega a chave da memória após a assinatura
-                        //if (certClient != null)
-                        //{
-                        //    var rsa = certClient.GetRSAPrivateKey() as RSACryptoServiceProvider;
-                        //    if (rsa != null)
-                        //    {
-                        //        rsa.PersistKeyInCsp = false; // Força a não persistência da chave
-                        //        rsa.Clear(); // Libera o CSP, garantindo que a senha seja solicitada novamente
-                        //    }
-                        //}
                     }
-                    //try { MakeSignature.SignDetached(pdfStamper.SignatureAppearance, new X509Certificate2Signature(certClient, "SHA-256"), chain, null, null, null, 0, CryptoStandard.CMS); }
                     catch (CryptographicException)
                     {
                         //Cancelamento da senha do token
@@ -600,44 +483,14 @@ namespace PeriTAB
                         success = false;
                         goto saida;
                     }
-                    //****************************************************
-                    //finally
-                    //{
-                    //    // Aqui liberamos o contexto da chave
-                    //    if (certClient != null)
-                    //    {
-                    //        var rsa1 = certClient.GetRSAPrivateKey() as RSACryptoServiceProvider;
-                    //        if (rsa1 != null)
-                    //        {
-                    //            rsa1.PersistKeyInCsp = false; // Garante que a chave não será persistida
-                    //            rsa1.Clear(); // Libera o CSP, garantindo que a senha seja solicitada novamente
-                    //        }
-                    //    }
-                    //}
-                    //******************************************************
-                    //inputPdf.Close();
-                    //chain.Clear();
                     pdfStamper.Close();
-                    //certClient.Dispose();
-
-
-
-
 
                     if (File.Exists(path_pdf_assinado))
                     {
-                        //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
-                        //button_gera_pdf.Enabled = true;
-                        //Globals.ThisAddIn.Application.DisplayStatusBar = true;
-                        //Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
-                        //if (File.Exists(path_pdf)) { File.Delete(path_pdf); }
                         if (Globals.Ribbons.Ribbon.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf_assinado); }
                     }
                     else
                     {
-                        //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
-                        //button_gera_pdf.Enabled = true;
-                        //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "A geração do PDF falhou.";
                         success = false;
                     }
                 }
@@ -652,14 +505,10 @@ namespace PeriTAB
                             {
                                 success = false;
                                 msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
-                                //MessageBox.Show("O PDF está aberto. Feche-o para gerar um novo PDF."); 
                                 goto saida;
                             }
                         }
                         File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
-                        //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
-                        //button_gera_pdf.Enabled = true;
-                        //Globals.ThisAddIn.Application.DisplayStatusBar = true; Globals.ThisAddIn.Application.StatusBar = "PDF gerado com sucesso.";
                         if (Globals.Ribbons.Ribbon.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf); }
                     }
                     else
@@ -667,9 +516,6 @@ namespace PeriTAB
                         success = false;
                         msg_Falha = "Não foi possível gerar o PDF.";
                         goto saida;
-                        //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2);
-                        //button_gera_pdf.Enabled = true;
-                        //MessageBox.Show("Não foi possível gerar o PDF.");
                     }
                 }
 
@@ -687,11 +533,6 @@ namespace PeriTAB
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Gera PDF");
 
-                // Configurações finais
-                //Globals.ThisAddIn.Application.ScreenUpdating = true;
-
-
-                /*}).Start();*/
             });
 
             RibbonButton.Image = Properties.Resources.icone_pdf;
@@ -745,7 +586,6 @@ namespace PeriTAB
                 {
                     return texto.Substring(texto.IndexOf(inicio) + inicio.Length);
                 }
-                //return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio))).IndexOf(fim) - inicio.Length);
                 return (texto.Substring(texto.IndexOf(inicio))).Substring(inicio.Length, (texto.Substring(texto.IndexOf(inicio) + inicio.Length)).IndexOf(fim));
             }
             catch { return null; }
