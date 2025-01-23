@@ -670,7 +670,8 @@ namespace PeriTAB{
             this.button_autodimensiona_imagem.Label = "Autodimensiona";
             this.button_autodimensiona_imagem.Name = "button_autodimensiona_imagem";
             this.button_autodimensiona_imagem.ShowImage = true;
-            this.button_autodimensiona_imagem.SuperTip = "Redimensiona as imagens selecionadas para o tamanho da linha.";
+            this.button_autodimensiona_imagem.SuperTip = "Redimensiona as imagens selecionadas para o tamanho da linha, mas limitado ao tam" +
+    "anho da página corrente. ";
             this.button_autodimensiona_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_autodimensiona_imagem_Click);
             // 
             // menu_imagem

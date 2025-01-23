@@ -332,6 +332,7 @@ namespace PeriTAB
                     {
                         if (!(iShape.Range.Paragraphs[1].Range.Information[WdInformation.wdWithInTable]))
                         {
+                            int paginaInicial = iShape.Range.Information[WdInformation.wdActiveEndPageNumber];
                             float larguraPaginaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth;
                             float margemEsquerdaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin;
                             float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
@@ -341,15 +342,12 @@ namespace PeriTAB
                             float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
                             iShape.Width = espacoDigitavelPts;
 
-                            // Tentar reduzir imagem para caber na pagina anterior
-                            int paginaInicial = iShape.Range.Information[WdInformation.wdActiveEndPageNumber];
+                            // Reduzir imagem caso ultrapasse a página
                             float tamanhoOriginal = iShape.Width;
-                            iShape.Width = 120; // tamanho mimino
-                            if (iShape.Range.Information[WdInformation.wdActiveEndPageNumber] < paginaInicial)
+                            if (iShape.Range.Information[WdInformation.wdActiveEndPageNumber] > paginaInicial)
                             {
-                                iShape.Width = tamanhoOriginal;
-                                float minScale = 0.01f; // Escala mínima (10% do tamanho atual)
-                                float maxScale = 1f;  // Escala máxima (2000% do tamanho atual)
+                                float minScale = 0.01f; // Escala mínima (1% do tamanho atual)
+                                float maxScale = 1f;  // Escala máxima (100% do tamanho atual)
                                 float tolerance = 0.001f; // Tolerância para encerrar a busca binária
                                 while (maxScale - minScale > tolerance)
                                 {
@@ -357,13 +355,13 @@ namespace PeriTAB
 
                                     iShape.Width = tamanhoOriginal * midScale;
 
-                                    if (iShape.Range.Information[WdInformation.wdActiveEndPageNumber] < paginaInicial)
+                                    if (iShape.Range.Information[WdInformation.wdActiveEndPageNumber] > paginaInicial)
                                     {
-                                        minScale = midScale;
+                                        maxScale = midScale;
                                     }
                                     else
                                     {
-                                        maxScale = midScale;
+                                        minScale = midScale;
                                     }
                                 }
                                 iShape.Width = tamanhoOriginal * minScale;
@@ -372,7 +370,6 @@ namespace PeriTAB
                             {
                                 iShape.Width = tamanhoOriginal;
                             }
-
                         }
                         else { success = false; }
                     }
@@ -442,7 +439,7 @@ namespace PeriTAB
         }
         void Redimenionar_imagens_por_busca_binaria(List<InlineShape> imagens, bool fit_to_page)
         {
-            float minScale = 0.01f; // Escala mínima (10% do tamanho atual)
+            float minScale = 0.01f; // Escala mínima (1% do tamanho atual)
             float maxScale = 20f;  // Escala máxima (2000% do tamanho atual)
             float tolerance = 0.001f; // Tolerância para encerrar a busca binária
 
@@ -472,7 +469,7 @@ namespace PeriTAB
                 // Verifica a página atual se fit_to_page for true
                 bool mudouDePagina = fit_to_page && imagens[0].Range.Information[WdInformation.wdActiveEndPageNumber] != paginaInicial;
 
-                if (numLinhas > 1 || mudouDePagina)
+                if (numLinhas > 1 || mudouDePagina && midScale > 1)
                 {
                     // Se ainda ocupa mais de uma linha ou mudou de página, diminui o tamanho
                     maxScale = midScale;
