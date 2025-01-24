@@ -1,5 +1,4 @@
-﻿using iTextSharp.text.pdf.parser;
-using Microsoft.Office.Core;
+﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
@@ -28,7 +27,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             // Configurações iniciais
-            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
             string msg_Falha = "";
@@ -131,11 +129,6 @@ namespace PeriTAB
 
             // Mensagens da Thread
             if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-            }
             Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
             if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
 
@@ -224,7 +217,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             // Configurações iniciais
-            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
             string msg_Falha = "";
@@ -264,11 +256,6 @@ namespace PeriTAB
             });
             // Mensagens da Thread
             if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-            }
             Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
             if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
 
@@ -286,7 +273,6 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             // Configurações iniciais
-            Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
             string msg_Falha = "";
@@ -381,7 +367,7 @@ namespace PeriTAB
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 0) { success = false; } //Se está dentro da tabela, o numero de linhas do paragrafo é zero
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
                     {
-                        Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph],true);
+                        Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph], true);
                     }
                     // Verifica se o parágrafo tem mais de uma linha: caso de redução das imagens
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
@@ -415,7 +401,7 @@ namespace PeriTAB
                         }
                         else
                         {
-                            Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph],false);
+                            Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph], false);
                         }
                     }
                 }
@@ -424,11 +410,6 @@ namespace PeriTAB
 
             // Mensagens da Thread
             if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-            {
-                stopwatch.Stop();
-                msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-            }
             Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
             if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
 
@@ -488,180 +469,6 @@ namespace PeriTAB
             }
         }
 
-
-        //private async void button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
-        //{
-        //    // Atualiza a UI na Thread principal
-        //    RibbonButton RibbonButton = (RibbonButton)sender;
-        //    RibbonButton.Image = Properties.Resources.load_icon_png_7969;
-        //    RibbonButton.Enabled = false;
-        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
-
-        //    // Configurações iniciais
-        //    Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
-        //    bool success = true;
-        //    string msg_StatusBar = RibbonButton.Label + ": ";
-        //    string msg_Falha = "";
-
-        //    await Tarefa.Run(() =>
-        //    {
-        //        Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-        //        if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1)
-        //        {
-        //            success = false;
-        //            msg_Falha = "Não há imagens selecionadas.";
-        //        }
-
-        //        Dictionary<int, List<InlineShape>> dict_InlineShape_paragraph = new Dictionary<int, List<InlineShape>>();
-        //        foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
-        //        {
-        //            // Verifica se o parágrafo contém mais de uma InlineShape
-        //            if (iShape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
-        //            {
-        //                int num_Paragraph = 0;
-        //                if (iShape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | iShape.Type == WdInlineShapeType.wdInlineShapePicture)
-        //                {
-        //                    Paragraph iParagraph = iShape.Range.Paragraphs.First;
-        //                    for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
-        //                    {
-        //                        if (Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
-        //                        {
-        //                            num_Paragraph = i;
-        //                            break;
-        //                        }
-        //                    }
-        //                }
-        //                // Verifica se o dicionário já contém o parágrafo
-        //                if (!dict_InlineShape_paragraph.ContainsKey(num_Paragraph))
-        //                {
-        //                    // Se não contém, cria uma nova lista de InlineShapes para esse parágrafo
-        //                    dict_InlineShape_paragraph[num_Paragraph] = new List<InlineShape>();
-        //                }
-        //                // Adiciona a InlineShape à lista correspondente ao parágrafo
-        //                dict_InlineShape_paragraph[num_Paragraph].Add(iShape);
-        //            }
-        //            else
-        //            {
-        //                if (!(iShape.Range.Paragraphs[1].Range.Information[WdInformation.wdWithInTable]))
-        //                {
-        //                    float larguraPaginaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth;
-        //                    float margemEsquerdaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin;
-        //                    float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
-        //                    float recuoEsquerdaPts = iShape.Range.Paragraphs[1].Format.LeftIndent;
-        //                    float recuoDireitaPts = iShape.Range.Paragraphs[1].Format.RightIndent;
-        //                    float primeiralinhaPts = iShape.Range.Paragraphs[1].Format.FirstLineIndent;
-        //                    float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
-        //                    iShape.Width = espacoDigitavelPts;
-        //                }
-        //                else { success = false; }
-        //            }
-        //        }
-        //        // Itera por cada parágrafo que contém múltiplas InlineShapes
-        //        foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
-        //        {
-        //            // Verifica se o parágrafo tem exatamente uma linha: caso de aumento das imagens
-        //            if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 0) { success = false; } //Se está dentro da tabela, o numero de linhas do paragrafo é zero
-        //            if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
-        //            {
-        //                Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph]);
-        //            }
-        //            // Verifica se o parágrafo tem mais de uma linha: caso de redução das imagens
-        //            if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) > 1)
-        //            {
-        //                // Salva os tamanhos originais das imagens
-        //                Dictionary<InlineShape, float> tamanhosOriginais = new Dictionary<InlineShape, float>();
-        //                foreach (InlineShape imagem in dict_InlineShape_paragraph[iParagraph])
-        //                {
-        //                    tamanhosOriginais[imagem] = imagem.Width;
-        //                }
-
-        //                // Aplica o fator minScale a todas as imagens
-        //                foreach (InlineShape imagem in dict_InlineShape_paragraph[iParagraph])
-        //                {
-        //                    imagem.Width = tamanhosOriginais[imagem] * 0.1f;
-        //                }
-
-        //                // Verifica o número de linhas do parágrafo
-        //                int numLinhas = dict_InlineShape_paragraph[iParagraph][0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines);
-
-        //                // Se o parágrafo ainda ocupa mais de uma linha, restaura os tamanhos originais
-        //                if (numLinhas > 1)
-        //                {
-        //                    foreach (InlineShape imagem in dict_InlineShape_paragraph[iParagraph])
-        //                    {
-        //                        imagem.Width = tamanhosOriginais[imagem];
-        //                    }
-        //                    success = false;
-        //                    msg_Falha = "Alguma(s) imagem(ns) selecionada(s) não cabe(m) em uma única linha.";
-        //                }
-        //                else
-        //                {
-        //                    Redimenionar_imagens_por_busca_binaria(dict_InlineShape_paragraph[iParagraph]);
-        //                }
-        //            }
-        //        }
-        //        Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
-        //    });
-
-        //    // Mensagens da Thread
-        //    if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-        //    if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-        //    {
-        //        stopwatch.Stop();
-        //        msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-        //    }
-        //    Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
-        //    if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, RibbonButton.Label);
-
-        //    // Configurações finais
-        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
-        //    RibbonButton.Image = Properties.Resources.redimensionar3;
-        //    RibbonButton.Enabled = true;
-        //}
-        //void Redimenionar_imagens_por_busca_binaria(List<InlineShape> imagens)
-        //{
-        //    float minScale = 0.1f; // Escala mínima (1% do tamanho atual)
-        //    float maxScale = 20f; // Escala máxima (2000% do tamanho atual)
-        //    float tolerance = 0.01f; // Tolerância para encerrar a busca binária
-
-        //    // Salva os tamanhos originais para poder reverter caso necessário
-        //    Dictionary<InlineShape, float> tamanhosOriginais = new Dictionary<InlineShape, float>();
-        //    foreach (InlineShape imagem in imagens)
-        //    {
-        //        tamanhosOriginais[imagem] = imagem.Width;
-        //    }
-
-        //    while (maxScale - minScale > tolerance)
-        //    {
-        //        float midScale = (minScale + maxScale) / 2;
-
-        //        // Aplica o fator de escala às imagens
-        //        foreach (InlineShape imagem in imagens)
-        //        {
-        //            imagem.Width = tamanhosOriginais[imagem] * midScale;
-        //        }
-
-        //        // Verifica o número de linhas ocupadas pelo parágrafo
-        //        int numLinhas = imagens[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines);
-
-        //        if (numLinhas > 1)
-        //        {
-        //            // Se ainda ocupa mais de uma linha, diminui o tamanho
-        //            maxScale = midScale;
-        //        }
-        //        else
-        //        {
-        //            // Se cabe em uma linha, tenta aumentar o tamanho
-        //            minScale = midScale;
-        //        }
-        //    }
-
-        //    // Ajuste final usando o menor fator encontrado
-        //    foreach (InlineShape imagem in imagens)
-        //    {
-        //        imagem.Width = tamanhosOriginais[imagem] * minScale;
-        //    }
-        //}
 
         private bool IsLastShapeInParagraph(InlineShape ishape)
         {

@@ -28,7 +28,6 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -93,11 +92,6 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Abre SISCRIM: Sucesso"; } else { msg_StatusBar = "Abre SISCRIM: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Abre SISCRIM");
             });
@@ -234,7 +228,6 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -245,9 +238,7 @@ namespace PeriTAB
                 string nome_doc = null;
 
                 nome_doc_completo = GetLocalPath(nome_doc_completo);
-                if (Variables.debugging) { stopwatch.Stop(); }
                 nome_doc = Microsoft.VisualBasic.Interaction.InputBox("Novo nome do documento:", "", nome_doc_antigo.Substring(0, nome_doc_antigo.LastIndexOf(".")));
-                if (Variables.debugging) { stopwatch.Start(); }
 
                 // Expressão regular para validar nome de arquivo no Windows
                 string regex_Windows = @"^[^\\\/\:\*\?\""<>\|]+$";
@@ -302,11 +293,6 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Renomeia documento: Sucesso"; } else { msg_StatusBar = "Renomeia documento: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Renomeia documento");
             });
@@ -324,7 +310,6 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 // Configurações iniciais
-                Stopwatch stopwatch = new Stopwatch(); if (Variables.debugging) { stopwatch.Start(); } // Inicia o cronômetro para medir o tempo de execução da Thread
                 bool success = true;
                 string msg_StatusBar = "";
                 string msg_Falha = "";
@@ -367,9 +352,7 @@ namespace PeriTAB
                             certClient = st.Certificates[0];
                             break;
                         default:
-                            if (Variables.debugging) { stopwatch.Stop(); }
                             X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
-                            if (Variables.debugging) { stopwatch.Start(); }
                             if (collection.Count > 0)
                             {
                                 certClient = collection[0];
@@ -407,7 +390,7 @@ namespace PeriTAB
                         msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
                         goto saida;
                     }
-                    
+
                     PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
 
                     // Desativa a persistência da chave no CSP, garantindo que a senha seja solicitada sempre
@@ -525,11 +508,6 @@ namespace PeriTAB
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Gera PDF: Sucesso"; } else { msg_StatusBar = "Gera PDF: Falha"; }
-                if (Variables.debugging) // Se estiver no modo Debugging, mostra o tempo de execução na barra de status
-                {
-                    stopwatch.Stop();
-                    msg_StatusBar += $" (Tempo de execução: {stopwatch.Elapsed.TotalSeconds:F2} segundos)";
-                }
                 Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
                 if (!success && msg_Falha != "") MessageBox.Show(msg_Falha, "Gera PDF");
 

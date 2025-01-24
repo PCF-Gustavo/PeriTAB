@@ -21,7 +21,6 @@ namespace PeriTAB
         {
             // Declara variáveis privadas
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences;
-            private static readonly bool private_debugging;
             private static AddIn private_AddIn_PeriTAB;
             private static Template private_Template_PeriTAB;
             static Variables() // Bloco estático para definir o valor inicial das variáveis
@@ -29,7 +28,6 @@ namespace PeriTAB
                 private_caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
                 private_caminho_AppData_Roaming_PeriTAB = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
                 private_caminho_preferences = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, "preferences.xml");
-                private_debugging = !System.Deployment.Application.ApplicationDeployment.IsNetworkDeployed;
             }
 
             // Declara variáveis públicas
@@ -38,7 +36,6 @@ namespace PeriTAB
             public static Template Template_PeriTAB { get { return private_Template_PeriTAB; } set { private_Template_PeriTAB = value; } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string caminho_preferences { get { return private_caminho_preferences; } }
-            public static bool debugging { get { return private_debugging; } }
         }
 
 
@@ -68,17 +65,7 @@ namespace PeriTAB
                 }
             }
 
-            if (Variables.debugging)
-            {
-                button_teste.Visible = true;
-                Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB Debugging";
-            }
-            else
-            {
-                // Escreve o número da versão
-                System.Version publish_version = System.Deployment.Application.ApplicationDeployment.CurrentDeployment.CurrentVersion;
-                Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + publish_version.Major + "." + publish_version.Minor + "." + publish_version.Build;
-            }
+            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.0";
         }
 
         public BuildingBlock inserir_autotexto(Range range, string autotextName)

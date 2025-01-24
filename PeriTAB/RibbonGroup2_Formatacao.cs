@@ -2,11 +2,8 @@
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Text.RegularExpressions;
-using System.Windows.Controls.Primitives;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -148,7 +145,7 @@ namespace PeriTAB
             RibbonButton.Image = null;
             RibbonButton.Enabled = true;
         }
-        
+
 
         public void DeleteEmptyParagraphsAtStart(Range range)
         {
@@ -288,7 +285,7 @@ namespace PeriTAB
                             section.PageSetup.DifferentFirstPageHeaderFooter = 0;
                             section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                         }
-                            if (isFirstSection && header.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
+                        if (isFirstSection && header.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
                         {
                             // CABEÇALHO DA PRIMEIRA PÁGINA
                             // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
@@ -523,7 +520,7 @@ namespace PeriTAB
             return ultimoRangeEncontrado;
         }
 
-        private void Exclui_Bookmarks(Range range) 
+        private void Exclui_Bookmarks(Range range)
         {
             if (range == null) return;
             foreach (Microsoft.Office.Interop.Word.Bookmark bookmark in range.Bookmarks)
