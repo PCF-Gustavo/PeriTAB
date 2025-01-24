@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Threading;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {

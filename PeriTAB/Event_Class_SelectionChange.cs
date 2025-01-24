@@ -1,6 +1,8 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading;
 using Tarefa = System.Threading.Tasks.Task;
 
@@ -20,7 +22,7 @@ namespace PeriTAB
             // Se houver uma operação em andamento, cancelamos a execução anterior
             cancellationTokenSource?.Cancel();
 
-
+            
 
             //if (cancellationTokenSource != null)
             //cancellationTokenSource.Cancel(); // Cancela a execução anterior
@@ -62,7 +64,7 @@ namespace PeriTAB
                 {
                     if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selectionar paragrafos com tabela causa problemas de seleção.
                     {
-                        List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
+                        List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList(); 
 
                         foreach (Paragraph p in paragrafosSelecionados)
                         {

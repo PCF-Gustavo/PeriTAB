@@ -1,6 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 
 namespace PeriTAB
 {
@@ -115,7 +116,7 @@ namespace PeriTAB
 
         }
 
-        private void VincularLista(ContentControl contentControl_lista1, string titulo_lista1, string titulo_lista2, Dictionary<string, string> dicionario)
+        private void VincularLista(ContentControl contentControl_lista1, string titulo_lista1, string titulo_lista2, Dictionary<string,string> dicionario)
         {
             if (contentControl_lista1.Title == titulo_lista1)
             {
@@ -195,42 +196,42 @@ namespace PeriTAB
         {
             //if (ContentControl.Title == "Unidade")
             //{
-            ContentControl controle_Unidade_da_PF = GetContentControl("Unidade da PF");
+                ContentControl controle_Unidade_da_PF = GetContentControl("Unidade da PF");
 
-            Paragraph paragraph = controle_Unidade_da_PF.Range.Paragraphs[1].Next();
-            if (controle_Unidade_da_PF.Range.Text == "DITEC - INSTITUTO NACIONAL DE CRIMINALÍSTICA")
-            {
-                if (paragraph != null)
+                Paragraph paragraph = controle_Unidade_da_PF.Range.Paragraphs[1].Next();
+                if (controle_Unidade_da_PF.Range.Text == "DITEC - INSTITUTO NACIONAL DE CRIMINALÍSTICA")
                 {
-                    if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
-                    paragraph.Range.Delete();
-                }
-            }
-            else
-            {
-                // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
-                string autotextName = "Tipo de unidade de criminalistic";
-                BuildingBlockEntries buildingBlockEntries = Ribbon.Variables.Template_PeriTAB.BuildingBlockEntries;
-                for (int i = 1; i <= buildingBlockEntries.Count; i++)
-                {
-                    BuildingBlock bb = buildingBlockEntries.Item(i);
-                    if (bb.Name == autotextName)
+                    if (paragraph != null)
                     {
-                        if (paragraph == null)
+                        if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
+                        paragraph.Range.Delete();
+                    }
+                }
+                else 
+                {
+                    // Procurar pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
+                    string autotextName = "Tipo de unidade de criminalistic";
+                    BuildingBlockEntries buildingBlockEntries = Ribbon.Variables.Template_PeriTAB.BuildingBlockEntries;
+                    for (int i = 1; i <= buildingBlockEntries.Count; i++)
+                    {
+                        BuildingBlock bb = buildingBlockEntries.Item(i);
+                        if (bb.Name == autotextName)
                         {
-                            controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
-                            bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
-                        }
-                        else
-                        {
-                            if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
-                            paragraph.Range.Delete();
-                            controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
-                            bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
+                            if (paragraph == null)
+                            {
+                                controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
+                                bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
+                            }
+                            else
+                            {
+                                if (paragraph.Range.ContentControls.Count > 0) paragraph.Range.ContentControls[1].LockContentControl = false;
+                                paragraph.Range.Delete();
+                                controle_Unidade_da_PF.Range.Paragraphs[1].Range.InsertParagraphAfter();
+                                bb.Insert(controle_Unidade_da_PF.Range.Paragraphs[1].Next().Range);
+                            }
                         }
                     }
                 }
-            }
             //}
         }
 

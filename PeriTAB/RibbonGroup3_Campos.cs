@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
+using System.Collections.Generic;
 using Tarefa = System.Threading.Tasks.Task;
 
 
