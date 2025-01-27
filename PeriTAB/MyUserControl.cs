@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
+using Tarefa = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -53,23 +54,32 @@ namespace PeriTAB
         {
         }
 
-        private void MyUserControl_Button_Click(object sender, EventArgs e)
+        private async void MyUserControl_Button_Click(object sender, EventArgs e)
         {
-            Importa_todos_estilos();
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            Button Button = (Button)sender;
+            Button.Invoke((Action)(() => Button.Enabled = false));
+
+            string msg_StatusBar = Button.Name + ": ";
+            bool success = true;
 
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            List<Paragraph> list_Paragraph = new List<Paragraph>();
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
-                list_Paragraph.Add(p);
-            }
+            Importa_todos_estilos();
+            string estilo_nome = dict_botao_e_estilo[sender as Button];
 
-            // Deletes
-            foreach (Paragraph p in list_Paragraph)
-            {
-                if (new List<string>
+            //await Tarefa.Run(() =>
+            //{
+                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                List<Paragraph> list_Paragraph = new List<Paragraph>();
+                foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+                {
+                    list_Paragraph.Add(p);
+                }
+
+                // Deletes
+                foreach (Paragraph p in list_Paragraph)
+                {
+                    if (new List<string>
                 {
                     "04 - Citações (PeriTAB)",
                     "05 - Seção_1 (PeriTAB)",
@@ -84,19 +94,19 @@ namespace PeriTAB
                     "15 - Quesitos (PeriTAB)",
                     "16 - Fecho (PeriTAB)"
                 }.Contains(estilo_nome))
-                {
-                    Deleta_Paragrafos_Em_Branco(p, p.Previous());
-                }
+                    {
+                        Deleta_Paragrafos_Em_Branco(p, p.Previous());
+                    }
 
-                if (new List<string>
+                    if (new List<string>
                 {
                     "04 - Citações (PeriTAB)",
                 }.Contains(estilo_nome))
-                {
-                    Deleta_Paragrafos_Em_Branco(p, p.Next());
-                }
+                    {
+                        Deleta_Paragrafos_Em_Branco(p, p.Next());
+                    }
 
-                if (new List<string>
+                    if (new List<string>
                 {
                     "05 - Seção_1 (PeriTAB)",
                     "06 - Seção_2 (PeriTAB)",
@@ -104,22 +114,23 @@ namespace PeriTAB
                     "08 - Seção_4 (PeriTAB)",
                     "09 - Seção_5 (PeriTAB)"
                 }.Contains(estilo_nome))
-                {
-                    Deleta_prefixo(p, new Regex(@"^\s*(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)")); // Expressão regular para identificar prefixos de números romanos + ponto + número arabico + espaços + hífen ou en-dash + espaços
+                    {
+                        Deleta_prefixo(p, new Regex(@"^\s*(M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})(\.\d+)*\s*[-\u2013]\s*)")); // Expressão regular para identificar prefixos de números romanos + ponto + número arabico + espaços + hífen ou en-dash + espaços
+                    }
                 }
-            }
 
-            // Aplica Estilo
-            foreach (Paragraph p in list_Paragraph)
-            {
-                p.set_Style((object)estilo_nome);
-            }
+                // Aplica Estilo
+                foreach (Paragraph p in list_Paragraph)
+                {
+                    try { p.set_Style((object)estilo_nome); }
+                    catch (System.Runtime.InteropServices.COMException) { success = false; } //Para impedir erro em parágrafos com modificação não permitida, como ContentControls
+                }
 
-            Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial
-            // Ajuste de formatação
-            foreach (Paragraph p in list_Paragraph)
-            {
-                if (new List<string>
+                Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial
+                                                                                       // Ajuste de formatação
+                foreach (Paragraph p in list_Paragraph)
+                {
+                    if (new List<string>
                 {
                     "05 - Seção_1 (PeriTAB)",
                     "06 - Seção_2 (PeriTAB)",
@@ -128,32 +139,38 @@ namespace PeriTAB
                     "09 - Seção_5 (PeriTAB)",
                     "15 - Quesitos (PeriTAB)"
                 }.Contains(estilo_nome))
-                {
-                    Zera_SpaceBefore_Se_paragrafo_anterior(p, new List<string> { "05 - Seção_1 (PeriTAB)", "06 - Seção_2 (PeriTAB)", "07 - Seção_3 (PeriTAB)", "08 - Seção_4 (PeriTAB)", "09 - Seção_5 (PeriTAB)" });
-                }
+                    {
+                        Zera_SpaceBefore_Se_paragrafo_anterior(p, new List<string> { "05 - Seção_1 (PeriTAB)", "06 - Seção_2 (PeriTAB)", "07 - Seção_3 (PeriTAB)", "08 - Seção_4 (PeriTAB)", "09 - Seção_5 (PeriTAB)" });
+                    }
 
-                if (new List<string>
+                    if (new List<string>
                 {
                     "15 - Quesitos (PeriTAB)"
                 }.Contains(estilo_nome))
-                {
-                    Ajusta_Quesito(p, new Regex(@"\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
-                }
+                    {
+                        Ajusta_Quesito(p, new Regex(@"\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
+                    }
 
-                if (new List<string>
+                    if (new List<string>
                 {
                     "12 - Legendas de Figuras (PeriTAB)",
                     "14 - Legendas de Tabelas (PeriTAB)"
                 }.Contains(estilo_nome))
-                {
-                    p.Range.Select();
-                    Globals.ThisAddIn.Application.Run("alinha_legenda");
+                    {
+                        p.Range.Select();
+                        Globals.ThisAddIn.Application.Run("alinha_legenda");
+                    }
                 }
-
-            }
-            Selecao_inicial.Select(); // Restaura a seleção inicial
+                Selecao_inicial.Select(); // Restaura a seleção inicial
+                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+            //});
 
             Globals.ThisAddIn.Application.ScreenUpdating = true;
+
+            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+
+            Button.Invoke((Action)(() => Button.Enabled = true));
         }
 
         private void Zera_SpaceBefore_Se_paragrafo_anterior(Paragraph p, List<string> list)
