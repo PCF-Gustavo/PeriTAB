@@ -75,7 +75,7 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-                inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "Numero_de_paginas_por_extenso");
+                inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "pagina_atual_por_extenso_PeriTAB");
                 Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
 
@@ -125,7 +125,7 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-                inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "Pagina_atual_por_extenso");
+                inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "paginas_por_extenso_PeriTAB");
                 Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
 

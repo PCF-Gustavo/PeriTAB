@@ -72,7 +72,6 @@ namespace PeriTAB
         {
             if (range != null)
             {
-                // Procura pelo autotexto Numero_de_paginas_por_extenso no template_PeriTAB
                 for (int i = 1; i <= Variables.Template_PeriTAB.BuildingBlockEntries.Count; i++)
                 {
                     BuildingBlock bb = Variables.Template_PeriTAB.BuildingBlockEntries.Item(i);

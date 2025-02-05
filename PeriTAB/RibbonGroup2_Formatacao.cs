@@ -235,7 +235,7 @@ namespace PeriTAB
                 if (inicio_do_laudo == null)
                 {
                     Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
-                    Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo");
+                    Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo_PeriTAB");
                 }
                 else
                 {
@@ -250,7 +250,7 @@ namespace PeriTAB
                         p.Range.Delete();
                     }
                     // Insere início do laudo
-                    Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo");
+                    Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo_PeriTAB");
                     // Ajusta os ContentControl DropdownList Unidade e Subtítulo
                     if (unidade != null)
                     {
@@ -294,7 +294,7 @@ namespace PeriTAB
                             Exclui_ContentControls(cabecalho_1a_pagina);
                             cabecalho_1a_pagina.Text = "";
                             // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho1");
+                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho_1a_pagina_PeriTAB");
                             if (unidade != null)
                             {
                                 string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
@@ -315,7 +315,7 @@ namespace PeriTAB
                             Exclui_ContentControls(cabecalho_outras_paginas);
                             cabecalho_outras_paginas.Text = "";
                             // Insere cabeçalho das outras páginas
-                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho2");
+                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho_exceto_1a_pag_PeriTAB");
                             // Deleta o último parágrafo do cabeçalho das outras páginas
                             cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
                         }
@@ -331,7 +331,7 @@ namespace PeriTAB
                             Exclui_ContentControls(rodape_1a_pagina);
                             rodape_1a_pagina.Text = "";
                             // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape1");
+                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape_1a_pagina_PeriTAB");
                         }
                         else
                         {
@@ -342,14 +342,14 @@ namespace PeriTAB
                             Exclui_ContentControls(rodape_outras_paginas);
                             rodape_outras_paginas.Text = "";
                             // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape2");
+                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape_exceto_1a_pag_PeriTAB");
                         }
                     }
                     isFirstSection = false;
                 }
 
                 // SEÇÃO DE CONCLUSÃO
-                // Insere secao_de_conclusao
+                // Insere Seção de conclusão
                 Range UltimoParagrafo = EncontrarUltimoParagrafo("resposta aos quesitos");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]ESPOSTA*[qQ]UESITO?");
                 if (UltimoParagrafo == null) UltimoParagrafo = EncontrarUltimoParagrafo_wildcard("[rR]esposta*[qQ]uesito?");
@@ -361,7 +361,7 @@ namespace PeriTAB
                     Exclui_ContentControls(UltimoParagrafo);
                     string dasd = UltimoParagrafo.Text;
                     UltimoParagrafo.Text = "";
-                    Globals.Ribbons.Ribbon.inserir_autotexto(UltimoParagrafo, "secao_de_conclusao");
+                    Globals.Ribbons.Ribbon.inserir_autotexto(UltimoParagrafo, "secao_de_conclusao_PeriTAB");
                     if (fim_do_preambulo != null)
                     {
                         string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
