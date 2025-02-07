@@ -21,6 +21,8 @@ namespace PeriTAB
 
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
+            //System.Windows.Forms.MessageBox.Show("ThisAddIn_Startup");
+
             //Lê e configura preferências
             iClass_RibbonControls.le_preferencias(Ribbon.Variables.caminho_preferences);
             iClass_RibbonControls.Configura_Valores_iniciais();

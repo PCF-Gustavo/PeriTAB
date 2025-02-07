@@ -26,56 +26,45 @@ namespace PeriTAB
 
         private void espera_fechar(Document Doc)
         {
-            /*new Thread(() =>*/
             Tarefa.Run(() =>
-{
-    while (true)
-    {
-        if (Globals.ThisAddIn.Application.Documents.Count != OpenDocumentNumber) break;
-        Thread.Sleep(1000);
-    }
-    Metodo_DocumentAfterClose(Doc);
-    /*}).Start();*/
-});
+            {
+                while (true)
+                {
+                    if (Globals.ThisAddIn.Application.Documents.Count != OpenDocumentNumber) break;
+                    Thread.Sleep(1000);
+                }
+                Metodo_DocumentAfterClose(Doc);
+            });
         }
 
         public void Tracking_OpenDocumentNumber()
         {
             OpenDocumentNumber = Globals.ThisAddIn.Application.Documents.Count;
-            //MessageBox.Show(OpenDocumentNumber.ToString());
         }
         public void Metodo_DocumentAfterClose(Document Doc)
         {
-            /*new Thread(() =>*/
             Tarefa.Run(() =>
-{
-    Thread.Sleep(100);
-    if (IsDocumentOpen(Doc))
-    {
-        //MessageBox.Show(Doc.Name);
-        //espera_fechar(Doc);
-        return;
-    }
-    Tracking_OpenDocumentNumber();
+            {
+                Thread.Sleep(100);
+                if (IsDocumentOpen(Doc))
+                {
+                    return;
+                }
+                Tracking_OpenDocumentNumber();
 
-    //MessageBox.Show("Evento_DocumentAfterClose ");
+                // Exclusão do Painel de Estilos. Remove também dos dicionarios.
+                if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc))
+                {
+                    Globals.ThisAddIn.CustomTaskPanes.Remove(Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane[Doc]);
+                    Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Remove(Doc);
+                    Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Remove(Doc);
+                }
 
-
-    // Exclusão do Painel de Estilos. Remove também dos dicionarios.
-    if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc))
-    {
-        Globals.ThisAddIn.CustomTaskPanes.Remove(Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane[Doc]);
-        Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Remove(Doc);
-        Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Remove(Doc);
-    }
-
-    if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
-    {
-        Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Remove(Doc);
-    }
-
-});
-
+                if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
+                {
+                    Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Remove(Doc);
+                }
+            });
         }
 
         public bool IsDocumentOpen(Document Doc)

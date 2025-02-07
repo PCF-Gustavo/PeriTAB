@@ -54,7 +54,7 @@ namespace PeriTAB
         {
         }
 
-        private async void MyUserControl_Button_Click(object sender, EventArgs e)
+        private /*async*/ void MyUserControl_Button_Click(object sender, EventArgs e)
         {
             Button Button = (Button)sender;
             Button.Invoke((Action)(() => Button.Enabled = false));
@@ -67,7 +67,7 @@ namespace PeriTAB
             Importa_todos_estilos();
             string estilo_nome = dict_botao_e_estilo[sender as Button];
 
-            //await Tarefa.Run(() =>
+            //await Tarefa.Run(() => DEU ERRO NA HORA DE PINTAR A TASKPANE - TEM QUE OBRIGAR A VERIFICAR A PINTURA DA TASKPANE DEPOIS DE RODAR ESSA TASK. COMO FAZ PARA ORDENAR ESSAS AÇÕES?
             //{
                 Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
                 List<Paragraph> list_Paragraph = new List<Paragraph>();
@@ -212,15 +212,11 @@ namespace PeriTAB
             Match match = prefixo.Match(p.Range.Text);
             if (match.Success)
             {
-                int prefixLength = match.Length; // Calcula o comprimento do prefixo
-                for (int i = 1; i <= prefixLength; i++)
-                {
-                    if (p.Range.Characters[1].Fields.Count > 0)
-                    {
-                        p.Range.Characters[1].Fields.Unlink();
-                    }
-                    p.Range.Characters[1].Delete();
-                }
+                Range prefixRange = p.Range.Duplicate; // Cria um range duplicado para não afetar o original
+                prefixRange.Start = p.Range.Start;     // Início do range = início do parágrafo
+                prefixRange.End = p.Range.Start + match.Length; // Final do range = tamanho do prefixo identificado
+
+                prefixRange.Delete();
             }
         }
 

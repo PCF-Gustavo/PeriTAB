@@ -360,6 +360,7 @@ namespace PeriTAB{
             this.button_inserir_pagina.Label = "Página atual (número)";
             this.button_inserir_pagina.Name = "button_inserir_pagina";
             this.button_inserir_pagina.ShowImage = true;
+            this.button_inserir_pagina.Visible = false;
             this.button_inserir_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_Click);
             // 
             // button_inserir_pagina_extenso
@@ -374,6 +375,7 @@ namespace PeriTAB{
             this.button_inserir_paginas.Label = "Número de páginas (número)";
             this.button_inserir_paginas.Name = "button_inserir_paginas";
             this.button_inserir_paginas.ShowImage = true;
+            this.button_inserir_paginas.Visible = false;
             this.button_inserir_paginas.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_paginas_Click);
             // 
             // button_inserir_paginas_extenso
@@ -385,7 +387,7 @@ namespace PeriTAB{
             // 
             // button_inserir_ano
             // 
-            this.button_inserir_ano.Label = "Ano corrente";
+            this.button_inserir_ano.Label = "Ano corrente (número)";
             this.button_inserir_ano.Name = "button_inserir_ano";
             this.button_inserir_ano.ShowImage = true;
             this.button_inserir_ano.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_ano_Click);
