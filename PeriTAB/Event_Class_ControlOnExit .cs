@@ -172,21 +172,24 @@ namespace PeriTAB
 
         public void ChangeEntry(ContentControl ContentControl, string valor_da_lista)
         {
-            foreach (ContentControlListEntry entry in ContentControl.DropdownListEntries)
+            if (ContentControl != null)
             {
-                if (entry.Text == valor_da_lista)
+                foreach (ContentControlListEntry entry in ContentControl.DropdownListEntries)
                 {
-                    if (ContentControl.LockContents)
+                    if (entry.Text == valor_da_lista)
                     {
-                        ContentControl.LockContents = false;
-                        ContentControl.DropdownListEntries[entry.Index].Select();
-                        ContentControl.LockContents = true;
+                        if (ContentControl.LockContents)
+                        {
+                            ContentControl.LockContents = false;
+                            ContentControl.DropdownListEntries[entry.Index].Select();
+                            ContentControl.LockContents = true;
+                        }
+                        else
+                        {
+                            ContentControl.DropdownListEntries[entry.Index].Select();
+                        }
+                        break;
                     }
-                    else
-                    {
-                        ContentControl.DropdownListEntries[entry.Index].Select();
-                    }
-                    break;
                 }
             }
         }
