@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Windows.Forms;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace PeriTAB
 {
@@ -74,7 +75,8 @@ namespace PeriTAB
             if (File.Exists(Variables.caminho_arquivos_para_excluir))
             {
                 var lista_de_arquivos_para_excluir = File.ReadAllLines(Variables.caminho_arquivos_para_excluir).ToList();
-                foreach (var arquivo in lista_de_arquivos_para_excluir)
+                var copia_da_lista_de_arquivos_para_excluir = new List<string>(lista_de_arquivos_para_excluir); // Cria uma cópia da lista original
+                foreach (var arquivo in copia_da_lista_de_arquivos_para_excluir)
                 {
                     if (File.Exists(arquivo))
                     {

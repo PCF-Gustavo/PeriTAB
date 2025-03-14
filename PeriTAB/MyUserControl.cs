@@ -148,7 +148,7 @@ namespace PeriTAB
                     "15 - Quesitos (PeriTAB)"
                 }.Contains(estilo_nome))
                     {
-                        Ajusta_Quesito(p, new Regex(@"\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
+                        Ajusta_Quesito(p, new Regex(@"^\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
                     }
 
                     if (new List<string>

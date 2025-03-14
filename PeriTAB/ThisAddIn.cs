@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+using System.Linq;
 
 namespace PeriTAB
 {
@@ -44,6 +45,37 @@ namespace PeriTAB
                 Globals.ThisAddIn.Application.AddIns.Unload(true);
                 try { File.Delete(Ribbon.Variables.caminho_template); } catch (IOException) { }
                 try { escreve_preferencias(Ribbon.Variables.caminho_preferences); } catch (IOException) { }
+            }
+
+            // Confere se há arquivos para excluir
+            if (File.Exists(Ribbon.Variables.caminho_arquivos_para_excluir))
+            {
+                var lista_de_arquivos_para_excluir = File.ReadAllLines(Ribbon.Variables.caminho_arquivos_para_excluir).ToList();
+                var copia_da_lista_de_arquivos_para_excluir = new List<string>(lista_de_arquivos_para_excluir); // Cria uma cópia da lista original
+                foreach (var arquivo in copia_da_lista_de_arquivos_para_excluir)
+                {
+                    if (File.Exists(arquivo))
+                    {
+                        try
+                        {
+                            File.Delete(arquivo);
+                            lista_de_arquivos_para_excluir.Remove(arquivo);
+                        }
+                        catch (IOException) { }
+                    }
+                    else
+                    {
+                        lista_de_arquivos_para_excluir.Remove(arquivo);
+                    }
+                }
+                if (lista_de_arquivos_para_excluir.Count == 0)
+                {
+                    File.Delete(Ribbon.Variables.caminho_arquivos_para_excluir);
+                }
+                else
+                {
+                    File.WriteAllLines(Ribbon.Variables.caminho_arquivos_para_excluir, lista_de_arquivos_para_excluir); // Atualiza o arquivo com os caminhos restantes
+                }
             }
         }
         private void escreve_preferencias(string caminho_preferences)

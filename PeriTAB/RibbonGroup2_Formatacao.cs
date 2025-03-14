@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using Tarefa = System.Threading.Tasks.Task;
+using System.Windows.Forms;
+using System.Threading;
 
 
 namespace PeriTAB
@@ -73,7 +75,6 @@ namespace PeriTAB
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
-
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
             Globals.ThisAddIn.Application.ScreenUpdating = false;
@@ -180,25 +181,33 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
         }
 
-        private /*async*/ void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
+        private string barra_de_progresso(int progress) 
         {
-            // Atualiza a UI na Thread principal
+            char filledSquare = (char)0x2588;  // Caractere '█' (quadrado preenchido).
+            char emptySquare = (char)0x2591;   // Caractere '░' (quadrado não preenchido).
+            string progressBar = new string(filledSquare, progress) + new string(emptySquare, 10 - progress); // Cria a "barra de progresso".
+            Globals.ThisAddIn.Application.StatusBar = $"[{progressBar}]";
+            System.Windows.Forms.Application.DoEvents();
+            return progressBar;
+        }
+
+        private void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
+        {
+            barra_de_progresso(0);
             RibbonButton RibbonButton = (RibbonButton)sender;
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
 
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
-
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             Globals.Ribbons.Ribbon.atualiza_todos_campos(Globals.ThisAddIn.Application.ActiveDocument);
+            barra_de_progresso(1);
             Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos();
+            barra_de_progresso(2);
 
-            // Executa as tarefas em segundo plano
-            //await Tarefa.Run(() =>
-            //{
-            // Page Setup
+            //Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
             foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
             {
                 section.PageSetup.PaperSize = Microsoft.Office.Interop.Word.WdPaperSize.wdPaperA4;
@@ -225,7 +234,7 @@ namespace PeriTAB
                 //section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                 section.PageSetup.MirrorMargins = 0;
             }
-
+            barra_de_progresso(3);
             DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
 
             string unidade = null;
@@ -272,7 +281,7 @@ namespace PeriTAB
                 }
 
             }
-
+            barra_de_progresso(4);
             bool isFirstSection = true;
             foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
             {
@@ -323,6 +332,7 @@ namespace PeriTAB
                         cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
                     }
                 }
+                barra_de_progresso(5);
                 foreach (HeaderFooter footer in section.Footers)
                 {
                     if (isFirstSection && footer.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
@@ -350,7 +360,7 @@ namespace PeriTAB
                 }
                 isFirstSection = false;
             }
-
+            barra_de_progresso(6);
             // SEÇÃO DE CONCLUSÃO
             // Insere Seção de conclusão
             Range secao_de_conclusao_range = EncontrarUltimoParagrafo("resposta aos quesitos");
@@ -370,7 +380,7 @@ namespace PeriTAB
                     iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
                 }
             }
-
+            barra_de_progresso(7);
             // FECHO
             Range fecho_range = EncontrarUltimoParagrafo_wildcard("[nN]ada([ ]*)mais([ ]*)havendo*CRIMINAL([ ]*)FEDERAL"); // Procura texto de fecho e assinatura
             if (fecho_range != null)
@@ -402,7 +412,7 @@ namespace PeriTAB
                     if (encontrado)
                     { // Insere texto do antigo destacado em amarelo
                         fecho_range2.SetRange(fecho_range2.Start, fecho_range2.Start);
-                        fecho_range2.InsertAfter(complemento_texto); 
+                        fecho_range2.InsertAfter(complemento_texto);
                         fecho_range3.SetRange(fecho_range2.Start, fecho_range2.Start + complemento_texto.Length);
 
                         // Alterar o fundo para amarelo (destaque)
@@ -413,7 +423,7 @@ namespace PeriTAB
                     }
                 }
             }
-
+            barra_de_progresso(8);
             // DESTACA EM AMARELO TEXTO PRETOS
             foreach (Range StoryRanges in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges)
             {
@@ -427,7 +437,7 @@ namespace PeriTAB
                     }
                 }
             }
-
+            barra_de_progresso(9);
             // DESTACA TODAS AS IMAGENS COM BORDAS AMARELAS
             foreach (InlineShape ishape in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges[WdStoryType.wdMainTextStory].InlineShapes)
             {
@@ -438,13 +448,14 @@ namespace PeriTAB
                     ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
                 }
             }
+            barra_de_progresso(10);
+            //Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
 
-            //});
             Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos(); // não sei pq precisa repetir essa importacao, mas tem laudo que perde a formatacao se nao faço isso.
             Globals.ThisAddIn.Application.ScreenUpdating = true;
 
             if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            Globals.ThisAddIn.Application.StatusBar = barra_de_progresso(10) + " " + msg_StatusBar;
 
             // Após a execução das tarefas, atualiza a UI na Thread principal
             RibbonButton.Image = Properties.Resources.checklist2;
