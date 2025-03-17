@@ -7,9 +7,8 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Drawing;
 using Tarefa = System.Threading.Tasks.Task;
-using System.Windows.Forms;
+using System.Windows.Threading;
 using System.Threading;
-
 
 namespace PeriTAB
 {
@@ -187,14 +186,15 @@ namespace PeriTAB
             char emptySquare = (char)0x2591;   // Caractere '░' (quadrado não preenchido).
             string progressBar = new string(filledSquare, progress) + new string(emptySquare, 10 - progress); // Cria a "barra de progresso".
             Globals.ThisAddIn.Application.StatusBar = $"[{progressBar}]";
-            System.Windows.Forms.Application.DoEvents();
             return progressBar;
         }
+
 
         private void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
         {
             barra_de_progresso(0);
             RibbonButton RibbonButton = (RibbonButton)sender;
+
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
 
