@@ -32,34 +32,34 @@ namespace PeriTAB
 
         public void button_confere_num_legenda_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_confere_num_legenda.Enabled = true;
-            Globals.Ribbons.Ribbon.button_confere_num_legenda.ScreenTip = "Macro confere_numeracao_legendas";
-            Globals.Ribbons.Ribbon.button_confere_num_legenda.SuperTip = "Corrige erros de numeração em Figuras, Tabelas etc.";
+            //Globals.Ribbons.Ribbon.button_confere_num_legenda.Enabled = true;
+            //Globals.Ribbons.Ribbon.button_confere_num_legenda.ScreenTip = "Macro confere_numeracao_legendas";
+            //Globals.Ribbons.Ribbon.button_confere_num_legenda.SuperTip = "Corrige erros de numeração em Figuras, Tabelas etc.";
         }
         public void button_alinha_legenda_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_alinha_legenda.Enabled = true;
-            Globals.Ribbons.Ribbon.button_alinha_legenda.ScreenTip = "Macro alinha_legenda";
-            Globals.Ribbons.Ribbon.button_alinha_legenda.SuperTip = "Alinha legenda de Figuras, Tabelas etc.";
+            //Globals.Ribbons.Ribbon.button_alinha_legenda.Enabled = true;
+            //Globals.Ribbons.Ribbon.button_alinha_legenda.ScreenTip = "Macro alinha_legenda";
+            //Globals.Ribbons.Ribbon.button_alinha_legenda.SuperTip = "Alinha legenda de Figuras, Tabelas etc.";
         }
 
         public void button_atualiza_campos_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_atualiza_campos.Enabled = true;
-            Globals.Ribbons.Ribbon.button_atualiza_campos.ScreenTip = "Macro atualiza_todos_campos";
-            Globals.Ribbons.Ribbon.button_atualiza_campos.SuperTip = "Atualiza todos os campos (MS Word Fields) do documento.";
+            //Globals.Ribbons.Ribbon.button_atualiza_campos.Enabled = true;
+            ////Globals.Ribbons.Ribbon.button_atualiza_campos.ScreenTip = "Macro atualiza_todos_campos";
+            //Globals.Ribbons.Ribbon.button_atualiza_campos.SuperTip = "Atualiza todos os campos do documento.";
         }
         public void button_moeda_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_moeda.Enabled = true;
-            Globals.Ribbons.Ribbon.button_moeda.ScreenTip = "Macro moeda_por_extenso";
-            Globals.Ribbons.Ribbon.button_moeda.SuperTip = "Escreve por extenso o valor em Reais. Posicione o cursor ao final do número.";
+            //Globals.Ribbons.Ribbon.button_moeda.Enabled = true;
+            //Globals.Ribbons.Ribbon.button_moeda.ScreenTip = "Macro moeda_por_extenso";
+            //Globals.Ribbons.Ribbon.button_moeda.SuperTip = "Escreve por extenso o valor em Reais. Posicione o cursor ao final do número.";
         }
         public void button_inteiro_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_inteiro.Enabled = true;
-            Globals.Ribbons.Ribbon.button_inteiro.ScreenTip = "Macro inteiro_por_extenso";
-            Globals.Ribbons.Ribbon.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
+            //Globals.Ribbons.Ribbon.button_inteiro.Enabled = true;
+            //Globals.Ribbons.Ribbon.button_inteiro.ScreenTip = "Macro inteiro_por_extenso";
+            //Globals.Ribbons.Ribbon.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
         }
 
         public void toggleButton_painel_de_estilos_valorinicial()
