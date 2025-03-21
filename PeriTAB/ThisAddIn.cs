@@ -48,12 +48,15 @@ namespace PeriTAB
                 try { escreve_preferencias(Ribbon.Variables.caminho_preferences); } catch (IOException) { }
             }
 
-            // Confere se há arquivos para excluir
+            Excluir_arquivos_na_lista_para_exclusao();
+        }
+
+        public static void Excluir_arquivos_na_lista_para_exclusao()
+        {
             if (File.Exists(Ribbon.Variables.caminho_arquivos_para_excluir))
             {
                 var lista_de_arquivos_para_excluir = File.ReadAllLines(Ribbon.Variables.caminho_arquivos_para_excluir).ToList();
-                var copia_da_lista_de_arquivos_para_excluir = new List<string>(lista_de_arquivos_para_excluir); // Cria uma cópia da lista original
-                foreach (var arquivo in copia_da_lista_de_arquivos_para_excluir)
+                foreach (var arquivo in new List<string>(lista_de_arquivos_para_excluir))
                 {
                     if (File.Exists(arquivo))
                     {

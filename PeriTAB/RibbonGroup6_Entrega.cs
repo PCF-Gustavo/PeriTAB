@@ -255,43 +255,7 @@ namespace PeriTAB
                     Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(FileName: Path.Combine(caminho_doc, nome_doc + ".docx"), FileFormat: WdSaveFormat.wdFormatDocumentDefault);
 
                     try { File.Delete(nome_doc_completo); }
-                    catch
-                    {
-                        success = false;
-                        msg_Falha = "Falha ao deletar o documento antigo.";
-
-                        File.AppendAllText(Ribbon.Variables.caminho_arquivos_para_excluir, nome_doc_completo + Environment.NewLine);
-
-                        //MessageBox.Show("Falha ao deletar o documento antigo.");
-                        //MessageBox.Show("Falha ao deletar o documento antigo 1.");
-
-                        //GC.Collect();
-                        //GC.WaitForPendingFinalizers();
-
-                        //try { File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo 2."); }
-                        //GC.Collect();
-                        //GC.WaitForPendingFinalizers();
-                        //try { File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo 3."); }
-                        //try { foreach (var process in Process.GetProcessesByName(nome_doc_completo)) { process.Kill(); }; } catch { MessageBox.Show("Falha ao deletar o documento antigo 4."); }
-                        //try {  File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo 5."); }
-                        //System.Runtime.InteropServices.Marshal.FinalReleaseComObject((object)nome_doc_completo);
-                        //try { File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo 6."); }
-
-                        //foreach (var process in Process.GetProcessesByName("WINWORD"))
-                        //{
-                        //    string windowTitle = process.MainWindowTitle;
-                        //    string processId = process.Id.ToString();
-                        //    MessageBox.Show($"Processo: {process.ProcessName} | ID: {processId} | Título da Janela: {windowTitle}");
-                        //    if (process.MainWindowTitle.Contains(nome_doc_antigo))
-                        //    {
-                        //        process.Kill(); // Força o encerramento do processo específico
-                        //    }
-                        //}
-                        //try { File.Delete(nome_doc_completo); } catch { MessageBox.Show("Falha ao deletar o documento antigo 7."); }
-
-
-
-                    }
+                    catch { File.AppendAllText(Ribbon.Variables.caminho_arquivos_para_excluir, nome_doc_completo + Environment.NewLine); }
                 }
 
                 // Mensagens da Thread

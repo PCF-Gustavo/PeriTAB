@@ -71,36 +71,7 @@ namespace PeriTAB
 
             Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.0";
 
-            // Confere se há arquivos para excluir
-            if (File.Exists(Variables.caminho_arquivos_para_excluir))
-            {
-                var lista_de_arquivos_para_excluir = File.ReadAllLines(Variables.caminho_arquivos_para_excluir).ToList();
-                var copia_da_lista_de_arquivos_para_excluir = new List<string>(lista_de_arquivos_para_excluir); // Cria uma cópia da lista original
-                foreach (var arquivo in copia_da_lista_de_arquivos_para_excluir)
-                {
-                    if (File.Exists(arquivo))
-                    {
-                        try
-                        {
-                            File.Delete(arquivo);
-                            lista_de_arquivos_para_excluir.Remove(arquivo);
-                        }
-                        catch (IOException) { }
-                    }
-                    else
-                    {
-                        lista_de_arquivos_para_excluir.Remove(arquivo);
-                    }
-                }
-                if (lista_de_arquivos_para_excluir.Count == 0)
-                {
-                    File.Delete(Variables.caminho_arquivos_para_excluir);
-                }
-                else
-                {
-                    File.WriteAllLines(Variables.caminho_arquivos_para_excluir, lista_de_arquivos_para_excluir); // Atualiza o arquivo com os caminhos restantes
-                }
-            }
+            ThisAddIn.Excluir_arquivos_na_lista_para_exclusao();
         }
 
         public BuildingBlock inserir_autotexto(Range range, string autotextName)
