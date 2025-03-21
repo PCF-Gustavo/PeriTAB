@@ -69,7 +69,7 @@ namespace PeriTAB
                 }
             }
 
-            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.0";
+            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.1";
 
             ThisAddIn.Excluir_arquivos_na_lista_para_exclusao();
         }
