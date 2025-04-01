@@ -185,7 +185,7 @@ namespace PeriTAB
             char filledSquare = (char)0x2588;  // Caractere '█' (quadrado preenchido).
             char emptySquare = (char)0x2591;   // Caractere '░' (quadrado não preenchido).
             string progressBar = new string(filledSquare, progress) + new string(emptySquare, 10 - progress); // Cria a "barra de progresso".
-            Globals.ThisAddIn.Application.StatusBar = $"[{progressBar}]";
+            //Globals.ThisAddIn.Application.StatusBar = $"[{progressBar}]";
             return progressBar;
         }
 
@@ -193,272 +193,275 @@ namespace PeriTAB
         private /*async*/ void button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
         {
             RibbonButton RibbonButton = (RibbonButton)sender;
-            barra_de_progresso(0);
+            
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
 
             bool success = true;
             string msg_StatusBar = RibbonButton.Label + ": ";
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(0);
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            Globals.Ribbons.Ribbon.atualiza_todos_campos(Globals.ThisAddIn.Application.ActiveDocument);
-            barra_de_progresso(1);
+            foreach (Range storyRange in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges) storyRange.Fields.Update();
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(1);
             Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos();
-            barra_de_progresso(2);
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(2);
 
             //Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
             //await Tarefa.Run(() =>
             //{
-                //Thread.CurrentThread.Priority = ThreadPriority.Highest;
-                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+            //Thread.CurrentThread.Priority = ThreadPriority.Highest;
+            foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+            {
+                section.PageSetup.PaperSize = Microsoft.Office.Interop.Word.WdPaperSize.wdPaperA4;
+                // Verificar a orientação e aplicar configurações específicas
+                if (section.PageSetup.Orientation == WdOrientation.wdOrientPortrait)
                 {
-                    section.PageSetup.PaperSize = Microsoft.Office.Interop.Word.WdPaperSize.wdPaperA4;
-                    // Verificar a orientação e aplicar configurações específicas
-                    if (section.PageSetup.Orientation == WdOrientation.wdOrientPortrait)
-                    {
-                        // Configurações para retrato (Portrait)
-                        section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
-                        section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
-                    }
-                    else if (section.PageSetup.Orientation == WdOrientation.wdOrientLandscape)
-                    {
-                        // Configurações para paisagem (Landscape)
-                        section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
-                        section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(21);
-                    }
-                    section.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                    section.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                    section.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
-                    section.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
-                    section.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
-                    section.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
-                    //section.PageSetup.DifferentFirstPageHeaderFooter = -1;
-                    //section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                    section.PageSetup.MirrorMargins = 0;
+                    // Configurações para retrato (Portrait)
+                    section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(21);
+                    section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
                 }
-                barra_de_progresso(3);
-                DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
+                else if (section.PageSetup.Orientation == WdOrientation.wdOrientLandscape)
+                {
+                    // Configurações para paisagem (Landscape)
+                    section.PageSetup.PageWidth = Globals.ThisAddIn.Application.CentimetersToPoints(29.7f);
+                    section.PageSetup.PageHeight = Globals.ThisAddIn.Application.CentimetersToPoints(21);
+                }
+                section.PageSetup.TopMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                section.PageSetup.BottomMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                section.PageSetup.LeftMargin = Globals.ThisAddIn.Application.CentimetersToPoints(3);
+                section.PageSetup.RightMargin = Globals.ThisAddIn.Application.CentimetersToPoints(2);
+                section.PageSetup.HeaderDistance = Globals.ThisAddIn.Application.CentimetersToPoints(1);
+                section.PageSetup.FooterDistance = Globals.ThisAddIn.Application.CentimetersToPoints(.5f);
+                //section.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                //section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
+                section.PageSetup.MirrorMargins = 0;
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(3);
+            DeleteEmptyParagraphsAtStart(Globals.ThisAddIn.Application.ActiveDocument.Content);
 
-                string unidade = null;
-                string fim_do_preambulo = null;
+            string unidade = null;
+            string fim_do_preambulo = null;
 
-                // INICIO DO LAUDO
-                // Apaga texto do início do laudo, inclusive os bookmarks e content controls
-                Range inicio_do_laudo = encontrarRangedoIniciodoLaudo(Globals.ThisAddIn.Application.ActiveDocument);
-                //MessageBox.Show(inicio_do_laudo.Text);
-                if (inicio_do_laudo == null)
+            // INICIO DO LAUDO
+            // Apaga texto do início do laudo, inclusive os bookmarks e content controls
+            Range inicio_do_laudo = encontrarRangedoIniciodoLaudo(Globals.ThisAddIn.Application.ActiveDocument);
+            //MessageBox.Show(inicio_do_laudo.Text);
+            if (inicio_do_laudo == null)
+            {
+                Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
+                Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo_PeriTAB");
+            }
+            else
+            {
+                unidade = SearchTextWithRegex(inicio_do_laudo, @"\b([A-Z]{2,})(\s*/\s*([A-Z]{2,}))+(\s*/\s*([A-Z]{2,}))*\b");
+                string subtitulo = SearchTextWithRegex(inicio_do_laudo, @"\((.*?)\)");
+                fim_do_preambulo = string.Join(" ", inicio_do_laudo.Text.Split(' ').Where(word => !string.IsNullOrEmpty(word)).Reverse().Take(7).Reverse());
+                Exclui_Bookmarks(inicio_do_laudo);
+                Exclui_ContentControls(inicio_do_laudo);
+                List<Paragraph> lista_de_paragrafos_de_inicio_do_laudo = inicio_do_laudo.Paragraphs.Cast<Paragraph>().ToList();
+                foreach (Paragraph p in lista_de_paragrafos_de_inicio_do_laudo)
                 {
-                    Globals.ThisAddIn.Application.ActiveDocument.Range(0).InsertParagraphBefore();
-                    Globals.Ribbons.Ribbon.inserir_autotexto(Globals.ThisAddIn.Application.ActiveDocument.Range(0).Paragraphs[1].Range, "inicio_do_laudo_PeriTAB");
+                    p.Range.Delete();
                 }
-                else
+                // Insere início do laudo
+                Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo_PeriTAB");
+                // Ajusta os ContentControl DropdownList Unidade e Subtítulo
+                if (unidade != null)
                 {
-                    unidade = SearchTextWithRegex(inicio_do_laudo, @"\b([A-Z]{2,})(\s*/\s*([A-Z]{2,}))+(\s*/\s*([A-Z]{2,}))*\b");
-                    string subtitulo = SearchTextWithRegex(inicio_do_laudo, @"\((.*?)\)");
-                    fim_do_preambulo = string.Join(" ", inicio_do_laudo.Text.Split(' ').Where(word => !string.IsNullOrEmpty(word)).Reverse().Take(7).Reverse());
-                    Exclui_Bookmarks(inicio_do_laudo);
-                    Exclui_ContentControls(inicio_do_laudo);
-                    List<Paragraph> lista_de_paragrafos_de_inicio_do_laudo = inicio_do_laudo.Paragraphs.Cast<Paragraph>().ToList();
-                    foreach (Paragraph p in lista_de_paragrafos_de_inicio_do_laudo)
-                    {
-                        p.Range.Delete();
-                    }
-                    // Insere início do laudo
-                    Globals.Ribbons.Ribbon.inserir_autotexto(inicio_do_laudo, "inicio_do_laudo_PeriTAB");
-                    // Ajusta os ContentControl DropdownList Unidade e Subtítulo
-                    if (unidade != null)
-                    {
-                        string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
-                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade"), maisProximo);
-                    }
-                    if (subtitulo != null)
-                    {
-                        string maisProximo = EncontrarMaisProximo(subtitulo, Class_ContentControlOnExit_Event.Lista_Subtitulos);
-                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Subtítulo"), maisProximo);
-                    }
-                    if (fim_do_preambulo != null)
-                    {
-                        string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
-                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Fim do preâmbulo"), maisProximo);
-                    }
+                    string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
+                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade"), maisProximo);
+                }
+                if (subtitulo != null)
+                {
+                    string maisProximo = EncontrarMaisProximo(subtitulo, Class_ContentControlOnExit_Event.Lista_Subtitulos);
+                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Subtítulo"), maisProximo);
+                }
+                if (fim_do_preambulo != null)
+                {
+                    string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
+                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Fim do preâmbulo"), maisProximo);
+                }
 
-                }
-                barra_de_progresso(4);
-                bool isFirstSection = true;
-                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(4);
+            bool isFirstSection = true;
+            foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+            {
+                foreach (HeaderFooter header in section.Headers)
                 {
-                    foreach (HeaderFooter header in section.Headers)
+                    if (isFirstSection)
                     {
-                        if (isFirstSection)
-                        {
-                            section.PageSetup.DifferentFirstPageHeaderFooter = -1;
-                            section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                        }
-                        else
-                        {
-                            section.PageSetup.DifferentFirstPageHeaderFooter = 0;
-                            section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
-                        }
-                        if (isFirstSection && header.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
-                        {
-                            // CABEÇALHO DA PRIMEIRA PÁGINA
-                            // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
-                            Range cabecalho_1a_pagina = section.Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
-                            Exclui_Bookmarks(cabecalho_1a_pagina);
-                            Exclui_ContentControls(cabecalho_1a_pagina);
-                            cabecalho_1a_pagina.Text = "";
-                            // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho_1a_pagina_PeriTAB");
-                            if (unidade != null)
-                            {
-                                string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
-                                iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
-                                iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
-                                iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
-                            }
-                            // Deleta o último parágrafo do cabeçalho da primeira página
-                            try { cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete(); }
-                            catch (System.Runtime.InteropServices.COMException) { }
-                        }
-                        else
-                        {
-                            // CABEÇALHO DAS OUTRAS PÁGINAS
-                            // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
-                            Range cabecalho_outras_paginas = section.Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                            Exclui_Bookmarks(cabecalho_outras_paginas);
-                            Exclui_ContentControls(cabecalho_outras_paginas);
-                            cabecalho_outras_paginas.Text = "";
-                            // Insere cabeçalho das outras páginas
-                            Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho_exceto_1a_pag_PeriTAB");
-                            // Deleta o último parágrafo do cabeçalho das outras páginas
-                            cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
-                        }
+                        section.PageSetup.DifferentFirstPageHeaderFooter = -1;
+                        section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                     }
-                    barra_de_progresso(5);
-                    foreach (HeaderFooter footer in section.Footers)
+                    else
                     {
-                        if (isFirstSection && footer.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
-                        {
-                            // RODAPÉ DA PRIMEIRA PÁGINA
-                            // Apaga texto do rodapé da primeira pagina, inclusive os bookmarks e content controls
-                            Range rodape_1a_pagina = section.Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
-                            Exclui_Bookmarks(rodape_1a_pagina);
-                            Exclui_ContentControls(rodape_1a_pagina);
-                            rodape_1a_pagina.Text = "";
-                            // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape_1a_pagina_PeriTAB");
-                        }
-                        else
-                        {
-                            // RODAPE DAS OUTRAS PÁGINAS
-                            // Apaga texto do rodape das outras páginas, inclusive os bookmarks e content controls
-                            Range rodape_outras_paginas = section.Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
-                            Exclui_Bookmarks(rodape_outras_paginas);
-                            Exclui_ContentControls(rodape_outras_paginas);
-                            rodape_outras_paginas.Text = "";
-                            // Insere cabeçalho da primeira pagina
-                            Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape_exceto_1a_pag_PeriTAB");
-                        }
+                        section.PageSetup.DifferentFirstPageHeaderFooter = 0;
+                        section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                     }
-                    isFirstSection = false;
-                }
-                barra_de_progresso(6);
-                // SEÇÃO DE CONCLUSÃO
-                // Insere Seção de conclusão
-                Range secao_de_conclusao_range = EncontrarUltimoParagrafo("resposta aos quesitos");
-                if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo_wildcard("[rR]ESPOSTA*[qQ]UESITO?");
-                if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo_wildcard("[rR]esposta*[qQ]uesito?");
-                if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo("conclusão");
-                if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo("conclusao");
-                if (secao_de_conclusao_range != null)
-                {
-                    Exclui_Bookmarks(secao_de_conclusao_range);
-                    Exclui_ContentControls(secao_de_conclusao_range);
-                    secao_de_conclusao_range.Text = "";
-                    Globals.Ribbons.Ribbon.inserir_autotexto(secao_de_conclusao_range, "secao_de_conclusao_PeriTAB");
-                    if (fim_do_preambulo != null)
+                    if (isFirstSection && header.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
                     {
-                        string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
-                        iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
+                        // CABEÇALHO DA PRIMEIRA PÁGINA
+                        // Apaga texto do cabeçalho da primeira pagina, inclusive os bookmarks e content controls
+                        Range cabecalho_1a_pagina = section.Headers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                        Exclui_Bookmarks(cabecalho_1a_pagina);
+                        Exclui_ContentControls(cabecalho_1a_pagina);
+                        cabecalho_1a_pagina.Text = "";
+                        // Insere cabeçalho da primeira pagina
+                        Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_1a_pagina, "cabecalho_1a_pagina_PeriTAB");
+                        if (unidade != null)
+                        {
+                            string maisProximo = EncontrarMaisProximo(unidade, Class_ContentControlOnExit_Event.Lista_Unidade);
+                            iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Unidade da PF"), Class_ContentControlOnExit_Event.dict_Unidade_e_Unidade_da_PF[maisProximo]);
+                            iClass_ContentControlOnExit_Event.Add_or_remove_ultima_linha_cabecalho1();
+                            iClass_ContentControlOnExit_Event.Muda_Tipo_de_unidade_de_criminalistica();
+                        }
+                        // Deleta o último parágrafo do cabeçalho da primeira página
+                        try { cabecalho_1a_pagina.Paragraphs[cabecalho_1a_pagina.Paragraphs.Count].Range.Delete(); }
+                        catch (System.Runtime.InteropServices.COMException) { }
+                    }
+                    else
+                    {
+                        // CABEÇALHO DAS OUTRAS PÁGINAS
+                        // Apaga texto do cabeçalho das outras páginas, inclusive os bookmarks e content controls
+                        Range cabecalho_outras_paginas = section.Headers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                        Exclui_Bookmarks(cabecalho_outras_paginas);
+                        Exclui_ContentControls(cabecalho_outras_paginas);
+                        cabecalho_outras_paginas.Text = "";
+                        // Insere cabeçalho das outras páginas
+                        Globals.Ribbons.Ribbon.inserir_autotexto(cabecalho_outras_paginas, "cabecalho_exceto_1a_pag_PeriTAB");
+                        // Deleta o último parágrafo do cabeçalho das outras páginas
+                        cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
                     }
                 }
-                barra_de_progresso(7);
-                // FECHO
-                Range fecho_range = EncontrarUltimoParagrafo_wildcard("[nN]ada([ ]*)mais([ ]*)havendo*CRIMINAL([ ]*)FEDERAL"); // Procura texto de fecho e assinatura
-                if (fecho_range != null)
+                Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(5);
+                foreach (HeaderFooter footer in section.Footers)
                 {
-                    Range assinado_digitalmente_range = EncontrarUltimoParagrafo_wildcard("[aA]ssinado [dD]igitalmente");
-                    if (assinado_digitalmente_range == null) assinado_digitalmente_range = EncontrarUltimoParagrafo_wildcard("[dD]igitalmente [aA]ssinado");
-                    if (assinado_digitalmente_range != null)
+                    if (isFirstSection && footer.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
                     {
-                        // Procura complemento de apêndices e anexos
-                        int startIndex = fecho_range.Text.IndexOf("páginas");
-                        int endIndex = fecho_range.Text.IndexOf(", digitalmente");
-                        string complemento_texto = null;
-                        if (startIndex != -1 && endIndex != -1)
-                        {
-                            complemento_texto = fecho_range.Text.Substring(startIndex + 7, endIndex - startIndex - 7);
-                        }
-
-                        string nome_do_perito = assinado_digitalmente_range.Paragraphs[1].Next().Range.Text; //Guarda nome do perito
-                        Globals.Ribbons.Ribbon.inserir_autotexto(fecho_range, "fecho_1_PeriTAB"); // Insere autotexto do fecho e assinatura
-                        Range assinado_digitalmente_range2 = EncontrarUltimoParagrafo("assinado digitalmente");
-                        assinado_digitalmente_range2.Paragraphs[1].Next().Range.HighlightColorIndex = WdColorIndex.wdAuto;
-                        assinado_digitalmente_range2.Paragraphs[1].Next().Range.Text = nome_do_perito; // Insere nome do perito
-
-                        Range fecho_range2 = assinado_digitalmente_range2.Paragraphs[1].Previous().Range;
-                        Range fecho_range3 = fecho_range2.Duplicate;
-                        Range fecho_range4 = fecho_range2.Duplicate;
-
-                        bool encontrado = fecho_range2.Find.Execute(", digitalmente");
-                        if (encontrado)
-                        { // Insere texto do antigo destacado em amarelo
-                            fecho_range2.SetRange(fecho_range2.Start, fecho_range2.Start);
-                            fecho_range2.InsertAfter(complemento_texto);
-                            fecho_range3.SetRange(fecho_range2.Start, fecho_range2.Start + complemento_texto.Length);
-
-                            // Alterar o fundo para amarelo (destaque)
-                            fecho_range3.HighlightColorIndex = WdColorIndex.wdYellow;
-
-                            // Atualiza o numero de páginas
-                            fecho_range4.Fields.Update();
-                        }
+                        // RODAPÉ DA PRIMEIRA PÁGINA
+                        // Apaga texto do rodapé da primeira pagina, inclusive os bookmarks e content controls
+                        Range rodape_1a_pagina = section.Footers[WdHeaderFooterIndex.wdHeaderFooterFirstPage].Range;
+                        Exclui_Bookmarks(rodape_1a_pagina);
+                        Exclui_ContentControls(rodape_1a_pagina);
+                        rodape_1a_pagina.Text = "";
+                        // Insere cabeçalho da primeira pagina
+                        Globals.Ribbons.Ribbon.inserir_autotexto(rodape_1a_pagina, "rodape_1a_pagina_PeriTAB");
+                    }
+                    else
+                    {
+                        // RODAPE DAS OUTRAS PÁGINAS
+                        // Apaga texto do rodape das outras páginas, inclusive os bookmarks e content controls
+                        Range rodape_outras_paginas = section.Footers[WdHeaderFooterIndex.wdHeaderFooterPrimary].Range;
+                        Exclui_Bookmarks(rodape_outras_paginas);
+                        Exclui_ContentControls(rodape_outras_paginas);
+                        rodape_outras_paginas.Text = "";
+                        // Insere cabeçalho da primeira pagina
+                        Globals.Ribbons.Ribbon.inserir_autotexto(rodape_outras_paginas, "rodape_exceto_1a_pag_PeriTAB");
                     }
                 }
-                barra_de_progresso(8);
-                // DESTACA EM AMARELO TEXTO PRETOS
-                foreach (Range StoryRanges in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges)
+                isFirstSection = false;
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(6);
+            // SEÇÃO DE CONCLUSÃO
+            // Insere Seção de conclusão
+            Range secao_de_conclusao_range = EncontrarUltimoParagrafo("resposta aos quesitos");
+            if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo_wildcard("[rR]ESPOSTA*[qQ]UESITO?");
+            if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo_wildcard("[rR]esposta*[qQ]uesito?");
+            if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo("conclusão");
+            if (secao_de_conclusao_range == null) secao_de_conclusao_range = EncontrarUltimoParagrafo("conclusao");
+            if (secao_de_conclusao_range != null)
+            {
+                Exclui_Bookmarks(secao_de_conclusao_range);
+                Exclui_ContentControls(secao_de_conclusao_range);
+                secao_de_conclusao_range.Text = "";
+                Globals.Ribbons.Ribbon.inserir_autotexto(secao_de_conclusao_range, "secao_de_conclusao_PeriTAB");
+                if (fim_do_preambulo != null)
                 {
-                    foreach (Range word in StoryRanges.Words)
+                    string maisProximo = EncontrarMaisProximo(fim_do_preambulo, Class_ContentControlOnExit_Event.Lista_fim_do_preambulo);
+                    iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
+                }
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(7);
+            // FECHO
+            Range fecho_range = EncontrarUltimoParagrafo_wildcard("[nN]ada([ ]*)mais([ ]*)havendo*CRIMINAL([ ]*)FEDERAL"); // Procura texto de fecho e assinatura
+            if (fecho_range != null)
+            {
+                Range assinado_digitalmente_range = EncontrarUltimoParagrafo_wildcard("[aA]ssinado [dD]igitalmente");
+                if (assinado_digitalmente_range == null) assinado_digitalmente_range = EncontrarUltimoParagrafo_wildcard("[dD]igitalmente [aA]ssinado");
+                if (assinado_digitalmente_range != null)
+                {
+                    // Procura complemento de apêndices e anexos
+                    int startIndex = fecho_range.Text.IndexOf("páginas");
+                    int endIndex = fecho_range.Text.IndexOf(", digitalmente");
+                    string complemento_texto = null;
+                    if (startIndex != -1 && endIndex != -1)
                     {
-                        // Verifica se o texto tem fonte de cor preta (não automático)
-                        if (word.Font.Color == WdColor.wdColorBlack)
-                        {
-                            // Destaca o texto em amarelo
-                            word.HighlightColorIndex = WdColorIndex.wdYellow;
-                        }
+                        complemento_texto = fecho_range.Text.Substring(startIndex + 7, endIndex - startIndex - 7);
+                    }
+
+                    string nome_do_perito = assinado_digitalmente_range.Paragraphs[1].Next().Range.Text; //Guarda nome do perito
+                    Globals.Ribbons.Ribbon.inserir_autotexto(fecho_range, "fecho_1_PeriTAB"); // Insere autotexto do fecho e assinatura
+                    Range assinado_digitalmente_range2 = EncontrarUltimoParagrafo("assinado digitalmente");
+                    assinado_digitalmente_range2.Paragraphs[1].Next().Range.HighlightColorIndex = WdColorIndex.wdAuto;
+                    assinado_digitalmente_range2.Paragraphs[1].Next().Range.Text = nome_do_perito; // Insere nome do perito
+
+                    Range fecho_range2 = assinado_digitalmente_range2.Paragraphs[1].Previous().Range;
+                    Range fecho_range3 = fecho_range2.Duplicate;
+                    Range fecho_range4 = fecho_range2.Duplicate;
+
+                    bool encontrado = fecho_range2.Find.Execute(", digitalmente");
+                    if (encontrado)
+                    { // Insere texto do antigo destacado em amarelo
+                        fecho_range2.SetRange(fecho_range2.Start, fecho_range2.Start);
+                        fecho_range2.InsertAfter(complemento_texto);
+                        fecho_range3.SetRange(fecho_range2.Start, fecho_range2.Start + complemento_texto.Length);
+
+                        // Alterar o fundo para amarelo (destaque)
+                        fecho_range3.HighlightColorIndex = WdColorIndex.wdYellow;
+
+                        // Atualiza o numero de páginas
+                        fecho_range4.Fields.Update();
                     }
                 }
-                barra_de_progresso(9);
-                // DESTACA TODAS AS IMAGENS COM BORDAS AMARELAS
-                foreach (InlineShape ishape in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges[WdStoryType.wdMainTextStory].InlineShapes)
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(8);
+            // DESTACA EM AMARELO TEXTO PRETOS (Red = 1, Green = 1, Blue = 0)
+            Color quase_preto = Color.FromArgb(1, 1, 0);
+            WdColor WdColor_quase_preto = (WdColor)(quase_preto.R + 0x100 * quase_preto.G + 0x10000 * quase_preto.B);
+            foreach (Range StoryRanges in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges)
+            {
+                foreach (Range word in StoryRanges.Words)
                 {
-                    if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+
+                    if (word.Font.Color == WdColor_quase_preto)
                     {
-                        ishape.Line.Visible = MsoTriState.msoTrue;
-                        ishape.Line.Weight = 3;
-                        ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
+                        // Destaca o texto em amarelo
+                        word.HighlightColorIndex = WdColorIndex.wdYellow;
                     }
                 }
+            }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(9);
+            // DESTACA TODAS AS IMAGENS COM BORDAS AMARELAS
+            foreach (InlineShape ishape in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges[WdStoryType.wdMainTextStory].InlineShapes)
+            {
+                if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
+                {
+                    ishape.Line.Visible = MsoTriState.msoTrue;
+                    ishape.Line.Weight = 3;
+                    ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
+                }
+            }
             //});
-            barra_de_progresso(10);
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(10);
             //Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
 
             Globals.ThisAddIn.iMyUserControl.Importa_todos_estilos(); // não sei pq precisa repetir essa importacao, mas tem laudo que perde a formatacao se nao faço isso.
             Globals.ThisAddIn.Application.ScreenUpdating = true;
 
-            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            Globals.ThisAddIn.Application.StatusBar = barra_de_progresso(10) + " " + msg_StatusBar;
+            if (success) { msg_StatusBar += barra_de_progresso(10) + " Sucesso"; } else { msg_StatusBar += "Falha"; }
+            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             // Após a execução das tarefas, atualiza a UI na Thread principal
             RibbonButton.Image = Properties.Resources.checklist2;

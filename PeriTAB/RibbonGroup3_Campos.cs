@@ -1,5 +1,7 @@
-﻿using Microsoft.Office.Interop.Word;
+﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
+using System.Collections.Generic;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -180,11 +182,41 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-                Globals.Ribbons.Ribbon.atualiza_todos_campos(Globals.ThisAddIn.Application.ActiveDocument);
+                List<Field> campos = new List<Field>();
+
+                // Coleta os campos em todas as StoryRanges
+                foreach (Range storyRange in Globals.ThisAddIn.Application.ActiveDocument.StoryRanges)
+                {
+                    foreach (Field field in storyRange.Fields)
+                    {
+                        campos.Add(field);
+                    }
+
+
+                    // Coleta os campos dentro das caixas de texto
+                    foreach (Microsoft.Office.Interop.Word.Shape shape in Globals.ThisAddIn.Application.ActiveDocument.Shapes)
+                    {
+                        if (shape.Type == MsoShapeType.msoTextBox)
+                        {
+                            foreach (Field field in shape.TextFrame.TextRange.Fields)
+                            {
+                                campos.Add(field);
+                            }
+                        }
+                    }
+                }
+
+                // Atualiza os campos com barra de progresso
+                for (int i = 0; i < campos.Count; i++)
+                {
+                    campos[i].Update();
+                    Globals.ThisAddIn.Application.StatusBar = msg_StatusBar + " " + barra_de_progresso(((i + 1) * 10) / campos.Count);
+                }
+
                 Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
 
-            if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
+            if (success) { msg_StatusBar += barra_de_progresso(10) + " Sucesso"; } else { msg_StatusBar += " Falha"; }
             Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
 
             // Após a execução das tarefas, atualiza a UI na Thread principal

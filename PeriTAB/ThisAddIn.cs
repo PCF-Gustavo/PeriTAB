@@ -2,6 +2,7 @@
 using System.IO;
 using System.Xml;
 using System.Linq;
+using System;
 
 namespace PeriTAB
 {
@@ -48,40 +49,42 @@ namespace PeriTAB
                 try { escreve_preferencias(Ribbon.Variables.caminho_preferences); } catch (IOException) { }
             }
 
-            Excluir_arquivos_na_lista_para_exclusao();
+            Excluir_arquivos_da_lista(Ribbon.Variables.lista_arquivos_para_excluir);
+            Atualiza_txt_lista_de_arquivos_para_excluir(Ribbon.Variables.lista_arquivos_para_excluir);
         }
 
-        public static void Excluir_arquivos_na_lista_para_exclusao()
+        public static void Excluir_arquivos_da_lista(List<string> lista_arquivos)
         {
-            if (File.Exists(Ribbon.Variables.caminho_arquivos_para_excluir))
+            foreach (var arquivo in new List<string>(lista_arquivos))
             {
-                var lista_de_arquivos_para_excluir = File.ReadAllLines(Ribbon.Variables.caminho_arquivos_para_excluir).ToList();
-                foreach (var arquivo in new List<string>(lista_de_arquivos_para_excluir))
+                if (File.Exists(arquivo))
                 {
-                    if (File.Exists(arquivo))
+                    try
                     {
-                        try
-                        {
-                            File.Delete(arquivo);
-                            lista_de_arquivos_para_excluir.Remove(arquivo);
-                        }
-                        catch (IOException) { }
+                        File.Delete(arquivo);
+                        lista_arquivos.Remove(arquivo);
                     }
-                    else
-                    {
-                        lista_de_arquivos_para_excluir.Remove(arquivo);
-                    }
-                }
-                if (lista_de_arquivos_para_excluir.Count == 0)
-                {
-                    File.Delete(Ribbon.Variables.caminho_arquivos_para_excluir);
+                    catch (IOException) { }
                 }
                 else
                 {
-                    File.WriteAllLines(Ribbon.Variables.caminho_arquivos_para_excluir, lista_de_arquivos_para_excluir); // Atualiza o arquivo com os caminhos restantes
+                    lista_arquivos.Remove(arquivo);
                 }
             }
         }
+
+        public static void Atualiza_txt_lista_de_arquivos_para_excluir(List<string> lista_arquivos)
+        {
+            if (lista_arquivos.Count == 0)
+            {
+                File.Delete(Ribbon.Variables.caminho_arquivos_para_excluir);
+            }
+            else
+            {
+                File.WriteAllLines(Ribbon.Variables.caminho_arquivos_para_excluir, lista_arquivos);
+            }
+        }
+
         private void escreve_preferencias(string caminho_preferences)
         {
             if (!Directory.Exists(Ribbon.Variables.caminho_AppData_Roaming_PeriTAB))

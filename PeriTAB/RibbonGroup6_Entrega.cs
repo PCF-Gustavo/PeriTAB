@@ -255,7 +255,7 @@ namespace PeriTAB
                     Globals.ThisAddIn.Application.ActiveDocument.SaveAs2(FileName: Path.Combine(caminho_doc, nome_doc + ".docx"), FileFormat: WdSaveFormat.wdFormatDocumentDefault);
 
                     try { File.Delete(nome_doc_completo); }
-                    catch { File.AppendAllText(Ribbon.Variables.caminho_arquivos_para_excluir, nome_doc_completo + Environment.NewLine); }
+                    catch { Variables.lista_arquivos_para_excluir.Add(nome_doc_completo); }
                 }
 
                 // Mensagens da Thread

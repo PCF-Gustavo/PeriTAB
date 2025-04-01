@@ -55,12 +55,16 @@ namespace PeriTAB
 
                     if (pathfile2[0] != "")
                     {
+                        // Evita a exclusao de \r (Carrige Return) ao final da seleção
+                        if (Globals.ThisAddIn.Application.Selection.Text.EndsWith("\r") && Globals.ThisAddIn.Application.Selection.InlineShapes.Count > 0)
+                        {
+                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -1);
+                        }
                         for (int i = 0; i <= pathfile2.Length - 1; i++)
                         {
 
                             bool link = false; bool save = true;
                             if (Globals.Ribbons.Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
-
                             InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
                             imagem.LockAspectRatio = MsoTriState.msoTrue;
                             if (checkBox_largura.Checked)
@@ -98,6 +102,7 @@ namespace PeriTAB
                                 }
                             }
                         }
+
                         // Seleção das imagens ao final da colagem
                         if (dropDown_separador.SelectedItem.Label == "Nenhum")
                         {

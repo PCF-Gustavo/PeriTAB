@@ -256,6 +256,7 @@ namespace PeriTAB{
             this.button_alinha_legenda.Name = "button_alinha_legenda";
             this.button_alinha_legenda.ShowImage = true;
             this.button_alinha_legenda.SuperTip = "Alinha legenda de Figuras, Tabelas etc.";
+            this.button_alinha_legenda.Visible = false;
             this.button_alinha_legenda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_alinha_legenda_Click);
             // 
             // button_pagina_em_paisagem
@@ -354,7 +355,6 @@ namespace PeriTAB{
             this.button_inserir_pagina.Label = "Página atual (número)";
             this.button_inserir_pagina.Name = "button_inserir_pagina";
             this.button_inserir_pagina.ShowImage = true;
-            this.button_inserir_pagina.Visible = false;
             this.button_inserir_pagina.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_pagina_Click);
             // 
             // button_inserir_pagina_extenso
@@ -369,7 +369,6 @@ namespace PeriTAB{
             this.button_inserir_paginas.Label = "Número de páginas (número)";
             this.button_inserir_paginas.Name = "button_inserir_paginas";
             this.button_inserir_paginas.ShowImage = true;
-            this.button_inserir_paginas.Visible = false;
             this.button_inserir_paginas.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inserir_paginas_Click);
             // 
             // button_inserir_paginas_extenso

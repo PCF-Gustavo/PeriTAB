@@ -25,12 +25,21 @@ namespace PeriTAB
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences, private_caminho_arquivos_para_excluir;
             private static AddIn private_AddIn_PeriTAB;
             private static Template private_Template_PeriTAB;
+            private static List<string> private_lista_arquivos_para_excluir;
             static Variables() // Bloco estático para definir o valor inicial das variáveis
             {
                 private_caminho_template = Path.GetTempPath() + "PeriTAB_Template_tmp.dotm";
                 private_caminho_AppData_Roaming_PeriTAB = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
                 private_caminho_preferences = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, "preferences.xml");
                 private_caminho_arquivos_para_excluir = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, "arquivos_para_excluir.txt");
+                if (File.Exists(private_caminho_arquivos_para_excluir))
+                {
+                    private_lista_arquivos_para_excluir = File.ReadAllLines(private_caminho_arquivos_para_excluir).ToList();
+                }
+                else
+                {
+                    private_lista_arquivos_para_excluir = new List<string>();
+                }
             }
 
             // Declara variáveis públicas
@@ -39,6 +48,7 @@ namespace PeriTAB
             public static Template Template_PeriTAB { get { return private_Template_PeriTAB; } set { private_Template_PeriTAB = value; } }
             public static string caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string caminho_preferences { get { return private_caminho_preferences; } }
+            public static List<string> lista_arquivos_para_excluir { get { return private_lista_arquivos_para_excluir; } }
             public static string caminho_arquivos_para_excluir { get { return private_caminho_arquivos_para_excluir; } }
         }
 
@@ -71,7 +81,7 @@ namespace PeriTAB
 
             Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.1";
 
-            ThisAddIn.Excluir_arquivos_na_lista_para_exclusao();
+            ThisAddIn.Excluir_arquivos_da_lista(Variables.lista_arquivos_para_excluir);
         }
 
         public BuildingBlock inserir_autotexto(Range range, string autotextName)
@@ -91,26 +101,6 @@ namespace PeriTAB
                 }
             }
             return null;
-        }
-
-        public void atualiza_todos_campos(Document document)
-        {
-            // Percorre todas as StoryRanges no documento
-            foreach (Range storyRange in document.StoryRanges)
-            {
-                // Atualiza os campos em cada StoryRange
-                storyRange.Fields.Update();
-
-                // Percorre os shapes (caixas de texto) em cada StoryRange
-                foreach (Microsoft.Office.Interop.Word.Shape shape in document.Shapes)
-                {
-                    if (shape.Type == MsoShapeType.msoTextBox) // Verifica se é uma caixa de texto
-                    {
-                        // Atualiza os campos dentro da caixa de texto
-                        shape.TextFrame.TextRange.Fields.Update();
-                    }
-                }
-            }
         }
     }
 }
