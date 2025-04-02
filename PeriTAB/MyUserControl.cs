@@ -141,30 +141,36 @@ namespace PeriTAB
                 }.Contains(estilo_nome))
                 {
                     Zera_SpaceBefore_Se_paragrafo_anterior(p, new List<string> { "05 - Seção_1 (PeriTAB)", "06 - Seção_2 (PeriTAB)", "07 - Seção_3 (PeriTAB)", "08 - Seção_4 (PeriTAB)", "09 - Seção_5 (PeriTAB)" });
+                    Zera_SpaceBefore_Se_paragrafo_anterior(p.Next(), new List<string> { "05 - Seção_1 (PeriTAB)", "06 - Seção_2 (PeriTAB)", "07 - Seção_3 (PeriTAB)", "08 - Seção_4 (PeriTAB)", "09 - Seção_5 (PeriTAB)" });
                 }
-
-                if (new List<string>
-                {
-                    "15 - Quesitos (PeriTAB)"
-                }.Contains(estilo_nome))
-                {
-                    Ajusta_Quesito(p, new Regex(@"^\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
-                }
-
                 if (new List<string>
                 {
                     "12 - Legendas de Figuras (PeriTAB)"
                 }.Contains(estilo_nome))
                 {
                     Alinha_Legenda_de_Figura(p);
+                    if (p.Next() != null) Alinha_Texto_de_Figura(p.Next());
                 }
-
+                if (new List<string>
+                {
+                    "13 - Texto de Figuras (PeriTAB)"
+                }.Contains(estilo_nome))
+                {
+                    Alinha_Texto_de_Figura(p);
+                }
                 if (new List<string>
                 {
                     "14 - Legendas de Tabelas (PeriTAB)"
                 }.Contains(estilo_nome))
                 {
                     Alinha_Legenda_de_Tabela(p);
+                }
+                if (new List<string>
+                {
+                    "15 - Quesitos (PeriTAB)"
+                }.Contains(estilo_nome))
+                {
+                    Ajusta_Quesito(p, new Regex(@"^\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
                 }
             }
             Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
@@ -336,6 +342,23 @@ namespace PeriTAB
                 }
             }
         }
+
+        private void Alinha_Texto_de_Figura(Paragraph p)
+        {
+            if ((((Microsoft.Office.Interop.Word.Style)p.get_Style()).NameLocal.ToString()) == "13 - Texto de Figuras (PeriTAB)")
+            {
+                if (p.Previous() != null)
+                {
+                    if ((((Microsoft.Office.Interop.Word.Style)p.Previous().get_Style()).NameLocal.ToString()) == "12 - Legendas de Figuras (PeriTAB)")
+                    {
+                        p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
+                        p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
+                        p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
+                        p.Previous().Range.ParagraphFormat.KeepWithNext = -1;
+                    }
+                }
+            }
+        }
         private void Alinha_Legenda_de_Tabela(Paragraph p)
         {
             PageSetup sectionPageSetup = p.Range.Sections[1].PageSetup;
@@ -448,43 +471,43 @@ namespace PeriTAB
             }
         }
 
-        private void button_textos_de_figuras_Click(object sender, EventArgs e)
-        {
-            Importa_todos_estilos();
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
+        //private void button_textos_de_figuras_Click(object sender, EventArgs e)
+        //{
+        //    Importa_todos_estilos();
+        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
 
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
 
-            List<Paragraph> list_Paragraph = new List<Paragraph>();
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-            {
-                list_Paragraph.Add(p);
-            }
+        //    List<Paragraph> list_Paragraph = new List<Paragraph>();
+        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+        //    {
+        //        list_Paragraph.Add(p);
+        //    }
 
-            // Aplica Estilo
-            foreach (Paragraph p in list_Paragraph)
-            {
-                p.set_Style((object)estilo_nome);
-            }
+        //    // Aplica Estilo
+        //    foreach (Paragraph p in list_Paragraph)
+        //    {
+        //        p.set_Style((object)estilo_nome);
+        //    }
 
-            // Ajuste de formatação
-            foreach (Paragraph p in list_Paragraph)
-            {
-                if (p.Previous() != null)
-                {
-                    if ((((Microsoft.Office.Interop.Word.Style)p.Previous().get_Style()).NameLocal.ToString()) == "12 - Legendas de Figuras (PeriTAB)")
-                    {
-                        p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
-                        p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
-                        p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
-                        p.Previous().Range.ParagraphFormat.KeepWithNext = -1;
-                    }
-                }
-            }
+        //    // Ajuste de formatação
+        //    foreach (Paragraph p in list_Paragraph)
+        //    {
+        //        if (p.Previous() != null)
+        //        {
+        //            if ((((Microsoft.Office.Interop.Word.Style)p.Previous().get_Style()).NameLocal.ToString()) == "12 - Legendas de Figuras (PeriTAB)")
+        //            {
+        //                p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
+        //                p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
+        //                p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
+        //                p.Previous().Range.ParagraphFormat.KeepWithNext = -1;
+        //            }
+        //        }
+        //    }
 
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
 
-        }
+        //}
 
         public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
         {

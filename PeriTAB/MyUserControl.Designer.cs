@@ -199,7 +199,7 @@
             this.button_textos_de_figuras.TabIndex = 0;
             this.button_textos_de_figuras.Text = "Textos de Figuras";
             this.button_textos_de_figuras.UseVisualStyleBackColor = true;
-            this.button_textos_de_figuras.Click += new System.EventHandler(this.button_textos_de_figuras_Click);
+            this.button_textos_de_figuras.Click += new System.EventHandler(this.MyUserControl_Button_Click);
             // 
             // button_paragrafo_numerado
             // 
