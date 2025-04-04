@@ -167,6 +167,27 @@ namespace PeriTAB
             }
         }
 
+        static Section GetNextSection(Section section)
+        {
+            // Percorre as seções do documento
+            for (int i = 1; i < Globals.ThisAddIn.Application.ActiveDocument.Sections.Count; i++)
+            {
+                // Se encontramos a seção corrente, verificamos se existe uma próxima seção
+                if (Globals.ThisAddIn.Application.ActiveDocument.Sections[i].Range.Start == section.Range.Start)
+                {
+                    // Verifica se não é a última seção
+                    if (i + 1 <= Globals.ThisAddIn.Application.ActiveDocument.Sections.Count)
+                    {
+                        return Globals.ThisAddIn.Application.ActiveDocument.Sections[i + 1]; // Retorna a próxima seção
+                    }
+                    break; // Se for a última seção, sai do loop
+                }
+            }
+
+            // Se não encontrar uma próxima seção, retorna null
+            return null;
+        }
+
         private void toggleButton_painel_de_estilos_Click(object sender, RibbonControlEventArgs e)
         {
             bool success = true;

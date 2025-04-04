@@ -11,67 +11,26 @@ namespace PeriTAB
     {
         public void Configura_Valores_iniciais()
         {
-            button_confere_num_legenda_valorinicial();
-            button_alinha_legenda_valorinicial();
-            button_atualiza_campos_valorinicial();
-            button_moeda_valorinicial();
-            button_inteiro_valorinicial();
+            button_renomeia_documento_valorinicial();
+            button_gera_pdf_valorinicial();
+            button_abre_SISCRIM_valorinicial();
+
+            // Atribuição das preferências
+            dropDown_unidade_valorinicial();
+            dropDown_precisao_valorinicial();
             toggleButton_painel_de_estilos_valorinicial();
-            button_cola_imagem_valorinicial();
-            checkBox_altura_valorinicial();
             checkBox_largura_valorinicial();
+            checkBox_altura_valorinicial();
             editBox_largura_valorinicial();
             editBox_altura_valorinicial();
             dropDown_separador_valorinicial();
             checkBox_assinar_valorinicial();
             checkBox_abrir_valorinicial();
-            button_renomeia_documento_valorinicial();
-            button_gera_pdf_valorinicial();
-            button_abre_SISCRIM_valorinicial();
-        }
-
-        public void button_confere_num_legenda_valorinicial()
-        {
-            //Globals.Ribbons.Ribbon.button_confere_num_legenda.Enabled = true;
-            //Globals.Ribbons.Ribbon.button_confere_num_legenda.ScreenTip = "Macro confere_numeracao_legendas";
-            //Globals.Ribbons.Ribbon.button_confere_num_legenda.SuperTip = "Corrige erros de numeração em Figuras, Tabelas etc.";
-        }
-        public void button_alinha_legenda_valorinicial()
-        {
-            //Globals.Ribbons.Ribbon.button_alinha_legenda.Enabled = true;
-            //Globals.Ribbons.Ribbon.button_alinha_legenda.ScreenTip = "Macro alinha_legenda";
-            //Globals.Ribbons.Ribbon.button_alinha_legenda.SuperTip = "Alinha legenda de Figuras, Tabelas etc.";
-        }
-
-        public void button_atualiza_campos_valorinicial()
-        {
-            //Globals.Ribbons.Ribbon.button_atualiza_campos.Enabled = true;
-            ////Globals.Ribbons.Ribbon.button_atualiza_campos.ScreenTip = "Macro atualiza_todos_campos";
-            //Globals.Ribbons.Ribbon.button_atualiza_campos.SuperTip = "Atualiza todos os campos do documento.";
-        }
-        public void button_moeda_valorinicial()
-        {
-            //Globals.Ribbons.Ribbon.button_moeda.Enabled = true;
-            //Globals.Ribbons.Ribbon.button_moeda.ScreenTip = "Macro moeda_por_extenso";
-            //Globals.Ribbons.Ribbon.button_moeda.SuperTip = "Escreve por extenso o valor em Reais. Posicione o cursor ao final do número.";
-        }
-        public void button_inteiro_valorinicial()
-        {
-            //Globals.Ribbons.Ribbon.button_inteiro.Enabled = true;
-            //Globals.Ribbons.Ribbon.button_inteiro.ScreenTip = "Macro inteiro_por_extenso";
-            //Globals.Ribbons.Ribbon.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
         }
 
         public void toggleButton_painel_de_estilos_valorinicial()
         {
             Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked = bool.Parse(GetPreference("painel_de_estilos"));
-        }
-
-        public void button_cola_imagem_valorinicial()
-        {
-            Globals.Ribbons.Ribbon.button_cola_imagem.Enabled = true;
-            Globals.Ribbons.Ribbon.button_cola_imagem.ScreenTip = "";
-            Globals.Ribbons.Ribbon.button_cola_imagem.SuperTip = "Cola imagens do Clipboard em ordem alfabética.";
         }
 
         public void checkBox_largura_valorinicial()
@@ -99,6 +58,14 @@ namespace PeriTAB
         public void dropDown_separador_valorinicial()
         {
             Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_separador, GetPreference("separador"));
+        }        
+        public void dropDown_precisao_valorinicial()
+        {
+            Globals.Ribbons.Ribbon.dropDown_precisao.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_precisao, GetPreference("precisao"));
+        }        
+        public void dropDown_unidade_valorinicial()
+        {
+            Globals.Ribbons.Ribbon.dropDown_unidade.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_unidade, GetPreference("unidade"));
         }
 
         private RibbonDropDownItem GetDropDownItemFromLabel(RibbonDropDown Control, string Label)
@@ -142,13 +109,15 @@ namespace PeriTAB
         //Dicionario de preferencias com valores iniciais padrao
         private static Dictionary<string, string> dict_preferences_campo_e_valor = new Dictionary<string, string>()
         {
-            { "largura", "10" },
-            { "altura", "10" },
-            { "largura_checked", "true" },
-            { "separador", "Nenhum" },
-            { "painel_de_estilos", "false" },
-            { "assinar_pdf", "true" },
-            { "abrir_pdf", "true" }
+             { "unidade", "quilograma (kg)" }
+            ,{ "precisao", "0,00" }
+            ,{ "painel_de_estilos", "false" }
+            ,{ "largura_checked", "true" }
+            ,{ "largura", "10" }
+            ,{ "altura", "10" }
+            ,{ "separador", "Nenhum" }
+            ,{ "assinar_pdf", "true" }
+            ,{ "abrir_pdf", "true" }
         };
 
         // Função para obter o valor de uma preferência

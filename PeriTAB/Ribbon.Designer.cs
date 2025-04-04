@@ -59,7 +59,7 @@ namespace PeriTAB{
             this.button_inteiro = this.Factory.CreateRibbonButton();
             this.dropDown_unidade = this.Factory.CreateRibbonDropDown();
             this.dropDown_precisao = this.Factory.CreateRibbonDropDown();
-            this.button_massa = this.Factory.CreateRibbonButton();
+            this.button_massavolume = this.Factory.CreateRibbonButton();
             this.group_formatacao = this.Factory.CreateRibbonGroup();
             this.button_alinha_legenda = this.Factory.CreateRibbonButton();
             this.button_pagina_em_paisagem = this.Factory.CreateRibbonButton();
@@ -167,7 +167,7 @@ namespace PeriTAB{
             this.group_porextenso.Items.Add(this.button_inteiro);
             this.group_porextenso.Items.Add(this.dropDown_unidade);
             this.group_porextenso.Items.Add(this.dropDown_precisao);
-            this.group_porextenso.Items.Add(this.button_massa);
+            this.group_porextenso.Items.Add(this.button_massavolume);
             this.group_porextenso.Label = "Por Extenso";
             this.group_porextenso.Name = "group_porextenso";
             // 
@@ -178,7 +178,6 @@ namespace PeriTAB{
             this.button_teste.Name = "button_teste";
             this.button_teste.ShowImage = true;
             this.button_teste.Visible = false;
-            this.button_teste.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_teste_Click);
             // 
             // button_moeda
             // 
@@ -187,8 +186,8 @@ namespace PeriTAB{
             this.button_moeda.Label = "Moeda";
             this.button_moeda.Name = "button_moeda";
             this.button_moeda.ShowImage = true;
-            this.button_moeda.SuperTip = "Escreve por extenso o valor em Reais. Posicione o cursor ao final do número.";
-            this.button_moeda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_moeda_Click);
+            this.button_moeda.SuperTip = "Escreve por extenso o valor em Reais.";
+            this.button_moeda.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Por_Extenso_Click);
             // 
             // button_inteiro
             // 
@@ -197,8 +196,8 @@ namespace PeriTAB{
             this.button_inteiro.Label = "Número inteiro";
             this.button_inteiro.Name = "button_inteiro";
             this.button_inteiro.ShowImage = true;
-            this.button_inteiro.SuperTip = "Escreve por extenso o número inteiro. Posicione o cursor ao final do número.";
-            this.button_inteiro.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_inteiro_Click);
+            this.button_inteiro.SuperTip = "Escreve por extenso o número inteiro.";
+            this.button_inteiro.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Por_Extenso_Click);
             // 
             // dropDown_unidade
             // 
@@ -212,8 +211,7 @@ namespace PeriTAB{
             this.dropDown_unidade.Items.Add(ribbonDropDownItemImpl4);
             this.dropDown_unidade.Label = "Unidade";
             this.dropDown_unidade.Name = "dropDown_unidade";
-            this.dropDown_unidade.SizeString = "000000000";
-            this.dropDown_unidade.Visible = false;
+            this.dropDown_unidade.SizeString = "quilograma (kg)";
             // 
             // dropDown_precisao
             // 
@@ -225,16 +223,16 @@ namespace PeriTAB{
             this.dropDown_precisao.Items.Add(ribbonDropDownItemImpl7);
             this.dropDown_precisao.Label = "Precisão";
             this.dropDown_precisao.Name = "dropDown_precisao";
-            this.dropDown_precisao.SizeString = "000000000";
-            this.dropDown_precisao.Visible = false;
+            this.dropDown_precisao.SizeString = "quilograma (kg)";
             // 
-            // button_massa
+            // button_massavolume
             // 
-            this.button_massa.Image = global::PeriTAB.Properties.Resources.peso;
-            this.button_massa.Label = "Massa / Volume";
-            this.button_massa.Name = "button_massa";
-            this.button_massa.ShowImage = true;
-            this.button_massa.Visible = false;
+            this.button_massavolume.Image = global::PeriTAB.Properties.Resources.peso;
+            this.button_massavolume.Label = "Massa / Volume";
+            this.button_massavolume.Name = "button_massavolume";
+            this.button_massavolume.ShowImage = true;
+            this.button_massavolume.SuperTip = "Escreve por extenso a quantidade conforme a Unidade e a Precisão selecionadas.";
+            this.button_massavolume.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Por_Extenso_Click);
             // 
             // group_formatacao
             // 
@@ -590,6 +588,7 @@ namespace PeriTAB{
             this.button_cola_imagem.Label = "Cola Imagem";
             this.button_cola_imagem.Name = "button_cola_imagem";
             this.button_cola_imagem.ShowImage = true;
+            this.button_cola_imagem.SuperTip = "Cola imagens do Clipboard em ordem alfabética.";
             this.button_cola_imagem.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.button_cola_imagem_Click);
             // 
             // dropDown_separador
@@ -851,7 +850,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_renomeia_documento;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_sumario;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inteiro;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_moeda;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_campos;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_destaca_campos;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_vercodigo_campos;
@@ -902,13 +901,12 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador3;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_entrega;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_senha;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_massa;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_massavolume;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown_unidade;
         internal Microsoft.Office.Tools.Ribbon.RibbonDropDown dropDown_precisao;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_autodimensiona_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonMenu menu_imagem;
         internal Microsoft.Office.Tools.Ribbon.RibbonCheckBox checkBox_referencia;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_teste;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_inserir_ano;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_autoformata_laudo;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_habilita_edicao;
@@ -916,6 +914,7 @@ namespace PeriTAB{
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador1;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_separador2;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton button_pagina_em_paisagem;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton button_moeda;
     }
 
     partial class ThisRibbonCollection

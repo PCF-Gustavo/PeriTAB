@@ -95,11 +95,13 @@ namespace PeriTAB
             // Cria um dicionário de preferências
             Dictionary<string, string> preferencias = new Dictionary<string, string>
             {
-                 { "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_largura.Text) ? Class_RibbonControls.GetPreference("largura") : Globals.Ribbons.Ribbon.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon.Variables.editBox_largura_Text)
-                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_altura.Text) ? Class_RibbonControls.GetPreference("altura") : Globals.Ribbons.Ribbon.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon.Variables.editBox_altura_Text)
-                ,{ "largura_checked", Globals.Ribbons.Ribbon.checkBox_largura.Checked.ToString() }
-                ,{ "separador", Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem.Label }
+                 { "unidade", Globals.Ribbons.Ribbon.dropDown_unidade.SelectedItem.Label }
+                ,{ "precisao", Globals.Ribbons.Ribbon.dropDown_precisao.SelectedItem.Label }
                 ,{ "painel_de_estilos", Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked.ToString() }
+                ,{ "largura_checked", Globals.Ribbons.Ribbon.checkBox_largura.Checked.ToString() }
+                ,{ "largura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_largura.Text) ? Class_RibbonControls.GetPreference("largura") : Globals.Ribbons.Ribbon.editBox_largura.Text } // Verifica e define valores para largura se for vazio ou null (Ribbon.Variables.editBox_largura_Text)
+                ,{ "altura", string.IsNullOrEmpty(Globals.Ribbons.Ribbon.editBox_altura.Text) ? Class_RibbonControls.GetPreference("altura") : Globals.Ribbons.Ribbon.editBox_altura.Text }// Verifica e define valores para altura se for vazio ou null (Ribbon.Variables.editBox_altura_Text)
+                ,{ "separador", Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem.Label }
                 ,{ "assinar_pdf", Globals.Ribbons.Ribbon.checkBox_assinar.Checked.ToString() }
                 ,{ "abrir_pdf", Globals.Ribbons.Ribbon.checkBox_abrir.Checked.ToString() }
             };
