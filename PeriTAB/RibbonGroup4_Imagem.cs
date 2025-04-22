@@ -55,66 +55,109 @@ namespace PeriTAB
 
                     if (pathfile2[0] != "")
                     {
-                        // Evita a exclusao de \r (Carrige Return) ao final da seleção
-                        if (Globals.ThisAddIn.Application.Selection.Text.EndsWith("\r") && Globals.ThisAddIn.Application.Selection.InlineShapes.Count > 0)
+                        Microsoft.Office.Interop.Word.Shape Tela_de_desenho = TelaDeDesenho_Selecionada();
+                        if (Tela_de_desenho == null)
                         {
-                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -1);
-                        }
-                        for (int i = 0; i <= pathfile2.Length - 1; i++)
-                        {
-
-                            bool link = false; bool save = true;
-                            if (Globals.Ribbons.Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
-                            InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
-                            imagem.LockAspectRatio = MsoTriState.msoTrue;
-                            if (checkBox_largura.Checked)
+                            // Evita a exclusao de \r (Carrige Return) ao final da seleção
+                            if (Globals.ThisAddIn.Application.Selection.Text != null)
                             {
-                                string larg_string = Globals.Ribbons.Ribbon.editBox_largura.Text;
-                                float.TryParse(larg_string, out float larg);
-                                imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
-                            }
-
-                            if (checkBox_altura.Checked)
-                            {
-                                string alt_string = Globals.Ribbons.Ribbon.editBox_altura.Text;
-                                float.TryParse(alt_string, out float alt);
-                                imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
-                            }
-
-                            if (i != pathfile2.Length - 1) //Exceto última imagem
-                            {
-
-                                switch (dropDown_separador.SelectedItem.Label) //Insere separador
+                                if (Globals.ThisAddIn.Application.Selection.Text.EndsWith("\r") && Globals.ThisAddIn.Application.Selection.InlineShapes.Count > 0)
                                 {
-                                    case "Espaço":
-                                        Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                                        Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
-                                        break;
-                                    case "Parágrafo":
-                                        Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
-                                        Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
-                                        break;
-                                    case "Parágrafo + 3pt":
-                                        Globals.ThisAddIn.Application.Selection.ParagraphFormat.SpaceAfter = 3;
-                                        Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
-                                        Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
-                                        break;
+                                    Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -1);
                                 }
                             }
-                        }
+                            for (int i = 0; i <= pathfile2.Length - 1; i++)
+                            {
 
-                        // Seleção das imagens ao final da colagem
-                        if (dropDown_separador.SelectedItem.Label == "Nenhum")
-                        {
-                            int L = pathfile2.Length;
-                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -L);
-                            Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
+                                bool link = false; bool save = true;
+                                if (Globals.Ribbons.Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
+                                InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
+                                imagem.LockAspectRatio = MsoTriState.msoTrue;
+                                if (checkBox_largura.Checked)
+                                {
+                                    string larg_string = Globals.Ribbons.Ribbon.editBox_largura.Text;
+                                    float.TryParse(larg_string, out float larg);
+                                    imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                                }
+
+                                if (checkBox_altura.Checked)
+                                {
+                                    string alt_string = Globals.Ribbons.Ribbon.editBox_altura.Text;
+                                    float.TryParse(alt_string, out float alt);
+                                    imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                                }
+
+                                if (i != pathfile2.Length - 1) //Exceto última imagem
+                                {
+
+                                    switch (dropDown_separador.SelectedItem.Label) //Insere separador
+                                    {
+                                        case "Espaço":
+                                            Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
+                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            break;
+                                        case "Parágrafo":
+                                            Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
+                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            break;
+                                        case "Parágrafo + 3pt":
+                                            Globals.ThisAddIn.Application.Selection.ParagraphFormat.SpaceAfter = 3;
+                                            Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
+                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            break;
+                                    }
+                                }
+                            }
+
+                            // Seleção das imagens ao final da colagem
+                            if (dropDown_separador.SelectedItem.Label == "Nenhum")
+                            {
+                                int L = pathfile2.Length;
+                                Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -L);
+                                Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
+                            }
+                            else
+                            {
+                                int L = pathfile2.Length;
+                                Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2 * L - 1));
+                                Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
+                            }
                         }
                         else
                         {
-                            int L = pathfile2.Length;
-                            Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2 * L - 1));
-                            Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
+                            // Para TELA DE DESENHO
+                            for (int i = 0; i <= pathfile2.Length - 1; i++)
+                            {
+                                using (Image imagem = Image.FromFile(pathfile2[i]))
+                                {
+                                    float largura = 0;
+                                    float altura = 0;
+
+                                    if (checkBox_largura.Checked)
+                                    {
+                                        float.TryParse(Globals.Ribbons.Ribbon.editBox_largura.Text, out largura);
+                                        altura = largura* imagem.Height / imagem.Width;
+                                    }
+                                    if (checkBox_altura.Checked)
+                                    {
+                                        float.TryParse(Globals.Ribbons.Ribbon.editBox_altura.Text, out altura);
+                                        largura = altura * imagem.Width / imagem.Height;
+                                    }
+                                    float largura_pontos = Globals.ThisAddIn.Application.CentimetersToPoints(largura);
+                                    float altura_pontos = Globals.ThisAddIn.Application.CentimetersToPoints(altura);
+                                    if (Tela_de_desenho.Width >= largura_pontos && Tela_de_desenho.Height >= altura_pontos)
+                                    {
+                                        Tela_de_desenho.CanvasItems.AddPicture(
+                                            FileName: pathfile2[i],
+                                            LinkToFile: false,
+                                            SaveWithDocument: true,
+                                            Width: largura_pontos,
+                                            Height: altura_pontos
+                                            );
+                                    }
+                                    else { success = false; msg_Falha = "As dimensões da imagem excedem o tamanho da tela de desenho."; }
+                                }
+                            }
                         }
                     }
                     else
@@ -153,6 +196,22 @@ namespace PeriTAB
             {
                 return StrCmpLogicalW(x, y);
             }
+        }
+
+        private Microsoft.Office.Interop.Word.Shape TelaDeDesenho_Selecionada()
+        {
+            Selection selecao = Globals.ThisAddIn.Application.Selection;
+
+            if (selecao.ShapeRange != null && selecao.ShapeRange.Count > 0)
+            {
+                Microsoft.Office.Interop.Word.Shape shape = selecao.ShapeRange[1];
+
+                if (shape.Type == MsoShapeType.msoCanvas)
+                {
+                    return shape; // É uma tela de desenho
+                }
+            }
+            return null; // Não é uma tela de desenho
         }
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)

@@ -451,9 +451,9 @@ namespace PeriTAB
             if (match.Success)
             {
                 Range prefixRange = p.Range.Duplicate; // Cria um range duplicado para não afetar o original
+                prefixRange.Fields.Unlink();
                 prefixRange.Start = p.Range.Start;     // Início do range = início do parágrafo
                 prefixRange.End = p.Range.Start + match.Length; // Final do range = tamanho do prefixo identificado
-
                 prefixRange.Delete();
             }
         }

@@ -26,7 +26,7 @@ namespace PeriTAB
             RibbonButton.Image = Properties.Resources.load_icon_png_7969;
             RibbonButton.Enabled = false;
             bool success = true;
-            string msg_Error = string.Empty;
+            string msg_Falha = string.Empty;
 
 
             await Tarefa.Run(() =>
@@ -90,8 +90,8 @@ namespace PeriTAB
 
                     if (decimal.TryParse(numero_selecionado, out decimal numero))
                     {
-                        if (numero >= 1000000000000000000) { success = false; msg_Error = "Número máximo permitido excedido."; }
-                        else if (Botao_Label.Equals("Número inteiro") && numero % 1 != 0) { success = false; msg_Error = "Números inteiros não podem ter casas decimais."; }
+                        if (numero >= 1000000000000000000) { success = false; msg_Falha = "Número máximo permitido excedido."; }
+                        else if (Botao_Label.Equals("Número inteiro") && numero % 1 != 0) { success = false; msg_Falha = "Números inteiros não podem ter casas decimais."; }
                         else
                         {
                             string resultado = string.Empty;
@@ -117,13 +117,13 @@ namespace PeriTAB
                             Selecao.TypeText($"{formatoNumero} ({resultado})");
                         }
                     }
-                    else { success = false; msg_Error = "Posicione o cursor ao final de um número válido."; }
+                    else { success = false; msg_Falha = "Posicione o cursor ao final de um número válido."; }
                 }
-                else { success = false; msg_Error = "Posicione o cursor ao final de um número válido."; }
+                else { success = false; msg_Falha = "Posicione o cursor ao final de um número válido."; }
 
                 if (!success)
                 {
-                    MessageBox.Show(msg_Error, Botao_Label, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(msg_Falha, Botao_Label, MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Selecao_inicial.Select();
                 }
 
