@@ -427,6 +427,7 @@ namespace PeriTAB
                     Range assinado_digitalmente_range2 = EncontrarUltimoParagrafo("assinado digitalmente");
                     assinado_digitalmente_range2.Paragraphs[1].Next().Range.HighlightColorIndex = WdColorIndex.wdAuto;
                     assinado_digitalmente_range2.Paragraphs[1].Next().Range.Text = nome_do_perito; // Insere nome do perito
+                    assinado_digitalmente_range2.Paragraphs[1].Next().Range.ParagraphFormat.KeepWithNext = -1; // Precisei inserir pq em alguns casos a substituicao de texto implica na perda de formatacao
 
                     Range fecho_range2 = assinado_digitalmente_range2.Paragraphs[1].Previous().Range;
                     Range fecho_range3 = fecho_range2.Duplicate;

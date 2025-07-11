@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Windows.Shapes;
@@ -145,6 +146,14 @@ namespace PeriTAB
                 }
                 if (new List<string>
                 {
+                    "02 - Corpo do Texto (PeriTAB)"
+                }.Contains(estilo_nome))
+                {
+                    SpaceBefore18_Se_paragrafo_anterior_tabela_ou_figura(p);
+                    SpaceAfter18_Se_paragrafo_seguinte_tabela(p);
+                }
+                if (new List<string>
+                {
                     "12 - Legendas de Figuras (PeriTAB)"
                 }.Contains(estilo_nome))
                 {
@@ -184,7 +193,7 @@ namespace PeriTAB
             Button.Invoke((Action)(() => Button.Enabled = true));
         }
 
-        private void Alinha_Legenda_de_Figura(Paragraph p)
+        public void Alinha_Legenda_de_Figura(Paragraph p)
         {
             PageSetup sectionPageSetup = p.Range.Sections[1].PageSetup;
             Paragraph previousParagraph = p.Previous();
@@ -393,18 +402,44 @@ namespace PeriTAB
                 PageLeftPosition = tabela.Range.get_Information(WdInformation.wdHorizontalPositionRelativeToPage);
 
                 float maxTabela_Width = 0;
-                for (int i = 1; i <= Math.Min(10, tabela.Rows.Count); i++)
-                {
-                    Row linha = tabela.Rows[i];
+                //for (int i = 1; i <= Math.Min(10, tabela.Rows.Count); i++)
+                //{
+                //    Row linha = tabela.Rows[i];
 
+                //    float larguraLinha = 0;
+                //    foreach (Cell celula in linha.Cells)
+                //    {
+                //        larguraLinha += celula.Width;
+                //    }
+
+                //    maxTabela_Width = Math.Max(maxTabela_Width, larguraLinha);
+                //}
+                for (int row = 1; row <= Math.Min(10, tabela.Rows.Count); row++)
+                {
                     float larguraLinha = 0;
-                    foreach (Cell celula in linha.Cells)
+
+                    for (int col = 1; col <= tabela.Columns.Count; col++)
                     {
-                        larguraLinha += celula.Width;
+                        try
+                        {
+                            Cell celula = tabela.Cell(row, col);
+
+                            // Verifica se a célula realmente pertence à linha atual (não foi mesclada de outra linha)
+                            if (celula.RowIndex == row)
+                            {
+                                larguraLinha += celula.Width;
+                            }
+                        }
+                        catch (COMException)
+                        {
+                            // Célula não existe (por exemplo, foi mesclada e não está acessível)
+                            continue;
+                        }
                     }
 
                     maxTabela_Width = Math.Max(maxTabela_Width, larguraLinha);
                 }
+
 
                 p.Range.ParagraphFormat.LeftIndent = PageLeftPosition - LeftMargin - tabela.LeftPadding - TextLeftPosition;
                 p.Range.ParagraphFormat.RightIndent = PageWidth - PageLeftPosition - maxTabela_Width - RightMargin + tabela.LeftPadding + TextLeftPosition;
@@ -419,6 +454,30 @@ namespace PeriTAB
                 if (list.Contains(p.Previous().get_Style().NameLocal))
                 {
                     p.Range.ParagraphFormat.SpaceBefore = 0;
+                }
+            }
+        }
+
+        private void SpaceBefore18_Se_paragrafo_anterior_tabela_ou_figura(Paragraph p)
+        {
+            Paragraph PreviousParagraph = p.Previous();
+            if (PreviousParagraph != null)
+            {
+                if (PreviousParagraph.Range.Tables.Count > 0 || PreviousParagraph.Range.InlineShapes.Count > 0)
+                {
+                    p.Range.ParagraphFormat.SpaceBefore = 18;
+                }
+            }
+        }
+
+        private void SpaceAfter18_Se_paragrafo_seguinte_tabela(Paragraph p)
+        {
+            Paragraph NextParagraph = p.Next();
+            if (NextParagraph != null)
+            {
+                if (NextParagraph.Range.Tables.Count > 0)
+                {
+                    p.Range.ParagraphFormat.SpaceAfter = 18;
                 }
             }
         }

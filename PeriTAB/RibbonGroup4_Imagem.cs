@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using iTextSharp.text.pdf.parser;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
@@ -6,8 +7,12 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using CanvasShapes = Microsoft.Office.Interop.Word.CanvasShapes;
+using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
+using Shapes = Microsoft.Office.Interop.Word.Shapes;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -15,6 +20,7 @@ namespace PeriTAB
 {
     public partial class Ribbon
     {
+
         private async void button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
@@ -55,7 +61,9 @@ namespace PeriTAB
 
                     if (pathfile2[0] != "")
                     {
-                        Microsoft.Office.Interop.Word.Shape Tela_de_desenho = TelaDeDesenho_Selecionada();
+                        Array.Sort(pathfile2, new Comparer_Windows_order());
+
+                        Microsoft.Office.Interop.Word.Shape Tela_de_desenho = Apenas_TelaDeDesenho_Selecionada();
                         if (Tela_de_desenho == null)
                         {
                             // Evita a exclusao de \r (Carrige Return) ao final da seleção
@@ -147,6 +155,7 @@ namespace PeriTAB
                                     float altura_pontos = Globals.ThisAddIn.Application.CentimetersToPoints(altura);
                                     if (Tela_de_desenho.Width >= largura_pontos && Tela_de_desenho.Height >= altura_pontos)
                                     {
+                                        Microsoft.Office.Interop.Word.Shape shape_image = 
                                         Tela_de_desenho.CanvasItems.AddPicture(
                                             FileName: pathfile2[i],
                                             LinkToFile: false,
@@ -154,6 +163,7 @@ namespace PeriTAB
                                             Width: largura_pontos,
                                             Height: altura_pontos
                                             );
+                                        shape_image.Select(false); // Seleção das imagens ao final da colagem
                                     }
                                     else { success = false; msg_Falha = "As dimensões da imagem excedem o tamanho da tela de desenho."; }
                                 }
@@ -198,21 +208,45 @@ namespace PeriTAB
             }
         }
 
-        private Microsoft.Office.Interop.Word.Shape TelaDeDesenho_Selecionada()
+        private Microsoft.Office.Interop.Word.Shape Apenas_TelaDeDesenho_Selecionada()
         {
             Selection selecao = Globals.ThisAddIn.Application.Selection;
 
-            if (selecao.ShapeRange != null && selecao.ShapeRange.Count > 0)
+            // Verifica se a seleção é apenas de uma forma
+            if (selecao.Type == WdSelectionType.wdSelectionInlineShape &&
+                selecao.ShapeRange != null &&
+                selecao.ShapeRange.Count == 1)
             {
                 Microsoft.Office.Interop.Word.Shape shape = selecao.ShapeRange[1];
 
+                // Verifica se a forma é uma tela de desenho (canvas)
                 if (shape.Type == MsoShapeType.msoCanvas)
                 {
-                    return shape; // É uma tela de desenho
+                    return shape;
                 }
             }
-            return null; // Não é uma tela de desenho
+
+            // Se não for uma seleção exclusivamente de uma tela de desenho
+            return null;
         }
+
+        //private List<Microsoft.Office.Interop.Word.Shape> Obter_Shapes_Selecionados(Microsoft.Office.Interop.Word.Shape TelaDeDesenho)
+        //{
+        //    List<Microsoft.Office.Interop.Word.Shape> shapes_selecionados = new List<Microsoft.Office.Interop.Word.Shape>();
+
+        //    foreach (Microsoft.Office.Interop.Word.Shape shape in Globals.ThisAddIn.Application.Selection.ShapeRange)
+        //    {
+        //        shapes_selecionados.Add(shape);
+        //    }
+
+        //    foreach (Microsoft.Office.Interop.Word.Shape shape in TelaDeDesenho.CanvasItems)
+        //    {
+        //        shapes_selecionados.Add(shape);
+        //    }
+
+        //    return shapes_selecionados;
+        //}
+
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
@@ -564,6 +598,9 @@ namespace PeriTAB
             await Tarefa.Run(() =>
             {
                 Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                //Microsoft.Office.Interop.Word.Shape Tela_de_desenho = Apenas_TelaDeDesenho_Selecionada();
+                //if (Tela_de_desenho == null)
+                //{
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
@@ -573,6 +610,17 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
                     }
                 }
+                //}
+                //else
+                //{
+                //    List<Microsoft.Office.Interop.Word.Shape> ShapesSelecionados = Obter_Shapes_Selecionados(Tela_de_desenho);
+                //    foreach (Microsoft.Office.Interop.Word.Shape shape in ShapesSelecionados)
+                //    {
+                //        shape.Line.Visible = MsoTriState.msoTrue;
+                //        shape.Line.Weight = (float)0.5;
+                //        shape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
+                //    }
+                //}
                 Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
             });
 
@@ -700,7 +748,8 @@ namespace PeriTAB
                         Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
                         Globals.ThisAddIn.Application.Selection.set_Style((object)"12 - Legendas de Figuras (PeriTAB)");
                         Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                        Globals.ThisAddIn.Application.Run("alinha_legenda");
+                        Globals.ThisAddIn.iMyUserControl.Alinha_Legenda_de_Figura(Globals.ThisAddIn.Application.Selection.Paragraphs[1]);
+                        //Globals.ThisAddIn.Application.Run("alinha_legenda");
                     }
                 }
                 Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();

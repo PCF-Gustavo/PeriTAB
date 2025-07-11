@@ -60,7 +60,7 @@ namespace PeriTAB
 
                 await Tarefa.Run(() =>
                 {
-                    if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selectionar paragrafos com tabela causa problemas de seleção.
+                    if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
                     {
                         List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
 
