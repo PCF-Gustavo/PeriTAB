@@ -58,7 +58,7 @@
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.VSTORuntime.4.0">
       <Visible>False</Visible>
-      <ProductName>Microsoft Visual Studio 2010 Tools for Office Runtime %28x86 and x64%29</ProductName>
+      <ProductName>Microsoft Visual Studio 2010 Tools para Office Runtime %28x86 e x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
@@ -245,8 +245,8 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="PeriTAB_Key.pfx" />
-    <None Include="PeriTAB_TemporaryKey.pfx" />
+    <None Include="PeriTAB_1_TemporaryKey.pfx" />
+    <None Include="PeriTAB_Key.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -377,17 +377,17 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PeriTAB_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PeriTAB_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4B005FE69DA32E8280444193031271BFF2257493</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>E7FADA1A8D4AB1DBE7B813DA9DD55FC94074AB22</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup>
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>PeriTAB_Key.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>PeriTAB_Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

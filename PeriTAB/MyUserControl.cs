@@ -216,7 +216,6 @@ namespace PeriTAB
                     LeftPosition = Imagem.Range.get_Information(WdInformation.wdHorizontalPositionRelativeToPage);
                     LeftPosition = Imagem.Range.get_Information(WdInformation.wdHorizontalPositionRelativeToPage);
                     float RightPosition = LeftPosition + Imagem.Width;
-                    //RightPosition = LeftPosition + Imagem.Width;
 
                     minLeftPosition = Math.Min(minLeftPosition, LeftPosition);
                     maxRightPosition = Math.Max(maxRightPosition, RightPosition);
@@ -270,10 +269,6 @@ namespace PeriTAB
                     float Tela_LeftPosition = previousParagraph.Range.ShapeRange.Anchor.Information[WdInformation.wdHorizontalPositionRelativeToTextBoundary];
                     Tela_LeftPosition = previousParagraph.Range.ShapeRange.Anchor.Information[WdInformation.wdHorizontalPositionRelativeToPage];
                     Tela_LeftPosition = previousParagraph.Range.ShapeRange.Anchor.Information[WdInformation.wdHorizontalPositionRelativeToPage];
-                    //Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; // Salva a seleção inicial
-                    //previousParagraph.Range.ShapeRange.Select();
-                    //float Tela_LeftPosition = Globals.ThisAddIn.Application.Selection.get_Information(WdInformation.wdHorizontalPositionRelativeToPage);
-                    //Selecao_inicial.Select(); // Restaura a seleção inicial
 
                     if (previousParagraph.Range.ShapeRange.Line.Style == MsoLineStyle.msoLineStyleMixed)
                     {
@@ -402,18 +397,7 @@ namespace PeriTAB
                 PageLeftPosition = tabela.Range.get_Information(WdInformation.wdHorizontalPositionRelativeToPage);
 
                 float maxTabela_Width = 0;
-                //for (int i = 1; i <= Math.Min(10, tabela.Rows.Count); i++)
-                //{
-                //    Row linha = tabela.Rows[i];
-
-                //    float larguraLinha = 0;
-                //    foreach (Cell celula in linha.Cells)
-                //    {
-                //        larguraLinha += celula.Width;
-                //    }
-
-                //    maxTabela_Width = Math.Max(maxTabela_Width, larguraLinha);
-                //}
+                
                 for (int row = 1; row <= Math.Min(10, tabela.Rows.Count); row++)
                 {
                     float larguraLinha = 0;
@@ -529,44 +513,6 @@ namespace PeriTAB
                 }
             }
         }
-
-        //private void button_textos_de_figuras_Click(object sender, EventArgs e)
-        //{
-        //    Importa_todos_estilos();
-        //    string estilo_nome = dict_botao_e_estilo[sender as Button];
-
-        //    Globals.ThisAddIn.Application.ScreenUpdating = false;
-
-        //    List<Paragraph> list_Paragraph = new List<Paragraph>();
-        //    foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-        //    {
-        //        list_Paragraph.Add(p);
-        //    }
-
-        //    // Aplica Estilo
-        //    foreach (Paragraph p in list_Paragraph)
-        //    {
-        //        p.set_Style((object)estilo_nome);
-        //    }
-
-        //    // Ajuste de formatação
-        //    foreach (Paragraph p in list_Paragraph)
-        //    {
-        //        if (p.Previous() != null)
-        //        {
-        //            if ((((Microsoft.Office.Interop.Word.Style)p.Previous().get_Style()).NameLocal.ToString()) == "12 - Legendas de Figuras (PeriTAB)")
-        //            {
-        //                p.Range.ParagraphFormat.LeftIndent = p.Previous().Range.ParagraphFormat.LeftIndent;
-        //                p.Range.ParagraphFormat.RightIndent = p.Previous().Range.ParagraphFormat.RightIndent;
-        //                p.Previous().Range.ParagraphFormat.SpaceAfter = 0;
-        //                p.Previous().Range.ParagraphFormat.KeepWithNext = -1;
-        //            }
-        //        }
-        //    }
-
-        //    Globals.ThisAddIn.Application.ScreenUpdating = true;
-
-        //}
 
         public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
         {

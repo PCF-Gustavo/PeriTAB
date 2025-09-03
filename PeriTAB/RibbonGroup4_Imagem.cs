@@ -1,18 +1,12 @@
-﻿using iTextSharp.text.pdf.parser;
-using Microsoft.Office.Core;
+﻿using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using CanvasShapes = Microsoft.Office.Interop.Word.CanvasShapes;
-using ShapeRange = Microsoft.Office.Interop.Word.ShapeRange;
-using Shapes = Microsoft.Office.Interop.Word.Shapes;
 using Tarefa = System.Threading.Tasks.Task;
 
 
@@ -229,24 +223,6 @@ namespace PeriTAB
             // Se não for uma seleção exclusivamente de uma tela de desenho
             return null;
         }
-
-        //private List<Microsoft.Office.Interop.Word.Shape> Obter_Shapes_Selecionados(Microsoft.Office.Interop.Word.Shape TelaDeDesenho)
-        //{
-        //    List<Microsoft.Office.Interop.Word.Shape> shapes_selecionados = new List<Microsoft.Office.Interop.Word.Shape>();
-
-        //    foreach (Microsoft.Office.Interop.Word.Shape shape in Globals.ThisAddIn.Application.Selection.ShapeRange)
-        //    {
-        //        shapes_selecionados.Add(shape);
-        //    }
-
-        //    foreach (Microsoft.Office.Interop.Word.Shape shape in TelaDeDesenho.CanvasItems)
-        //    {
-        //        shapes_selecionados.Add(shape);
-        //    }
-
-        //    return shapes_selecionados;
-        //}
-
 
         private void checkBox_largura_Click(object sender, RibbonControlEventArgs e)
         {
