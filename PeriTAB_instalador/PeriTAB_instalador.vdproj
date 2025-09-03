@@ -27,6 +27,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_74CE95900988EC93555F6497493AE338"
+        "OwnerKey" = "8:_B98318CAF4EB4EFB82E954877381BBB1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_7EC53BC7D0804AFBB2780544859A47AC"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -39,26 +45,20 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_A311B48574F31E488B781E785B7B0A67"
+        "MsmKey" = "8:_9A339BED52E4906EDC7E516EB3FDFAA6"
         "OwnerKey" = "8:_B98318CAF4EB4EFB82E954877381BBB1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A311B48574F31E488B781E785B7B0A67"
-        "OwnerKey" = "8:_C8C2FD3F451F1FEB22772445F68521BE"
+        "MsmKey" = "8:_9A339BED52E4906EDC7E516EB3FDFAA6"
+        "OwnerKey" = "8:_74CE95900988EC93555F6497493AE338"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_B98318CAF4EB4EFB82E954877381BBB1"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_C8C2FD3F451F1FEB22772445F68521BE"
-        "OwnerKey" = "8:_B98318CAF4EB4EFB82E954877381BBB1"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -118,13 +118,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_C8C2FD3F451F1FEB22772445F68521BE"
+        "OwnerKey" = "8:_74CE95900988EC93555F6497493AE338"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A311B48574F31E488B781E785B7B0A67"
+        "OwnerKey" = "8:_9A339BED52E4906EDC7E516EB3FDFAA6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -208,7 +208,7 @@
         "DisplayName" = "8:Release"
         "IsDebugOnly" = "11:FALSE"
         "IsReleaseOnly" = "11:TRUE"
-        "OutputFilename" = "8:Release\\PeriTAB_v1.2.2_instalador.msi"
+        "OutputFilename" = "8:Release\\PeriTAB_v1.2.3_instalador.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -314,6 +314,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_74CE95900988EC93555F6497493AE338"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_74CE95900988EC93555F6497493AE338"
+                    {
+                    "Name" = "8:itextsharp.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:itextsharp.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_D3E6F9CB10DF4324A20095DD1E446A15"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_7EC53BC7D0804AFBB2780544859A47AC"
             {
             "SourcePath" = "8:..\\PeriTAB\\bin\\Release\\PeriTAB.vsto"
@@ -365,51 +396,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A311B48574F31E488B781E785B7B0A67"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9A339BED52E4906EDC7E516EB3FDFAA6"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
             "AssemblyAsmDisplayName" = "8:BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942"
                 "ScatterAssemblies"
                 {
-                    "_A311B48574F31E488B781E785B7B0A67"
+                    "_9A339BED52E4906EDC7E516EB3FDFAA6"
                     {
                     "Name" = "8:BouncyCastle.Crypto.dll"
                     "Attributes" = "3:512"
                     }
                 }
             "SourcePath" = "8:BouncyCastle.Crypto.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_D3E6F9CB10DF4324A20095DD1E446A15"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_C8C2FD3F451F1FEB22772445F68521BE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_C8C2FD3F451F1FEB22772445F68521BE"
-                    {
-                    "Name" = "8:itextsharp.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:itextsharp.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D3E6F9CB10DF4324A20095DD1E446A15"
@@ -585,15 +585,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PeriTAB"
-        "ProductCode" = "8:{BDAEF069-91A0-46CB-B558-68E78AB430E8}"
-        "PackageCode" = "8:{999F20D7-6DBD-46BE-94B5-6471073B4234}"
+        "ProductCode" = "8:{E4B97658-8666-474D-846D-182D5B66045D}"
+        "PackageCode" = "8:{0010D33A-EFF6-46F1-BB85-1E9E21631DA9}"
         "UpgradeCode" = "8:{0D615F56-2E6C-4E39-8FD7-6CC9E2A4B6F1}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.2.2"
+        "ProductVersion" = "8:1.2.3"
         "Manufacturer" = "8:PCF Gustavo"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
@@ -1181,7 +1181,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B98318CAF4EB4EFB82E954877381BBB1"
             {
-            "SourcePath" = "8:"
+            "SourcePath" = "8:..\\PeriTAB\\obj\\Release\\PeriTAB.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D3E6F9CB10DF4324A20095DD1E446A15"
