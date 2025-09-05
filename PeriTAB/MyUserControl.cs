@@ -432,36 +432,45 @@ namespace PeriTAB
 
         private void Zera_SpaceBefore_Se_paragrafo_anterior(Paragraph p, List<string> list)
         {
-            Paragraph PreviousParagraph = p.Previous();
-            if (PreviousParagraph != null)
+            if (p != null)
             {
-                if (list.Contains(p.Previous().get_Style().NameLocal))
+                Paragraph PreviousParagraph = p.Previous();
+                if (PreviousParagraph != null)
                 {
-                    p.Range.ParagraphFormat.SpaceBefore = 0;
+                    if (list.Contains(p.Previous().get_Style().NameLocal))
+                    {
+                        p.Range.ParagraphFormat.SpaceBefore = 0;
+                    }
                 }
             }
         }
 
         private void SpaceBefore18_Se_paragrafo_anterior_tabela_ou_figura(Paragraph p)
         {
-            Paragraph PreviousParagraph = p.Previous();
-            if (PreviousParagraph != null)
+            if (p != null)
             {
-                if (PreviousParagraph.Range.Tables.Count > 0 || PreviousParagraph.Range.InlineShapes.Count > 0)
+                Paragraph PreviousParagraph = p.Previous();
+                if (PreviousParagraph != null)
                 {
-                    p.Range.ParagraphFormat.SpaceBefore = 18;
+                    if (PreviousParagraph.Range.Tables.Count > 0 || PreviousParagraph.Range.InlineShapes.Count > 0)
+                    {
+                        p.Range.ParagraphFormat.SpaceBefore = 18;
+                    }
                 }
             }
         }
 
         private void SpaceAfter18_Se_paragrafo_seguinte_tabela(Paragraph p)
         {
-            Paragraph NextParagraph = p.Next();
-            if (NextParagraph != null)
+            if (p != null)
             {
-                if (NextParagraph.Range.Tables.Count > 0)
+                Paragraph NextParagraph = p.Next();
+                if (NextParagraph != null)
                 {
-                    p.Range.ParagraphFormat.SpaceAfter = 18;
+                    if (NextParagraph.Range.Tables.Count > 0)
+                    {
+                        p.Range.ParagraphFormat.SpaceAfter = 18;
+                    }
                 }
             }
         }

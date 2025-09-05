@@ -171,7 +171,7 @@
         "DisplayName" = "8:Debug"
         "IsDebugOnly" = "11:TRUE"
         "IsReleaseOnly" = "11:FALSE"
-        "OutputFilename" = "8:Debug\\PeriTAB_v1.2.0_instalador.msi"
+        "OutputFilename" = "8:Debug\\PeriTAB_Debug_instalador.msi"
         "PackageFilesAs" = "3:2"
         "PackageFileSize" = "3:-2147483648"
         "CabType" = "3:1"
@@ -586,7 +586,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PeriTAB"
         "ProductCode" = "8:{E4B97658-8666-474D-846D-182D5B66045D}"
-        "PackageCode" = "8:{0010D33A-EFF6-46F1-BB85-1E9E21631DA9}"
+        "PackageCode" = "8:{EBF44622-8777-4009-BAEC-C989F2157D8F}"
         "UpgradeCode" = "8:{0D615F56-2E6C-4E39-8FD7-6CC9E2A4B6F1}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -1181,7 +1181,7 @@
         {
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_B98318CAF4EB4EFB82E954877381BBB1"
             {
-            "SourcePath" = "8:..\\PeriTAB\\obj\\Release\\PeriTAB.dll"
+            "SourcePath" = "8:"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_D3E6F9CB10DF4324A20095DD1E446A15"
