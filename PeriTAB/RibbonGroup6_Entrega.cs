@@ -5,7 +5,6 @@ using Microsoft.Office.Tools.Ribbon;
 using Org.BouncyCastle.Security;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -293,33 +292,47 @@ namespace PeriTAB
                     //iClass_Buttons.muda_imagem("button_gera_pdf", Properties.Resources.icone_pdf2); MessageBox.Show("Não foi possível gerar o PDF."); button_gera_pdf.Enabled = true; return; 
                 }
                 string path_pdf = localpath.Substring(0, localpath.LastIndexOf(".")) + ".pdf";
+                string path_pdf_assinado = localpath.Substring(0, localpath.LastIndexOf(".")) + "_assinado.pdf";
+                string path_tmp_pdf = Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf");
+                string path_tmp_pdf_assinado = Path.Combine(Path.GetTempPath(), "tmp_pdf_assinado_PeriTAB.pdf");
 
-                Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB"), WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
+                Globals.ThisAddIn.Application.ActiveDocument.ExportAsFixedFormat(path_tmp_pdf, WdExportFormat.wdExportFormatPDF, UseISO19005_1: true);
 
                 if (Globals.Ribbons.Ribbon.checkBox_assinar.Checked)
                 {
-                    string path_pdf_assinado = localpath.Substring(0, localpath.LastIndexOf(".")) + "_assinado.pdf";
-
                     X509Certificate2 certClient = null;
                     X509Store st = new X509Store(StoreName.My, StoreLocation.CurrentUser);
                     st.Open(OpenFlags.MaxAllowed);
-                    IExternalSignature s = null;
+                    //IExternalSignature s = null;
+
+                    List<X509Certificate2> certificadosValidos = new List<X509Certificate2>();
                     foreach (X509Certificate2 c in st.Certificates)
                     {
-                        if (c.Verify() == false) { st.Remove(c); continue; } //Elimina certificado não validados
-                        try { s = new X509Certificate2Signature(c, "SHA-256"); } catch { st.Remove(c); } //Elimina certificado que não se pode pegar a assinatura
+                        if (!c.HasPrivateKey) continue;
+                        if (!c.Verify()) continue;
+                        try { _ = new X509Certificate2Signature(c, "SHA-256"); } catch { continue; }
+                        
+                        certificadosValidos.Add(c);
+
+
+
+                        //if (c.Verify() == false) { st.Remove(c); continue; } //Elimina certificado não validados
+                        //try { s = new X509Certificate2Signature(c, "SHA-256"); } catch { st.Remove(c); } //Elimina certificado que não se pode pegar a assinatura
                     }
-                    switch (st.Certificates.Count)
+                    //switch (st.Certificates.Count)
+                    switch (certificadosValidos.Count)
                     {
                         case 0:
                             success = false;
                             msg_Falha = "Nenhum certificado válido encontrado.";
                             goto saida;
                         case 1:
-                            certClient = st.Certificates[0];
+                            //certClient = st.Certificates[0];
+                            certClient = certificadosValidos[0];
                             break;
                         default:
-                            X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
+                            //X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(st.Certificates, "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
+                            X509Certificate2Collection collection = X509Certificate2UI.SelectFromCollection(new X509Certificate2Collection(certificadosValidos.ToArray()), "Escolha o certificado:", "", X509SelectionFlag.SingleSelection);
                             if (collection.Count > 0)
                             {
                                 certClient = collection[0];
@@ -343,20 +356,21 @@ namespace PeriTAB
                         chain.Add(DotNetUtilities.FromX509Certificate(x509ChainElement.Certificate));
                     }
 
-                    inputPdf = new PdfReader(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"));
+                    inputPdf = new PdfReader(path_tmp_pdf);
                     inputPdf_open = true;
 
-                    FileStream signedPdf = null;
-                    try
-                    {
-                        signedPdf = new FileStream(path_pdf_assinado, FileMode.Create);
-                    }
-                    catch (IOException)
-                    {
-                        success = false;
-                        msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
-                        goto saida;
-                    }
+                    //FileStream signedPdf = null;
+                    //try
+                    //{
+                    //signedPdf = new FileStream(path_pdf_assinado, FileMode.Create);
+                    FileStream signedPdf = new FileStream(path_tmp_pdf_assinado, FileMode.Create);
+                    //}
+                    //catch (IOException)
+                    //{
+                    //    success = false;
+                    //    msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
+                    //    goto saida;
+                    //}
 
                     PdfStamper pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
 
@@ -364,7 +378,7 @@ namespace PeriTAB
                     //RSACryptoServiceProvider rsa = (RSACryptoServiceProvider)certClient.PrivateKey;
                     //rsa.PersistKeyInCsp = false; // Força a solicitação da senha
 
-                    RSACryptoServiceProvider rsa2 = new RSACryptoServiceProvider();
+                    //RSACryptoServiceProvider rsa2 = new RSACryptoServiceProvider();
 
                     //RSACryptoServiceProvider rsa = certClient.PrivateKey as RSACryptoServiceProvider;*********************************************************
                     //rsa.PersistKeyInCsp = false;
@@ -429,24 +443,37 @@ namespace PeriTAB
                     {
                         //Cancelamento da senha do token
                         signedPdf.Close();
-                        File.Delete(path_pdf_assinado);
+                        File.Delete(path_tmp_pdf_assinado);
                         success = false;
                         goto saida;
                     }
                     pdfStamper.Close();
 
-                    if (File.Exists(path_pdf_assinado))
+                    if (File.Exists(path_tmp_pdf_assinado))
                     {
+                        if (File.Exists(path_pdf_assinado))
+                        {
+                            try { File.Delete(path_pdf_assinado); }
+                            catch (IOException)
+                            {
+                                success = false;
+                                msg_Falha = "O PDF está aberto. Feche-o para gerar um novo PDF.";
+                                goto saida;
+                            }
+                        }
+                        File.Move(path_tmp_pdf_assinado, path_pdf_assinado);
                         if (Globals.Ribbons.Ribbon.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf_assinado); }
                     }
                     else
                     {
                         success = false;
+                        msg_Falha = "Não foi possível gerar o PDF.";
+                        goto saida;
                     }
                 }
                 else
                 {
-                    if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")))
+                    if (File.Exists(path_tmp_pdf))
                     {
                         if (File.Exists(path_pdf))
                         {
@@ -458,7 +485,7 @@ namespace PeriTAB
                                 goto saida;
                             }
                         }
-                        File.Move(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"), path_pdf);
+                        File.Move(path_tmp_pdf, path_pdf);
                         if (Globals.Ribbons.Ribbon.checkBox_abrir.Checked) { System.Diagnostics.Process.Start(path_pdf); }
                     }
                     else
@@ -472,6 +499,7 @@ namespace PeriTAB
             saida:
                 if (inputPdf_open) inputPdf.Close();
                 if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf"))) { File.Delete(Path.Combine(Path.GetTempPath(), "tmp_pdf_PeriTAB.pdf")); } //Deleta tmp.pdf
+                if (File.Exists(Path.Combine(Path.GetTempPath(), "tmp_pdf_assinado_PeriTAB.pdf"))) { File.Delete(Path.Combine(Path.GetTempPath(), "tmp_pdf_assinado_PeriTAB.pdf")); } //Deleta tmp.pdf asinado
 
                 // Mensagens da Thread
                 if (success) { msg_StatusBar = "Gera PDF: Sucesso"; } else { msg_StatusBar = "Gera PDF: Falha"; }

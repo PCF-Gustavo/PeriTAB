@@ -79,7 +79,7 @@ namespace PeriTAB
                 }
             }
 
-            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.3";
+            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + "1.2.4";
 
             ThisAddIn.Excluir_arquivos_da_lista(Variables.lista_arquivos_para_excluir);
         }
@@ -102,5 +102,12 @@ namespace PeriTAB
             }
             return null;
         }
+
+        private void button_teste_Click(object sender, RibbonControlEventArgs e)
+        {
+            //throw new Exception("Test unhandled exception");
+            throw new InvalidOperationException("This is an unhandled exception test.");
+        }
+       
     }
 }

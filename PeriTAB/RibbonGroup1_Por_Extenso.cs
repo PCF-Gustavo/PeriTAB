@@ -1,11 +1,9 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
-using System.Globalization;
 using System;
 using Tarefa = System.Threading.Tasks.Task;
 using System.Windows.Forms;
 using System.Linq;
-using Org.BouncyCastle.Crypto.Generators;
 
 namespace PeriTAB
 {
