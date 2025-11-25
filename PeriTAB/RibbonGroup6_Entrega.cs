@@ -310,8 +310,8 @@ namespace PeriTAB
                     {
                         if (!c.HasPrivateKey) continue;
                         if (!c.Verify()) continue;
-                        try { _ = new X509Certificate2Signature(c, "SHA-256"); } catch { continue; }
-                        
+                        //try { _ = new X509Certificate2Signature(c, "SHA-256"); } catch { continue; }
+
                         certificadosValidos.Add(c);
 
 

@@ -585,8 +585,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:PeriTAB"
-        "ProductCode" = "8:{E775B834-B153-4A3E-A1AE-A87B4E8C9D15}"
-        "PackageCode" = "8:{D6C45F77-56EF-48B8-9951-C4051CD0E304}"
+        "ProductCode" = "8:{C491E6A0-9D79-44F5-B87B-690B19A621B7}"
+        "PackageCode" = "8:{5F73D3AA-7888-4895-824D-17852345363D}"
         "UpgradeCode" = "8:{0D615F56-2E6C-4E39-8FD7-6CC9E2A4B6F1}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
