@@ -190,15 +190,14 @@
   <ItemGroup>
     <Compile Include="Class_CustomTaskPanes.cs" />
     <Compile Include="Class_RibbonControls.cs" />
+    <Compile Include="IRibbonTick.cs" />
     <Compile Include="Event_Class_AnyButtonClick.cs" />
+    <Compile Include="Event_Class_DocSave2 .cs" />
     <Compile Include="Event_Class_DocSave.cs" />
     <Compile Include="Event_Class_DocChange.cs" />
     <Compile Include="Event_Class_DocumentClose.cs" />
     <Compile Include="Event_Class_ControlOnExit .cs" />
-    <Compile Include="RibbonGroup6_Entrega.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="RibbonGroup5_Conferencia.cs">
+    <Compile Include="RibbonGroup5_Entrega.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="RibbonGroup4_Imagem.cs">

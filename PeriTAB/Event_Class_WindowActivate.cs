@@ -1,103 +1,97 @@
 ﻿using Microsoft.Office.Interop.Word;
+using Microsoft.Office.Tools;
+
+using System.Collections.Generic;
+using System.Linq;
+using System.Windows.Forms;
 
 namespace PeriTAB
 {
     internal class Class_WindowActivate_Event
     {
+        private readonly Class_ContentControlOnExit_Event iClass_ContentControlOnExit_Event = new Class_ContentControlOnExit_Event();
+        private readonly Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
+        private readonly Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
+
+        //private MyUserControl UserControl;
+        //private CustomTaskPane TaskPane;
+
+        private readonly Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
+
         public void Evento_WindowActivate()
         {
             Globals.ThisAddIn.Application.WindowActivate += new ApplicationEvents4_WindowActivateEventHandler(Metodo_WindowActivate);
         }
-        private void Metodo_WindowActivate(Microsoft.Office.Interop.Word.Document Doc, Microsoft.Office.Interop.Word.Window Wn)
+        public void Metodo_WindowActivate(Microsoft.Office.Interop.Word.Document Doc, Microsoft.Office.Interop.Word.Window Wn)
         {
             //MessageBox.Show("Winact");
-            //Declara instacias das classes
-            //Class_Buttons iClass_Buttons = new Class_Buttons();
-            Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
-            //Class_ValueChanged_Event iClass_ValueChanged_Event = new Class_ValueChanged_Event();           
 
-            //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon            
-            //iClass_ValueChanged_Event.FieldShading(); *** Não está funcinando bem. A call "var = Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading;" impede a inserção de formas
-            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
-            //if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
-
-            //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon
-            try
+            //if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.ContainsKey(Wn))
+            if (!Window_Possui_TaskPane(Wn))
             {
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.checkBox_destaca_campos.Checked = false; }
+                if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.Any(uc => uc.Document == Doc)) iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
 
-                //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon.checkBox_mostra_indicadores.Checked = false; }
+                //Globals.ThisAddIn.Dicionario_Window_e_Doc.Add(Wn, Doc);
 
+                MyUserControl UserControl = Add_UserControl(Wn);
 
-                //Revisa a habilitação do CheckBox "Ver código" do Ribbon
-                //iClass_ValueChanged_Event.ShowFieldCodes();
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == true) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = true; }
-                if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowFieldCodes == false) { Globals.Ribbons.Ribbon.checkBox_vercodigo_campos.Checked = false; }
-
-                //Revisa a habilitação do CheckBox "Atualizar antes de imprimir" do Ribbon
-                if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == true) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = true; }
-                if (Globals.ThisAddIn.Application.Options.UpdateFieldsAtPrint == false) { Globals.Ribbons.Ribbon.checkBox_atualizar_antes_de_imprimir_campos.Checked = false; }
-
-                //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
-                iClass_RibbonControls.button_abre_SISCRIM_valorinicial();
-                //iClass_Buttons.button_abre_SISCRIM_Default();
-                if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
-
-                //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
-                iClass_RibbonControls.button_renomeia_documento_valorinicial();
-                //iClass_Buttons.button_renomeia_documento_Default();
-                if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
-
-                //Revisa a habilitação do botao "Gera PDF" do Ribbon
-                iClass_RibbonControls.button_gera_pdf_valorinicial();
-                //iClass_Buttons.button_gera_pdf_Default();
-                if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
-
+                Globals.ThisAddIn.Dicionario_Window_e_UserControl.Add(Wn, UserControl);
+                //Globals.ThisAddIn.Dicionario_Window_e_TaskPane.Add(Wn, iTaskPane);
             }
-            catch (System.Runtime.InteropServices.COMException) { }
-            ////Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-            //{
-            //    //Globals.ThisAddIn.iMyUserControl.Habilita_button_reinicia_lista(true);
-            //    Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { Globals.ThisAddIn.iMyUserControl.Habilita_Destaca(Globals.ThisAddIn.iMyUserControl.MyButton("button_reinicia_lista"), false); }
-            //}
 
-            //Revisa a habilitação do botao "Reinicia Lista" do TaskPane
-            //if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-            //{
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.CheckBox_destaca_campos);
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores);
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.Button_renomeia_documento);
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.Button_gera_pdf);
 
-            //if (Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Globals.ThisAddIn.Application.ActiveDocument))
+            //try
             //{
-            //    MyUserControl MUC = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-            //    MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), true);
-            //    if (Globals.ThisAddIn.Application.Selection.Paragraphs.Count > 1 | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListType == WdListType.wdListNoNumbering | Globals.ThisAddIn.Application.Selection.Range.ListFormat.ListValue == 1) { MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false); }
-            //    else
-            //    {
-            //        Microsoft.Office.Interop.Word.Style s = null;
-            //        try { s = Globals.ThisAddIn.Application.Selection.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-            //        if (s != null)
-            //        {
-            //            if (!(s.NameLocal == "05 - Enumerações (PeriTAB)")) MUC.Habilita_Destaca(MUC.MyButton("button_reinicia_lista"), false);
-            //        }
-            //    }
-            //}
+            //    //Revisa a habilitação do CheckBox "Destacar campos" do Ribbon
+            //    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) { Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = true; }
+            //    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2) { Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = false; }
 
+            //    //Revisa a habilitação do CheckBox "Mostrar indicadores" do Ribbon
+            //    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) { Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = true; }
+            //    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) { Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = false; }
+
+            //    //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
+            //    iClass_RibbonControls.Button_renomeia_documento_valorinicial();
+            //    //iClass_Buttons.button_renomeia_documento_Default();
+            //    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.Button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.Button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.Button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
+
+            //    //Revisa a habilitação do botao "Gera PDF" do Ribbon
+            //    iClass_RibbonControls.Button_gera_pdf_valorinicial();
+            //    //iClass_Buttons.button_gera_pdf_Default();
+            //    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.Button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.Button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.Button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 
             //}
-
-            //if (Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.ContainsKey(Doc) == false) 
-            //{
-            //    Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event(); iClass_New_or_Open_Event.Metodo_New_or_Open(null);
-
-
-
-
-            //}
-
+            //catch (System.Runtime.InteropServices.COMException) { }
         }
+        private MyUserControl Add_UserControl(Window Wn)
+        {
+            MyUserControl UserControl = new MyUserControl { AutoScroll = true };
+
+            iClass_AnyButtonClick_Event.Evento_AnyButtonClick(UserControl);
+
+            UserControl.TaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(UserControl, "Painel de Estilos (PeriTAB)", Wn);
+            UserControl.TaskPane.VisibleChanged += iClass_CustomTaskPanes.MyCustomTaskPane_VisibleChanged;
+            iClass_CustomTaskPanes.Redimensionar(UserControl);
+            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl.TaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
+
+            return UserControl;
+        }
+
+        private bool Window_Possui_TaskPane(Window window)
+        {
+            foreach (CustomTaskPane pane in Globals.ThisAddIn.CustomTaskPanes)
+            {
+                if (pane.Window == window && pane.Title == "Painel de Estilos (PeriTAB)")
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

@@ -48,99 +48,106 @@ namespace PeriTAB
             //MessageBox.Show("AnyButtonClick_Ribbon");
 
             //Class_Buttons iClass_Buttons = new Class_Buttons();
-            Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
+            //Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
 
             ////Revisa a habilitação do botao "Gera PDF" do Ribbon e Sessão de token
-            iClass_RibbonControls.button_gera_pdf_valorinicial();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            //iClass_RibbonControls.Button_gera_pdf_valorinicial();
+            //if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
 
-            //Revisa o destaque dos botoes do TaskPane
-            if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
-            {
-                if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-                {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start(); // Inicia o cronômetro
+            ////Revisa o destaque dos botoes do TaskPane
+            //if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
+            //{
+            //    if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            //    {
+            //        Stopwatch stopWatch = new Stopwatch();
+            //        stopWatch.Start(); // Inicia o cronômetro
 
-                    MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
-                    Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(UserControl_ActiveDocument);
+            //        //MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+            //        MyUserControl UserControl_ActiveWindow = Globals.ThisAddIn.Dicionario_Window_e_UserControl[Globals.ThisAddIn.Application.ActiveWindow];
 
-                    foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-                    {
-                        // Limita o tempo de processamento a 0.2 segundos
-                        if (stopWatch.Elapsed.TotalSeconds > 0.2)
-                            break;
+            //        UserControl_ActiveWindow.Remove_Destaque_Botoes();
 
-                        Microsoft.Office.Interop.Word.Style estilo = null;
-                        if (p.Range.StoryType == WdStoryType.wdMainTextStory)
-                        {
-                            try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //        foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            //        {
+            //            // Limita o tempo de processamento a 0.2 segundos
+            //            if (stopWatch.Elapsed.TotalSeconds > 0.2)
+            //                break;
 
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
-                            }
-                        }
-                        if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
-                        {
-                            try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
-                            }
-                        }
-                    }
-                }
-            }
+            //            Microsoft.Office.Interop.Word.Style estilo = null;
+            //            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+            //            {
+            //                try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+            //                if (estilo != null && UserControl_ActiveWindow.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+            //                {
+            //                    System.Windows.Forms.Button botao = UserControl_ActiveWindow.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+            //                    UserControl_ActiveWindow.Habilita_Destaca(botao, true, true);
+            //                }
+            //            }
+            //            if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+            //            {
+            //                try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //                if (estilo != null && UserControl_ActiveWindow.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+            //                {
+            //                    System.Windows.Forms.Button botao = UserControl_ActiveWindow.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+            //                    UserControl_ActiveWindow.Habilita_Destaca(botao, true, true);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
         private void Metodo_AnyButtonClick_TaskPane(object sender, EventArgs e)
         {
             //System.Windows.MessageBox.Show("AnyButtonClick_TaskPane");
 
             //Declara instacias das classes
-            MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+            //MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
+            //MyUserControl UserControl_ActiveWindow = Globals.ThisAddIn.Dicionario_Window_e_UserControl[Globals.ThisAddIn.Application.ActiveWindow];
 
-            //Revisa o destaque dos botoes do TaskPane
-            if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
-            {
-                if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
-                {
-                    Stopwatch stopWatch = new Stopwatch();
-                    stopWatch.Start(); // Inicia o cronômetro
+            if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.TryGetValue(Globals.ThisAddIn.Application.ActiveWindow, out MyUserControl UserControl_ActiveWindow)) return;
+            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl_ActiveWindow.Atualiza_Destaque_Botoes();
 
-                    Globals.ThisAddIn.iMyUserControl.Remove_Destaque_Botoes(UserControl_ActiveDocument);
+            ////Revisa o destaque dos botoes do TaskPane
+            //if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)
+            //{
+            //    if (Globals.ThisAddIn.CustomTaskPanes.Count > 0)
+            //    {
+            //        Stopwatch stopWatch = new Stopwatch();
+            //        stopWatch.Start(); // Inicia o cronômetro
 
-                    foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
-                    {
-                        // Limita o tempo de processamento a 0.2 segundos
-                        if (stopWatch.Elapsed.TotalSeconds > 0.2)
-                            break;
+            //        //UserControl_ActiveDocument.Remove_Destaque_Botoes();
+            //        UserControl_ActiveWindow.Remove_Destaque_Botoes();
 
-                        Microsoft.Office.Interop.Word.Style estilo = null;
-                        if (p.Range.StoryType == WdStoryType.wdMainTextStory)
-                        {
-                            try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //        foreach (Microsoft.Office.Interop.Word.Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            //        {
+            //            // Limita o tempo de processamento a 0.2 segundos
+            //            if (stopWatch.Elapsed.TotalSeconds > 0.2)
+            //                break;
 
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
-                            }
-                        }
-                        if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
-                        {
-                            try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                            if (estilo != null && UserControl_ActiveDocument.dict_estilo_e_botao.ContainsKey(estilo.NameLocal))
-                            {
-                                System.Windows.Forms.Button botao = UserControl_ActiveDocument.dict_estilo_e_botao[estilo.NameLocal];
-                                UserControl_ActiveDocument.Habilita_Destaca(botao, true, true);
-                            }
-                        }
-                    }
-                }
-            }
+            //            Microsoft.Office.Interop.Word.Style estilo = null;
+            //            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+            //            {
+            //                try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+            //                if (estilo != null && UserControl_ActiveWindow.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+            //                {
+            //                    System.Windows.Forms.Button botao = UserControl_ActiveWindow.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+            //                    UserControl_ActiveWindow.Habilita_Destaca(botao, true, true);
+            //                }
+            //            }
+            //            if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+            //            {
+            //                try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+            //                if (estilo != null && UserControl_ActiveWindow.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+            //                {
+            //                    System.Windows.Forms.Button botao = UserControl_ActiveWindow.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+            //                    UserControl_ActiveWindow.Habilita_Destaca(botao, true, true);
+            //                }
+            //            }
+            //        }
+            //    }
+            //}
         }
     }
 }

@@ -14,8 +14,12 @@ namespace PeriTAB
     public partial class MyUserControl : UserControl
     {
         // Dicionário de instância para mapear o nome do estilo ao botão
-        public readonly Dictionary<string, Button> dict_estilo_e_botao = new Dictionary<string, Button>();
-        public readonly Dictionary<Button, string> dict_botao_e_estilo = new Dictionary<Button, string>();
+        public readonly Dictionary<string, Button> Dicionario_Estilo_e_Botao = new Dictionary<string, Button>();
+        public readonly Dictionary<Button, string> Dicionario_Botao_e_Estilo = new Dictionary<Button, string>();
+
+        public Microsoft.Office.Tools.CustomTaskPane TaskPane { get; internal set; }
+        public Document Document { get; internal set; }
+
         public MyUserControl()
         {
             InitializeComponent();
@@ -45,11 +49,11 @@ namespace PeriTAB
             // Dicionário associando os botões aos seus estilos (Preenche o dicionário usando um loop)
             foreach (var item in estilos_e_botoes)
             {
-                dict_estilo_e_botao.Add(item.Item1, item.Item2);
+                Dicionario_Estilo_e_Botao.Add(item.Item1, item.Item2);
             }
 
             // Implementa o dicionario invertido
-            dict_botao_e_estilo = dict_estilo_e_botao.ToDictionary(par => par.Value, par => par.Key);
+            Dicionario_Botao_e_Estilo = Dicionario_Estilo_e_Botao.ToDictionary(par => par.Value, par => par.Key);
         }
 
         private void MyUserControl_Load(object sender, EventArgs e)
@@ -67,9 +71,9 @@ namespace PeriTAB
             Globals.ThisAddIn.Application.ScreenUpdating = false;
 
             Importa_todos_estilos();
-            string estilo_nome = dict_botao_e_estilo[sender as Button];
+            string estilo_nome = Dicionario_Botao_e_Estilo[sender as Button];
 
-            //await Tarefa.Run(() => DEU ERRO NA HORA DE PINTAR A TASKPANE - TEM QUE OBRIGAR A VERIFICAR A PINTURA DA TASKPANE DEPOIS DE RODAR ESSA TASK. COMO FAZ PARA ORDENAR ESSAS AÇÕES?
+            //await Task.Run(() => DEU ERRO NA HORA DE PINTAR A TASKPANE - TEM QUE OBRIGAR A VERIFICAR A PINTURA DA TASKPANE DEPOIS DE RODAR ESSA TASK. COMO FAZ PARA ORDENAR ESSAS AÇÕES?
             //{
             Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
             List<Paragraph> list_Paragraph = new List<Paragraph>();
@@ -347,7 +351,7 @@ namespace PeriTAB
             }
         }
 
-        private void Alinha_Texto_de_Figura(Paragraph p)
+        public void Alinha_Texto_de_Figura(Paragraph p)
         {
             if ((((Microsoft.Office.Interop.Word.Style)p.get_Style()).NameLocal.ToString()) == "13 - Texto de Figuras (PeriTAB)")
             {
@@ -477,14 +481,14 @@ namespace PeriTAB
 
         public void Importa_todos_estilos()
         {
-            List<string> listaEstilos = dict_estilo_e_botao.Keys.ToList();
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Normal", WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Legenda", WdOrganizerObject.wdOrganizerObjectStyles);
+            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Texto de nota de rodapé", WdOrganizerObject.wdOrganizerObjectStyles);
+            List<string> listaEstilos = Dicionario_Estilo_e_Botao.Keys.ToList();
             foreach (string estilo in listaEstilos)
             {
-                Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo, WdOrganizerObject.wdOrganizerObjectStyles);
+                Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo, WdOrganizerObject.wdOrganizerObjectStyles);
             }
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Normal", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Legenda", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Texto de nota de rodapé", WdOrganizerObject.wdOrganizerObjectStyles);
         }
 
         private void Deleta_Paragrafos_Em_Branco(Paragraph paragrafoInicial, Paragraph paragrafoDirecao) // pode ser p.Previous() ou p.Next()
@@ -523,19 +527,61 @@ namespace PeriTAB
             }
         }
 
-        public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
+        public void Atualiza_Destaque_Botoes()
         {
-            b.Enabled = habilita;
-            if (destaca) { b.BackColor = SystemColors.Highlight; b.ForeColor = SystemColors.HighlightText; }
+            Remove_Destaque_Botoes();
+
+            if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+            {
+                List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
+
+                foreach (Paragraph p in paragrafosSelecionados)
+                {
+                    Style estilo = null;
+                    if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+                    {
+                        try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+                        if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                        {
+                            System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+                            Destaca(botao);
+                        }
+                    }
+                    if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+                    {
+                        Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a selação)
+                        try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                        Selecao_inicial.Select(); // Restaura a seleção inicial
+                        if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                        {
+                            System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+                            Destaca(botao);
+                        }
+                    }
+                }
+            }
+        }
+        //public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
+        //{
+        //    b.Enabled = habilita;
+        //    if (destaca) { b.BackColor = SystemColors.Highlight; b.ForeColor = SystemColors.HighlightText; }
+        //}
+
+        private void Destaca(Button b)
+        {
+            b.BackColor = SystemColors.Highlight;
+            b.ForeColor = SystemColors.HighlightText; 
         }
 
-        public void Remove_Destaque_Botoes(MyUserControl UserControl)
+        private void Remove_Destaque_Botoes()
         {
-            foreach (var botao in UserControl.Controls.OfType<Button>())
+            foreach (var botao in this.Controls.OfType<Button>())
             {
                 botao.BackColor = SystemColors.Control;
                 botao.ForeColor = SystemColors.ControlText;
             }
         }
+
     }
 }

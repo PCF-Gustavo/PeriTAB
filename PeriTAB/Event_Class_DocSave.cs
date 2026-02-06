@@ -1,11 +1,14 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Threading;
-using Tarefa = System.Threading.Tasks.Task;
+using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
     internal class Class_DocSave_Event
     {
+        private readonly Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
+
         public void Evento_DocSave()
         {
             Globals.ThisAddIn.Application.DocumentBeforeSave += new ApplicationEvents4_DocumentBeforeSaveEventHandler(Metodo_DocumentBeforeSave);
@@ -13,12 +16,12 @@ namespace PeriTAB
 
         public void Metodo_DocumentBeforeSave(Document Doc, ref bool SaveAsUI, ref bool Cancel)
         {
-            espera_salvar(); //Cria a thread  que chama o Metodo_DocumentAfterSave()
+            Espera_salvar(); //Cria a thread  que chama o Metodo_DocumentAfterSave()
         }
 
-        private void espera_salvar()
+        private void Espera_salvar()
         {
-            Tarefa.Run(() =>
+            Task.Run(() =>
             {
                 while (true)
                 {
@@ -49,22 +52,22 @@ namespace PeriTAB
             });
         }
 
-        public void Metodo_DocumentAfterSave()
+        private void Metodo_DocumentAfterSave()
         {
             //Declara instacias das classes
-            Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
+            //Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
 
-            //Revisa a habilitação do botao "Abre SISCRIM" do Ribbon
-            iClass_RibbonControls.button_abre_SISCRIM_valorinicial();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_abre_SISCRIM.Enabled = false; Globals.Ribbons.Ribbon.button_abre_SISCRIM.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_abre_SISCRIM.SuperTip = "Este documento ainda não foi salvo."; }
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.Button_renomeia_documento);
+            iClass_RibbonControls.Atualiza_Habilitacao(Globals.Ribbons.Ribbon.Button_gera_pdf);
 
-            //Revisa a habilitação do botao "Renomeia Documento" do Ribbon
-            iClass_RibbonControls.button_renomeia_documento_valorinicial();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
 
-            //Revisa a habilitação do botao "Gera PDF" do Ribbon
-            iClass_RibbonControls.button_gera_pdf_valorinicial();
-            if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
+            ////Revisa a habilitação do botao "Renomeia Documento" do Ribbon
+            //iClass_RibbonControls.Button_renomeia_documento_valorinicial();
+            //if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.Button_renomeia_documento.Enabled = false; Globals.Ribbons.Ribbon.Button_renomeia_documento.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.Button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo."; }
+
+            ////Revisa a habilitação do botao "Gera PDF" do Ribbon
+            //iClass_RibbonControls.Button_gera_pdf_valorinicial();
+            //if (Globals.ThisAddIn.Application.ActiveDocument.Path == "") { Globals.Ribbons.Ribbon.Button_gera_pdf.Enabled = false; Globals.Ribbons.Ribbon.Button_gera_pdf.ScreenTip = "Desabilitado"; Globals.Ribbons.Ribbon.Button_gera_pdf.SuperTip = "Este documento ainda não foi salvo."; }
         }
     }
 }

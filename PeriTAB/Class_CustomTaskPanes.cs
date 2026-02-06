@@ -1,23 +1,50 @@
 ﻿using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Threading;
+using System.Windows.Controls;
 using System.Windows.Forms;
-using Tarefa = System.Threading.Tasks.Task;
+using Button = System.Windows.Forms.Button;
+using CustomTaskPane = Microsoft.Office.Tools.CustomTaskPane;
+using System.Threading.Tasks;
+using System.Runtime.InteropServices;
+using Task = System.Threading.Tasks.Task;
+
+internal static class NativeMethods
+{
+    [DllImport("user32.dll")]
+    public static extern IntPtr GetForegroundWindow();
+}
 
 namespace PeriTAB
 {
     public class Class_CustomTaskPanes
     {
-        public void Redimensionar(MyUserControl MyUserControl, Microsoft.Office.Tools.CustomTaskPane CustomTaskPane)
-        {
-            CustomTaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
-            CustomTaskPane.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
+        //private readonly Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
 
-            var screenArea = Screen.PrimaryScreen.WorkingArea;
-            float dpiFactor = 96f / Graphics.FromHwnd(IntPtr.Zero).DpiX;
+        //private MyUserControl UserControl;
+        //private readonly CustomTaskPane TaskPane;
+
+        //public static Microsoft.Office.Tools.CustomTaskPane iTaskPane;
+
+        public void Redimensionar(MyUserControl MyUserControl)
+        {
+            MyUserControl.TaskPane.DockPosition = MsoCTPDockPosition.msoCTPDockPositionBottom;
+            MyUserControl.TaskPane.DockPositionRestrict = MsoCTPDockPositionRestrict.msoCTPDockPositionRestrictNoChange;
+
+            IntPtr hwndWord = NativeMethods.GetForegroundWindow();
+            Screen screenDoWord = Screen.FromHandle(hwndWord);
+            var screenArea = screenDoWord.WorkingArea;
+
+            float dpiFactor;
+            using (Graphics g = Graphics.FromHwnd(hwndWord))
+            {
+                dpiFactor = 96f / g.DpiX;
+            }
 
             int taskPaneWidth = screenArea.Width;
             taskPaneWidth = (int)(taskPaneWidth * 0.99); // Reduzir a largura do painel em 1% para evitar a barra de rolagem horizontal
@@ -45,7 +72,7 @@ namespace PeriTAB
             int headerHeight = (int)(50 / dpiFactor); // Ajuste do DPI para altura do cabeçalho
             int taskPaneHeight = buttonHeight + headerHeight + 2 * spacingHeight;
 
-            CustomTaskPane.Height = taskPaneHeight;
+            MyUserControl.TaskPane.Height = taskPaneHeight;
 
             list_botoes = list_botoes.OrderBy(b => b.Location.X).ToList(); // Ordenar os botões pela posição X
 
@@ -64,7 +91,9 @@ namespace PeriTAB
                 botao.Location = new System.Drawing.Point(currentX, spacingHeight);
 
                 // Aplicar o tamanho de fonte ajustado para todos os botões
+                //System.Drawing.Font fonteAntiga = botao.Font;
                 botao.Font = new System.Drawing.Font(botao.Font.FontFamily, maxFontSize);
+                //fonteAntiga.Dispose();
 
                 // Atualizar a coordenada X para o próximo botão
                 currentX += buttonWidth + spacingWidth;  // Atualizar a posição X para o próximo botão
@@ -136,16 +165,22 @@ namespace PeriTAB
             return tamanhoMaximo; // Retorna o maior tamanho de fonte que cabe em todos os botões
         }
 
+        //public void Visible(bool b)
+        //{
+        //    foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values) CTP.Visible = b;
+        //}
         public void Visible(bool b)
         {
-            foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Class_New_or_Open_Event.Dicionario_Doc_e_TaskPane.Values) CTP.Visible = b;
+            foreach (MyUserControl uc in Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values) { uc.TaskPane.Visible = b; }
+
+            //foreach (Microsoft.Office.Tools.CustomTaskPane CTP in Globals.ThisAddIn.Dicionario_Window_e_TaskPane.Values) CTP.Visible = b;
         }
 
         public void MyCustomTaskPane_VisibleChanged(object sender, EventArgs e)
         {
-            Tarefa.Run(() =>
+            Task.Run(() =>
             {
-                if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) // Se o botão do Ribbon estiver marcado
+                if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) // Se o botão do Ribbon estiver marcado
                 {
                     if (((Microsoft.Office.Tools.CustomTaskPane)sender).Visible == false) // Se o painel de estilos foi fechado
                     {
@@ -154,5 +189,76 @@ namespace PeriTAB
                 }
             });
         }
+
+        //public (MyUserControl,CustomTaskPane) AddUserControl_and_TaskPane(Microsoft.Office.Interop.Word.Document Doc)
+        //{
+        //    UserControl = new MyUserControl();
+        //    UserControl.AutoScroll = true;
+
+        //    //Globals.ThisAddIn.iMyUserControl = new MyUserControl();
+        //    //Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+
+        //    iClass_AnyButtonClick_Event.Evento_AnyButtonClick(UserControl);
+
+        //    iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(UserControl, "Painel de Estilos (PeriTAB)");
+        //    iTaskPane.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+        //    Redimensionar(UserControl, iTaskPane);
+        //    if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
+
+        //    return (UserControl, iTaskPane);
+        //}
+
+        //public (MyUserControl, CustomTaskPane) AddUserControl_and_TaskPane(Window Wn)
+        //{
+        //    UserControl = new MyUserControl { AutoScroll = true };
+
+        //    //Globals.ThisAddIn.iMyUserControl = new MyUserControl();
+        //    //Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+
+        //    iClass_AnyButtonClick_Event.Evento_AnyButtonClick(UserControl);
+
+        //    iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(UserControl, "Painel de Estilos (PeriTAB)", Wn);
+        //    iTaskPane.VisibleChanged += MyCustomTaskPane_VisibleChanged;
+        //    Redimensionar(UserControl, iTaskPane);
+        //    if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
+
+        //    return (UserControl, iTaskPane);
+        //}
+
+        //public static void Atualiza_Destaques(MyUserControl UserControl)
+        //{
+        //    UserControl.Remove_Destaque_Botoes();
+
+        //    if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+        //    {
+        //        List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
+
+        //        foreach (Paragraph p in paragrafosSelecionados)
+        //        {
+        //            Style estilo = null;
+        //            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+        //            {
+        //                try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+        //                if (estilo != null && UserControl.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+        //                {
+        //                    System.Windows.Forms.Button botao = UserControl.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+        //                    UserControl.Habilita_Destaca(botao, true, true);
+        //                }
+        //            }
+        //            if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+        //            {
+        //                Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a selação)
+        //                try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+        //                Selecao_inicial.Select(); // Restaura a seleção inicial
+        //                if (estilo != null && UserControl.Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+        //                {
+        //                    System.Windows.Forms.Button botao = UserControl.Dicionario_Estilo_e_Botao[estilo.NameLocal];
+        //                    UserControl.Habilita_Destaca(botao, true, true);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

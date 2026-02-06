@@ -1,7 +1,7 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
-using Tarefa = System.Threading.Tasks.Task;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Linq;
 
@@ -18,29 +18,19 @@ namespace PeriTAB
 
         private async void Por_Extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            RibbonButton RibbonButton = (RibbonButton)sender;
-            String Botao_Label = RibbonButton.Label;
-            System.Drawing.Image RibbonButton_Imagem_inicial = RibbonButton.Image;
-            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
-            RibbonButton.Enabled = false;
-            bool success = true;
-            string msg_Falha = string.Empty;
-
-
-            await Tarefa.Run(() =>
+            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
             {
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
-                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+                String Botao_Label = ((RibbonButton)sender).Label;
                 Selection Selecao = Globals.ThisAddIn.Application.Selection;
-                Range Selecao_inicial = Selecao.Range.Duplicate;
                 Range Selecao_anterior = null;
-                string unidade = dropDown_unidade.SelectedItem.Label.Split('(', ')')[1];
+                string unidade = DropDown_unidade.SelectedItem.Label.Split('(', ')')[1];
                 bool unidade_encontrada = false;
 
                 if (Selecao.Text.Count() == 1)
                 {
                     while (true)
                     {
+                        await progress.Tick_50ms();
                         Selecao_anterior = Selecao.Previous(WdUnits.wdCharacter, 1);
                         if (Selecao_anterior != null)
                         {
@@ -51,7 +41,7 @@ namespace PeriTAB
                             }
                             else
                             {
-                                if (!unidade_encontrada && Botao_Label.Equals("Massa / Volume") && Selecao.Range.Text.EndsWith(dropDown_unidade.SelectedItem.Label.Split('(', ')')[1]))
+                                if (!unidade_encontrada && Botao_Label.Equals("Massa / Volume") && Selecao.Range.Text.EndsWith(DropDown_unidade.SelectedItem.Label.Split('(', ')')[1]))
                                 {
                                     while (true)
                                     {
@@ -75,7 +65,7 @@ namespace PeriTAB
                         else break;
                     }
                     String numero_selecionado = Selecao.Text;
-                    if (unidade_encontrada) numero_selecionado = numero_selecionado.Replace(unidade,"").Trim();
+                    if (unidade_encontrada) numero_selecionado = numero_selecionado.Replace(unidade, "").Trim();
 
                     Selecao_anterior = Selecao.Previous(WdUnits.wdCharacter, 1);
                     if (Selecao_anterior != null)
@@ -88,8 +78,8 @@ namespace PeriTAB
 
                     if (decimal.TryParse(numero_selecionado, out decimal numero))
                     {
-                        if (numero >= 1000000000000000000) { success = false; msg_Falha = "Número máximo permitido excedido."; }
-                        else if (Botao_Label.Equals("Número inteiro") && numero % 1 != 0) { success = false; msg_Falha = "Números inteiros não podem ter casas decimais."; }
+                        if (numero >= 1000000000000000000) { throw new Exception("Número máximo permitido excedido."); }
+                        else if (Botao_Label.Equals("Número inteiro") && numero % 1 != 0) { throw new Exception("Números inteiros não podem ter casas decimais."); }
                         else
                         {
                             string resultado = string.Empty;
@@ -107,30 +97,18 @@ namespace PeriTAB
                             }
                             if (Botao_Label.Equals("Massa / Volume"))
                             {
-                                int precisao = dropDown_precisao.SelectedItem.Label.Split(',')[1].Length;
+                                int precisao = DropDown_precisao.SelectedItem.Label.Split(',')[1].Length;
                                 numero = Math.Round(numero, precisao);
-                                resultado = ConverterParaMassaVolume(numero,unidade);
+                                resultado = ConverterParaMassaVolume(numero, unidade);
                                 formatoNumero = $"{numero.ToString($"N{precisao}")} {unidade}";
                             }
                             Selecao.TypeText($"{formatoNumero} ({resultado})");
                         }
                     }
-                    else { success = false; msg_Falha = "Posicione o cursor ao final de um número válido."; }
+                    else { throw new Exception("Posicione o cursor ao final de um número válido."); }
                 }
-                else { success = false; msg_Falha = "Posicione o cursor ao final de um número válido."; }
-
-                if (!success)
-                {
-                    MessageBox.Show(msg_Falha, Botao_Label, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    Selecao_inicial.Select();
-                }
-
-                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
-                Globals.ThisAddIn.Application.ScreenUpdating = true;
-            });
-
-            RibbonButton.Image = RibbonButton_Imagem_inicial;
-            RibbonButton.Enabled = true;
+                else { throw new Exception("Posicione o cursor ao final de um número válido."); }
+            }, desabilitar_ScreenUpdating: true);
         }
 
         private static string ConverterParaMoeda(decimal numero)
@@ -231,9 +209,6 @@ namespace PeriTAB
             return resultado;
         }
 
-
-
-
         private static string ConverterParaExtenso(decimal numero)
         {
             if (numero == 0) return "zero";
@@ -326,46 +301,42 @@ namespace PeriTAB
             return resultado;
         }
 
+        //private async void button_moeda_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    RibbonButton RibbonButton = (RibbonButton)sender;
+        //    RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+        //    RibbonButton.Enabled = false;
 
+        //    await Task.Run(() =>
+        //    {
+        //        Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+        //        Globals.ThisAddIn.Application.Run("moeda_por_extenso");
+        //        Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+        //    });
 
+        //    RibbonButton.Image = Properties.Resources.dinheiro;
+        //    RibbonButton.Enabled = true;
+        //}
 
+        //private async void button_inteiro_Click(object sender, RibbonControlEventArgs e)
+        //{
+        //    // Atualiza a UI na Thread principal
+        //    RibbonButton RibbonButton = (RibbonButton)sender;
+        //    RibbonButton.Image = Properties.Resources.load_icon_png_7969;
+        //    RibbonButton.Enabled = false;
 
-        private async void button_moeda_Click(object sender, RibbonControlEventArgs e)
-        {
-            RibbonButton RibbonButton = (RibbonButton)sender;
-            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
-            RibbonButton.Enabled = false;
+        //    // Executa as tarefas em segundo plano
+        //    await Task.Run(() =>
+        //    {
+        //        Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+        //        Globals.ThisAddIn.Application.Run("inteiro_por_extenso");
+        //        Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+        //    });
 
-            await Tarefa.Run(() =>
-            {
-                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-                Globals.ThisAddIn.Application.Run("moeda_por_extenso");
-                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
-            });
-
-            RibbonButton.Image = Properties.Resources.dinheiro;
-            RibbonButton.Enabled = true;
-        }
-
-        private async void button_inteiro_Click(object sender, RibbonControlEventArgs e)
-        {
-            // Atualiza a UI na Thread principal
-            RibbonButton RibbonButton = (RibbonButton)sender;
-            RibbonButton.Image = Properties.Resources.load_icon_png_7969;
-            RibbonButton.Enabled = false;
-
-            // Executa as tarefas em segundo plano
-            await Tarefa.Run(() =>
-            {
-                Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
-                Globals.ThisAddIn.Application.Run("inteiro_por_extenso");
-                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
-            });
-
-            // Após a execução das tarefas, atualiza a UI na Thread principal
-            RibbonButton.Image = Properties.Resources.numero;
-            RibbonButton.Enabled = true;
-        }
+        //    // Após a execução das tarefas, atualiza a UI na Thread principal
+        //    RibbonButton.Image = Properties.Resources.numero;
+        //    RibbonButton.Enabled = true;
+        //}
 
         // Função para obter a próxima seção
         

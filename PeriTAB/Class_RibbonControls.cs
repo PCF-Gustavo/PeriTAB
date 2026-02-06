@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Tools.Ribbon;
+﻿using Microsoft.Office.Interop.Word;
+using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,61 +12,60 @@ namespace PeriTAB
     {
         public void Configura_Valores_iniciais()
         {
-            button_renomeia_documento_valorinicial();
-            button_gera_pdf_valorinicial();
-            button_abre_SISCRIM_valorinicial();
+            Button_renomeia_documento_valorinicial();
+            Button_gera_pdf_valorinicial();
 
             // Atribuição das preferências
-            dropDown_unidade_valorinicial();
-            dropDown_precisao_valorinicial();
-            toggleButton_painel_de_estilos_valorinicial();
-            checkBox_largura_valorinicial();
-            checkBox_altura_valorinicial();
-            editBox_largura_valorinicial();
-            editBox_altura_valorinicial();
-            dropDown_separador_valorinicial();
-            checkBox_assinar_valorinicial();
-            checkBox_abrir_valorinicial();
+            DropDown_unidade_valorinicial();
+            DropDown_precisao_valorinicial();
+            ToggleButton_painel_de_estilos_valorinicial();
+            CheckBox_largura_valorinicial();
+            CheckBox_altura_valorinicial();
+            EditBox_largura_valorinicial();
+            EditBox_altura_valorinicial();
+            DropDown_separador_valorinicial();
+            CheckBox_assinar_valorinicial();
+            CheckBox_abrir_valorinicial();
         }
 
-        public void toggleButton_painel_de_estilos_valorinicial()
+        private void ToggleButton_painel_de_estilos_valorinicial()
         {
-            Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked = bool.Parse(GetPreference("painel_de_estilos"));
+            Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked = bool.Parse(Retorna_preferencia("painel_de_estilos"));
         }
 
-        public void checkBox_largura_valorinicial()
+        private void CheckBox_largura_valorinicial()
         {
-            Globals.Ribbons.Ribbon.checkBox_largura.Checked = bool.Parse(GetPreference("largura_checked"));
+            Globals.Ribbons.Ribbon.CheckBox_largura.Checked = bool.Parse(Retorna_preferencia("largura_checked"));
         }
-        public void editBox_largura_valorinicial()
+        private void EditBox_largura_valorinicial()
         {
-            Globals.Ribbons.Ribbon.editBox_largura.Enabled = bool.Parse(GetPreference("largura_checked"));
-            if (Globals.Ribbons.Ribbon.checkBox_largura.Checked) { Globals.Ribbons.Ribbon.editBox_largura.Text = GetPreference("largura"); }
+            Globals.Ribbons.Ribbon.EditBox_largura.Enabled = bool.Parse(Retorna_preferencia("largura_checked"));
+            if (Globals.Ribbons.Ribbon.CheckBox_largura.Checked) { Globals.Ribbons.Ribbon.EditBox_largura.Text = Retorna_preferencia("largura"); }
 
         }
 
-        public void checkBox_altura_valorinicial()
+        private void CheckBox_altura_valorinicial()
         {
-            Globals.Ribbons.Ribbon.checkBox_altura.Checked = !bool.Parse(GetPreference("largura_checked"));
+            Globals.Ribbons.Ribbon.CheckBox_altura.Checked = !bool.Parse(Retorna_preferencia("largura_checked"));
         }
 
-        public void editBox_altura_valorinicial()
+        private void EditBox_altura_valorinicial()
         {
-            Globals.Ribbons.Ribbon.editBox_altura.Enabled = !bool.Parse(GetPreference("largura_checked"));
-            if (Globals.Ribbons.Ribbon.checkBox_altura.Checked) { Globals.Ribbons.Ribbon.editBox_altura.Text = GetPreference("altura"); }
+            Globals.Ribbons.Ribbon.EditBox_altura.Enabled = !bool.Parse(Retorna_preferencia("largura_checked"));
+            if (Globals.Ribbons.Ribbon.CheckBox_altura.Checked) { Globals.Ribbons.Ribbon.EditBox_altura.Text = Retorna_preferencia("altura"); }
         }
 
-        public void dropDown_separador_valorinicial()
+        private void DropDown_separador_valorinicial()
         {
-            Globals.Ribbons.Ribbon.dropDown_separador.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_separador, GetPreference("separador"));
-        }        
-        public void dropDown_precisao_valorinicial()
+            Globals.Ribbons.Ribbon.DropDown_separador.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.DropDown_separador, Retorna_preferencia("separador"));
+        }
+        private void DropDown_precisao_valorinicial()
         {
-            Globals.Ribbons.Ribbon.dropDown_precisao.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_precisao, GetPreference("precisao"));
-        }        
-        public void dropDown_unidade_valorinicial()
+            Globals.Ribbons.Ribbon.DropDown_precisao.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.DropDown_precisao, Retorna_preferencia("precisao"));
+        }
+        private void DropDown_unidade_valorinicial()
         {
-            Globals.Ribbons.Ribbon.dropDown_unidade.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.dropDown_unidade, GetPreference("unidade"));
+            Globals.Ribbons.Ribbon.DropDown_unidade.SelectedItem = GetDropDownItemFromLabel(Globals.Ribbons.Ribbon.DropDown_unidade, Retorna_preferencia("unidade"));
         }
 
         private RibbonDropDownItem GetDropDownItemFromLabel(RibbonDropDown Control, string Label)
@@ -79,35 +79,29 @@ namespace PeriTAB
             }
             return null;  // Retorna null se não encontrar o item
         }
-        public void checkBox_assinar_valorinicial()
+        private void CheckBox_assinar_valorinicial()
         {
-            Globals.Ribbons.Ribbon.checkBox_assinar.Checked = bool.Parse(GetPreference("assinar_pdf"));
+            Globals.Ribbons.Ribbon.CheckBox_assinar.Checked = bool.Parse(Retorna_preferencia("assinar_pdf"));
         }
-        public void checkBox_abrir_valorinicial()
+        private void CheckBox_abrir_valorinicial()
         {
-            Globals.Ribbons.Ribbon.checkBox_abrir.Checked = bool.Parse(GetPreference("abrir_pdf"));
+            Globals.Ribbons.Ribbon.CheckBox_abrir.Checked = bool.Parse(Retorna_preferencia("abrir_pdf"));
         }
-        public void button_renomeia_documento_valorinicial()
+        public void Button_renomeia_documento_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_renomeia_documento.Enabled = true;
-            Globals.Ribbons.Ribbon.button_renomeia_documento.ScreenTip = "";
-            Globals.Ribbons.Ribbon.button_renomeia_documento.SuperTip = "Renomeia o documento atual.";
+            Globals.Ribbons.Ribbon.Button_renomeia_documento.Enabled = true;
+            Globals.Ribbons.Ribbon.Button_renomeia_documento.ScreenTip = "";
+            Globals.Ribbons.Ribbon.Button_renomeia_documento.SuperTip = "Renomeia o documento atual.";
         }
-        public void button_gera_pdf_valorinicial()
+        public void Button_gera_pdf_valorinicial()
         {
-            Globals.Ribbons.Ribbon.button_gera_pdf.Enabled = true;
-            Globals.Ribbons.Ribbon.button_gera_pdf.ScreenTip = "";
-            Globals.Ribbons.Ribbon.button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";
-        }
-        public void button_abre_SISCRIM_valorinicial()
-        {
-            Globals.Ribbons.Ribbon.button_abre_SISCRIM.Enabled = true;
-            Globals.Ribbons.Ribbon.button_abre_SISCRIM.ScreenTip = "";
-            Globals.Ribbons.Ribbon.button_abre_SISCRIM.SuperTip = "Abre SISCRIM na página do Laudo ou da Requisição.";
+            Globals.Ribbons.Ribbon.Button_gera_pdf.Enabled = true;
+            Globals.Ribbons.Ribbon.Button_gera_pdf.ScreenTip = "";
+            Globals.Ribbons.Ribbon.Button_gera_pdf.SuperTip = "Gera o PDF do documento na pasta onde está salvo.";
         }
 
         //Dicionario de preferencias com valores iniciais padrao
-        private static Dictionary<string, string> dict_preferences_campo_e_valor = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> Dicionario_preferencias_campo_e_valor = new Dictionary<string, string>()
         {
              { "unidade", "quilograma (kg)" }
             ,{ "precisao", "0,00" }
@@ -121,35 +115,35 @@ namespace PeriTAB
         };
 
         // Função para obter o valor de uma preferência
-        public static string GetPreference(string key)
+        public static string Retorna_preferencia(string key)
         {
             // Verifica se a chave existe e retorna o valor, ou retorna null
-            return dict_preferences_campo_e_valor.ContainsKey(key) ? dict_preferences_campo_e_valor[key] : null;
+            return Dicionario_preferencias_campo_e_valor.ContainsKey(key) ? Dicionario_preferencias_campo_e_valor[key] : null;
         }
 
         // Função para atualizar o dicionario de preferencias com as informacoes do arquivo preferences.xml
-        public static void ChangePreference(string key, string value)
+        public static void Muda_preferencia(string key, string value)
         {
             // Verifica se a chave existe no dicionário
-            if (dict_preferences_campo_e_valor.ContainsKey(key))
+            if (Dicionario_preferencias_campo_e_valor.ContainsKey(key))
             {
                 // Altera o valor da chave existente
-                dict_preferences_campo_e_valor[key] = value;
+                Dicionario_preferencias_campo_e_valor[key] = value;
             }
         }
 
-        public void le_preferencias(string caminho_preferences)
+        public void Le_preferencias(string caminho_preferences)
         {
-            if (File.Exists(Ribbon.Variables.caminho_preferences))
+            if (File.Exists(Ribbon.Variables.Caminho_preferences))
             {
                 XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.Load(Ribbon.Variables.caminho_preferences);
+                xmlDoc.Load(Ribbon.Variables.Caminho_preferences);
                 XmlElement root = xmlDoc.DocumentElement;
 
-                List<String> list_key = dict_preferences_campo_e_valor.Keys.ToList();
+                List<String> list_key = Dicionario_preferencias_campo_e_valor.Keys.ToList();
                 foreach (var key in list_key)
                 {
-                    dict_preferences_campo_e_valor[key] = GetElementValue(root, key, dict_preferences_campo_e_valor[key]);
+                    Dicionario_preferencias_campo_e_valor[key] = GetElementValue(root, key, Dicionario_preferencias_campo_e_valor[key]);
                 }
             }
         }
@@ -159,6 +153,51 @@ namespace PeriTAB
             XmlNode node = root.SelectSingleNode(tagName);
             return node != null ? node.InnerText : defaultValue;
         }
+
+        public void Atualiza_Habilitacao(Microsoft.Office.Tools.Ribbon.RibbonControl oRibbonControl) 
+        {
+            try
+            {
+                if (false) { }
+                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.Button_renomeia_documento))
+                {
+                    Button_renomeia_documento_valorinicial();
+                    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "")
+                    {
+                        Globals.Ribbons.Ribbon.Button_renomeia_documento.Enabled = false;
+                        Globals.Ribbons.Ribbon.Button_renomeia_documento.ScreenTip = "Desabilitado";
+                        Globals.Ribbons.Ribbon.Button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo.";
+                    }
+                    return;
+                }
+                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.Button_gera_pdf))
+                {
+                    Button_gera_pdf_valorinicial();
+                    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "")
+                    {
+                        Globals.Ribbons.Ribbon.Button_gera_pdf.Enabled = false;
+                        Globals.Ribbons.Ribbon.Button_gera_pdf.ScreenTip = "Desabilitado";
+                        Globals.Ribbons.Ribbon.Button_gera_pdf.SuperTip = "Este documento ainda não foi salvo.";
+                    }
+                    return;
+                }
+                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.CheckBox_destaca_campos))
+                {
+                    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = true;
+                    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2)
+                        Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = false;
+                    return;
+                }
+                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores))
+                {
+                    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = true;
+                    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = false;
+                    return;
+                }
+            }
+            catch (System.Runtime.InteropServices.COMException)
+            { }
+            }
 
     }
 

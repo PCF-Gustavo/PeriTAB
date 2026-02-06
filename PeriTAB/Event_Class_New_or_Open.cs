@@ -1,5 +1,6 @@
 ﻿using Microsoft.Office.Interop.Word;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using System.Threading;
 
 namespace PeriTAB
@@ -12,7 +13,7 @@ namespace PeriTAB
 
         Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
 
-        public static Microsoft.Office.Tools.CustomTaskPane iTaskPane;
+        //public static Microsoft.Office.Tools.CustomTaskPane iTaskPane;
         public static Dictionary<Microsoft.Office.Interop.Word.Document, Microsoft.Office.Tools.CustomTaskPane> Dicionario_Doc_e_TaskPane = new Dictionary<Microsoft.Office.Interop.Word.Document, Microsoft.Office.Tools.CustomTaskPane>();
 
         public void Evento_New_or_Open()
@@ -22,29 +23,37 @@ namespace PeriTAB
         }
         public void Metodo_New_or_Open(Microsoft.Office.Interop.Word.Document Doc)
         {
-            var syncContext = SynchronizationContext.Current;
+            //var syncContext = SynchronizationContext.Current;
             // Executa as tarefas em segundo plano
             //System.Windows.Forms.MessageBox.Show("new or open");
-            iClass_DocumentClose_Event.Tracking_OpenDocumentNumber();
-
-            iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
+            
+            
+            //iClass_DocumentClose_Event.Tracking_OpenDocumentNumber();
+            //iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
 
             // Cria um novo UserControl e um novo CustomTaskPane para cada documento aberto
-            if (!Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
-            {
-                //************** precisa criar 1 usercontrol para cada documento aberto????? **************
-                Globals.ThisAddIn.iMyUserControl = new MyUserControl();
-                Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
+            //if (!Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
+            //{
+            //    //************** precisa criar 1 usercontrol para cada documento aberto????? **************
+            //    Globals.ThisAddIn.iMyUserControl = new MyUserControl();
+            //    Globals.ThisAddIn.iMyUserControl.AutoScroll = true;
 
-                iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
+            //    iClass_AnyButtonClick_Event.Evento_AnyButtonClick(Globals.ThisAddIn.iMyUserControl);
 
-                iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
-                Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, Globals.ThisAddIn.iMyUserControl);
-                Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
-                iTaskPane.VisibleChanged += iClass_CustomTaskPanes.MyCustomTaskPane_VisibleChanged;
-                iClass_CustomTaskPanes.Redimensionar(Globals.ThisAddIn.iMyUserControl, iTaskPane);
-                if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
-            }
+            //    iTaskPane = Globals.ThisAddIn.CustomTaskPanes.Add(Globals.ThisAddIn.iMyUserControl, "Painel de Estilos (PeriTAB)");
+            //    Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, Globals.ThisAddIn.iMyUserControl);
+            //    Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
+            //    iTaskPane.VisibleChanged += iClass_CustomTaskPanes.MyCustomTaskPane_VisibleChanged;
+            //    iClass_CustomTaskPanes.Redimensionar(Globals.ThisAddIn.iMyUserControl, iTaskPane);
+            //    if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked) iTaskPane.Visible = true; //Checa se deve mostrar o "Painel de Estilos" do Ribbon
+            //}
+
+            //if (!Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))
+            //{
+            //    var(iMyUserControl, iTaskPane) = iClass_CustomTaskPanes.AddUserControl_and_TaskPane(Doc);
+            //    Globals.ThisAddIn.Dicionario_Doc_e_UserControl.Add(Doc, iMyUserControl);
+            //    Dicionario_Doc_e_TaskPane.Add(Doc, iTaskPane);
+            //}
         }
     }
 }
