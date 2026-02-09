@@ -77,20 +77,22 @@ namespace PeriTAB
 
                     if (Globals.Ribbons.Ribbon.CheckBox_assinar.Checked)
                     {
-                        Assina_PDF(path_tmp_pdf, path_tmp_pdf_assinado);
+                        bool assinado = Assina_PDF(path_tmp_pdf, path_tmp_pdf_assinado);
 
-                        Substitui_PDF_Final(
-                            path_tmp_pdf_assinado,
-                            path_pdf_assinado,
-                            Globals.Ribbons.Ribbon.CheckBox_abrir.Checked);
+                        if (!assinado) return;
+
+                        Substitui_PDF_Final(path_tmp_pdf_assinado,path_pdf_assinado);
+
+                        if (Globals.Ribbons.Ribbon.CheckBox_abrir.Checked) System.Diagnostics.Process.Start(path_pdf_assinado);
                     }
                     else
                     {
-                        Substitui_PDF_Final(
-                            path_tmp_pdf,
-                            path_pdf,
-                            Globals.Ribbons.Ribbon.CheckBox_abrir.Checked);
+                        Substitui_PDF_Final(path_tmp_pdf, path_pdf);
+
+                        if (Globals.Ribbons.Ribbon.CheckBox_abrir.Checked) System.Diagnostics.Process.Start(path_pdf);
                     }
+
+                    
                 }
                 finally
                 {
@@ -107,7 +109,7 @@ namespace PeriTAB
             });
         }
 
-        private static void Assina_PDF(string pathPdfEntrada, string pathPdfSaida)
+        private static bool Assina_PDF(string pathPdfEntrada, string pathPdfSaida)
         {
             X509Certificate2 certClient = null;
 
@@ -143,8 +145,7 @@ namespace PeriTAB
                             "",
                             X509SelectionFlag.SingleSelection);
 
-                    if (collection.Count == 0)
-                        return; // usuário cancelou
+                    if (collection.Count == 0) throw new Exception("Nenhum certificado válido encontrado.");
 
                     certClient = collection[0];
                 }
@@ -160,6 +161,8 @@ namespace PeriTAB
 
             // ================= ASSINATURA DO PDF =================
             PdfReader inputPdf = null;
+            PdfStamper pdfStamper = null;
+            bool assinaturaConcluida = false;
 
             try
             {
@@ -167,8 +170,7 @@ namespace PeriTAB
 
                 using (FileStream signedPdf = new FileStream(pathPdfSaida, FileMode.Create))
                 {
-                    PdfStamper pdfStamper =
-                        PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
+                    pdfStamper = PdfStamper.CreateSignature(inputPdf, signedPdf, '\0');
 
                     try
                     {
@@ -184,27 +186,27 @@ namespace PeriTAB
                             null,
                             0,
                             CryptoStandard.CMS);
+
+                        assinaturaConcluida = true;
+                        return true;
                     }
                     catch (CryptographicException)
                     {
-                        // Cancelamento do PIN do token
-                        return;
-                    }
-                    finally
-                    {
-                        pdfStamper.Close();
+                        return false;
                     }
                 }
             }
             finally
             {
+                if (assinaturaConcluida && pdfStamper != null)
+                    pdfStamper.Close();
+
                 if (inputPdf != null)
                     inputPdf.Close();
             }
         }
 
-
-        private static void Substitui_PDF_Final(string pathTmp, string pathFinal, bool abrirAoFinal)
+        private static void Substitui_PDF_Final(string pathTmp, string pathFinal)
         {
             if (!File.Exists(pathTmp))
                 throw new Exception("Não foi possível gerar o PDF.");
@@ -223,8 +225,6 @@ namespace PeriTAB
 
             File.Move(pathTmp, pathFinal);
 
-            if (abrirAoFinal)
-                System.Diagnostics.Process.Start(pathFinal);
         }
 
 

@@ -15,7 +15,8 @@ namespace PeriTAB
 {
     public partial class Ribbon
     {
-        const string PeriTAB_Version = "1.2.5";
+        const string Nome_do_app = "PeriTAB";
+        const string PeriTAB_Version = "1.2.6";
         const string Arquivo_PeriTAB_Template = "PeriTAB_Template_tmp.dotm";
         const string Arquivo_preferencias = "preferences.xml";
         const string Arquivo_lista_de_arquivos_para_excluir = "arquivos_para_excluir.txt";
@@ -33,13 +34,12 @@ namespace PeriTAB
         {
             // Declara variáveis privadas
             private static readonly string private_caminho_template, private_caminho_AppData_Roaming_PeriTAB, private_caminho_preferences, private_caminho_lista_de_arquivos_para_excluir;
-            //private static AddIn private_AddIn_PeriTAB;
             private static Template private_Template_PeriTAB;
             private static readonly List<string> private_lista_arquivos_para_excluir;
             static Variables() // Bloco estático para definir o valor inicial das variáveis
             {
                 private_caminho_template = Path.GetTempPath() + Arquivo_PeriTAB_Template;
-                private_caminho_AppData_Roaming_PeriTAB = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "PeriTAB");
+                private_caminho_AppData_Roaming_PeriTAB = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), Nome_do_app);
                 private_caminho_preferences = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, Arquivo_preferencias);
                 private_caminho_lista_de_arquivos_para_excluir = Path.Combine(private_caminho_AppData_Roaming_PeriTAB, Arquivo_lista_de_arquivos_para_excluir);
                 if (File.Exists(private_caminho_lista_de_arquivos_para_excluir))
@@ -54,7 +54,6 @@ namespace PeriTAB
 
             // Declara variáveis públicas
             public static string Caminho_template { get { return private_caminho_template; } }
-            //public static AddIn AddIn_PeriTAB { get { return private_AddIn_PeriTAB; } set { private_AddIn_PeriTAB = value; } }
             public static Template Template_PeriTAB { get { return private_Template_PeriTAB; } set { private_Template_PeriTAB = value; } }
             public static string Caminho_AppData_Roaming_PeriTAB { get { return private_caminho_AppData_Roaming_PeriTAB; } }
             public static string Caminho_preferences { get { return private_caminho_preferences; } }
@@ -70,28 +69,19 @@ namespace PeriTAB
             //MessageBox.Show("Ribbon_Load");
 
             //Escreve o Template na pasta tmp e adiciona ela como suplemento.
-            try { File.WriteAllBytes(Variables.Caminho_template, Properties.Resources.Normal); }
-            catch (IOException)
-            {
-                if (!File.Exists(Variables.Caminho_template))
-                {
-                    MessageBox.Show($"{Arquivo_PeriTAB_Template} não encontrado"); Globals.ThisAddIn.Application.Quit(); return;
-                }
-            }
-            /*Variables.AddIn_PeriTAB = */Globals.ThisAddIn.Application.AddIns.Add(Variables.Caminho_template);
-            Variables.Template_PeriTAB = Retonar_Template_do_Caminho(Variables.Caminho_template);
-
-            //// Retorna o valor de PeriTAB como tipo Template
-            //foreach (Microsoft.Office.Interop.Word.Template template in Globals.ThisAddIn.Application.Templates)
+            //try { File.WriteAllBytes(Variables.Caminho_template, Properties.Resources.Normal); }
+            //catch (IOException)
             //{
-            //    if (template.Name == "PeriTAB_Template_tmp.dotm")
+            //    if (!File.Exists(Variables.Caminho_template))
             //    {
-            //        Variables.Template_PeriTAB = template;
-            //        break;
+            //        MessageBox.Show($"{Arquivo_PeriTAB_Template} não encontrado"); Globals.ThisAddIn.Application.Quit(); return;
             //    }
             //}
+            File.WriteAllBytes(Variables.Caminho_template, Properties.Resources.Normal);
+            Globals.ThisAddIn.Application.AddIns.Add(Variables.Caminho_template);
+            Variables.Template_PeriTAB = Retonar_Template_do_Caminho(Variables.Caminho_template);
 
-            Globals.Ribbons.Ribbon.label_nome.Label = "PeriTAB " + PeriTAB_Version;
+            Globals.Ribbons.Ribbon.label_nome.Label = Nome_do_app + " " + PeriTAB_Version;
 
             ThisAddIn.Excluir_arquivos_da_lista(Variables.Lista_arquivos_para_excluir);
         }
@@ -141,17 +131,7 @@ namespace PeriTAB
                         result += Math.Sqrt(j) * Math.Cos(j);
                     }
 
-                    //await iClass_Ribbon_UI_Liberator.Tick_50ms();
                     await progress.Tick_50ms((int)((i * 10.0) / total));
-
-                    //if (i == 50000)
-                    //{
-                    //    throw new Exception("Posicione o cursor ao final de um número válido.");
-                    //    //throw new Exception("");
-                    //}
-
-                    
-
                 }
             }, barra_de_progresso: true, desabilitar_ScreenUpdating: false, desabilitar_TrackRevisions: false);
         }
