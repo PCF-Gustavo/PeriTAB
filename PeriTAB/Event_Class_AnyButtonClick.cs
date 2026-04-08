@@ -2,11 +2,14 @@
 using Microsoft.Office.Tools.Ribbon;
 using System;
 using System.Diagnostics;
+using System.Threading;
 
 namespace PeriTAB
 {
     internal class Class_AnyButtonClick_Event
     {
+        private static CancellationTokenSource cancellationToken_AnyButtonClick = null;
+
         public void Evento_AnyButtonClick(MyUserControl UC)
         {
             foreach (RibbonGroup g in Globals.Ribbons.Ribbon.tab.Groups) //Loop botoes do Ribbon
@@ -101,12 +104,21 @@ namespace PeriTAB
         {
             //System.Windows.MessageBox.Show("AnyButtonClick_TaskPane");
 
+            if (cancellationToken_AnyButtonClick != null)
+            {
+                cancellationToken_AnyButtonClick.Cancel(); // Cancela a execução anterior
+                cancellationToken_AnyButtonClick.Dispose(); // Cancela a execução anterior
+            }
+
+            cancellationToken_AnyButtonClick = new CancellationTokenSource();
+            CancellationToken CancellationToken_AnyButtonClick = cancellationToken_AnyButtonClick.Token;
+
             //Declara instacias das classes
             //MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
             //MyUserControl UserControl_ActiveWindow = Globals.ThisAddIn.Dicionario_Window_e_UserControl[Globals.ThisAddIn.Application.ActiveWindow];
 
             if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.TryGetValue(Globals.ThisAddIn.Application.ActiveWindow, out MyUserControl UserControl_ActiveWindow)) return;
-            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl_ActiveWindow.Atualiza_Destaque_Botoes();
+            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl_ActiveWindow.Atualiza_Destaque_Botoes(Globals.ThisAddIn.Application.Selection, CancellationToken_AnyButtonClick);
 
             ////Revisa o destaque dos botoes do TaskPane
             //if (Globals.Ribbons.Ribbon.toggleButton_painel_de_estilos.Checked)

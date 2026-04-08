@@ -192,7 +192,6 @@
     <Compile Include="Class_RibbonControls.cs" />
     <Compile Include="IRibbonTick.cs" />
     <Compile Include="Event_Class_AnyButtonClick.cs" />
-    <Compile Include="Event_Class_DocSave2 .cs" />
     <Compile Include="Event_Class_DocSave.cs" />
     <Compile Include="Event_Class_DocChange.cs" />
     <Compile Include="Event_Class_DocumentClose.cs" />
@@ -351,9 +350,6 @@
     <None Include="Resources\formatacao2.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\load-icon-png-7969.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\peso.png" />
   </ItemGroup>
   <ItemGroup>
@@ -367,6 +363,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\emergencia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\load-icon-png-7969.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

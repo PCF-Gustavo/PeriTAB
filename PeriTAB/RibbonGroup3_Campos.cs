@@ -13,11 +13,13 @@ namespace PeriTAB
         {
             await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
             {
-                Globals.ThisAddIn.Application.OrganizerCopy(Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 1", WdOrganizerObject.wdOrganizerObjectStyles);
-                Globals.ThisAddIn.Application.OrganizerCopy(Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 2", WdOrganizerObject.wdOrganizerObjectStyles);
-                Globals.ThisAddIn.Application.OrganizerCopy(Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 3", WdOrganizerObject.wdOrganizerObjectStyles);
-                Globals.ThisAddIn.Application.OrganizerCopy(Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 4", WdOrganizerObject.wdOrganizerObjectStyles);
-                Globals.ThisAddIn.Application.OrganizerCopy(Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Sumário 5", WdOrganizerObject.wdOrganizerObjectStyles);
+                Application Application = Globals.ThisAddIn.Application;
+                string FullName = Globals.ThisAddIn.Application.ActiveDocument.FullName;
+                Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 1", WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 2", WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 3", WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 4", WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 5", WdOrganizerObject.wdOrganizerObjectStyles);
                 Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "05 - Seção_1 (PeriTAB);1;06 - Seção_2 (PeriTAB);2;07 - Seção_3 (PeriTAB);3;08 - Seção_4 (PeriTAB);4;09 - Seção_5 (PeriTAB);5" + quote, false);
                 await Task.CompletedTask;
             });

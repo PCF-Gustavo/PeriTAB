@@ -21,8 +21,8 @@ namespace PeriTAB
     {
         private async void Button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
-            {
+            //await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            //{
 
                 string nome_doc_completo = Globals.ThisAddIn.Application.ActiveDocument.FullName;
                 string caminho_doc = Globals.ThisAddIn.Application.ActiveDocument.Path;
@@ -46,7 +46,7 @@ namespace PeriTAB
                     catch { Variables.Lista_arquivos_para_excluir.Add(nome_doc_completo); }
                 }
                 await Task.CompletedTask;
-            });
+            //});
         }
 
         private async void Button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)

@@ -29,7 +29,10 @@ namespace PeriTAB
             //if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.ContainsKey(Wn))
             if (!Window_Possui_TaskPane(Wn))
             {
-                if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.Any(uc => uc.Document == Doc)) iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
+                //if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.Any(uc => uc.Document == Doc)) { 
+                //    iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
+                //    MessageBox.Show("vinculou os ContentControl");
+                //}
 
                 //Globals.ThisAddIn.Dicionario_Window_e_Doc.Add(Wn, Doc);
 
@@ -66,6 +69,8 @@ namespace PeriTAB
 
             //}
             //catch (System.Runtime.InteropServices.COMException) { }
+
+
         }
         private MyUserControl Add_UserControl(Window Wn)
         {

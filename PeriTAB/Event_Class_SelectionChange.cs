@@ -3,37 +3,37 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+//using Task = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
     internal class Class_SelectionChange_Event
     {
-        //private static CancellationTokenSource cancellationTokenSource = null;
+        private static CancellationTokenSource cancellationToken_SelectionChange = null;
 
-        
+
 
         public void Evento_SelectionChange()
         {
             Globals.ThisAddIn.Application.WindowSelectionChange += new ApplicationEvents4_WindowSelectionChangeEventHandler(Metodo_SelectionChange);
         }
 
-        private /*async*/ void Metodo_SelectionChange(Selection Sel)
+        private void Metodo_SelectionChange(Selection Selection)
         {
-            // Se houver uma operação em andamento, cancelamos a execução anterior
-            //cancellationTokenSource?.Cancel();
+            if (cancellationToken_SelectionChange != null)
+            {
+                cancellationToken_SelectionChange.Cancel(); // Cancela a execução anterior
+                cancellationToken_SelectionChange.Dispose(); // Cancela a execução anterior
+            }
 
-            //if (cancellationTokenSource != null)
-            //cancellationTokenSource.Cancel(); // Cancela a execução anterior
-
-            // Criamos uma nova fonte de cancelamento para a próxima execução
-            //cancellationTokenSource = new CancellationTokenSource();
-            //CancellationToken token = cancellationTokenSource.Token;
+            // Cria uma nova fonte de cancelamento para a próxima execução
+            cancellationToken_SelectionChange = new CancellationTokenSource();
+            CancellationToken CancellationToken_SelectionChange = cancellationToken_SelectionChange.Token;
 
             //Declara instacias das classes
             //MyUserControl UserControl_ActiveDocument = Globals.ThisAddIn.Dicionario_Doc_e_UserControl[Globals.ThisAddIn.Application.ActiveDocument];
             if (!Globals.ThisAddIn.Dicionario_Window_e_UserControl.TryGetValue(Globals.ThisAddIn.Application.ActiveWindow, out MyUserControl UserControl_ActiveWindow)) return;
-
-            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl_ActiveWindow.Atualiza_Destaque_Botoes();
+            if (Globals.Ribbons.Ribbon.ToggleButton_painel_de_estilos.Checked) UserControl_ActiveWindow.Atualiza_Destaque_Botoes(Selection, CancellationToken_SelectionChange);
 
 
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Core;
+﻿using iTextSharp.text.pdf.parser;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
@@ -9,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Application = Microsoft.Office.Interop.Word.Application;
 using Task = System.Threading.Tasks.Task;
 
 
@@ -22,8 +24,12 @@ namespace PeriTAB
             object obj = System.Windows.Clipboard.GetData("FileDrop");
             await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
             {
+                Application Application = Globals.ThisAddIn.Application;
+                Selection Selection = Application.Selection;
+
                 if (System.Windows.Clipboard.ContainsData("FileDrop"))
                 {
+
                     string[] pathfile = (string[])obj;
                     string[] pathfile2 = { "" };
                     string[] pathfile3 = { "" };
@@ -52,11 +58,11 @@ namespace PeriTAB
                         if (Tela_de_desenho == null)
                         {
                             // Evita a exclusao de \r (Carrige Return) ao final da seleção
-                            if (Globals.ThisAddIn.Application.Selection.Text != null)
+                            if (Selection.Text != null)
                             {
-                                if (Globals.ThisAddIn.Application.Selection.Text.EndsWith("\r") && Globals.ThisAddIn.Application.Selection.InlineShapes.Count > 0)
+                                if (Selection.Text.EndsWith("\r") && Selection.InlineShapes.Count > 0)
                                 {
-                                    Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -1);
+                                    Selection.MoveEnd(WdUnits.wdCharacter, -1);
                                 }
                             }
                             for (int i = 0; i <= pathfile2.Length - 1; i++)
@@ -65,20 +71,20 @@ namespace PeriTAB
 
                                 bool link = false; bool save = true;
                                 if (Globals.Ribbons.Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
-                                InlineShape imagem = Globals.ThisAddIn.Application.Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
+                                InlineShape imagem = Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
                                 imagem.LockAspectRatio = MsoTriState.msoTrue;
                                 if (CheckBox_largura.Checked)
                                 {
                                     string larg_string = Globals.Ribbons.Ribbon.EditBox_largura.Text;
                                     float.TryParse(larg_string, out float larg);
-                                    imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                                    imagem.Width = Application.CentimetersToPoints(larg);
                                 }
 
                                 if (CheckBox_altura.Checked)
                                 {
                                     string alt_string = Globals.Ribbons.Ribbon.EditBox_altura.Text;
                                     float.TryParse(alt_string, out float alt);
-                                    imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                                    imagem.Height = Application.CentimetersToPoints(alt);
                                 }
 
                                 if (i != pathfile2.Length - 1) //Exceto última imagem
@@ -87,17 +93,17 @@ namespace PeriTAB
                                     switch (DropDown_separador.SelectedItem.Label) //Insere separador
                                     {
                                         case "Espaço":
-                                            Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            Selection.InsertAfter(" ");
+                                            Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
                                             break;
                                         case "Parágrafo":
-                                            Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
-                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            Selection.InsertAfter(System.Environment.NewLine);
+                                            Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
                                             break;
                                         case "Parágrafo + 3pt":
-                                            Globals.ThisAddIn.Application.Selection.ParagraphFormat.SpaceAfter = 3;
-                                            Globals.ThisAddIn.Application.Selection.InsertAfter(System.Environment.NewLine);
-                                            Globals.ThisAddIn.Application.Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
+                                            Selection.ParagraphFormat.SpaceAfter = 3;
+                                            Selection.InsertAfter(System.Environment.NewLine);
+                                            Selection.Collapse(WdCollapseDirection.wdCollapseEnd);
                                             break;
                                     }
                                 }
@@ -107,14 +113,14 @@ namespace PeriTAB
                             if (DropDown_separador.SelectedItem.Label == "Nenhum")
                             {
                                 int L = pathfile2.Length;
-                                Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -L);
-                                Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
+                                Selection.MoveEnd(WdUnits.wdCharacter, -L);
+                                Selection.MoveRight(WdUnits.wdCharacter, L, WdMovementType.wdExtend);
                             }
                             else
                             {
                                 int L = pathfile2.Length;
-                                Globals.ThisAddIn.Application.Selection.MoveEnd(WdUnits.wdCharacter, -(2 * L - 1));
-                                Globals.ThisAddIn.Application.Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
+                                Selection.MoveEnd(WdUnits.wdCharacter, -(2 * L - 1));
+                                Selection.MoveRight(WdUnits.wdCharacter, 2 * L - 1, WdMovementType.wdExtend);
                             }
                         }
                         else
@@ -138,8 +144,8 @@ namespace PeriTAB
                                         float.TryParse(Globals.Ribbons.Ribbon.EditBox_altura.Text, out altura);
                                         largura = altura * imagem.Width / imagem.Height;
                                     }
-                                    float largura_pontos = Globals.ThisAddIn.Application.CentimetersToPoints(largura);
-                                    float altura_pontos = Globals.ThisAddIn.Application.CentimetersToPoints(altura);
+                                    float largura_pontos = Application.CentimetersToPoints(largura);
+                                    float altura_pontos = Application.CentimetersToPoints(altura);
                                     if (Tela_de_desenho.Width >= largura_pontos && Tela_de_desenho.Height >= altura_pontos)
                                     {
                                         Microsoft.Office.Interop.Word.Shape shape_image =
@@ -259,12 +265,15 @@ namespace PeriTAB
         {
             await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
             {
-                if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1) throw new Exception("Não há imagens selecionadas.");
+                Application Application = Globals.ThisAddIn.Application;
+                Selection Selection = Application.Selection;
+
+                if (Selection.InlineShapes.Count < 1) throw new Exception("Não há imagens selecionadas.");
 
                 int i = 0;
-                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                foreach (InlineShape ishape in Selection.InlineShapes)
                 {
-                    await progress.Tick_50ms((int)((i * 10) / Globals.ThisAddIn.Application.Selection.InlineShapes.Count));
+                    await progress.Tick_50ms((int)((i * 10) / Selection.InlineShapes.Count));
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
                     {
                         InlineShape imagem = ishape;
@@ -274,42 +283,49 @@ namespace PeriTAB
                         {
                             string larg_string = Globals.Ribbons.Ribbon.EditBox_largura.Text;
                             float.TryParse(larg_string, out float larg);
-                            imagem.Width = Globals.ThisAddIn.Application.CentimetersToPoints(larg);
+                            imagem.Width = Application.CentimetersToPoints(larg);
                         }
 
                         if (CheckBox_altura.Checked)
                         {
                             string alt_string = Globals.Ribbons.Ribbon.EditBox_altura.Text;
                             float.TryParse(alt_string, out float alt);
-                            imagem.Height = Globals.ThisAddIn.Application.CentimetersToPoints(alt);
+                            imagem.Height = Application.CentimetersToPoints(alt);
                         }
                     }
                 }
-            }, desabilitar_ScreenUpdating: true);
+            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
         }
 
         private async void Button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
             {
-                if (Globals.ThisAddIn.Application.Selection.InlineShapes.Count < 1) throw new Exception("Não há imagens selecionadas.");
+                Application Application = Globals.ThisAddIn.Application;
+                InlineShapes InlineShapes = Application.Selection.InlineShapes;
+                Document ActiveDocument = Application.ActiveDocument;
+                
+
+                if (InlineShapes.Count < 1) throw new Exception("Não há imagens selecionadas.");
 
                 Dictionary<int, List<InlineShape>> dict_InlineShape_paragraph = new Dictionary<int, List<InlineShape>>();
                 int j = 0;
-                foreach (InlineShape iShape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                foreach (InlineShape iShape in InlineShapes)
                 {
-                    await progress.Tick_50ms((int)((j * 10) / Globals.ThisAddIn.Application.Selection.InlineShapes.Count));
+                    await progress.Tick_50ms((int)((j * 10) / InlineShapes.Count));
+
+                    Paragraph Paragraph_1 = iShape.Range.Paragraphs[1];
 
                     // Verifica se o parágrafo contém mais de uma InlineShape
-                    if (iShape.Range.Paragraphs[1].Range.InlineShapes.Count > 1)
+                    if (Paragraph_1.Range.InlineShapes.Count > 1)
                     {
                         int num_Paragraph = 0;
                         if (iShape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | iShape.Type == WdInlineShapeType.wdInlineShapePicture)
                         {
                             Paragraph iParagraph = iShape.Range.Paragraphs.First;
-                            for (int i = 1; i <= Globals.ThisAddIn.Application.ActiveDocument.Paragraphs.Count; i++)
+                            for (int i = 1; i <= ActiveDocument.Paragraphs.Count; i++)
                             {
-                                if (Globals.ThisAddIn.Application.ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
+                                if (ActiveDocument.Paragraphs[i].Range.Start == iParagraph.Range.Start)
                                 {
                                     num_Paragraph = i;
                                     break;
@@ -327,15 +343,15 @@ namespace PeriTAB
                     }
                     else
                     {
-                        if (!(iShape.Range.Paragraphs[1].Range.Information[WdInformation.wdWithInTable]))
+                        if (!(Paragraph_1.Range.Information[WdInformation.wdWithInTable]))
                         {
                             int paginaInicial = iShape.Range.Information[WdInformation.wdActiveEndPageNumber];
-                            float larguraPaginaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.PageWidth;
-                            float margemEsquerdaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.LeftMargin;
-                            float margemDireitaPts = Globals.ThisAddIn.Application.ActiveDocument.PageSetup.RightMargin;
-                            float recuoEsquerdaPts = iShape.Range.Paragraphs[1].Format.LeftIndent;
-                            float recuoDireitaPts = iShape.Range.Paragraphs[1].Format.RightIndent;
-                            float primeiralinhaPts = iShape.Range.Paragraphs[1].Format.FirstLineIndent;
+                            float larguraPaginaPts = ActiveDocument.PageSetup.PageWidth;
+                            float margemEsquerdaPts = ActiveDocument.PageSetup.LeftMargin;
+                            float margemDireitaPts = ActiveDocument.PageSetup.RightMargin;
+                            float recuoEsquerdaPts = Paragraph_1.Format.LeftIndent;
+                            float recuoDireitaPts = Paragraph_1.Format.RightIndent;
+                            float primeiralinhaPts = Paragraph_1.Format.FirstLineIndent;
                             float espacoDigitavelPts = larguraPaginaPts - (margemEsquerdaPts + margemDireitaPts + recuoEsquerdaPts + recuoDireitaPts + primeiralinhaPts);
                             iShape.Width = espacoDigitavelPts;
 
@@ -377,7 +393,7 @@ namespace PeriTAB
                 j = 0;
                 foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
                 {
-                    await progress.Tick_50ms((int)((j * 10) / Globals.ThisAddIn.Application.Selection.InlineShapes.Count));
+                    await progress.Tick_50ms((int)((j * 10) / InlineShapes.Count));
                     // Verifica se o parágrafo tem exatamente uma linha: caso de aumento das imagens
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 0) { throw new Exception(""); } //Se está dentro da tabela, o numero de linhas do paragrafo é zero
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)

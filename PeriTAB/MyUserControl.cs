@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Shapes;
+using Task = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -527,16 +529,21 @@ namespace PeriTAB
             }
         }
 
-        public void Atualiza_Destaque_Botoes()
+        public async void Atualiza_Destaque_Botoes(Selection Selection, CancellationToken CancellationToken = default)
         {
-            Remove_Destaque_Botoes();
+            await Task.Yield();
+            
+            Remove_Destaque_Botoes(CancellationToken);
 
-            if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
-            {
-                List<Paragraph> paragrafosSelecionados = Globals.ThisAddIn.Application.Selection.Paragraphs.Cast<Paragraph>().ToList();
+            //if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+            //{
+                List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
 
                 foreach (Paragraph p in paragrafosSelecionados)
                 {
+
+                    if (CancellationToken.IsCancellationRequested) return;
+
                     Style estilo = null;
                     if (p.Range.StoryType == WdStoryType.wdMainTextStory)
                     {
@@ -550,7 +557,7 @@ namespace PeriTAB
                     }
                     if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
                     {
-                        Range Selecao_inicial = Globals.ThisAddIn.Application.Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a selação)
+                        Range Selecao_inicial = Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a seleção)
                         try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
                         Selecao_inicial.Select(); // Restaura a seleção inicial
                         if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
@@ -560,13 +567,8 @@ namespace PeriTAB
                         }
                     }
                 }
-            }
+            //}
         }
-        //public void Habilita_Destaca(Button b, bool habilita, bool destaca = false)
-        //{
-        //    b.Enabled = habilita;
-        //    if (destaca) { b.BackColor = SystemColors.Highlight; b.ForeColor = SystemColors.HighlightText; }
-        //}
 
         private void Destaca(Button b)
         {
@@ -574,10 +576,11 @@ namespace PeriTAB
             b.ForeColor = SystemColors.HighlightText; 
         }
 
-        private void Remove_Destaque_Botoes()
+        private void Remove_Destaque_Botoes(CancellationToken CancellationToken = default)
         {
             foreach (var botao in this.Controls.OfType<Button>())
             {
+                if (CancellationToken.IsCancellationRequested) return;
                 botao.BackColor = SystemColors.Control;
                 botao.ForeColor = SystemColors.ControlText;
             }

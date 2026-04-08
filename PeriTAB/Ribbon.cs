@@ -7,8 +7,11 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using Font = System.Drawing.Font;
+using Point = System.Drawing.Point;
 using Task = System.Threading.Tasks.Task;
 
 namespace PeriTAB
@@ -136,6 +139,7 @@ namespace PeriTAB
             }, barra_de_progresso: true, desabilitar_ScreenUpdating: false, desabilitar_TrackRevisions: false);
         }
 
+        
         private async Task Executar_Ribbon_com_UI_responsiva(
             object sender,
             RibbonControlEventArgs e,
@@ -145,6 +149,10 @@ namespace PeriTAB
             bool desabilitar_TrackRevisions = false
             )
         {
+            #if DEBUG
+                Stopwatch Stopwatch = Stopwatch.StartNew();
+            #endif
+
             RibbonButton ribbonButton = (RibbonButton)sender;
             RibbonMenu ribbonMenu = ribbonButton.Parent as RibbonMenu;
 
@@ -157,14 +165,14 @@ namespace PeriTAB
             if (ribbonMenu != null)
             {
                 imagemInicial = ribbonMenu.Image;
-                ribbonMenu.Image = Properties.Resources.load_icon_png_7969;
+                ribbonMenu.Image = Properties.Resources.loading;
                 ribbonMenu.Enabled = false;
                 mensagemStatusBar += ribbonMenu.Label + "/";
             }
             else
             {
                 imagemInicial = ribbonButton.Image;
-                ribbonButton.Image = Properties.Resources.load_icon_png_7969;
+                ribbonButton.Image = Properties.Resources.loading;
                 ribbonButton.Enabled = false;
             }
 
@@ -176,6 +184,7 @@ namespace PeriTAB
             // ================= Estado inicial Word =================
             bool screenUpdatingInicial = Globals.ThisAddIn.Application.ScreenUpdating;
             bool trackRevisionsInicial = Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions;
+            WdCursorType CursorInicial = Globals.ThisAddIn.Application.System.Cursor;
 
             if (desabilitar_ScreenUpdating)
                 Globals.ThisAddIn.Application.ScreenUpdating = false;
@@ -229,12 +238,18 @@ namespace PeriTAB
                 if (desabilitar_TrackRevisions)
                     Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions = trackRevisionsInicial;
 
+                #if DEBUG
+                Stopwatch.Stop();
+                    double tempo = Stopwatch.Elapsed.TotalSeconds;
+                #endif
+
                 if (barra_de_progresso)
                 {
-                    Globals.ThisAddIn.Application.StatusBar =
-                        mensagemStatusBar +
-                        Barra_de_progresso(success ? 10 : 0) +
-                        (success ? " Sucesso" : " Falha");
+                    string StatusBar = mensagemStatusBar + Barra_de_progresso(success ? 10 : 0) + (success ? " Sucesso" : " Falha");
+                        #if DEBUG
+                            StatusBar += $" (Tempo: {tempo:F2}s)";
+                        #endif
+                    Globals.ThisAddIn.Application.StatusBar = StatusBar;
                 }
 
                 if (!string.IsNullOrEmpty(mensagemFalha))

@@ -98,7 +98,7 @@ namespace PeriTAB
 
         public static Dictionary<string, string> dict_Fim_do_preambulo_e_Secao_de_conclusao = dict_Secao_de_conclusao_e_Fim_do_preambulo.ToDictionary(par => par.Value, par => par.Key); // Dicionario invertido
 
-        public void Metodo_ContentControlOnExit()
+        public void Evento_ContentControlOnExit()
         {
             // Configura o evento global para monitorar quando o controle é alterado
             Globals.ThisAddIn.Application.ActiveDocument.ContentControlOnExit += (ContentControl contentControl, ref bool cancel) =>

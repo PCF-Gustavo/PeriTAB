@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading;
+using System.Windows.Forms;
 
 namespace PeriTAB
 {
@@ -9,7 +10,7 @@ namespace PeriTAB
     {
         Class_DocumentClose_Event iClass_DocumentClose_Event = new Class_DocumentClose_Event();
         Class_AnyButtonClick_Event iClass_AnyButtonClick_Event = new Class_AnyButtonClick_Event();
-        Class_ContentControlOnExit_Event iClass_ContentControlOnExit_Event = new Class_ContentControlOnExit_Event();
+        private readonly Class_ContentControlOnExit_Event iClass_ContentControlOnExit_Event = new Class_ContentControlOnExit_Event();
 
         Class_CustomTaskPanes iClass_CustomTaskPanes = new Class_CustomTaskPanes();
 
@@ -26,10 +27,10 @@ namespace PeriTAB
             //var syncContext = SynchronizationContext.Current;
             // Executa as tarefas em segundo plano
             //System.Windows.Forms.MessageBox.Show("new or open");
-            
-            
+
+
             //iClass_DocumentClose_Event.Tracking_OpenDocumentNumber();
-            //iClass_ContentControlOnExit_Event.Metodo_ContentControlOnExit();
+            iClass_ContentControlOnExit_Event.Evento_ContentControlOnExit();
 
             // Cria um novo UserControl e um novo CustomTaskPane para cada documento aberto
             //if (!Globals.ThisAddIn.Dicionario_Doc_e_UserControl.ContainsKey(Doc))

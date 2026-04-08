@@ -7,21 +7,15 @@ namespace PeriTAB
     public partial class ThisAddIn
     {
         // Cria instância das classes
-        //Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event();
-        //Class_DocumentClose_Event iClass_DocumentClose_Event = new Class_DocumentClose_Event();
-        private readonly Class_DocSave_Event2 iClass_DocSave_Event = new Class_DocSave_Event2();
+        private readonly Class_ContentControlOnExit_Event iClass_ContentControlOnExit_Event = new Class_ContentControlOnExit_Event();
+        private readonly Class_New_or_Open_Event iClass_New_or_Open_Event = new Class_New_or_Open_Event();
+        private readonly Class_DocSave_Event iClass_DocSave_Event = new Class_DocSave_Event();
         private readonly Class_SelectionChange_Event iClass_SelectionChange_Event = new Class_SelectionChange_Event();
         private readonly Class_WindowActivate_Event iClass_WindowActivate_Event = new Class_WindowActivate_Event();
         private readonly Class_WindowDeactivate_Event iClass_WindowDeactivate_Event = new Class_WindowDeactivate_Event();
-
-        //public MyUserControl iMyUserControl;
         private readonly Class_RibbonControls iClass_RibbonControls = new Class_RibbonControls();
 
-        //public Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl> Dicionario_Doc_e_UserControl = new Dictionary<Microsoft.Office.Interop.Word.Document, MyUserControl>();
-
-        //public Dictionary<Microsoft.Office.Interop.Word.Window, Microsoft.Office.Interop.Word.Document> Dicionario_Window_e_Doc = new Dictionary<Microsoft.Office.Interop.Word.Window, Microsoft.Office.Interop.Word.Document>();
         public Dictionary<Microsoft.Office.Interop.Word.Window, MyUserControl> Dicionario_Window_e_UserControl = new Dictionary<Microsoft.Office.Interop.Word.Window, MyUserControl>();
-        //public Dictionary<Microsoft.Office.Interop.Word.Window, Microsoft.Office.Tools.CustomTaskPane> Dicionario_Window_e_TaskPane = new Dictionary<Microsoft.Office.Interop.Word.Window, Microsoft.Office.Tools.CustomTaskPane>();
         private void ThisAddIn_Startup(object sender, System.EventArgs e)
         {
             //System.Windows.Forms.MessageBox.Show("ThisAddIn_Startup");
@@ -31,13 +25,15 @@ namespace PeriTAB
             iClass_RibbonControls.Configura_Valores_iniciais();
 
             //Inicia Eventos
-            //iClass_New_or_Open_Event.Evento_New_or_Open();
-            //if (Globals.ThisAddIn.Application.Documents.Count == 1) iClass_New_or_Open_Event.Metodo_New_or_Open(Globals.ThisAddIn.Application.ActiveDocument);
-            //iClass_DocumentClose_Event.Evento_DocumentClose();
+            iClass_New_or_Open_Event.Evento_New_or_Open();
             iClass_DocSave_Event.Evento_DocSave();
             iClass_SelectionChange_Event.Evento_SelectionChange();
             iClass_WindowActivate_Event.Evento_WindowActivate();
-            if (Globals.ThisAddIn.Application.Documents.Count > 0) iClass_WindowActivate_Event.Metodo_WindowActivate(null, Globals.ThisAddIn.Application.ActiveWindow); // Para adicionar a Taskpane quando abro o Word direto no documento (sem passar pelo BackStage)
+            if (Globals.ThisAddIn.Application.Documents.Count > 0) 
+            { 
+                iClass_WindowActivate_Event.Metodo_WindowActivate(null, Globals.ThisAddIn.Application.ActiveWindow); // Para adicionar a Taskpane quando abro o Word direto no documento (sem passar pelo BackStage)
+                iClass_ContentControlOnExit_Event.Evento_ContentControlOnExit(); // Para adicionar o  ContentControlOnExit quando abro o Word direto no documento (sem passar pelo BackStage)
+            }
             iClass_WindowDeactivate_Event.Evento_WindowDeactivate();
         }
 
