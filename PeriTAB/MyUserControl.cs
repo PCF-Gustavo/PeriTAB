@@ -10,6 +10,7 @@ using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Shapes;
 using Task = System.Threading.Tasks.Task;
+using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace PeriTAB
 {
@@ -62,24 +63,24 @@ namespace PeriTAB
         {
         }
 
-        private /*async*/ void MyUserControl_Button_Click(object sender, EventArgs e)
+        private void MyUserControl_Button_Click(object sender, EventArgs e)
         {
+            Application Application = Globals.ThisAddIn.Application;
+
             Button Button = (Button)sender;
             Button.Invoke((Action)(() => Button.Enabled = false));
 
             string msg_StatusBar = Button.Name + ": ";
             bool success = true;
 
-            Globals.ThisAddIn.Application.ScreenUpdating = false;
+            Application.ScreenUpdating = false;
 
             Importa_todos_estilos();
             string estilo_nome = Dicionario_Botao_e_Estilo[sender as Button];
 
-            //await Task.Run(() => DEU ERRO NA HORA DE PINTAR A TASKPANE - TEM QUE OBRIGAR A VERIFICAR A PINTURA DA TASKPANE DEPOIS DE RODAR ESSA TASK. COMO FAZ PARA ORDENAR ESSAS AÇÕES?
-            //{
-            Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord("");
+            Application.UndoRecord.StartCustomRecord("");
             List<Paragraph> list_Paragraph = new List<Paragraph>();
-            foreach (Paragraph p in Globals.ThisAddIn.Application.Selection.Paragraphs)
+            foreach (Paragraph p in Application.Selection.Paragraphs)
             {
                 list_Paragraph.Add(p);
             }
@@ -160,6 +161,14 @@ namespace PeriTAB
                 }
                 if (new List<string>
                 {
+                    "10 - Enumerações (PeriTAB)"
+                }.Contains(estilo_nome))
+                {
+                    SpaceBefore18_Se_paragrafo_anterior_tabela_ou_figura(p);
+                    SpaceAfter18_Se_paragrafo_seguinte_tabela(p);
+                }
+                if (new List<string>
+                {
                     "12 - Legendas de Figuras (PeriTAB)"
                 }.Contains(estilo_nome))
                 {
@@ -188,13 +197,11 @@ namespace PeriTAB
                     Ajusta_Quesito(p, new Regex(@"^\s*([a-zA-Z0-9]+\s*[-\u2013.)])\s*")); // Expressão regular para identificar numeração de quesitos
                 }
             }
-            Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
-            //});
-
-            Globals.ThisAddIn.Application.ScreenUpdating = true;
+            Application.UndoRecord.EndCustomRecord();
+            Application.ScreenUpdating = true;
 
             if (success) { msg_StatusBar += "Sucesso"; } else { msg_StatusBar += "Falha"; }
-            Globals.ThisAddIn.Application.StatusBar = msg_StatusBar;
+            Application.StatusBar = msg_StatusBar;
 
             Button.Invoke((Action)(() => Button.Enabled = true));
         }
@@ -483,13 +490,15 @@ namespace PeriTAB
 
         public void Importa_todos_estilos()
         {
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Normal", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Legenda", WdOrganizerObject.wdOrganizerObjectStyles);
-            Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, "Texto de nota de rodapé", WdOrganizerObject.wdOrganizerObjectStyles);
+            Application Application = Globals.ThisAddIn.Application;
+            string ActiveDocument_FullName = Application.ActiveDocument.FullName;
+            Application.OrganizerCopy(Ribbon.Variables.Caminho_template, ActiveDocument_FullName, "Normal", WdOrganizerObject.wdOrganizerObjectStyles);
+            Application.OrganizerCopy(Ribbon.Variables.Caminho_template, ActiveDocument_FullName, "Legenda", WdOrganizerObject.wdOrganizerObjectStyles);
+            Application.OrganizerCopy(Ribbon.Variables.Caminho_template, ActiveDocument_FullName, "Texto de nota de rodapé", WdOrganizerObject.wdOrganizerObjectStyles);
             List<string> listaEstilos = Dicionario_Estilo_e_Botao.Keys.ToList();
             foreach (string estilo in listaEstilos)
             {
-                Globals.ThisAddIn.Application.OrganizerCopy(Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo, WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(Ribbon.Variables.Caminho_template, ActiveDocument_FullName, estilo, WdOrganizerObject.wdOrganizerObjectStyles);
             }
         }
 
@@ -532,11 +541,11 @@ namespace PeriTAB
         public async void Atualiza_Destaque_Botoes(Selection Selection, CancellationToken CancellationToken = default)
         {
             await Task.Yield();
-            
+
             Remove_Destaque_Botoes(CancellationToken);
 
-            //if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
-            //{
+            if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+            {
                 List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
 
                 foreach (Paragraph p in paragrafosSelecionados)
@@ -567,7 +576,7 @@ namespace PeriTAB
                         }
                     }
                 }
-            //}
+            }
         }
 
         private void Destaca(Button b)

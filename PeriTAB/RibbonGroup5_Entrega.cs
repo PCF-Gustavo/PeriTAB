@@ -21,8 +21,8 @@ namespace PeriTAB
     {
         private async void Button_renomeia_documento_Click(object sender, RibbonControlEventArgs e)
         {
-            //await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
-            //{
+            await Executar_Ribbon(sender, e, progress =>
+            {
 
                 string nome_doc_completo = Globals.ThisAddIn.Application.ActiveDocument.FullName;
                 string caminho_doc = Globals.ThisAddIn.Application.ActiveDocument.Path;
@@ -45,13 +45,13 @@ namespace PeriTAB
                     try { File.Delete(nome_doc_completo); }
                     catch { Variables.Lista_arquivos_para_excluir.Add(nome_doc_completo); }
                 }
-                await Task.CompletedTask;
-            //});
+                return Task.CompletedTask;
+            }, tratar_excecao: false);
         }
 
         private async void Button_gerar_pdf_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 PdfReader inputPdf = null;
                 bool inputPdf_open = false;
@@ -79,7 +79,7 @@ namespace PeriTAB
                     {
                         bool assinado = Assina_PDF(path_tmp_pdf, path_tmp_pdf_assinado);
 
-                        if (!assinado) return;
+                        if (!assinado) return Task.CompletedTask;
 
                         Substitui_PDF_Final(path_tmp_pdf_assinado,path_pdf_assinado);
 
@@ -105,7 +105,7 @@ namespace PeriTAB
                     if (File.Exists(path_tmp_pdf_assinado))
                         File.Delete(path_tmp_pdf_assinado);
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 

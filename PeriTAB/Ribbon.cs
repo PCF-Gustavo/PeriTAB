@@ -13,6 +13,7 @@ using System.Windows.Forms;
 using Font = System.Drawing.Font;
 using Point = System.Drawing.Point;
 using Task = System.Threading.Tasks.Task;
+using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace PeriTAB
 {
@@ -120,41 +121,195 @@ namespace PeriTAB
             return null;
         }
 
-        private async void Button_teste_Click(object sender, RibbonControlEventArgs e)
+        private /*async*/ void Button_teste_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
-            {
-                int total = 100000;
-                for (int i = 0; i < total; i++)
-                {
-                    double result = 0;
+            //await Executar_Ribbon_com_UI_responsiva(sender, e, progress =>
+            //{
+            //    int total = 100000;
+            //    for (int i = 0; i < total; i++)
+            //    {
+            //        double result = 0;
 
-                    for (int j = 0; j < 1000; j++)
-                    {
-                        result += Math.Sqrt(j) * Math.Cos(j);
-                    }
+            //        for (int j = 0; j < 1000; j++)
+            //        {
+            //            result += Math.Sqrt(j) * Math.Cos(j);
+            //        }
 
-                    await progress.Tick_50ms((int)((i * 10.0) / total));
-                }
-            }, barra_de_progresso: true, desabilitar_ScreenUpdating: false, desabilitar_TrackRevisions: false);
+            //        progress?.Report((int)((i * 10.0) / total));
+            //    }
+            //}, barra_de_progresso: true, desabilitar_ScreenUpdating: false, desabilitar_TrackRevisions: false);
         }
 
         
-        private async Task Executar_Ribbon_com_UI_responsiva(
+        //private async Task Executar_Ribbon_com_UI_responsiva(
+        //    object sender,
+        //    RibbonControlEventArgs e,
+        //    Func<IRibbonTick, Task> action,
+        //    bool barra_de_progresso = false,
+        //    bool desabilitar_ScreenUpdating = false,
+        //    bool desabilitar_TrackRevisions = false
+        //    )
+        //    {
+        //    Application Application = Globals.ThisAddIn.Application;
+
+        //    #if DEBUG
+        //    Stopwatch Stopwatch = Stopwatch.StartNew();
+        //    #endif
+
+        //    RibbonButton ribbonButton = (RibbonButton)sender;
+        //    RibbonMenu ribbonMenu = ribbonButton.Parent as RibbonMenu;
+
+        //    Image imagemInicial;
+        //    string mensagemStatusBar = "";
+        //    bool success = true;
+        //    string mensagemFalha = "";
+
+        //    // ================= UI inicial =================
+        //    if (ribbonMenu != null)
+        //    {
+        //        imagemInicial = ribbonMenu.Image;
+        //        ribbonMenu.Image = Properties.Resources.loading;
+        //        ribbonMenu.Enabled = false;
+        //        mensagemStatusBar += ribbonMenu.Label + "/";
+        //    }
+        //    else
+        //    {
+        //        imagemInicial = ribbonButton.Image;
+        //        ribbonButton.Image = Properties.Resources.loading;
+        //        ribbonButton.Enabled = false;
+        //    }
+
+        //    mensagemStatusBar += ribbonButton.Label + ": ";
+
+        //    oRibbonUI.InvalidateControl(e.Control.Id);
+        //    await Task.Yield();
+
+        //    // ================= Estado inicial Word =================
+        //    bool screenUpdatingInicial = Application.ScreenUpdating;
+        //    bool trackRevisionsInicial = Application.ActiveDocument.TrackRevisions;
+        //    WdCursorType CursorInicial = Application.System.Cursor;
+
+        //    if (desabilitar_ScreenUpdating)
+        //        Application.ScreenUpdating = false;
+
+        //    if (desabilitar_TrackRevisions)
+        //        Application.ActiveDocument.TrackRevisions = false;
+
+        //    Range selecaoInicial = Application.Selection.Range.Duplicate;
+
+        //    // ================= Progress =================
+        //    IProgress<int> progress = null;
+        //    IRibbonTick tick;
+
+        //    if (barra_de_progresso)
+        //    {
+        //        Application.StatusBar =
+        //            mensagemStatusBar + Barra_de_progresso(0);
+
+        //        progress = new Progress<int>(p =>
+        //        {
+        //            Application.StatusBar =
+        //                mensagemStatusBar + Barra_de_progresso(p);
+        //        });
+
+        //        tick = new RibbonTickComProgresso(progress);
+        //    }
+        //    else
+        //    {
+        //        tick = new RibbonTickNenhum();
+        //    }
+
+        //    Application.UndoRecord.StartCustomRecord();
+
+        //    try
+        //    {
+        //        await action(tick);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        success = false;
+        //        mensagemFalha = ex.Message;
+        //        selecaoInicial.Select();
+        //    }
+        //    finally
+        //    {
+        //        Application.UndoRecord.EndCustomRecord();
+
+        //        if (desabilitar_ScreenUpdating)
+        //            Application.ScreenUpdating = screenUpdatingInicial;
+
+        //        if (desabilitar_TrackRevisions)
+        //            Application.ActiveDocument.TrackRevisions = trackRevisionsInicial;
+
+        //        #if DEBUG
+        //        Stopwatch.Stop();
+        //            double tempo = Stopwatch.Elapsed.TotalSeconds;
+        //        #endif
+
+        //        if (barra_de_progresso)
+        //        {
+        //            string StatusBar = mensagemStatusBar + Barra_de_progresso(success ? 10 : 0) + (success ? " Sucesso" : " Falha");
+        //                #if DEBUG
+        //                    StatusBar += $" (Tempo: {tempo:F2}s)";
+        //                #endif
+        //            Application.StatusBar = StatusBar;
+        //        }
+
+        //        if (!string.IsNullOrEmpty(mensagemFalha))
+        //        {
+        //            MessageBox.Show(
+        //                new WindowWrapper(
+        //                    new IntPtr(Application.ActiveWindow.Hwnd)),
+        //                mensagemFalha,
+        //                ribbonButton.Label,
+        //                MessageBoxButtons.OK,
+        //                MessageBoxIcon.Error
+        //            );
+        //        }
+
+        //        if (ribbonMenu != null)
+        //        {
+        //            ribbonMenu.Image = imagemInicial;
+        //            ribbonMenu.Enabled = true;
+        //        }
+        //        else
+        //        {
+        //            ribbonButton.Image = imagemInicial;
+        //            ribbonButton.Enabled = true;
+        //        }
+        //    }
+        //}
+        private async Task Executar_Ribbon(
             object sender,
             RibbonControlEventArgs e,
-            Func<IRibbonTick, Task> action,
+            Func<IProgress<int>, Task> action,
             bool barra_de_progresso = false,
             bool desabilitar_ScreenUpdating = false,
-            bool desabilitar_TrackRevisions = false
+            bool desabilitar_TrackRevisions = false,
+            bool tratar_excecao = true,
+            bool aviso_aguardar = false
             )
-        {
-            #if DEBUG
-                Stopwatch Stopwatch = Stopwatch.StartNew();
-            #endif
+            {
+            Application Application = Globals.ThisAddIn.Application;
 
             RibbonButton ribbonButton = (RibbonButton)sender;
             RibbonMenu ribbonMenu = ribbonButton.Parent as RibbonMenu;
+
+            if (aviso_aguardar)
+            {
+                MessageBox.Show(
+                    new WindowWrapper(
+                        new IntPtr(Application.ActiveWindow.Hwnd)),
+                    "Aguarde enquanto a operação é concluída. Evite interagir com o documento, pois isso pode causar falhas no processamento.",
+                    ribbonButton.Label,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Warning
+                );
+            }
+
+            #if DEBUG
+            Stopwatch Stopwatch = Stopwatch.StartNew();
+            #endif
 
             Image imagemInicial;
             string mensagemStatusBar = "";
@@ -182,61 +337,62 @@ namespace PeriTAB
             await Task.Yield();
 
             // ================= Estado inicial Word =================
-            bool screenUpdatingInicial = Globals.ThisAddIn.Application.ScreenUpdating;
-            bool trackRevisionsInicial = Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions;
-            WdCursorType CursorInicial = Globals.ThisAddIn.Application.System.Cursor;
+            bool screenUpdatingInicial = Application.ScreenUpdating;
+            bool trackRevisionsInicial = Application.ActiveDocument.TrackRevisions;
+            WdCursorType CursorInicial = Application.System.Cursor;
 
             if (desabilitar_ScreenUpdating)
-                Globals.ThisAddIn.Application.ScreenUpdating = false;
+                Application.ScreenUpdating = false;
 
             if (desabilitar_TrackRevisions)
-                Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions = false;
+                Application.ActiveDocument.TrackRevisions = false;
 
-            Range selecaoInicial = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+            Range selecaoInicial = Application.Selection.Range.Duplicate;
 
             // ================= Progress =================
             IProgress<int> progress = null;
-            IRibbonTick tick;
 
             if (barra_de_progresso)
             {
-                Globals.ThisAddIn.Application.StatusBar =
+                Application.StatusBar =
                     mensagemStatusBar + Barra_de_progresso(0);
 
                 progress = new Progress<int>(p =>
                 {
-                    Globals.ThisAddIn.Application.StatusBar =
+                    Application.StatusBar =
                         mensagemStatusBar + Barra_de_progresso(p);
                 });
-
-                tick = new RibbonTickComProgresso(progress);
-            }
-            else
-            {
-                tick = new RibbonTickNenhum();
             }
 
-            Globals.ThisAddIn.Application.UndoRecord.StartCustomRecord();
+            Application.UndoRecord.StartCustomRecord();
 
             try
             {
-                await action(tick);
+                await action(progress);
             }
             catch (Exception ex)
             {
                 success = false;
-                mensagemFalha = ex.Message;
+                
                 selecaoInicial.Select();
+                if (tratar_excecao)
+                {
+                    mensagemFalha = ex.Message;
+                }
+                else
+                {
+                    throw;
+                }
             }
             finally
             {
-                Globals.ThisAddIn.Application.UndoRecord.EndCustomRecord();
+                Application.UndoRecord.EndCustomRecord();
 
                 if (desabilitar_ScreenUpdating)
-                    Globals.ThisAddIn.Application.ScreenUpdating = screenUpdatingInicial;
+                    Application.ScreenUpdating = screenUpdatingInicial;
 
                 if (desabilitar_TrackRevisions)
-                    Globals.ThisAddIn.Application.ActiveDocument.TrackRevisions = trackRevisionsInicial;
+                    Application.ActiveDocument.TrackRevisions = trackRevisionsInicial;
 
                 #if DEBUG
                 Stopwatch.Stop();
@@ -249,14 +405,14 @@ namespace PeriTAB
                         #if DEBUG
                             StatusBar += $" (Tempo: {tempo:F2}s)";
                         #endif
-                    Globals.ThisAddIn.Application.StatusBar = StatusBar;
+                    Application.StatusBar = StatusBar;
                 }
 
                 if (!string.IsNullOrEmpty(mensagemFalha))
                 {
                     MessageBox.Show(
                         new WindowWrapper(
-                            new IntPtr(Globals.ThisAddIn.Application.ActiveWindow.Hwnd)),
+                            new IntPtr(Application.ActiveWindow.Hwnd)),
                         mensagemFalha,
                         ribbonButton.Label,
                         MessageBoxButtons.OK,

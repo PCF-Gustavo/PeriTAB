@@ -1,9 +1,8 @@
 ﻿using Microsoft.Office.Interop.Word;
 using Microsoft.Office.Tools.Ribbon;
 using System;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Linq;
+using Task = System.Threading.Tasks.Task;
 
 namespace PeriTAB
 {
@@ -18,7 +17,7 @@ namespace PeriTAB
 
         private async void Por_Extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 String Botao_Label = ((RibbonButton)sender).Label;
                 Selection Selecao = Globals.ThisAddIn.Application.Selection;
@@ -30,7 +29,7 @@ namespace PeriTAB
                 {
                     while (true)
                     {
-                        await progress.Tick_50ms();
+                        //progress?.Report();
                         Selecao_anterior = Selecao.Previous(WdUnits.wdCharacter, 1);
                         if (Selecao_anterior != null)
                         {
@@ -108,7 +107,8 @@ namespace PeriTAB
                     else { throw new Exception("Posicione o cursor ao final de um número válido."); }
                 }
                 else { throw new Exception("Posicione o cursor ao final de um número válido."); }
-            }, desabilitar_ScreenUpdating: true);
+				return Task.CompletedTask;
+			}, desabilitar_ScreenUpdating: true);
         }
 
         private static string ConverterParaMoeda(decimal numero)

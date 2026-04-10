@@ -154,50 +154,57 @@ namespace PeriTAB
             return node != null ? node.InnerText : defaultValue;
         }
 
-        public void Atualiza_Habilitacao(Microsoft.Office.Tools.Ribbon.RibbonControl oRibbonControl) 
+        public void Atualiza_Habilitacao(RibbonControl oRibbonControl)
         {
+            Ribbon Ribbon = Globals.Ribbons.Ribbon;
+            RibbonButton Button_renomeia_documento = Ribbon.Button_renomeia_documento;
+            RibbonButton Button_gera_pdf = Ribbon.Button_gera_pdf;
+            RibbonCheckBox CheckBox_destaca_campos = Ribbon.CheckBox_destaca_campos;
+            RibbonCheckBox CheckBox_mostra_indicadores = Ribbon.CheckBox_mostra_indicadores;
+            Application Application = Globals.ThisAddIn.Application;
+            View ActiveWindow_View = Application.ActiveWindow.View;
             try
             {
                 if (false) { }
-                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.Button_renomeia_documento))
+                else if (ReferenceEquals(oRibbonControl, Button_renomeia_documento))
                 {
                     Button_renomeia_documento_valorinicial();
-                    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "")
+                    if (Application.ActiveDocument.Path == "")
                     {
-                        Globals.Ribbons.Ribbon.Button_renomeia_documento.Enabled = false;
-                        Globals.Ribbons.Ribbon.Button_renomeia_documento.ScreenTip = "Desabilitado";
-                        Globals.Ribbons.Ribbon.Button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo.";
+                        Button_renomeia_documento.Enabled = false;
+                        Button_renomeia_documento.ScreenTip = "Desabilitado";
+                        Button_renomeia_documento.SuperTip = "Este documento ainda não foi salvo.";
                     }
                     return;
                 }
-                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.Button_gera_pdf))
+                else if (ReferenceEquals(oRibbonControl, Button_gera_pdf))
                 {
                     Button_gera_pdf_valorinicial();
-                    if (Globals.ThisAddIn.Application.ActiveDocument.Path == "")
+                    if (Application.ActiveDocument.Path == "")
                     {
-                        Globals.Ribbons.Ribbon.Button_gera_pdf.Enabled = false;
-                        Globals.Ribbons.Ribbon.Button_gera_pdf.ScreenTip = "Desabilitado";
-                        Globals.Ribbons.Ribbon.Button_gera_pdf.SuperTip = "Este documento ainda não foi salvo.";
+                        Button_gera_pdf.Enabled = false;
+                        Button_gera_pdf.ScreenTip = "Desabilitado";
+                        Button_gera_pdf.SuperTip = "Este documento ainda não foi salvo.";
                     }
                     return;
                 }
-                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.CheckBox_destaca_campos))
+                else if (ReferenceEquals(oRibbonControl, CheckBox_destaca_campos))
                 {
-                    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)1) Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = true;
-                    if (Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)0 | Globals.ThisAddIn.Application.ActiveWindow.View.FieldShading == (WdFieldShading)2)
-                        Globals.Ribbons.Ribbon.CheckBox_destaca_campos.Checked = false;
+                    if (ActiveWindow_View.FieldShading == (WdFieldShading)1) CheckBox_destaca_campos.Checked = true;
+                    if (ActiveWindow_View.FieldShading == (WdFieldShading)0 | ActiveWindow_View.FieldShading == (WdFieldShading)2)
+                        CheckBox_destaca_campos.Checked = false;
                     return;
                 }
-                else if (ReferenceEquals(oRibbonControl, Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores))
+                else if (ReferenceEquals(oRibbonControl, CheckBox_mostra_indicadores))
                 {
-                    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == true) Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = true;
-                    if (Globals.ThisAddIn.Application.ActiveWindow.View.ShowBookmarks == false) Globals.Ribbons.Ribbon.CheckBox_mostra_indicadores.Checked = false;
+                    if (ActiveWindow_View.ShowBookmarks == true) CheckBox_mostra_indicadores.Checked = true;
+                    if (ActiveWindow_View.ShowBookmarks == false) CheckBox_mostra_indicadores.Checked = false;
                     return;
                 }
             }
             catch (System.Runtime.InteropServices.COMException)
             { }
-            }
+        }
 
     }
 

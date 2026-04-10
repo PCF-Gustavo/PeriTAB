@@ -11,7 +11,7 @@ namespace PeriTAB
     {
         private async void Button_inserir_sumario_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Application Application = Globals.ThisAddIn.Application;
                 string FullName = Globals.ThisAddIn.Application.ActiveDocument.FullName;
@@ -21,58 +21,58 @@ namespace PeriTAB
                 Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 4", WdOrganizerObject.wdOrganizerObjectStyles);
                 Application.OrganizerCopy(Variables.Caminho_template, FullName, "Sumário 5", WdOrganizerObject.wdOrganizerObjectStyles);
                 Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldTOC, slash + "h " + slash + "z " + slash + "t " + quote + "05 - Seção_1 (PeriTAB);1;06 - Seção_2 (PeriTAB);2;07 - Seção_3 (PeriTAB);3;08 - Seção_4 (PeriTAB);4;09 - Seção_5 (PeriTAB);5" + quote, false);
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_inserir_pagina_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "PAGE", false);
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_inserir_pagina_extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "pagina_atual_por_extenso_PeriTAB");
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_inserir_paginas_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "NUMPAGES", false);
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_inserir_paginas_extenso_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Inserir_autotexto(Globals.ThisAddIn.Application.Selection.Range, "paginas_por_extenso_PeriTAB");
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_inserir_ano_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Globals.ThisAddIn.Application.Selection.Fields.Add(Globals.ThisAddIn.Application.Selection.Range, WdFieldType.wdFieldEmpty, "DATE " + slash + "@ " + quote + "yyyy" + quote, false);
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_atualiza_campos_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 List<Field> campos = new List<Field>();
 
@@ -102,8 +102,9 @@ namespace PeriTAB
                 for (int i = 0; i < campos.Count; i++)
                 {
                     campos[i].Update();
-                    await progress.Tick_50ms((int)((i * 10.0) / campos.Count));
+                    progress?.Report((int)((i * 10.0) / campos.Count));
                 }
+                return Task.CompletedTask;
             }, barra_de_progresso: true, desabilitar_ScreenUpdating: true, desabilitar_TrackRevisions: true);
         }
 

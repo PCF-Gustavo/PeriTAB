@@ -16,11 +16,14 @@ namespace PeriTAB
 
         private async void Button_pagina_em_paisagem_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
-                Range r1 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
-                Range r2 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
-                Range r3 = Globals.ThisAddIn.Application.Selection.Range.Duplicate;
+                Application Application = Globals.ThisAddIn.Application;
+                Selection Selection = Application.Selection;
+
+                Range r1 = Selection.Range.Duplicate;
+                Range r2 = Selection.Range.Duplicate;
+                Range r3 = Selection.Range.Duplicate;
                 r1.Collapse(WdCollapseDirection.wdCollapseStart);
                 int pagina_inicio_selecao = r1.Information[WdInformation.wdActiveEndPageNumber];
                 r2.Collapse(WdCollapseDirection.wdCollapseEnd);
@@ -29,9 +32,9 @@ namespace PeriTAB
                 r1 = r1.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_inicio_selecao);
                 r2 = r2.GoTo(WdGoToItem.wdGoToPage, WdGoToDirection.wdGoToAbsolute, pagina_fim_selecao + 1);
 
-                if (pagina_inicio_selecao == 1 & pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
+                if (pagina_inicio_selecao == 1 & pagina_fim_selecao == Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
                 {
-                    Globals.ThisAddIn.Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
+                    Application.ActiveDocument.PageSetup.Orientation = WdOrientation.wdOrientLandscape;
                 }
                 else if (pagina_inicio_selecao == 1)
                 {
@@ -43,7 +46,7 @@ namespace PeriTAB
                     next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
                     next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                 }
-                else if (pagina_fim_selecao == Globals.ThisAddIn.Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
+                else if (pagina_fim_selecao == Application.ActiveDocument.ComputeStatistics(WdStatistic.wdStatisticPages))
                 {
                     r1.InsertBreak(WdBreakType.wdSectionBreakNextPage);
                     r3.Sections[1].PageSetup.Orientation = WdOrientation.wdOrientLandscape;
@@ -61,8 +64,8 @@ namespace PeriTAB
                     next_section.PageSetup.DifferentFirstPageHeaderFooter = 0;
                     next_section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                 }
-                await progress.Tick_50ms();
-                foreach (Section section in Globals.ThisAddIn.Application.ActiveDocument.Sections)
+                //progress?.Report();
+                foreach (Section section in Application.ActiveDocument.Sections)
                 {
                     foreach (HeaderFooter footer in section.Footers)
                     {
@@ -73,6 +76,7 @@ namespace PeriTAB
                         catch { }
                     }
                 }
+                return Task.CompletedTask;
             }, desabilitar_ScreenUpdating: false);
         }
 
@@ -97,16 +101,17 @@ namespace PeriTAB
 
         static Section GetNextSection(Section section)
         {
+            Document ActiveDocument = Globals.ThisAddIn.Application.ActiveDocument;
             // Percorre as seções do documento
-            for (int i = 1; i < Globals.ThisAddIn.Application.ActiveDocument.Sections.Count; i++)
+            for (int i = 1; i < ActiveDocument.Sections.Count; i++)
             {
                 // Se encontramos a seção corrente, verificamos se existe uma próxima seção
-                if (Globals.ThisAddIn.Application.ActiveDocument.Sections[i].Range.Start == section.Range.Start)
+                if (ActiveDocument.Sections[i].Range.Start == section.Range.Start)
                 {
                     // Verifica se não é a última seção
-                    if (i + 1 <= Globals.ThisAddIn.Application.ActiveDocument.Sections.Count)
+                    if (i + 1 <= ActiveDocument.Sections.Count)
                     {
-                        return Globals.ThisAddIn.Application.ActiveDocument.Sections[i + 1]; // Retorna a próxima seção
+                        return ActiveDocument.Sections[i + 1]; // Retorna a próxima seção
                     }
                     break; // Se for a última seção, sai do loop
                 }
@@ -138,18 +143,18 @@ namespace PeriTAB
 
         private async void Button_autoformata_laudo_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Application Application = Globals.ThisAddIn.Application;
                 Document ActiveDocument = Application.ActiveDocument;
                 Sections Sections = ActiveDocument.Sections;
 
                 foreach (Range storyRange in ActiveDocument.StoryRanges) storyRange.Fields.Update();
-                await progress.Tick_50ms(1);
+                progress?.Report(1);
 
                 Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.First().Importa_todos_estilos();
 
-                await progress.Tick_50ms(2);
+                progress?.Report(2);
 
                 foreach (Section section in Sections)
                 {
@@ -177,7 +182,7 @@ namespace PeriTAB
                     //section.PageSetup.OddAndEvenPagesHeaderFooter = 0;
                     section.PageSetup.MirrorMargins = 0;
                 }
-                await progress.Tick_50ms(3);
+                progress?.Report(3);
                 DeleteEmptyParagraphsAtStart(ActiveDocument.Content);
 
                 string unidade = null;
@@ -223,7 +228,7 @@ namespace PeriTAB
                     }
 
                 }
-                await progress.Tick_50ms(4);
+                progress?.Report(4);
                 bool isFirstSection = true;
                 foreach (Section section in Sections)
                 {
@@ -274,7 +279,7 @@ namespace PeriTAB
                             cabecalho_outras_paginas.Paragraphs[cabecalho_outras_paginas.Paragraphs.Count].Range.Delete();
                         }
                     }
-                    await progress.Tick_50ms(5);
+                    progress?.Report(5);
                     foreach (HeaderFooter footer in section.Footers)
                     {
                         if (isFirstSection && footer.Index == WdHeaderFooterIndex.wdHeaderFooterPrimary)
@@ -302,7 +307,7 @@ namespace PeriTAB
                     }
                     isFirstSection = false;
                 }
-                await progress.Tick_50ms(6);
+                progress?.Report(6);
                 // SEÇÃO DE CONCLUSÃO
                 // Insere Seção de conclusão
                 Range secao_de_conclusao_range = EncontrarUltimoParagrafo("resposta aos quesitos");
@@ -322,21 +327,21 @@ namespace PeriTAB
                         iClass_ContentControlOnExit_Event.ChangeEntry(iClass_ContentControlOnExit_Event.GetContentControl("Seção de conclusão"), Class_ContentControlOnExit_Event.dict_Fim_do_preambulo_e_Secao_de_conclusao[maisProximo]);
                     }
                 }
-                await progress.Tick_50ms(7);
+                progress?.Report(7);
                 // FECHO
 
 
                 Range fecho_range = EncontrarUltimoParagrafo_wildcard("[nN]ada([ ]*)mais([ ]*)havendo*CRIMINAL([ ]*)FEDERAL");
 
                 if (fecho_range == null)
-                    return;
+                    return Task.CompletedTask;
 
                 Range assinado_range =
                     EncontrarUltimoParagrafo_wildcard("[aA]ssinado [dD]igitalmente") ??
                     EncontrarUltimoParagrafo_wildcard("[dD]igitalmente [aA]ssinado");
 
                 if (assinado_range == null)
-                    return;
+                    return Task.CompletedTask;
 
                 // Nome do perito
                 Paragraph nomeParagrafo = assinado_range.Paragraphs[1].Next();
@@ -400,7 +405,7 @@ namespace PeriTAB
 
 
 
-                await progress.Tick_50ms(8);
+                progress?.Report(8);
                 // DESTACA EM AMARELO TEXTO PRETOS (Red = 1, Green = 1, Blue = 0)
                 Color quase_preto = Color.FromArgb(1, 1, 0);
                 WdColor WdColor_quase_preto = (WdColor)(quase_preto.R + 0x100 * quase_preto.G + 0x10000 * quase_preto.B);
@@ -439,7 +444,7 @@ namespace PeriTAB
                     }
                 }
 
-                await progress.Tick_50ms(9);
+                progress?.Report(9);
                 // DESTACA TODAS AS IMAGENS COM BORDAS AMARELAS
                 foreach (InlineShape ishape in ActiveDocument.StoryRanges[WdStoryType.wdMainTextStory].InlineShapes)
                 {
@@ -451,7 +456,8 @@ namespace PeriTAB
                     }
                 }
                 iClass_ContentControlOnExit_Event.Evento_ContentControlOnExit();
-            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
+                return Task.CompletedTask;
+            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true, aviso_aguardar: true);
         }
 
         private Range EncontrarRangedoIniciodoLaudo(Document doc)

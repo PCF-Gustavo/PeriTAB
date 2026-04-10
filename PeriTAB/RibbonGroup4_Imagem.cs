@@ -22,10 +22,11 @@ namespace PeriTAB
         private async void Button_cola_imagem_Click(object sender, RibbonControlEventArgs e)
         {
             object obj = System.Windows.Clipboard.GetData("FileDrop");
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Application Application = Globals.ThisAddIn.Application;
                 Selection Selection = Application.Selection;
+                Ribbon Ribbon = Globals.Ribbons.Ribbon;
 
                 if (System.Windows.Clipboard.ContainsData("FileDrop"))
                 {
@@ -36,7 +37,7 @@ namespace PeriTAB
                     int n = 0;
                     for (int i = 0; i <= pathfile.Length - 1; i++)
                     {
-                        await progress.Tick_50ms((int)((i * 2) / pathfile.Length));
+                        progress?.Report((int)((i * 2) / pathfile.Length));
 
                         if (File.Exists(pathfile[i]))
                         {
@@ -67,22 +68,22 @@ namespace PeriTAB
                             }
                             for (int i = 0; i <= pathfile2.Length - 1; i++)
                             {
-                                await progress.Tick_50ms((int)((i * 10) / pathfile2.Length));
+                                progress?.Report((int)((i * 10) / pathfile2.Length));
 
                                 bool link = false; bool save = true;
-                                if (Globals.Ribbons.Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
+                                if (Ribbon.checkBox_referencia.Checked == true) { link = true; save = false; }
                                 InlineShape imagem = Selection.InlineShapes.AddPicture(pathfile2[i], link, save);
                                 imagem.LockAspectRatio = MsoTriState.msoTrue;
                                 if (CheckBox_largura.Checked)
                                 {
-                                    string larg_string = Globals.Ribbons.Ribbon.EditBox_largura.Text;
+                                    string larg_string = Ribbon.EditBox_largura.Text;
                                     float.TryParse(larg_string, out float larg);
                                     imagem.Width = Application.CentimetersToPoints(larg);
                                 }
 
                                 if (CheckBox_altura.Checked)
                                 {
-                                    string alt_string = Globals.Ribbons.Ribbon.EditBox_altura.Text;
+                                    string alt_string = Ribbon.EditBox_altura.Text;
                                     float.TryParse(alt_string, out float alt);
                                     imagem.Height = Application.CentimetersToPoints(alt);
                                 }
@@ -128,7 +129,7 @@ namespace PeriTAB
                             // Para TELA DE DESENHO
                             for (int i = 0; i <= pathfile2.Length - 1; i++)
                             {
-                                await progress.Tick_50ms((int)((i * 10) / pathfile2.Length));
+                                progress?.Report((int)((i * 10) / pathfile2.Length));
                                 using (Image imagem = Image.FromFile(pathfile2[i]))
                                 {
                                     float largura = 0;
@@ -136,12 +137,12 @@ namespace PeriTAB
 
                                     if (CheckBox_largura.Checked)
                                     {
-                                        float.TryParse(Globals.Ribbons.Ribbon.EditBox_largura.Text, out largura);
+                                        float.TryParse(Ribbon.EditBox_largura.Text, out largura);
                                         altura = largura * imagem.Height / imagem.Width;
                                     }
                                     if (CheckBox_altura.Checked)
                                     {
-                                        float.TryParse(Globals.Ribbons.Ribbon.EditBox_altura.Text, out altura);
+                                        float.TryParse(Ribbon.EditBox_altura.Text, out altura);
                                         largura = altura * imagem.Width / imagem.Height;
                                     }
                                     float largura_pontos = Application.CentimetersToPoints(largura);
@@ -166,7 +167,8 @@ namespace PeriTAB
                     else throw new Exception("Não há imagens no Clipboard.");
                 }
                 else throw new Exception("Não há imagens no Clipboard.");
-            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
+				return Task.CompletedTask;
+			}, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
         }
 
         public class Comparer_Windows_order : IComparer<string> /*implement an IComparer to get the same sort behavior as Windows Explorer*/
@@ -263,17 +265,18 @@ namespace PeriTAB
 
         private async void Button_redimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Application Application = Globals.ThisAddIn.Application;
                 Selection Selection = Application.Selection;
+                Ribbon Ribbon = Globals.Ribbons.Ribbon;
 
                 if (Selection.InlineShapes.Count < 1) throw new Exception("Não há imagens selecionadas.");
 
                 int i = 0;
                 foreach (InlineShape ishape in Selection.InlineShapes)
                 {
-                    await progress.Tick_50ms((int)((i * 10) / Selection.InlineShapes.Count));
+                    progress?.Report((int)((i * 10) / Selection.InlineShapes.Count));
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
                     {
                         InlineShape imagem = ishape;
@@ -281,25 +284,26 @@ namespace PeriTAB
 
                         if (CheckBox_largura.Checked)
                         {
-                            string larg_string = Globals.Ribbons.Ribbon.EditBox_largura.Text;
+                            string larg_string = Ribbon.EditBox_largura.Text;
                             float.TryParse(larg_string, out float larg);
                             imagem.Width = Application.CentimetersToPoints(larg);
                         }
 
                         if (CheckBox_altura.Checked)
                         {
-                            string alt_string = Globals.Ribbons.Ribbon.EditBox_altura.Text;
+                            string alt_string = Ribbon.EditBox_altura.Text;
                             float.TryParse(alt_string, out float alt);
                             imagem.Height = Application.CentimetersToPoints(alt);
                         }
                     }
                 }
-            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
+				return Task.CompletedTask;
+			}, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
         }
 
         private async void Button_autodimensiona_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 Application Application = Globals.ThisAddIn.Application;
                 InlineShapes InlineShapes = Application.Selection.InlineShapes;
@@ -312,7 +316,7 @@ namespace PeriTAB
                 int j = 0;
                 foreach (InlineShape iShape in InlineShapes)
                 {
-                    await progress.Tick_50ms((int)((j * 10) / InlineShapes.Count));
+                    progress?.Report((int)((j * 10) / InlineShapes.Count));
 
                     Paragraph Paragraph_1 = iShape.Range.Paragraphs[1];
 
@@ -393,7 +397,7 @@ namespace PeriTAB
                 j = 0;
                 foreach (var iParagraph in dict_InlineShape_paragraph.Keys)
                 {
-                    await progress.Tick_50ms((int)((j * 10) / InlineShapes.Count));
+                    progress?.Report((int)((j * 10) / InlineShapes.Count));
                     // Verifica se o parágrafo tem exatamente uma linha: caso de aumento das imagens
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 0) { throw new Exception(""); } //Se está dentro da tabela, o numero de linhas do paragrafo é zero
                     if (((dict_InlineShape_paragraph[iParagraph])[0].Range.Paragraphs[1].Range.ComputeStatistics(WdStatistic.wdStatisticLines)) == 1)
@@ -435,7 +439,8 @@ namespace PeriTAB
                         }
                     }
                 }
-            }, barra_de_progresso: true, desabilitar_ScreenUpdating: true);
+				return Task.CompletedTask;
+			}, barra_de_progresso: true, desabilitar_ScreenUpdating: true, aviso_aguardar: true);
         }
         void Redimenionar_imagens_por_busca_binaria(List<InlineShape> imagens, bool fit_to_page)
         {
@@ -529,7 +534,7 @@ namespace PeriTAB
 
         private async void Button_borda_preta_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -540,13 +545,13 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 0).ToArgb();
                     }
                 }
-                await Task.CompletedTask;
-            });
+				return Task.CompletedTask;
+			});
         }
 
         private async void Button_borda_vermelha_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -557,13 +562,13 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 0, 255).ToArgb();
                     }
                 }
-                await Task.CompletedTask;
-            });
+				return Task.CompletedTask;
+			});
         }
 
         private async void Button_borda_amarela_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -574,20 +579,23 @@ namespace PeriTAB
                         ishape.Line.ForeColor.RGB = Color.FromArgb(0, 255, 255).ToArgb();
                     }
                 }
-                await Task.CompletedTask;
-            });
+				return Task.CompletedTask;
+			});
         }
 
         private async void Button_legenda_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
+                Application Application = Globals.ThisAddIn.Application;
+                Selection Selection = Application.Selection;
+
                 string estilo_nome_baseado = "Legenda";
-                Globals.ThisAddIn.Application.OrganizerCopy(PeriTAB.Ribbon.Variables.Caminho_template, Globals.ThisAddIn.Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
+                Application.OrganizerCopy(PeriTAB.Ribbon.Variables.Caminho_template, Application.ActiveDocument.FullName, estilo_nome_baseado, WdOrganizerObject.wdOrganizerObjectStyles);
 
                 List<InlineShape> list_InlineShape = new List<InlineShape>();
 
-                foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
+                foreach (InlineShape ishape in Selection.InlineShapes)
                 {
                     if (ishape.Type == WdInlineShapeType.wdInlineShapeLinkedPicture | ishape.Type == WdInlineShapeType.wdInlineShapePicture)
                     {
@@ -598,35 +606,35 @@ namespace PeriTAB
                 {
                     ishape.Select();
 
-                    if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next() != null)
+                    if (Selection.Paragraphs[1].Next() != null)
                     {
-                        if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Characters.Count >= 7)
+                        if (Selection.Paragraphs[1].Next().Range.Characters.Count >= 7)
                         {
-                            if (Globals.ThisAddIn.Application.Selection.Paragraphs[1].Next().Range.Text.Substring(0, 7) == "Figura ") continue;
+                            if (Selection.Paragraphs[1].Next().Range.Text.Substring(0, 7) == "Figura ") continue;
                         }
                     }
                     if (IsLastShapeInParagraph(ishape))
                     {
                         bool label_existe = false;
-                        foreach (CaptionLabel label in Globals.ThisAddIn.Application.CaptionLabels)
+                        foreach (CaptionLabel label in Application.CaptionLabels)
                         {
                             if (label.Name == "Figura") { label_existe = true; }
                         }
-                        if (!label_existe) { Globals.ThisAddIn.Application.CaptionLabels.Add("Figura"); }
+                        if (!label_existe) { Application.CaptionLabels.Add("Figura"); }
 
-                        Globals.ThisAddIn.Application.Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
-                        Globals.ThisAddIn.Application.Selection.set_Style((object)"12 - Legendas de Figuras (PeriTAB)");
-                        Globals.ThisAddIn.Application.Selection.InsertAfter(" ");
-                        Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.First().Alinha_Legenda_de_Figura(Globals.ThisAddIn.Application.Selection.Paragraphs[1]);
+                        Selection.InsertCaption(Label: "Figura", Title: " " + ((char)8211).ToString(), TitleAutoText: "", Position: WdCaptionPosition.wdCaptionPositionBelow, ExcludeLabel: 0);
+                        Selection.set_Style((object)"12 - Legendas de Figuras (PeriTAB)");
+                        Selection.InsertAfter(" ");
+                        Globals.ThisAddIn.Dicionario_Window_e_UserControl.Values.First().Alinha_Legenda_de_Figura(Selection.Paragraphs[1]);
                     }
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_remove_borda_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -635,13 +643,13 @@ namespace PeriTAB
                         ishape.Line.Visible = MsoTriState.msoFalse;
                     }
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_remove_formatacao_Click_1(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -650,13 +658,13 @@ namespace PeriTAB
                         ishape.Reset();
                     }
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_remove_forma_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
             List<Microsoft.Office.Interop.Word.Shape> listaShapes = new List<Microsoft.Office.Interop.Word.Shape>();
                 foreach (Microsoft.Office.Interop.Word.Shape ishape in Globals.ThisAddIn.Application.Selection.Range.ShapeRange)
@@ -670,13 +678,13 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_remove_texto_alt_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
                 {
@@ -685,13 +693,13 @@ namespace PeriTAB
                         ishape.AlternativeText = "";
                     }
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
 
         private async void Button_remove_imagem_Click(object sender, RibbonControlEventArgs e)
         {
-            await Executar_Ribbon_com_UI_responsiva(sender, e, async progress =>
+            await Executar_Ribbon(sender, e, progress =>
             {
                 List<InlineShape> listaShapes = new List<InlineShape>();
                 foreach (InlineShape ishape in Globals.ThisAddIn.Application.Selection.InlineShapes)
@@ -705,7 +713,7 @@ namespace PeriTAB
                 {
                     ishape.Delete();
                 }
-                await Task.CompletedTask;
+                return Task.CompletedTask;
             });
         }
     }
