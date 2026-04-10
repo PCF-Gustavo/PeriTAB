@@ -538,14 +538,57 @@ namespace PeriTAB
             }
         }
 
-        public async void Atualiza_Destaque_Botoes(Selection Selection, CancellationToken CancellationToken = default)
+        //public async void Atualiza_Destaque_Botoes(Selection Selection, CancellationToken CancellationToken = default)
+        //{
+        //    await Task.Yield();
+
+        //    Remove_Destaque_Botoes(CancellationToken);
+
+        //    if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+        //    {
+        //        List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
+
+        //        foreach (Paragraph p in paragrafosSelecionados)
+        //        {
+
+        //            if (CancellationToken.IsCancellationRequested) return;
+
+        //            Style estilo = null;
+        //            if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+        //            {
+        //                try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+        //                if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+        //                {
+        //                    System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+        //                    Destaca(botao);
+        //                }
+        //            }
+        //            if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
+        //            {
+        //                Range Selecao_inicial = Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a seleção)
+        //                try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+        //                Selecao_inicial.Select(); // Restaura a seleção inicial
+        //                if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+        //                {
+        //                    System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+        //                    Destaca(botao);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+        private bool flag_reentrancia = false;
+        public void Atualiza_Destaque_Botoes(Selection Selection, CancellationToken CancellationToken = default)
         {
-            await Task.Yield();
-
-            Remove_Destaque_Botoes(CancellationToken);
-
-            if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+            if (flag_reentrancia) return;
+            try
             {
+                flag_reentrancia = true;
+                Remove_Destaque_Botoes(CancellationToken);
+
+                //if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
+                //{
                 List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
 
                 foreach (Paragraph p in paragrafosSelecionados)
@@ -576,6 +619,11 @@ namespace PeriTAB
                         }
                     }
                 }
+                //}
+            }
+            finally
+            {
+                flag_reentrancia = false;
             }
         }
 
