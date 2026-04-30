@@ -587,39 +587,39 @@ namespace PeriTAB
                 flag_reentrancia = true;
                 Remove_Destaque_Botoes(CancellationToken);
 
-                //if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
-                //{
-                List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
-
-                foreach (Paragraph p in paragrafosSelecionados)
+                if (Globals.ThisAddIn.Application.Selection.Tables.Count == 0) // Inseri pq selecionar paragrafos com tabela causa problemas de seleção.
                 {
+                    List<Paragraph> paragrafosSelecionados = Selection.Paragraphs.Cast<Paragraph>().ToList();
 
-                    if (CancellationToken.IsCancellationRequested) return;
-
-                    Style estilo = null;
-                    if (p.Range.StoryType == WdStoryType.wdMainTextStory)
+                    foreach (Paragraph p in paragrafosSelecionados)
                     {
-                        try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
 
-                        if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                        if (CancellationToken.IsCancellationRequested) return;
+
+                        Style estilo = null;
+                        if (p.Range.StoryType == WdStoryType.wdMainTextStory)
                         {
-                            System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
-                            Destaca(botao);
+                            try { estilo = p.Range.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+
+                            if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                            {
+                                System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+                                Destaca(botao);
+                            }
                         }
-                    }
-                    if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
-                    {
-                        Range Selecao_inicial = Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a seleção)
-                        try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
-                        Selecao_inicial.Select(); // Restaura a seleção inicial
-                        if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                        if (p.Range.StoryType == WdStoryType.wdFootnotesStory)
                         {
-                            System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
-                            Destaca(botao);
+                            Range Selecao_inicial = Selection.Range; //Salva a seleção inicial (Inseri pq estilo = p.Range.ParagraphFormat.get_Style(); estava modificando implicitamente a seleção)
+                            try { estilo = p.Range.ParagraphFormat.get_Style(); } catch (System.Runtime.InteropServices.COMException) { }
+                            Selecao_inicial.Select(); // Restaura a seleção inicial
+                            if (estilo != null && Dicionario_Estilo_e_Botao.ContainsKey(estilo.NameLocal))
+                            {
+                                System.Windows.Forms.Button botao = Dicionario_Estilo_e_Botao[estilo.NameLocal];
+                                Destaca(botao);
+                            }
                         }
                     }
                 }
-                //}
             }
             finally
             {

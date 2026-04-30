@@ -79,7 +79,11 @@ namespace PeriTAB
                     {
                         bool assinado = Assina_PDF(path_tmp_pdf, path_tmp_pdf_assinado);
 
-                        if (!assinado) return Task.CompletedTask;
+                        if (!assinado)
+                        {
+                            throw new Exception("Erro na funcao Assina_PDF");
+                            //return Task.CompletedTask;
+                        }
 
                         Substitui_PDF_Final(path_tmp_pdf_assinado,path_pdf_assinado);
 
