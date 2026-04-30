@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
 # User-specific folders
-publicacoes
-Bizu de instalação
+publicacoes/
+Bizu de instalação/
 
 # User-specific files
 *.rsuser
