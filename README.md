@@ -3,7 +3,7 @@
 Suplemento para Microsoft Word desenvolvido para automatizar e agilizar a elaboração de laudos periciais.
 
 <p align="center">
-  <img src="PeriTAB/Resources/peritab-readme.png" width="600"/>
+  <img src="PeriTAB/Resources/peritab-readme.png" style="max-width:100%; height:auto;"/>
 </p>
 
 ---
