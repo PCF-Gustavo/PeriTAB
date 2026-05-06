@@ -367,6 +367,9 @@
   <ItemGroup>
     <None Include="Resources\load-icon-png-7969.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\peritab-readme.png" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
