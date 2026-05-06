@@ -3,7 +3,7 @@
 Suplemento para Microsoft Word desenvolvido para automatizar e agilizar a elaboração de laudos periciais.
 
 <p align="center">
-  <!-- <img src="Resources/peritab-readme.png" width="600"/> -->
+  <!-- <img src="PeriTAB/Resources/peritab-readme.png" width="600"/> -->
 </p>
 
 ---
@@ -52,17 +52,13 @@ Fluxo típico de uso:
 2. A aba **PeriTAB** é carregada automaticamente
 3. Usuário utiliza os botões disponíveis na aba
 4. As rotinas em C# são executadas
-5. O documento é formatado ou preenchido automaticamente
 
 ---
-
-## 🚀 Como utilizar
 
 ### Pré-requisitos
 
 - Microsoft Word
 - Windows
-- .NET Framework compatível com VSTO
 
 ---
 
@@ -75,25 +71,12 @@ Fluxo típico de uso:
 
 ---
 
-## 🧪 Status do Projeto
-
-🚧 Em desenvolvimento
-
-Versões podem conter:
-
-- funcionalidades em evolução
-- alterações frequentes
-- melhorias contínuas
-
----
-
 ## 🖥️ Compatibilidade
 
 Testado apenas no:
 
 - Microsoft Word 16
-- Windows 10
-- Windows 11
+- Windows 10 e 11
 
 ---
 
