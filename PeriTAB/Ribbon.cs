@@ -10,10 +10,12 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Shapes;
+using Application = Microsoft.Office.Interop.Word.Application;
 using Font = System.Drawing.Font;
+using Path = System.IO.Path;
 using Point = System.Drawing.Point;
 using Task = System.Threading.Tasks.Task;
-using Application = Microsoft.Office.Interop.Word.Application;
 
 namespace PeriTAB
 {
@@ -140,7 +142,7 @@ namespace PeriTAB
             //}, barra_de_progresso: true, desabilitar_ScreenUpdating: false, desabilitar_TrackRevisions: false);
         }
 
-        
+
         //private async Task Executar_Ribbon_com_UI_responsiva(
         //    object sender,
         //    RibbonControlEventArgs e,
@@ -279,6 +281,7 @@ namespace PeriTAB
         //        }
         //    }
         //}
+        private static HashSet<string> aviso_exibido = new HashSet<string>();
         private async Task Executar_Ribbon(
             object sender,
             RibbonControlEventArgs e,
@@ -295,7 +298,9 @@ namespace PeriTAB
             RibbonButton ribbonButton = (RibbonButton)sender;
             RibbonMenu ribbonMenu = ribbonButton.Parent as RibbonMenu;
 
-            if (aviso_aguardar)
+            string ribbonButton_ID = ribbonButton.Id;
+
+            if (aviso_aguardar && !aviso_exibido.Contains(ribbonButton_ID))
             {
                 MessageBox.Show(
                     new WindowWrapper(
@@ -305,6 +310,7 @@ namespace PeriTAB
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning
                 );
+                aviso_exibido.Add(ribbonButton_ID);
             }
 
             #if DEBUG
