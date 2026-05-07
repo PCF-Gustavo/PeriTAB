@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "components": [
+    "Microsoft.Component.ClickOnce",
+    "Microsoft.VisualStudio.Component.CoreEditor",
+    "Microsoft.VisualStudio.Workload.CoreEditor"
+  ],
+  "extensions": [
+    "https://marketplace.visualstudio.com/items?itemName=VisualStudioClient.MicrosoftVisualStudio2022InstallerProjects"
+  ]
+}
