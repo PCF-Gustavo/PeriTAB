@@ -243,7 +243,7 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <None Include="packages.config" />
-    <None Include="PeriTAB_1_TemporaryKey.pfx" />
+    <None Include="PeriTAB_Key.pfx" />
     <None Include="PeriTAB_Key.snk" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -378,7 +378,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>PeriTAB_1_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>PeriTAB_Key.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>E7FADA1A8D4AB1DBE7B813DA9DD55FC94074AB22</ManifestCertificateThumbprint>
