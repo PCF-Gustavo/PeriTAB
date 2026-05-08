@@ -93,16 +93,6 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap aquarela {
-            get {
-                object obj = ResourceManager.GetObject("aquarela", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap atualizar {
             get {
                 object obj = ResourceManager.GetObject("atualizar", resourceCulture);
@@ -173,26 +163,6 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap formatacao {
-            get {
-                object obj = ResourceManager.GetObject("formatacao", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap formatacao2 {
-            get {
-                object obj = ResourceManager.GetObject("formatacao2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icone_pdf {
             get {
                 object obj = ResourceManager.GetObject("icone_pdf", resourceCulture);
@@ -241,32 +211,12 @@ namespace PeriTAB.Properties {
         }
         
         /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap marcador2 {
-            get {
-                object obj = ResourceManager.GetObject("marcador2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Consulta um recurso localizado do tipo System.Byte[].
         /// </summary>
         internal static byte[] Normal {
             get {
                 object obj = ResourceManager.GetObject("Normal", resourceCulture);
                 return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap numerar {
-            get {
-                object obj = ResourceManager.GetObject("numerar", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -313,16 +263,6 @@ namespace PeriTAB.Properties {
         /// <summary>
         ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap redimensionar {
-            get {
-                object obj = ResourceManager.GetObject("redimensionar", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap redimensionar2 {
             get {
                 object obj = ResourceManager.GetObject("redimensionar2", resourceCulture);
@@ -336,36 +276,6 @@ namespace PeriTAB.Properties {
         internal static System.Drawing.Bitmap redimensionar3 {
             get {
                 object obj = ResourceManager.GetObject("redimensionar3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap seta3 {
-            get {
-                object obj = ResourceManager.GetObject("seta3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap subir2 {
-            get {
-                object obj = ResourceManager.GetObject("subir2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Consulta um recurso localizado do tipo System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap vassoura {
-            get {
-                object obj = ResourceManager.GetObject("vassoura", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
